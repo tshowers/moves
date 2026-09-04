@@ -84,22 +84,23 @@ export class MovesDataService {
     return snap.exists() ? ( { id: snap.id, ...( snap.data() as any ) } as Contact ) : null;
   }
 
-  // --- Dropdown collection CRUD, scoped to just TASK_TYPES/PROJECTS for
-  // MovesDropdownEditButtonComponent (mirrors DataService.addDocument/
-  // updateDocument/deleteDocument for those two collections only). ---
+  // --- Dropdown collection CRUD, scoped to just TASK_TYPES/PROJECTS/
+  // TASK_STATUS for MovesDropdownEditButtonComponent (mirrors
+  // DataService.addDocument/updateDocument/deleteDocument for those three
+  // collections only). ---
 
-  async addDropdownItem ( tenantId: string, collectionName: 'task-type' | 'projects', item: Dropdown ): Promise<string> {
+  async addDropdownItem ( tenantId: string, collectionName: 'task-type' | 'projects' | 'task-status', item: Dropdown ): Promise<string> {
     const ref = this.tenantCollection( tenantId, collectionName );
     const docRef = await addDoc( ref, item );
     await updateDoc( doc( ref, docRef.id ), { id: docRef.id } );
     return docRef.id;
   }
 
-  async updateDropdownItem ( tenantId: string, collectionName: 'task-type' | 'projects', item: Dropdown ): Promise<void> {
+  async updateDropdownItem ( tenantId: string, collectionName: 'task-type' | 'projects' | 'task-status', item: Dropdown ): Promise<void> {
     await setDoc( doc( this.tenantCollection( tenantId, collectionName ), item.id ), item, { merge: true } );
   }
 
-  async deleteDropdownItem ( tenantId: string, collectionName: 'task-type' | 'projects', itemId: string ): Promise<void> {
+  async deleteDropdownItem ( tenantId: string, collectionName: 'task-type' | 'projects' | 'task-status', itemId: string ): Promise<void> {
     await deleteDoc( doc( this.tenantCollection( tenantId, collectionName ), itemId ) );
   }
 }

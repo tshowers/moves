@@ -1,0 +1,40 @@
+<div class="container-fluid todd-page">
+  <div class="row">
+    <div class="col">
+      <ul class="timeline">
+        <li *ngFor="let t of filteredAndSortedTasks; let i = index" [ngClass]="{'timeline-inverted': i % 2 !== 0}">
+          <div class="timeline-badge"><i class="fa-solid fa-list-check"></i></div>
+          <div class="timeline-panel">
+            <div class="timeline-heading">
+              <button type="button" class="timeline-open-link timeline-title" (click)="editTask(t)" title="{{t.title}}">
+                {{ t.title | truncate:25 }}
+              </button>
+              <span *ngIf="t.superseded" class="badge text-bg-secondary ms-2">Superseded</span>
+              <div *ngIf="t.description" class="task-text" [innerHTML]="t.description | truncate:150" title="{{t.description}}"></div>
+              <p class="mt-2" *ngIf="t.progress" [ngClass]="{
+                      'text-success': t.isCompleted,
+                      'text-warning': !t.isCompleted && t.progress > 50,
+                      'text-danger': !t.isCompleted && t.progress <= 50
+                    }"><i class="fa-regular fa-clock"></i> {{ t.dueDate | date }}</p>
+              <div class="mt-2">
+                <button type="button" class="btn btn-sm btn-outline-secondary" (click)="editTask(t)"> Open Move </button>
+              </div>
+            </div>
+            <div class="mb-2" class="task-text mb-2">
+              <span>{{ t | taskCountdown| async }}</span>
+            </div>
+            <div class="timeline-body">
+              <div class="progress-container flex-grow-1">
+                <div class="progress-bar-container">
+                  <div class="progress-bar" role="progressbar" [style.width.%]="t.progress" attr.aria-valuenow="{{ t.progress }}" aria-valuemin="0" aria-valuemax="100">
+                    {{ t.progress }}%
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>

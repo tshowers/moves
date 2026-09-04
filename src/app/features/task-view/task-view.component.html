@@ -1,0 +1,54 @@
+<div class="profile-report" *ngIf="task">
+  <div class="profile-header">
+    <div class="header-info">
+      <h2>{{ task.title }}</h2>
+      <p class="title" *ngIf="task.status">Status: {{ task.status }}</p>
+      <p class="location" *ngIf="task.dueDate">Due: {{ task.dueDate | date:'mediumDate' }}</p>
+    </div>
+  </div>
+  <div class="profile-section" *ngIf="task.description">
+    <h2>Description</h2>
+    <p>{{ task.description }}</p>
+  </div>
+  <div class="profile-section" *ngIf="task.contacts?.length">
+    <h2>Related Contacts</h2>
+    <ul>
+      <li *ngFor="let contact of task.contacts" class="app-task-view">
+        {{ contact.firstName }} {{ contact.lastName }}
+      </li>
+    </ul>
+  </div>
+  <div class="profile-section" *ngIf="task.documents?.length">
+    <h2>Documents</h2>
+    <ul>
+      <li *ngFor="let doc of task.documents">
+        <i class="fa-solid fa-file-lines me-1"></i> {{ doc.name }}
+      </li>
+    </ul>
+  </div>
+  <div class="profile-section" *ngIf="task.images?.length">
+    <h2>Images</h2>
+    <div class="d-flex flex-wrap gap-3">
+      <div *ngFor="let image of task.images">
+        <img [src]="image.src" [alt]="image.alt" style="max-height: 100px; border-radius: 8px;">
+        <p class="small">{{ image.alt }}</p>
+      </div>
+    </div>
+  </div>
+  <div class="profile-section" *ngIf="subTasks?.length">
+    <h2>Subtasks</h2>
+    <ul>
+      <li *ngFor="let sub of subTasks">
+        <i class="fa-solid fa-angle-right me-1"></i> {{ sub.title }}
+        <span *ngIf="sub.isCompleted" class="text-success">(Completed)</span>
+      </li>
+    </ul>
+  </div>
+  <div class="profile-section">
+    <p *ngIf="task.priority"><strong>Priority:</strong> {{ task.priority }}</p>
+    <p *ngIf="task.status"><strong>Status:</strong> {{ task.status }}</p>
+    <p *ngIf="task.progress"><strong>Progress:</strong> {{ task.progress }}</p>
+    <p *ngIf="task.extensionDays"><strong>Extension Days:</strong> {{ task.extensionDays }}</p>
+    <p *ngIf="task.url"><strong>Link:</strong> <a [href]="task.url" target="_blank">{{ task.url }}</a></p>
+  </div>
+</div>

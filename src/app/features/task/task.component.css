@@ -1,0 +1,303 @@
+ /* Patch for task.component.css (token-synced)
+   Apply these exact replacements in:
+   src/app/features/tasks/task/task.component.css
+*/
+
+ /* 1) iOS checkbox */
+ .ios-checkbox {
+   -webkit-appearance: none;
+   appearance: none;
+   background-color: var(--todd-input-bg);
+   border: 2px solid var(--todd-link);
+   border-radius: 50%;
+   width: 20px;
+   height: 20px;
+   cursor: pointer;
+   margin-right: 10px;
+ }
+
+ .ios-checkbox:checked {
+   background-color: var(--todd-link);
+ }
+
+ /* 2) Progress bar container + bar */
+ .progress-bar-container {
+   position: relative;
+   width: 100%;
+   height: 40px;
+   /* Double the height of the progress bar */
+   background-color: color-mix(in srgb, var(--todd-link) 12%, transparent);
+   border: 2px solid var(--todd-link);
+   border-radius: 20px;
+   overflow: hidden;
+ }
+
+ .progress-bar {
+   position: absolute;
+   top: 0;
+   left: 0;
+   height: 100%;
+   background-color: color-mix(in srgb, var(--todd-link) 55%, transparent);
+   border-radius: 20px 0 0 20px;
+   transition: width 0.3s;
+   display: flex;
+   align-items: center;
+   justify-content: center;
+   color: #fff;
+   font-weight: bold;
+ }
+
+ /* 3) Range slider */
+ input[type=range] {
+   width: 100%;
+   -webkit-appearance: none;
+   appearance: none;
+   height: 8px;
+   cursor: pointer;
+   background: var(--todd-input-border);
+   border-radius: 5px;
+   margin-top: 10px;
+ }
+
+ input[type=range]::-webkit-slider-runnable-track {
+   width: 100%;
+   height: 8px;
+   background: var(--todd-input-border);
+   border-radius: 5px;
+ }
+
+ input[type=range]::-webkit-slider-thumb {
+   -webkit-appearance: none;
+   appearance: none;
+   width: 20px;
+   height: 20px;
+   background: var(--todd-link);
+   border-radius: 50%;
+   border: 2px solid var(--todd-link);
+   margin-top: -6px;
+ }
+
+ input[type=range]::-moz-range-thumb {
+   width: 20px;
+   height: 20px;
+   background: var(--todd-link);
+   border-radius: 50%;
+   border: 2px solid var(--todd-link);
+ }
+
+ input[type=range]::-ms-thumb {
+   width: 20px;
+   height: 20px;
+   background: var(--todd-link);
+   border-radius: 50%;
+   border: 2px solid var(--todd-link);
+ }
+
+ /* 4) Drop zone */
+ .drop-zone {
+   border: 2px dashed var(--todd-link);
+   border-radius: 5px;
+   padding: 20px;
+   text-align: center;
+   color: var(--todd-link);
+   cursor: pointer;
+   transition: background-color 0.3s;
+ }
+
+ .drop-zone:hover,
+ .drop-zone.dragover {
+   background-color: var(--todd-table-row-hover-bg);
+ }
+
+ .file-browse-link {
+   color: var(--todd-link);
+   text-decoration: underline;
+ }
+
+ /* 5) Simple progress bar section */
+ .progress {
+   height: 20px;
+ }
+
+ .progress-bar {
+   background-color: var(--todd-link);
+   text-align: center;
+   line-height: 20px;
+   color: white;
+ }
+
+ /* 6) iOS-style toggle switch */
+ .slider {
+   position: absolute;
+   cursor: pointer;
+   top: 0;
+   left: 0;
+   right: 0;
+   bottom: 0;
+   background-color: var(--todd-input-border);
+   transition: 0.4s;
+   border-radius: 34px;
+ }
+
+ .slider:before {
+   position: absolute;
+   content: "";
+   height: 26px;
+   width: 26px;
+   left: 4px;
+   bottom: 4px;
+   background-color: var(--todd-btn-text);
+   transition: 0.4s;
+   border-radius: 50%;
+ }
+
+ input:checked+.slider {
+   background-color: var(--todd-link);
+ }
+
+ /* NOTE: Keep your existing dark-mode blocks that set color-scheme and calendar picker indicator filters. */
+
+
+ input:checked+.slider:before {
+   transform: translateX(26px);
+ }
+
+ /* Rounded slider */
+ .slider.round {
+   border-radius: 34px;
+ }
+
+ .task-resource-guidance {
+   margin-bottom: 1rem;
+   padding: 1rem 1.1rem;
+   border-radius: 18px;
+   background: rgba(255, 255, 255, 0.72);
+   border: 1px solid rgba(15, 15, 15, 0.08);
+   display: grid;
+   gap: 0.75rem;
+ }
+
+ .task-resource-guidance-header {
+   display: flex;
+   justify-content: space-between;
+   align-items: start;
+   gap: 1rem;
+ }
+
+ .task-resource-guidance-label {
+   display: inline-flex;
+   margin-bottom: 0.45rem;
+   color: var(--todd-link);
+   font-size: 0.78rem;
+   font-weight: 700;
+   letter-spacing: 0.12em;
+   text-transform: uppercase;
+ }
+
+ .task-resource-guidance-copy {
+   margin: 0;
+   line-height: 1.65;
+ }
+
+ .task-resource-guidance-tags {
+   display: flex;
+   flex-wrap: wrap;
+   gap: 0.65rem;
+ }
+
+ .task-resource-guidance-tag {
+   display: inline-flex;
+   align-items: center;
+   padding: 0.45rem 0.75rem;
+   border-radius: 999px;
+   background: color-mix(in srgb, var(--todd-link) 10%, transparent);
+   border: 1px solid color-mix(in srgb, var(--todd-link) 18%, transparent);
+   color: var(--todd-link);
+   font-size: 0.78rem;
+   font-weight: 700;
+   letter-spacing: 0.08em;
+   text-transform: uppercase;
+ }
+
+ .task-resource-guidance-dismiss {
+   appearance: none;
+   border: 1px solid var(--todd-input-border);
+   background: transparent;
+   color: inherit;
+   border-radius: 999px;
+   padding: 0.5rem 0.8rem;
+   font-weight: 600;
+ }
+
+
+
+ @media (prefers-color-scheme: dark) {
+
+   /* Tell the browser this input is meant for dark UI */
+   .ios-input[type="date"],
+   .ios-input[type="time"] {
+     color-scheme: dark;
+   }
+
+   /* Chrome / Edge / Safari: brighten the calendar + clock icons */
+   .ios-input[type="date"]::-webkit-calendar-picker-indicator,
+   .ios-input[type="time"]::-webkit-calendar-picker-indicator {
+     filter: invert(1) brightness(1.3) contrast(1.1);
+     opacity: 0.95;
+   }
+
+   /* Optional: if you see spinner controls on number-like inputs in some browsers */
+   .ios-input::-webkit-inner-spin-button,
+   .ios-input::-webkit-outer-spin-button {
+     filter: invert(1) brightness(1.2);
+     opacity: 0.9;
+   }
+ }
+
+ @media (prefers-color-scheme: dark) {
+
+   /* 1) Make native controls render in dark UI mode */
+   .ios-input,
+   .ios-select {
+     color-scheme: dark;
+   }
+
+   /* 2) Calendar / time picker icons (Chrome/Edge/Safari) */
+   .ios-input[type="date"]::-webkit-calendar-picker-indicator,
+   .ios-input[type="time"]::-webkit-calendar-picker-indicator {
+     filter: invert(1) brightness(1.6) contrast(1.3);
+     opacity: 1;
+   }
+
+   /* 3) If the browser shows extra controls (spinners/clear buttons) */
+   .ios-input::-webkit-inner-spin-button,
+   .ios-input::-webkit-outer-spin-button {
+     filter: invert(1) brightness(1.4) contrast(1.2);
+     opacity: 1;
+   }
+
+   /* 4) Any icons you render (FontAwesome etc.) inside the right-side area */
+   .ios-row i,
+   .ios-row .fa-solid,
+   .ios-row .fa-regular,
+   .ios-row .fa-light,
+   .ios-row .fa-duotone {
+     color: rgba(255, 255, 255, 0.9);
+   }
+
+   /* Optional: if icons still look “muddy” */
+   .ios-row i {
+     filter: drop-shadow(0 0 2px rgba(0, 0, 0, 0.35));
+   }
+
+   .task-resource-guidance {
+     background: rgba(255, 255, 255, 0.04);
+     border: 1px solid rgba(255, 255, 255, 0.10);
+   }
+
+   .task-resource-guidance-tag {
+     background: rgba(255, 255, 255, 0.08);
+     border-color: rgba(255, 255, 255, 0.14);
+     color: #8fd3ff;
+   }
+ }

@@ -1,0 +1,192 @@
+<app-preloader [isLoading]="isLoading"></app-preloader>
+<app-back-to-top *ngIf="!isEmbedded"></app-back-to-top>
+<div class="container-fluid tal-app task-view-shell todd-page" data-cy="moves-cockpit-shell">
+  <app-cockpit-command-deck
+    *ngIf="!isEmbedded"
+    demoId="moves-header"
+    context="Execution · Moves"
+    title="Your Moves"
+    subtitle="Switch views, scan momentum, and jump into the move that deserves attention now."
+    scoreLabel="Execution health"
+    [scoreValue]="commandDeckScore + '%'"
+    [links]="movesCommandDeckLinks">
+  </app-cockpit-command-deck>
+  <app-cockpit-browse-mode-banner
+    *ngIf="!isEmbedded && (!userId || userId === 'user not logged in')"
+    surfaceLabel="Moves"
+    customTitle="You can explore Moves, but you won't be able to save"
+    customCopy="You are not signed in, so feel free to look around and see how TODD tracks moves. Sign in to create a move, track progress, or keep anything you see here."
+  ></app-cockpit-browse-mode-banner>
+  <section class="task-view-mission-banner glass-card shadow-sm mb-3" *ngIf="!isEmbedded && missionBanner as mission" data-cy="moves-mission-banner">
+    <div class="task-view-mission-banner__copy">
+      <span class="task-view-section-label">Mission filter active</span>
+      <h2 class="task-view-mission-title">{{ mission.title }}</h2>
+      <p class="task-view-mission-subtitle">
+        {{ mission.status | titlecase }} mission · {{ mission.progress?.completedCount || 0 }} of {{ mission.progress?.totalCount || 0 }} Moves complete
+      </p>
+    </div>
+    <div class="task-view-mission-banner__actions">
+      <button type="button" class="btn btn-outline-secondary" (click)="openMissionWorkspace()">Back to Mission</button>
+    </div>
+  </section>
+  <section class="task-view-tabs glass-card shadow-sm mb-3" *ngIf="!isEmbedded" data-cy="moves-tab-bar">
+    <div class="task-view-tabs__header">
+      <div>
+        <span class="task-view-section-label">Workspace</span>
+        <h2 class="task-view-tabs__title">Choose what you want to work on</h2>
+        <p class="task-view-tabs__copy">Overview keeps the big picture visible, Move Browser is where you search and switch views, and Selected Move brings one move into focus.</p>
+      </div>
+      <button class="btn-todd" routerLink="/move" data-cy="moves-create-button">Create a Move</button>
+    </div>
+    <div class="task-view-tabs__list" role="tablist" aria-label="Moves workspace tabs">
+      <button type="button" class="task-view-tab" [class.task-view-tab--active]="activeTab === 'overview'" [attr.aria-selected]="activeTab === 'overview'" (click)="setActiveTab('overview')" role="tab" data-cy="moves-tab-overview">Overview</button>
+      <button type="button" class="task-view-tab" [class.task-view-tab--active]="activeTab === 'browser'" [attr.aria-selected]="activeTab === 'browser'" (click)="setActiveTab('browser')" role="tab" data-cy="moves-tab-browser">Move Browser</button>
+      <button type="button" class="task-view-tab" [class.task-view-tab--active]="activeTab === 'selected'" [class.task-view-tab--disabled]="selectedTabDisabled" [attr.aria-selected]="activeTab === 'selected'" [disabled]="selectedTabDisabled" (click)="setActiveTab('selected')" role="tab" data-cy="moves-tab-selected">Selected Move</button>
+    </div>
+  </section>
+  <ng-container *ngIf="activeTab === 'overview' && !isEmbedded">
+    <section class="task-view-dashboard mb-3" data-demo="moves-dashboard">
+      <app-task-dashboard [showHero]="false" [tasks]="filteredTasks" [highlightedTask]="selectedTask" [automationBusy]="automationBusy" [automationSettings]="automationSettings" (applyAutomation)="applyAutomationLane($event)" (reviewAutomation)="reviewAutomationLane($event)" (automationSettingChange)="updateAutomationSetting($event)">
+      </app-task-dashboard>
+    </section>
+    <section class="task-view-review glass-card shadow-sm mb-3" *ngIf="pendingAutomationReview as review" data-cy="moves-review-queue">
+      <div class="task-view-review-header">
+        <div>
+          <span class="task-view-section-label">TODD Review Queue</span>
+          <h2 class="task-view-review-title">{{ review.label }}</h2>
+          <p class="task-view-review-copy">Review the proposed changes before TODD applies them.</p>
+        </div>
+        <div class="task-view-review-actions">
+          <button type="button" class="btn-todd" [disabled]="automationBusy" (click)="confirmPendingAutomation()">
+            {{ automationBusy ? 'Applying…' : 'Approve and Apply' }}
+          </button>
+          <button type="button" class="btn btn-outline-secondary" [disabled]="automationBusy" (click)="cancelPendingAutomation()">Dismiss</button>
+        </div>
+      </div>
+      <div class="task-view-review-grid" data-cy="moves-review-grid">
+        <article class="task-view-review-card" *ngFor="let item of review.items" data-cy="moves-review-item">
+          <strong>{{ item.title }}</strong>
+          <p>{{ item.detail }}</p>
+        </article>
+      </div>
+    </section>
+  </ng-container>
+  <ng-container *ngIf="activeTab === 'browser'">
+    <section class="task-view-toolbar glass-card shadow-sm mb-3" *ngIf="!isEmbedded" data-demo="moves-toolbar">
+      <div class="task-view-toolbar-grid">
+        <div class="task-view-search">
+          <label for="taskViewSearch" class="form-label">Search moves</label>
+          <input id="taskViewSearch" type="text" class="form-control" [(ngModel)]="filterText" (ngModelChange)="onFilterChange()" placeholder="Search by title or description" data-cy="moves-filter-input" />
+        </div>
+        <div class="task-view-sort">
+          <label for="taskViewSort" class="form-label">Sort by</label>
+          <select id="taskViewSort" class="form-select" [(ngModel)]="sortBy" (ngModelChange)="onSortChange()" data-cy="moves-sort-select">
+            <option value="dueDate">Due date</option>
+            <option value="title">Title</option>
+            <option value="progress">Progress</option>
+          </select>
+        </div>
+        <div class="task-view-toggle">
+          <label class="form-label d-block">View</label>
+          <div class="view-toggle-group">
+            <button type="button" class="moves-view-button" [class.moves-view-button--active]="currentView === 'checklist'" (click)="setView('checklist')" aria-label="Checklist view" title="Checklist view" data-cy="moves-view-checklist"><i class="fa-solid fa-list-check" aria-hidden="true"></i></button>
+            <button type="button" class="moves-view-button" [class.moves-view-button--active]="currentView === 'timeline'" (click)="setView('timeline')" aria-label="Timeline view" title="Timeline view" data-cy="moves-view-timeline"><i class="fa-solid fa-bars-staggered" aria-hidden="true"></i></button>
+            <button type="button" class="moves-view-button" [class.moves-view-button--active]="currentView === 'calendar'" (click)="setView('calendar')" aria-label="Calendar view" title="Calendar view" data-cy="moves-view-calendar"><i class="fa-solid fa-calendar-days" aria-hidden="true"></i></button>
+            <button type="button" class="moves-view-button" [class.moves-view-button--active]="currentView === 'hierarchy'" (click)="setView('hierarchy')" aria-label="Hierarchy view" title="Hierarchy view" data-cy="moves-view-hierarchy"><i class="fa-solid fa-diagram-project" aria-hidden="true"></i></button>
+          </div>
+        </div>
+        <div class="task-view-completed">
+          <label class="form-label d-block">Visibility</label>
+          <div class="form-check form-switch">
+            <input id="showCompletedSwitch" class="form-check-input" type="checkbox" [(ngModel)]="showCompleted" (change)="onToggleCompleted()" data-cy="moves-show-completed" />
+            <label class="form-check-label" for="showCompletedSwitch">Show completed</label>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class="task-view-content glass-card shadow-sm">
+      <div *ngIf="errorMessage && !isGuestExperience" class="alert alert-danger mb-3">
+        {{ errorMessage }}
+      </div>
+      <div *ngIf="!filteredTasks.length" class="empty-state text-center py-5" data-cy="moves-empty-state">
+        <h3>{{ emptyStateTitle }}</h3>
+        <p class="mb-3">{{ emptyStateMessage }}</p>
+        <button class="btn-todd" [routerLink]="isGuestExperience ? '/login' : '/move'" data-cy="moves-empty-state-cta">{{ emptyStateCtaLabel }}</button>
+      </div>
+      <ng-container *ngIf="filteredTasks.length">
+        <app-task-checklist *ngIf="currentView === 'checklist'" [tasks]="filteredTasks" (editAction)="handleEdit($event)" (completeAction)="handleComplete($event)">
+        </app-task-checklist>
+        <app-timeline *ngIf="currentView === 'timeline'" [tasks]="filteredTasks" (editAction)="handleEdit($event)">
+        </app-timeline>
+        <app-horizontal-task-timeline *ngIf="currentView === 'calendar'" [tasks]="filteredTasks" (selectAction)="handleSelect($event)">
+        </app-horizontal-task-timeline>
+        <app-task-hierarchy *ngIf="currentView === 'hierarchy'" [tasks]="filteredTasks" [statusOnly]="isEmbedded" (selectAction)="handleSelect($event)" (editAction)="handleEdit($event)" (completeAction)="handleComplete($event)">
+        </app-task-hierarchy>
+      </ng-container>
+    </section>
+  </ng-container>
+  <section class="selected-task-panel glass-card shadow-sm mb-3" *ngIf="activeTab === 'selected' && selectedTask">
+    <div class="selected-task-header">
+      <div>
+        <span class="task-view-section-label">Command View</span>
+        <h2 class="selected-task-title">{{ selectedTask.title }}</h2>
+        <p class="selected-task-copy">{{ selectedTask.description || 'Open the move to update details, progress, and related work.' }}</p>
+      </div>
+      <button type="button" class="btn-todd" (click)="handleEdit(selectedTask)" data-cy="moves-selected-open">Open Move</button>
+    </div>
+    <div class="task-view-mission-superseded" *ngIf="selectedTask.superseded"> This Move is superseded and no longer part of the active mission plan. <span *ngIf="selectedTask.supersededReason"> {{ selectedTask.supersededReason }}</span>
+    </div>
+    <div class="selected-task-summary-grid">
+      <article class="selected-task-summary-card">
+        <span class="selected-task-summary-label">Status</span>
+        <strong>{{ selectedTask.status || 'Not set' }}</strong>
+      </article>
+      <article class="selected-task-summary-card" *ngIf="selectedTask.superseded">
+        <span class="selected-task-summary-label">Plan state</span>
+        <strong>Superseded</strong>
+      </article>
+      <article class="selected-task-summary-card">
+        <span class="selected-task-summary-label">Priority</span>
+        <strong>{{ selectedTask.priority || 'Standard' }}</strong>
+      </article>
+      <article class="selected-task-summary-card">
+        <span class="selected-task-summary-label">Due date</span>
+        <strong>{{ selectedTask.dueDate ? (selectedTask.dueDate | date:'mediumDate') : 'No due date' }}</strong>
+      </article>
+      <article class="selected-task-summary-card">
+        <span class="selected-task-summary-label">Progress</span>
+        <strong>{{ selectedTask.progress }}%</strong>
+      </article>
+      <article class="selected-task-summary-card">
+        <span class="selected-task-summary-label">Subtasks</span>
+        <strong>{{ selectedChildTasks.length }}</strong>
+      </article>
+      <article class="selected-task-summary-card">
+        <span class="selected-task-summary-label">Related contacts</span>
+        <strong>{{ selectedTask.contacts?.length || 0 }}</strong>
+      </article>
+    </div>
+    <article class="selected-task-resource-card mt-3" *ngIf="selectedTaskResourceRecommendation as recommendation">
+      <span class="task-view-section-label">TODD Resource Guidance</span>
+      <p class="selected-task-resource-copy">{{ recommendation.summary }}</p>
+      <div class="selected-task-resource-tags">
+        <span class="selected-task-resource-tag" *ngFor="let missing of recommendation.missing"> Missing {{ missing === 'documents' ? 'documents' : missing }}
+        </span>
+      </div>
+    </article>
+    <article class="selected-task-resource-card mt-3" *ngIf="hasAutomationHistory" data-cy="moves-automation-history">
+      <span class="task-view-section-label">Automation History</span>
+      <div class="task-view-history-list">
+        <div class="task-view-history-item" *ngFor="let entry of automationHistory">
+          <strong>{{ entry.summary }}</strong>
+          <span>{{ entry.lane }} · {{ entry.timestamp | date:'medium' }}</span>
+        </div>
+      </div>
+    </article>
+  </section>
+  <section class="task-view-empty-selection glass-card shadow-sm mb-3" *ngIf="activeTab === 'selected' && !selectedTask">
+    <span class="task-view-section-label">Selected Move</span>
+    <h2 class="task-view-review-title">Choose a move from Move Browser first</h2>
+    <p class="task-view-review-copy">Open the Move Browser tab to search, switch views, and pick the move you want to inspect.</p>
+  </section>
+</div>

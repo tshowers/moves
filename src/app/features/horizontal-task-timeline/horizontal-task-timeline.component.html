@@ -1,0 +1,64 @@
+<div *ngIf="tasks.length === 0" class="alert alert-light" role="alert"> No tasks available. Add a Task. </div>
+<div class="timeline-container " *ngIf="tasks.length > 0">
+  <div class="calendar-intro">
+    <div>
+      <span class="calendar-kicker">WORK WINDOW</span>
+      <h3>What deserves attention next?</h3>
+      <p>Moves are arranged by momentum so the next conversation is easy to find.</p>
+      <div class="calendar-summary" aria-live="polite">
+        <span><i class="fa-solid fa-calendar-check" aria-hidden="true"></i> {{ scheduledTaskCount }} scheduled</span>
+        <span *ngIf="outOfRangeTaskCount"><i class="fa-solid fa-arrows-left-right" aria-hidden="true"></i> {{ outOfRangeTaskCount }} outside this 30-day window</span>
+      </div>
+    </div>
+    <div class="date-picker-container">
+      <label for="startDate" class="date-label">Start date</label>
+      <input id="startDate" type="date" [value]="startDate | date:'yyyy-MM-dd'" (change)="onStartDateChange($event)" class="date-input" />
+    </div>
+  </div>
+  <div class="timeline-scroll-wrapper">
+    <div class="task-timeline-table">
+      <div class="timeline-header">
+        <div class="blank-cell">
+          <span>MOVE</span>
+          <small>30-day view</small>
+        </div>
+        <div *ngFor="let date of dates" class="date-header" [class.is-today]="isToday(date)">
+          <span>{{ date | date: 'EEE' }}</span>
+          <strong>{{ date | date: 'd' }}</strong>
+        </div>
+      </div>
+      <div *ngFor="let task of visibleTasks" class="task-row" [ngClass]="{
+          'priority-high': task?.priority === 'High',
+          'priority-medium': task?.priority === 'Medium',
+          'priority-low': task?.priority === 'Low'
+        }">
+          <div class="task-name text-capitalize" (mouseover)="showTaskInfo(task, $event)" (mouseleave)="hideTaskInfo()" (click)="onSelect(task)" title="{{task.title}}  / {{task.description}} / {{task.dueDate | date:'shortDate'}} ">
+          <div class="task-name-copy">
+            <button type="button" class="task-open-link" (click)="onSelect(task)">{{ task.title | truncate:34 }}</button>
+            <span class="task-meta">{{ task.dueDate ? ('Due ' + (task.dueDate | date:'MMM d')) : 'No due date' }}</span>
+          </div>
+          <div class="task-name-actions">
+            <span *ngIf="task.superseded" class="task-status-badge">Superseded</span>
+            <button type="button" class="task-open-link task-open-link--action" (click)="onEdit(task, $event)">Open</button>
+          </div>
+        </div>
+        <div class="timeline-task">
+          <div *ngFor="let date of dates" class="timeline-block" [class.active]="isTaskActive(task, date)" [class.due-day]="isDueDate(task, date)">
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="calendar-range-note" *ngIf="outOfRangeTaskCount">
+    <i class="fa-solid fa-circle-info" aria-hidden="true"></i>
+    {{ outOfRangeTaskCount }} Move{{ outOfRangeTaskCount === 1 ? '' : 's' }} are outside this calendar range. Change the start date above to bring the next planning window into view.
+  </div>
+</div>
+<div *ngIf="hoveredTask" [ngStyle]="{
+    position: 'fixed',
+    top: hoverPosition.y + 'px',
+    left: hoverPosition.x + 'px',
+    zIndex: 1000
+  }" (mouseleave)="hideTaskInfo()">
+  <app-task-view [task]="hoveredTask"></app-task-view>
+</div>

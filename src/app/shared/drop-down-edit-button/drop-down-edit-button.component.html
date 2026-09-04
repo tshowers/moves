@@ -20,7 +20,7 @@
         <input
           type="text"
           class="form-control form-control-sm"
-          placeholder="Add a new {{ dropdownKey === 'TASK_TYPES' ? 'move type' : 'project' }}"
+          placeholder="Add a new {{ dropdownKey === 'TASK_TYPES' ? 'move type' : dropdownKey === 'TASK_STATUS' ? 'move status' : 'project' }}"
           [(ngModel)]="newItemName"
           (keyup.enter)="addItem()"
         />

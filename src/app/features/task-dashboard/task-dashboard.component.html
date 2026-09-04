@@ -1,0 +1,111 @@
+<section class="task-dashboard-shell todd-page" data-cy="moves-dashboard-shell">
+    <article class="task-dashboard-hero" *ngIf="showHero">
+        <span class="dashboard-pill">TODD COMMAND DECK</span>
+        <h2>{{ title }}</h2>
+        <p>See what TODD is tracking, what needs attention, and which move deserves the next push.</p>
+        <div class="dashboard-momentum">
+            <span>Momentum</span>
+            <strong>{{ momentumPercent }}%</strong>
+        </div>
+    </article>
+    <div class="task-dashboard-grid">
+        <article class="task-dashboard-panel task-dashboard-panel--automation" data-cy="moves-automation-panel">
+            <div class="dashboard-automation-header">
+                <div>
+                    <span class="dashboard-pill">Automation Status</span>
+                    <h3>System activity</h3>
+                    <p>See where TODD can adjust moves, attach more context, or suggest the next move to create.</p>
+                </div>
+                <div class="dashboard-automation-total">
+                    <span>Automation opportunities</span>
+                    <strong>{{ automationTotal }}</strong>
+                </div>
+            </div>
+            <div class="dashboard-automation-grid">
+                <article class="dashboard-automation-card" *ngFor="let lane of automationLanes; trackBy: trackByAutomationKey" [attr.data-tone]="lane.tone" [attr.data-cy]="'moves-automation-card-' + lane.key">
+                    <div class="dashboard-automation-card-top">
+                        <span class="moves-lane-led" [attr.data-tone]="lane.tone"></span>
+                        <span class="dashboard-automation-label">{{ lane.label }}</span>
+                        <label class="dashboard-automation-toggle">
+                            <input type="checkbox" [attr.data-cy]="'moves-automation-toggle-' + lane.key" [checked]="automationSettings[lane.key]" (change)="onAutomationSettingChange(lane.key, $any($event.target).checked)" />
+                            <span>{{ automationSettings[lane.key] ? 'On' : 'Off' }}</span>
+                        </label>
+                    </div>
+                    <strong>{{ lane.count }}</strong>
+                    <p>{{ lane.detail }}</p>
+                    <small>{{ lane.nextAction }}</small>
+                    <button *ngIf="lane.key === 'schedule' || lane.key === 'status' || lane.key === 'suggestions'" type="button" class="dashboard-automation-action" [attr.data-cy]="'moves-automation-action-' + lane.key" [disabled]="automationBusy || lane.count === 0 || !automationSettings[lane.key]" (click)="onApplyAutomation(lane.key)">
+                        {{ automationBusy ? 'Applying...'
+                          : lane.key === 'schedule' ? 'Review schedule fixes'
+                          : lane.key === 'status' ? 'Review status fixes'
+                          : 'Review suggested moves'
+                        }}
+                    </button>
+                    <button *ngIf="lane.key === 'resources'" type="button" class="dashboard-automation-action" data-cy="moves-automation-action-resources" [disabled]="automationBusy || lane.count === 0 || !automationSettings[lane.key]" (click)="onReviewAutomation('resources')"> Review resource gaps </button>
+                </article>
+            </div>
+        </article>
+        <article class="task-dashboard-panel task-dashboard-panel--status" data-demo="moves-stats-panel">
+            <span class="dashboard-pill">System Status</span>
+            <div class="dashboard-metric-grid">
+                <div class="dashboard-metric-card" *ngFor="let metric of metricCards; trackBy: trackByLabel">
+                    <span>{{ metric.label }}</span>
+                    <strong>{{ metric.value }}</strong>
+                    <small>{{ metric.detail }}</small>
+                </div>
+            </div>
+            <div class="dashboard-progress-stack">
+                <div class="dashboard-progress-row" *ngFor="let metric of progressMetrics; trackBy: trackByProgressLabel">
+                    <div class="dashboard-progress-copy">
+                        <span>{{ metric.label }}</span>
+                        <strong>{{ metric.value }}</strong>
+                    </div>
+                    <div class="progress-track">
+                        <span [style.width.%]="metric.progress"></span>
+                    </div>
+                </div>
+            </div>
+        </article>
+        <article class="task-dashboard-panel task-dashboard-panel--queue" data-cy="moves-queue-panel">
+            <span class="dashboard-pill">Action Queue</span>
+            <div class="dashboard-queue">
+                <div class="dashboard-queue-item" *ngFor="let item of queueItems; trackBy: trackByQueueTitle" [attr.data-tone]="item.tone || 'default'">
+                    <span class="moves-queue-led" [attr.data-tone]="item.tone || 'default'"></span>
+                    <strong>{{ item.count }}</strong>
+                    <div>
+                        <h3>{{ item.title }}</h3>
+                        <p>{{ item.description }}</p>
+                    </div>
+                </div>
+            </div>
+        </article>
+        <article class="task-dashboard-panel task-dashboard-panel--command">
+            <span class="dashboard-pill">Command View</span>
+            <div class="dashboard-command-card">
+                <h3>{{ featuredTask?.title || emptyTitle }}</h3>
+                <p>{{ featuredTask?.description || emptyMessage }}</p>
+                <div class="dashboard-command-facts">
+                    <div class="dashboard-command-fact" *ngFor="let fact of commandFacts; trackBy: trackByLabel">
+                        <span>{{ fact.label }}</span>
+                        <strong>{{ fact.value }}</strong>
+                    </div>
+                </div>
+            </div>
+        </article>
+        <article class="task-dashboard-panel task-dashboard-panel--signal">
+            <span class="dashboard-pill">Signal</span>
+            <div class="dashboard-stat-grid">
+                <div class="dashboard-stat" *ngFor="let stat of stats; trackBy: trackByLabel" [attr.data-tone]="stat.tone || 'default'">
+                    <span class="moves-stat-led" [attr.data-tone]="stat.tone || 'default'"></span>
+                    <strong>{{ stat.value }}</strong>
+                    <span>{{ stat.label }}</span>
+                </div>
+            </div>
+            <div class="dashboard-focus">
+                <span class="focus-label">Top focus</span>
+                <h3>{{ topFocus }}</h3>
+                <p>{{ focusDescription }}</p>
+            </div>
+        </article>
+    </div>
+</section>

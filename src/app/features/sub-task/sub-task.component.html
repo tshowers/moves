@@ -1,0 +1,61 @@
+<div *ngIf="parentTask">
+  <h5>{{ editedSubTask ? 'Edit SubTask' : 'Add SubTask' }}</h5>
+  <!-- Reuse the existing form for adding and editing -->
+  <form (ngSubmit)="addOrEditSubTask()">
+    <div class="mb-3">
+      <label for="subTaskTitle" class="form-label">Title</label>
+      <input type="text" id="subTaskTitle" class="ios-input" [(ngModel)]="getCurrentSubTask().title" name="subTaskTitle" required />
+    </div>
+    <div class="mb-3">
+      <label for="subTaskDescription" class="form-label">Description</label>
+      <textarea id="subTaskDescription" class="ios-input" [(ngModel)]="getCurrentSubTask().description" name="subTaskDescription"></textarea>
+    </div>
+    <div class="mb-3">
+      <label for="subTaskDueDate" class="form-label">Due Date</label>
+      <input type="date" id="subTaskDueDate" class="ios-input" [(ngModel)]="getCurrentSubTask().dueDate" name="subTaskDueDate" />
+    </div>
+    <div class="mb-3">
+      <label for="taskType" class="form-label">Task Type</label>
+      <select class="ios-input" id="taskType" [(ngModel)]="getCurrentSubTask().taskTypeId" name="taskType">
+        <option *ngFor="let taskType of taskTypes" [value]="taskType.id">{{ taskType.name }}</option>
+      </select>
+    </div>
+    <div class="mb-3">
+      <label for="taskContacts" class="form-label">Assign Contacts</label>
+      <select multiple class="ios-input" id="taskContacts" [(ngModel)]="getCurrentSubTask().contactIds" name="taskContacts">
+        <option class="text-capitalize" *ngFor="let contact of contacts" [value]="contact.id">{{ contact | appendYou:userId }}</option>
+      </select>
+    </div>
+    <button type="submit" class="btn-todd me-2">{{ editedSubTask ? 'Save Changes' : 'Add SubTask' }}</button>
+    <button type="button" class="btn-todd-danger" *ngIf="editedSubTask" (click)="cancelEdit()">Cancel</button>
+  </form>
+  <!-- Subtask list with edit/delete buttons -->
+  <ul class="list-group mt-3">
+    <li *ngFor="let subTask of parentTask.subTasks" class="list-group-item d-flex justify-content-between align-items-center">
+      <span>{{ subTask.title }} - {{ subTask.dueDate | date:'MM-dd-yyyy' }} - {{ subTask.progress }}%</span>
+      <div>
+        <button class="btn-todd me-2" (click)="editSubTask(subTask)">Edit</button>
+        <button class="btn-todd-danger" (click)="deleteSubTask(subTask)">Delete</button>
+      </div>
+    </li>
+  </ul>
+</div>
+<hr>
+<h5>Paste Sub Tasks</h5>
+<div class="mb-3">
+  <textarea class="ios-textarea" rows="4" placeholder="Paste subtasks here, one per line" [(ngModel)]="newSubTasksBulk"></textarea>
+  <button class="btn-todd mt-2" (click)="addSubTasksFromBulk()">Add Bulk Subtasks</button>
+</div>
+<hr>
+<!-- Display the created subtasks -->
+<h5 class="mt-3" *ngIf="subTasks && subTasks.length > 0">Sub Tasks</h5>
+<ul class="list-group">
+  <li *ngFor="let subTask of subTasks" class="list-group-item">
+    <strong>{{ subTask.title }}</strong> - {{ subTask.description }} - Due: {{ subTask.dueDate | date }}
+    <!-- Edit and Delete Buttons -->
+    <div>
+      <button class="btn-sm btn-todd me-2" (click)="editSubTask(subTask)">Edit</button>
+      <button class="btn-sm btn-todd-danger" (click)="deleteSubTask(subTask)">Delete</button>
+    </div>
+  </li>
+</ul>

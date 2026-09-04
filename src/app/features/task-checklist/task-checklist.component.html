@@ -1,0 +1,87 @@
+<div class="task-list-container ">
+  <div class="filter-container no-print mb-3">
+    <div class="row mb-2">
+      <div class="col-lg-4 col-md-6 col-sm-12 mt-2">
+        <input type="text" placeholder="Filter tasks..." (input)="filterTasks($event)" class="ios-input" />
+      </div>
+      <div class="col-lg-4 col-md-6 col-sm-12 mt-2">
+        <select (change)="filterByTaskType($event)" class="ios-select">
+          <option value="">All Task Types</option>
+          <option *ngFor="let taskType of taskTypes" [value]="taskType.id">{{ taskType.name }}</option>
+        </select>
+      </div>
+      <div class="col-lg-4 col-md-6 col-sm-12 mt-2">
+        <div class="form-check form-switch">
+          <input class="form-check-input" type="checkbox" id="showDescriptionSwitch" [(ngModel)]="isTaskDescription">
+          <label class="form-check-label" for="showDescriptionSwitch"> Show Descriptions</label>
+        </div>
+      </div>
+    </div>
+  </div>
+  <ng-container *ngIf="getKeys(groupedTasks).length > 0; else noTasks">
+    <div *ngFor="let dueDate of getKeys(groupedTasks)">
+      <p><i class="fa-regular fa-calendar-check"></i> Planned End Date: {{ dueDate }} </p>
+      <ul>
+        <li *ngFor="let item of groupedTasks[dueDate]" [ngClass]="{'completed': item.task.isCompleted, 'task-ai-owned': item.isAiOwned}" [attr.data-cy]="'moves-checklist-item-' + item.task.id">
+          <i class="fa-regular" [class.fa-square-check]="item.task.isCompleted" [class.fa-square]="!item.task.isCompleted" (click)="$event.stopPropagation(); toggleTaskCompletion(item.task)" style="cursor: pointer;" [attr.data-cy]="'moves-checklist-toggle-' + item.task.id">
+          </i>
+          <span class="checklist-status-dot"
+            [attr.data-status]="item.task.isCompleted ? 'completed' : (item.task.status || 'not-started')"
+            [title]="item.task.isCompleted ? 'Completed' : (item.task.status || 'Not started')"></span>
+          <button type="button" class="task-open-link" (click)="editTask(item.task)">
+            {{ item.task.title }}
+          </button>
+          <span *ngIf="item.task.superseded" class="badge text-bg-secondary ms-2">Superseded</span>
+          <span *ngIf="item.isAiOwned" class="checklist-owner-badge ms-2">{{ item.ownerLabel }}</span>
+          <span *ngIf="item.sourceLabel" class="checklist-source-badge ms-2">{{ item.sourceLabel }}</span>
+          <span *ngIf="item.laneLabel" class="checklist-lane-badge ms-2">{{ item.laneLabel }}</span>
+          <br><span style="font-weight: 400; font-size: small;">{{ item.task | taskCountdown | async }}</span>
+          <div *ngIf="isTaskDescription">{{item.task.description}}</div>
+          <div class="checklist-progress-wrap" *ngIf="item.task.progress">
+            <div class="checklist-progress-bar">
+              <div class="checklist-progress-fill"
+                [style.width.%]="item.task.progress"
+                [attr.data-tier]="item.task.progress >= 80 ? 'high' : item.task.progress >= 40 ? 'mid' : 'low'"></div>
+            </div>
+            <span class="checklist-progress-label">{{ item.task.progress }}%</span>
+          </div>
+          <div class="mt-2">
+            <button type="button" class="btn-todd" (click)="editTask(item.task)"> Open Move </button>
+          </div>
+        </li>
+      </ul>
+      <hr>
+    </div>
+  </ng-container>
+  <ng-template #noTasks>
+    <div class="no-tasks-message text-center py-4">
+      <i class="fa-solid fa-list-check" style="font-size: 32px; opacity: .6;"></i>
+      <h4 class="mt-3 mb-1">No Moves Yet</h4>
+      <p class="mb-3" style="opacity:.8;">Create your first move to start building momentum.</p>
+      <button type="button" class="btn-todd" routerLink="/move"> Create Your First Move </button>
+    </div>
+  </ng-template>
+  <h2 class="no-print">Completed Tasks</h2>
+  <ng-container *ngIf="completedTasks.length > 0; else noCompletedTasks">
+    <ul data-cy="moves-checklist-completed-list">
+      <li *ngFor="let item of completedTasks" [ngClass]="{'completed': item.task.isCompleted, 'task-ai-owned': item.isAiOwned}" [attr.data-cy]="'moves-checklist-completed-item-' + item.task.id">
+        <i class="fa-regular" [class.fa-square-check]="item.task.isCompleted" [class.fa-square]="!item.task.isCompleted" (click)="$event.stopPropagation(); toggleTaskCompletion(item.task)" style="cursor: pointer;" [attr.data-cy]="'moves-checklist-toggle-' + item.task.id">
+        </i>
+        <button type="button" class="task-open-link" (click)="editTask(item.task)">
+          {{ item.task.title }}
+        </button>
+        <span *ngIf="item.task.superseded" class="badge text-bg-secondary ms-2">Superseded</span>
+        <span *ngIf="item.isAiOwned" class="checklist-owner-badge ms-2">{{ item.ownerLabel }}</span>
+        <span *ngIf="item.sourceLabel" class="checklist-source-badge ms-2">{{ item.sourceLabel }}</span>
+        <span *ngIf="item.laneLabel" class="checklist-lane-badge ms-2">{{ item.laneLabel }}</span>
+        <div *ngIf="isTaskDescription">{{item.task.description}}</div>
+        <div class="mt-2">
+          <button type="button" class="btn-todd" (click)="editTask(item.task)"> Open Move </button>
+        </div>
+      </li>
+    </ul>
+  </ng-container>
+  <ng-template #noCompletedTasks>
+    <p class="no-tasks-message">No completed tasks.</p>
+  </ng-template>
+</div>

@@ -1,0 +1,215 @@
+<app-preloader [isLoading]="isLoading"></app-preloader>
+<app-back-to-top></app-back-to-top>
+<div class="container-fluid tal-app py-4 start-page-wrapper">
+  <div class="row mb-4 no-print">
+    <div class="col-12 col-xl-8">
+      <h1 class="pv-title">Moves</h1>
+      <p>Tasks are the smaller moves behind a project. You can use them on their own, but when you link tasks to projects TODD can spot patterns and suggest how to improve your workflow.</p>
+    </div>
+    <div class="col-12 col-xl-4 text-xl-end mt-3 mt-xl-0 d-none d-xl-block">
+      <app-todd-tip icon="lightbulb" label="Tip"> {{ taskTipText }} </app-todd-tip>
+    </div>
+  </div>
+  <div class="todd-empty-state text-center py-5" *ngIf="!tasks || (tasks.length === 0) && currentView != 'form'">
+    <i class="fa-regular fa-circle-question todd-empty-icon"></i>
+    <h4 class="mt-3 mb-1">No tasks found</h4>
+    <p class="text-muted mb-3"> Add your first item to start building your task list or project. </p>
+    <button class="btn-todd" (click)="resetForm(); switchView('form')">
+      <i class="fa-solid fa-plus"></i> Add Move </button>
+  </div>
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col">
+        <div class="view active no-print" *ngIf="currentView === 'list' && tasks && tasks.length > 0">
+          <div *ngIf="selectedTask && selectedTask.id">
+          </div>
+          <app-horizontal-task-timeline [tasks]="tasks" (selectAction)="onTimeLineSelect($event)"></app-horizontal-task-timeline>
+        </div>
+        <div class="view active no-print" *ngIf="currentView === 'timeline' && tasks && tasks.length > 0">
+          <app-timeline class="responsive-text" [taskTypes]="taskTypes$ | async" [tasks]="tasks" (editAction)="editTask($event);"></app-timeline>
+        </div>
+        <div class="view active no-print" *ngIf="currentView === 'form'">
+          <div class="row">
+            <div class="col no-print">
+              <div>
+                <div>
+                  <!-- <h5 class="card-title ">{{ editingTaskId ? 'Edit Task' : 'Add Task' }}</h5> -->
+                  <form (ngSubmit)="addOrEditTask()" #userForm="ngForm" *ngIf="!isSubTask">
+                    <div class="task-resource-guidance" *ngIf="taskResourceGuidance as guidance">
+                      <div class="task-resource-guidance-header">
+                        <div>
+                          <span class="task-resource-guidance-label">TODD Resource Guidance</span>
+                          <p class="task-resource-guidance-copy">{{ guidance.summary }}</p>
+                        </div>
+                        <button type="button" class="task-resource-guidance-dismiss" (click)="dismissTaskResourceGuidance()">Dismiss</button>
+                      </div>
+                      <div class="task-resource-guidance-tags">
+                        <span class="task-resource-guidance-tag" *ngFor="let missing of guidance.missing"> Missing {{ missing === 'documents' ? 'documents' : missing }}
+                        </span>
+                      </div>
+                    </div>
+                    <div class="ios-list">
+                      <div class="ios-row">
+                        <div class="ios-label">Title</div>
+                        <input type="text" class="ios-input" id="taskTitle" [(ngModel)]="newTaskTitle" name="taskTitle" required autocomplete="off" />
+                      </div>
+                      <div class="ios-row">
+                        <div class="ios-label">Description</div>
+                        <textarea name="taskDescription" class="ios-input" id="taskDescription" rows="3" [(ngModel)]="newTaskDescription" required autocomplete="off"></textarea>
+                      </div>
+                    </div>
+                    <h5>Dates</h5>
+                    <div class="ios-list">
+                      <div class="ios-row">
+                        <div class="ios-label">Start Date</div>
+                        <input type="date" class="ios-input" id="startDate" [(ngModel)]="startDate" name="startDate" />
+                      </div>
+                      <div class="ios-list">
+                        <div class="ios-row">
+                          <div class="ios-label">Planned End Date</div>
+                          <input type="date" class="ios-input" id="taskDueDate" [(ngModel)]="newTaskDueDate" name="taskDueDate" required />
+                        </div>
+                      </div>
+                    </div>
+                    <div class="ios-list">
+                      <div class="ios-row">
+                        <div class="ios-label">Start Time</div>
+                        <input type="time" class="ios-input" id="timerStartTime" [(ngModel)]="timerStartTime" name="timerStartTime" />
+                      </div>
+                      <div class="ios-list">
+                        <div class="ios-row">
+                          <div class="ios-label">End Time</div>
+                          <input type="time" class="ios-input" id="timerEndTime" [(ngModel)]="timerEndTime" name="timerEndTime" />
+                        </div>
+                      </div>
+                    </div>
+                    <div class="ios-row">
+                      <div class="ios-label">Project</div>
+                      <div class="d-flex align-items-center">
+                        <select class="ios-select" id="taskType" [(ngModel)]="selectedProject" name="project" required>
+                          <option *ngFor="let project of (projects$ | async)" [value]="project.id">{{ project.name }}</option>
+                        </select>
+                        <app-drop-down-edit-button dropdownKey="PROJECTS"></app-drop-down-edit-button>
+                      </div>
+                    </div>
+                    <div class="ios-row">
+                      <div class="ios-label">Task Type</div>
+                      <div class="d-flex align-items-center">
+                        <select class="ios-select" id="taskType" [(ngModel)]="selectedTaskType" name="taskType" required>
+                          <option *ngFor="let taskType of (taskTypes$ | async)" [value]="taskType.id">{{ taskType.name }}</option>
+                        </select>
+                        <app-drop-down-edit-button dropdownKey="TASK_TYPES"></app-drop-down-edit-button>
+                      </div>
+                    </div>
+                    <div class="ios-row">
+                      <label class="ios-label">Task Status</label>
+                      <div class="d-flex align-items-center">
+                        <select class="ios-select" id="taskStatus" [(ngModel)]="selectedStatus" name="taskStatus" required>
+                          <option *ngFor="let taskStatus of (taskStatus$ | async)" [value]="taskStatus.name">{{ taskStatus.name }}</option>
+                        </select>
+                        <app-drop-down-edit-button dropdownKey="TASK_STATUS"></app-drop-down-edit-button>
+                      </div>
+                    </div>
+                    <div class="ios-row">
+                      <div lass="ios-label">Assign Contacts</div>
+                      <select multiple class="ios-select" id="taskContacts" [(ngModel)]="selectedContacts" name="taskContacts">
+                        <option class="text-capitalize" *ngFor="let contact of (contacts$ | async)" [value]="contact.id">{{ contact | appendYou:userId }}</option>
+                      </select>
+                    </div>
+                    <div class="ios-row">
+                      <div class="drop-zone" (drop)="onDrop($event)" (dragover)="onDragOver($event)" (dragleave)="onDragLeave($event)">
+                        <p>Drag and drop your file here or <span style="cursor: pointer;" class="file-browse-link" (click)="fileInput.click()">browse</span>
+                        </p>
+                        <input type="file" #fileInput (change)="onFileSelect($event)" hidden>
+                      </div>
+                      <div class="container-fluid">
+                        <div class="row " *ngIf="uploadProgress !== null" data-wow-delay="0.5s">
+                          <div class="col">
+                            <div class="progress">
+                              <div class="progress-bar" role="progressbar" [style.width.%]="uploadProgress" [attr.aria-valuenow]="uploadProgress" aria-valuemin="0" aria-valuemax="100">{{uploadProgress}}%</div>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="row " *ngIf="downloadURL" data-wow-delay="0.5s">
+                          <div class="col">
+                            <p>File available at: <a [href]="downloadURL">this location.</a></p>
+                          </div>
+                        </div>
+                        <div class="row " *ngIf="error" data-wow-delay="0.5s">
+                          <div class="col">
+                            <p>Error: {{error}}</p>
+                          </div>
+                        </div>
+                        <div class="row" *ngIf="(images && images.length >0) || (documents && documents.length >0)">
+                          <div class="col">
+                            <strong>Uploaded Files</strong>
+                            <div class="card-deck">
+                              <!-- Display images -->
+                              <div class="card" *ngFor="let image of images">
+                                <img class="card-img-top img-fluid" style="max-height: 300px;" [src]="image.src" [alt]="image.alt">
+                                <div class="card-body">
+                                  <p class="card-text">{{image.alt}}</p>
+                                </div>
+                              </div>
+                              <!-- Display documents -->
+                              <div class="card  " *ngFor="let document of documents" data-wow-delay="0.5s">
+                                <div class="card-body text-center">
+                                  <i class="fa fa-file-pdf-o fa-5x"></i>
+                                  <p class="card-text"><a href="{{document.src}}"> {{document.name}}</a></p>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="ios-row mt-2">
+                      <div class="ios-label">Attach existing document</div>
+                      <select class="ios-select" [(ngModel)]="selectedExistingDocument" name="existingDocument">
+                        <option [ngValue]="null">Select a document…</option>
+                        <option *ngFor="let doc of (documents$ | async)" [ngValue]="doc">
+                          {{ doc.name }}
+                        </option>
+                      </select>
+                    </div>
+                    <button type="submit" class="btn-todd" [disabled]="!userForm.form.valid">{{ editingTaskId ? 'Save Task' : 'Add Task' }}</button>
+                    <button *ngIf="editingTaskId" class="btn-todd-danger" (click)="deleteTask(editingTaskId)">Delete</button>
+                  </form>
+                </div>
+                <!-- iOS-style toggle switch -->
+                <div class="row" *ngIf="isSubTask">
+                  <div class="col m-2">
+                    <h3> <span style="font-weight: 200;">Task:</span> <span class="text-primary" style="font-weight: bolder;"> {{selectedTask.title}}</span> </h3>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col">
+                    <div *ngIf="selectedTask && selectedTask.id" class="toggle-container m-2">
+                      <label class="switch">
+                        <input type="checkbox" [(ngModel)]="isSubTask" (click)="toggleTaskType()">
+                        <span class="slider round"></span>
+                      </label>
+                      <span style="font-weight: 200;"> {{ isSubTask ? 'Back to Main Task' : 'Add Sub Tasks' }}</span>
+                    </div>
+                  </div>
+                </div>
+                <div class="subtask-container" *ngIf="isSubTask">
+                  <div class="row">
+                    <div class="col">
+                      <app-sub-task *ngIf="selectedTask && selectedTask.id" (updateAction)="updateTask($event)" [userId]="userId" [taskTypes]="taskTypes$ | async" [contacts]="contacts$ | async" [parentTask]="selectedTask" (subTasksCreated)="onSubTasksCreated($event)"></app-sub-task>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-4" *ngIf="isDisplayCheckList && tasks && (tasks.length > 0)">
+        <div class="task-checklist-container">
+          <app-task-checklist [tasks]="tasks" (editAction)="editTask($event);" (completeAction)="completeTask($event)" [taskTypes]="taskTypes$ | async"></app-task-checklist>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

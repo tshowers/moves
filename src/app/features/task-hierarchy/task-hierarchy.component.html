@@ -1,0 +1,70 @@
+<section class="task-hierarchy-shell todd-page">
+    <header class="hierarchy-intro" *ngIf="!statusOnly">
+        <div>
+            <span class="hierarchy-kicker">MISSION MAP</span>
+            <h3>See the work behind the work.</h3>
+            <p>Every move has a place, a pace, and a next action.</p>
+        </div>
+        <span class="hierarchy-legend"><i></i> Momentum is based on move progress</span>
+    </header>
+    <div *ngIf="!rootTasks.length" class="hierarchy-empty">
+        <h3>No Moves Yet</h3>
+        <p>Create a move to start building structure.</p>
+    </div>
+    <div *ngFor="let parent of rootTasks; trackBy: trackByTaskId" class="hierarchy-parent-card">
+        <div class="hierarchy-parent-row" (click)="onSelect(parent)">
+            <app-arc-gauge class="hierarchy-progress" [value]="progressFor(parent)" [max]="100" [tone]="gaugeTone(parent)"></app-arc-gauge>
+            <div class="hierarchy-main">
+                <button *ngIf="hasChildren(parent)" type="button" class="hierarchy-toggle" (click)="toggleExpanded(parent); $event.stopPropagation()">
+                    {{ isExpanded(parent) ? '−' : '+' }}
+                </button>
+                <span *ngIf="!hasChildren(parent)" class="hierarchy-toggle hierarchy-toggle-placeholder"></span>
+                <div class="hierarchy-copy">
+                    <div class="hierarchy-title-row">
+                        <strong>{{ parent.title || 'Untitled move' }}</strong>
+                        <span class="hierarchy-badge" *ngIf="parent.isCompleted">Completed</span>
+                        <span class="hierarchy-badge" *ngIf="parent.superseded">Superseded</span>
+                    </div>
+                    <div class="hierarchy-meta">
+                        <span>{{ displayStatus(parent) }}</span>
+                        <span>{{ progressFor(parent) }}% complete</span>
+                        <span>{{ childCount(parent) }} related move{{ childCount(parent) === 1 ? '' : 's' }}</span>
+                        <span *ngIf="parent.dueDate">Due: {{ parent.dueDate | date:'mediumDate' }}</span>
+                    </div>
+                    <div class="hierarchy-latest-note" *ngIf="latestNote(parent) as note">
+                        <strong>{{ note.authorLabel }}{{ note.at ? ' · ' + (note.at | date:'MMM d, h:mm a') : '' }}:</strong>
+                        {{ note.text }}
+                    </div>
+                    <div class="hierarchy-description" *ngIf="parent.description && !latestNote(parent)">
+                        {{ parent.description }}
+                    </div>
+                </div>
+            </div>
+            <div class="hierarchy-actions" *ngIf="!statusOnly">
+                <button type="button" class="btn btn-sm btn-outline-secondary" (click)="onComplete(parent, $event)">
+                    {{ parent.isCompleted ? 'Reopen' : 'Complete' }}
+                </button>
+                <button type="button" class="btn btn-sm btn-outline-secondary" (click)="onEdit(parent, $event)"> Open Move </button>
+            </div>
+        </div>
+        <div *ngIf="isExpanded(parent)" class="hierarchy-children">
+            <div *ngFor="let child of getChildTasks(parent.id || ''); trackBy: trackByTaskId" class="hierarchy-child-row" (click)="onSelect(child)">
+                <div class="hierarchy-child-copy">
+                    <strong>{{ child.title || 'Untitled subtask' }}</strong>
+                    <span class="hierarchy-badge" *ngIf="child.superseded">Superseded</span>
+                    <div class="hierarchy-meta">
+                        <span>{{ displayStatus(child) }}</span>
+                        <span>{{ progressFor(child) }}% complete</span>
+                        <span *ngIf="child.dueDate">Due: {{ child.dueDate | date:'mediumDate' }}</span>
+                    </div>
+                </div>
+                <div class="hierarchy-actions" *ngIf="!statusOnly">
+                    <button type="button" class="btn btn-sm btn-outline-secondary" (click)="onComplete(child, $event)">
+                        {{ child.isCompleted ? 'Reopen' : 'Complete' }}
+                    </button>
+                    <button type="button" class="btn btn-sm btn-outline-secondary" (click)="onEdit(child, $event)"> Open Move </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

@@ -30,7 +30,7 @@ import { Dropdown } from '../../models/dropdown.model';
   styleUrl: './drop-down-edit-button.component.css'
 } )
 export class DropDownEditButtonComponent implements OnDestroy {
-  @Input() dropdownKey!: 'TASK_TYPES' | 'PROJECTS';
+  @Input() dropdownKey!: 'TASK_TYPES' | 'PROJECTS' | 'TASK_STATUS';
   @Output() updated = new EventEmitter<void>();
 
   @ViewChild( 'overlayRef' ) overlayRef?: ElementRef<HTMLElement>;
@@ -44,12 +44,16 @@ export class DropDownEditButtonComponent implements OnDestroy {
   private authSubscription: Subscription;
   private tenantId = '';
 
-  private get collectionName (): 'task-type' | 'projects' {
-    return this.dropdownKey === 'TASK_TYPES' ? 'task-type' : 'projects';
+  private get collectionName (): 'task-type' | 'projects' | 'task-status' {
+    if ( this.dropdownKey === 'TASK_TYPES' ) return 'task-type';
+    if ( this.dropdownKey === 'TASK_STATUS' ) return 'task-status';
+    return 'projects';
   }
 
-  private get collectionLabel (): string {
-    return this.dropdownKey === 'TASK_TYPES' ? 'move types' : 'projects';
+  get collectionLabel (): string {
+    if ( this.dropdownKey === 'TASK_TYPES' ) return 'move types';
+    if ( this.dropdownKey === 'TASK_STATUS' ) return 'move statuses';
+    return 'projects';
   }
 
   constructor (
@@ -102,7 +106,9 @@ export class DropDownEditButtonComponent implements OnDestroy {
       const tenantId = await this.resolveTenantId();
       const items = this.dropdownKey === 'TASK_TYPES'
         ? await this.dataService.getTaskTypes( tenantId )
-        : await this.dataService.getProjects( tenantId );
+        : this.dropdownKey === 'TASK_STATUS'
+          ? await this.dataService.getTaskStatuses( tenantId )
+          : await this.dataService.getProjects( tenantId );
       this.items = items.slice().sort( ( a, b ) => ( a.name || '' ).localeCompare( b.name || '', undefined, { sensitivity: 'base' } ) );
     } catch {
       this.items = [];

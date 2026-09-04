@@ -1,0 +1,426 @@
+.timeline {
+  list-style: none;
+  padding: 20px 0 20px;
+  position: relative;
+}
+
+.task-text {
+  color: #555 !important;
+  font-weight: 400;
+}
+
+.timeline:before {
+  top: 0;
+  bottom: 0;
+  position: absolute;
+  content: " ";
+  width: 3px;
+  background-color: #eeeeee;
+  left: 50%;
+  margin-left: -1.5px;
+}
+
+.timeline>li {
+  margin-bottom: 20px;
+  position: relative;
+}
+
+.timeline>li:before,
+.timeline>li:after {
+  content: " ";
+  display: table;
+}
+
+.timeline>li:after {
+  clear: both;
+}
+
+.timeline>li>.timeline-panel {
+  width: 46%;
+  float: left;
+  border: 1px solid #d4d4d4;
+  border-radius: 2px;
+  padding: 20px;
+  position: relative;
+  border-radius: 6px;
+  background-color: #fff;
+}
+
+.timeline>li>.timeline-panel:before {
+  position: absolute;
+  top: 26px;
+  right: -15px;
+  display: inline-block;
+  border-top: 15px solid transparent;
+  border-left: 15px solid #ccc;
+  border-right: 0 solid #ccc;
+  border-bottom: 15px solid transparent;
+  content: " ";
+}
+
+.timeline>li>.timeline-panel:after {
+  position: absolute;
+  top: 27px;
+  right: -14px;
+  display: inline-block;
+  border-top: 14px solid transparent;
+  border-left: 14px solid #fff;
+  border-right: 0 solid #fff;
+  border-bottom: 14px solid transparent;
+  content: " ";
+}
+
+.timeline>li>.timeline-badge {
+  color: #fff;
+  width: 50px;
+  height: 50px;
+  line-height: 50px;
+  font-size: 1.4em;
+  text-align: center;
+  position: absolute;
+  top: 16px;
+  left: 50%;
+  margin-left: -25px;
+  background-color: #00bfff;
+  z-index: 100;
+  border-top-right-radius: 50%;
+  border-top-left-radius: 50%;
+  border-bottom-right-radius: 50%;
+  border-bottom-left-radius: 50%;
+}
+
+.timeline>li.timeline-inverted>.timeline-panel {
+  float: right;
+}
+
+.timeline>li.timeline-inverted>.timeline-panel:before {
+  border-left-width: 0;
+  border-right-width: 15px;
+  left: -15px;
+  right: auto;
+}
+
+.timeline>li.timeline-inverted>.timeline-panel:after {
+  border-left-width: 0;
+  border-right-width: 14px;
+  left: -14px;
+  right: auto;
+}
+
+.timeline-title {
+  margin-top: 0;
+  color: black !important;
+  font-weight: 800 !important;
+}
+
+.timeline-body>p,
+.timeline-body>ul {
+  margin-bottom: 0;
+}
+
+.timeline-body>p+p {
+  margin-top: 5px;
+}
+
+.progress-container {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.progress-bar-container {
+  position: relative;
+  width: 100%;
+  height: 40px;
+  /* Double the height of the progress bar */
+  background-color: rgba(0, 149, 204, 0.1);
+  border: 2px solid #007aff;
+  border-radius: 20px;
+  overflow: hidden;
+}
+
+.progress-bar {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  background-color: rgba(0, 149, 204, 0.5);
+  border-radius: 20px 0 0 20px;
+  transition: width 0.3s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  font-weight: bold;
+}
+
+@media (prefers-color-scheme: dark) {
+
+  /* Dark mode styling for progress bar */
+  .progress {
+    background-color: #444;
+    /* Darker background for progress bar */
+    height: 24px;
+    /* Thicker progress bar for visibility */
+    border-radius: 12px;
+    /* Rounded edges */
+  }
+
+  .task-text {
+    color: #fff !important;
+    font-weight: 400;
+
+  }
+
+  .progress-bar {
+    background-color: #0095cc;
+    color: #f0f0f0;
+    line-height: 24px;
+    /* Match line height to bar height */
+    font-weight: bold;
+    border-radius: 12px;
+    /* Match rounded edges */
+    transition: width 0.4s ease;
+    /* Smooth transition */
+  }
+
+  .drop-zone {
+    border: 2px dashed #4a90e2;
+    /* Light blue border for contrast */
+    background-color: #333;
+    /* Darker background for dark mode */
+    color: #b0c4de;
+    /* Soft color for text in dark mode */
+  }
+
+  .drop-zone:hover,
+  .drop-zone.dragover {
+    background-color: #555;
+    /* Darken the drop zone background on hover */
+  }
+
+  .file-browse-link {
+    color: #4a90e2;
+    /* Light blue link for dark mode */
+    text-decoration: underline;
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  .timeline {
+    list-style: none;
+    padding: 20px 0 20px;
+    position: relative;
+    background-color: #1e1e1e;
+    /* Dark background */
+  }
+
+  .timeline:before {
+    top: 0;
+    bottom: 0;
+    position: absolute;
+    content: " ";
+    width: 3px;
+    background-color: #444;
+    /* Darker timeline line */
+    left: 50%;
+    margin-left: -1.5px;
+  }
+
+  .timeline>li {
+    margin-bottom: 20px;
+    position: relative;
+  }
+
+  .timeline>li>.timeline-panel {
+    width: 46%;
+    float: left;
+    border: 1px solid #555;
+    /* Darker border */
+    border-radius: 6px;
+    padding: 20px;
+    position: relative;
+    background-color: #2b2b2b;
+    /* Darker panel background */
+    color: #eaeaea;
+    /* Light text for readability */
+  }
+
+  .timeline>li>.timeline-panel:before {
+    position: absolute;
+    top: 26px;
+    right: -15px;
+    display: inline-block;
+    border-top: 15px solid transparent;
+    border-left: 15px solid #555;
+    /* Darker arrow */
+    border-right: 0 solid transparent;
+    border-bottom: 15px solid transparent;
+    content: " ";
+  }
+
+  .timeline>li>.timeline-panel:after {
+    position: absolute;
+    top: 27px;
+    right: -14px;
+    display: inline-block;
+    border-top: 14px solid transparent;
+    border-left: 14px solid #2b2b2b;
+    /* Match panel background */
+    border-right: 0 solid transparent;
+    border-bottom: 14px solid transparent;
+    content: " ";
+  }
+
+  .timeline>li>.timeline-badge {
+    color: #fff;
+    width: 50px;
+    height: 50px;
+    line-height: 50px;
+    font-size: 1.4em;
+    text-align: center;
+    position: absolute;
+    top: 16px;
+    left: 50%;
+    margin-left: -25px;
+    background-color: #1e90ff;
+    /* Bright badge */
+    z-index: 100;
+    border-radius: 50%;
+  }
+
+  .timeline>li.timeline-inverted>.timeline-panel {
+    float: right;
+  }
+
+  .timeline>li.timeline-inverted>.timeline-panel:before {
+    border-left-width: 0;
+    border-right-width: 15px;
+    left: -15px;
+    right: auto;
+    border-left-color: transparent;
+    border-right-color: #555;
+    /* Darker arrow */
+  }
+
+  .timeline>li.timeline-inverted>.timeline-panel:after {
+    border-left-width: 0;
+    border-right-width: 14px;
+    left: -14px;
+    right: auto;
+    border-left-color: transparent;
+    border-right-color: #2b2b2b;
+    /* Match panel background */
+  }
+
+  .timeline-title {
+    margin-top: 0;
+    color: #eaeaea !important;
+    /* Light text for title */
+    font-weight: 800 !important;
+  }
+
+  .timeline-body>p,
+  .timeline-body>ul {
+    margin-bottom: 0;
+    color: #ccc;
+    /* Softer text color for body */
+  }
+
+  .timeline-body>p+p {
+    margin-top: 5px;
+  }
+
+  .progress-container {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .progress-bar-container {
+    position: relative;
+    width: 100%;
+    height: 40px;
+    /* Double the height of the progress bar */
+    background-color: #444;
+    /* Darker container background */
+    border: 2px solid #1e90ff;
+    /* Bright border */
+    border-radius: 20px;
+    overflow: hidden;
+  }
+
+  .progress-bar {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    background-color: rgba(30, 144, 255, 0.8);
+    /* Bright blue */
+    border-radius: 20px 0 0 20px;
+    color: #fff;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: width 0.3s;
+  }
+}
+
+/* Mobile: single-column timeline (no left/right alternation) */
+@media (max-width: 768px) {
+  .timeline {
+    padding: 12px 0;
+  }
+
+  /* Move the vertical line to the left */
+  .timeline:before {
+    left: 24px;
+    margin-left: 0;
+  }
+
+  /* Ensure list items don't try to float-layout */
+  .timeline>li {
+    margin-bottom: 16px;
+  }
+
+  /* Panels take full width (minus left gutter for the line/badge) */
+  .timeline>li>.timeline-panel,
+  .timeline>li.timeline-inverted>.timeline-panel {
+    float: none;
+    width: calc(100% - 56px);
+    margin-left: 56px;
+    padding: 14px;
+  }
+
+  /* Hide the arrow pointers (they assume left/right layout) */
+  .timeline>li>.timeline-panel:before,
+  .timeline>li>.timeline-panel:after,
+  .timeline>li.timeline-inverted>.timeline-panel:before,
+  .timeline>li.timeline-inverted>.timeline-panel:after {
+    display: none;
+  }
+
+  /* Badge sits on the left line */
+  .timeline>li>.timeline-badge {
+    left: 24px;
+    margin-left: -25px;
+    top: 12px;
+  }
+}
+
+.timeline-open-link {
+  background: none;
+  border: 0;
+  padding: 0;
+  margin: 0;
+  font: inherit;
+  font-weight: 600;
+  text-align: left;
+  cursor: pointer;
+  color: inherit;
+}
+
+.timeline-open-link:hover {
+  text-decoration: underline;
+}

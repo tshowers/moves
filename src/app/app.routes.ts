@@ -16,6 +16,27 @@ export const routes: Routes = [
       import( './features/task-home/task-home.component' ).then( ( m ) => m.TaskHomeComponent ),
   },
   {
+    path: 'moves-view',
+    loadComponent: () =>
+      import( './features/task-view-parent/task-view-parent.component' ).then( ( m ) => m.TaskViewParentComponent ),
+  },
+  {
+    // Legacy 'tasks' route redirects to the execution board in the
+    // monorepo too - kept as a redirect rather than a duplicate route.
+    path: 'tasks',
+    redirectTo: 'moves-view',
+  },
+  {
+    path: 'move',
+    loadComponent: () =>
+      import( './features/task-edit/task-edit.component' ).then( ( m ) => m.TaskEditComponent ),
+  },
+  {
+    path: 'move/:id',
+    loadComponent: () =>
+      import( './features/task-edit/task-edit.component' ).then( ( m ) => m.TaskEditComponent ),
+  },
+  {
     path: 'ai-missions',
     loadComponent: () =>
       import( './features/ai-mission-list/ai-mission-list.component' ).then( ( m ) => m.AiMissionListComponent ),

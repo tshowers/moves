@@ -1,0 +1,242 @@
+<section class="task-edit-shell todd-page" data-cy="moves-edit-shell">
+    <div class="task-edit-header">
+        <div>
+            <span class="task-edit-eyebrow"><a routerLink="/moves">Moves</a></span>
+            <h1>{{ editingTaskId ? 'Edit Move' : 'Create Move' }}</h1>
+            <p> Capture the work, connect the right people, and set the next move. </p>
+        </div>
+        <div class="task-edit-actions task-edit-actions-top">
+            <button type="button" class="btn-todd" (click)="onCancel()" data-cy="moves-edit-cancel-top">Cancel</button>
+            <button type="button" class="btn-todd" [disabled]="!canSave()" (click)="onSave()" data-cy="moves-edit-save-top">
+                {{ editingTaskId ? 'Update Move' : 'Save Move' }}
+            </button>
+        </div>
+    </div>
+    <app-cockpit-browse-mode-banner
+        *ngIf="!hasAuthenticatedUser()"
+        surfaceLabel="Moves"
+        customTitle="You can try this out, but you won't be able to save"
+        customCopy="You are not signed in, so feel free to explore this form and see how creating a move works. Sign in before you save — guest sessions can't save new moves."
+    ></app-cockpit-browse-mode-banner>
+    <div class="task-edit-card guest-warning" *ngIf="!hasAuthenticatedUser() && (newTaskTitle || newTaskDescription || newTaskDueDate || startDate || selectedProject || selectedContacts?.length || selectedExistingDocument || timerStartTime || timerEndTime)" data-cy="moves-guest-warning">
+        <div class="d-flex justify-content-between align-items-center gap-3 flex-wrap">
+            <div>
+                <h3 class="mb-1">You are building as a guest</h3>
+                <p class="mb-0">Your changes will stay on this screen, but they cannot be saved until you sign in.</p>
+            </div>
+            <a class="btn-todd" [routerLink]="'/login'" [queryParams]="{ returnUrl: '/move' }" data-cy="moves-guest-sign-in">Sign In to Save</a>
+        </div>
+    </div>
+    <div class="task-edit-card guest-warning" *ngIf="hasAuthenticatedUser() && moveLimits && !moveLimits.isPaidUser" data-cy="moves-limit-banner">
+        <div class="d-flex justify-content-between align-items-center gap-3 flex-wrap">
+            <div>
+                <h3 class="mb-1">Free Moves</h3>
+                <p class="mb-0">{{ moveLimitMessage }}</p>
+            </div>
+            <a *ngIf="moveLimits.remainingFreeMoves <= 0" class="btn-todd" routerLink="/pricing">Upgrade Moves</a>
+        </div>
+    </div>
+    <div class="task-edit-card">
+        <div class="task-edit-grid">
+            <div class="form-group full-width">
+                <label for="taskTitle">Title</label>
+                <input id="taskTitle" type="text" class="form-control" [(ngModel)]="newTaskTitle" name="taskTitle" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="Enter task title" data-cy="moves-edit-title" />
+                <small class="field-help" *ngIf="!newTaskTitle.trim()">A move title is required before you can save.</small>
+            </div>
+            <div class="form-group full-width">
+                <label for="taskDescription">Description</label>
+                <textarea id="taskDescription" class="form-control" rows="4" [(ngModel)]="newTaskDescription" name="taskDescription" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="Describe the task" data-cy="moves-edit-description"></textarea>
+            </div>
+            <div class="form-group full-width" *ngIf="selectedTask?.url" data-cy="moves-edit-link">
+                <label>Link</label>
+                <p class="mb-0"><a [href]="selectedTask?.url" target="_blank">{{ selectedTask?.url }}</a></p>
+            </div>
+            <div class="form-group full-width" *ngIf="selectedTask?.id" data-cy="moves-notes-panel">
+                <label>Notes</label>
+                <div class="task-notes-thread" *ngIf="selectedTask?.notesLog?.length; else noNotesYet">
+                    <div class="task-note" *ngFor="let note of selectedTask?.notesLog" [class.task-note--user]="note.author === 'user'">
+                        <div class="task-note__meta">
+                            <strong>{{ note.author === 'user' ? (note.authorLabel || 'You') : 'Maya' }}</strong>
+                            <span>{{ note.at | relativeTime }}</span>
+                        </div>
+                        <p>{{ note.text }}</p>
+                    </div>
+                </div>
+                <ng-template #noNotesYet>
+                    <small class="field-help">No notes yet - Maya reports her progress here after her midday check-in.</small>
+                </ng-template>
+                <div class="task-note-reply">
+                    <textarea class="form-control" rows="2" [(ngModel)]="newNoteText" name="newNoteText" placeholder="Reply to Maya - e.g. answer a blocker or leave direction" [disabled]="isSavingNote" data-cy="moves-notes-input"></textarea>
+                    <button type="button" class="btn-todd btn-todd-secondary" [disabled]="!newNoteText.trim() || isSavingNote" (click)="addNote()" data-cy="moves-notes-submit">
+                        {{ isSavingNote ? 'Saving…' : 'Reply' }}
+                    </button>
+                </div>
+                <small class="field-help field-help--error" *ngIf="noteError">{{ noteError }}</small>
+            </div>
+            <div class="form-group">
+                <label for="taskDueDate">Due date</label>
+                <input id="taskDueDate" type="datetime-local" class="form-control" [(ngModel)]="newTaskDueDate" name="taskDueDate" data-cy="moves-edit-due-date" />
+            </div>
+            <div class="form-group">
+                <label for="taskStartDate">Scheduled start</label>
+                <input id="taskStartDate" type="datetime-local" class="form-control" [(ngModel)]="startDate" name="taskStartDate" data-cy="moves-edit-start-date" />
+            </div>
+            <div class="form-group">
+                <label for="taskStatus">Status</label>
+                <select id="taskStatus" class="form-select" [(ngModel)]="selectedStatus" name="taskStatus" data-cy="moves-edit-status">
+                    <option *ngFor="let statusOption of taskStatusOptions" [value]="statusOption.value">{{ statusOption.label }}</option>
+                </select>
+                <small class="field-help">Statuses are standardized so every move saves with a backend-safe value.</small>
+            </div>
+            <div class="form-group">
+                <label for="taskType">Task type</label>
+                <div class="field-inline-action">
+                    <select id="taskType" class="form-select" [(ngModel)]="selectedTaskType" name="taskType" [disabled]="!taskTypes.length" data-cy="moves-edit-task-type">
+                        <option *ngIf="!taskTypes.length" value="">No task types found — click the button to add one</option>
+                        <option *ngIf="taskTypes.length" value="">Select task type</option>
+                        <option *ngFor="let taskType of taskTypes" [value]="taskType.id">{{ taskType.name }}</option>
+                    </select>
+                    <app-drop-down-edit-button *ngIf="hasAuthenticatedUser()" dropdownKey="TASK_TYPES" (updated)="reloadDropdowns()"></app-drop-down-edit-button>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="taskProject">Project</label>
+                <div class="field-inline-action">
+                    <select id="taskProject" class="form-select" [(ngModel)]="selectedProject" name="taskProject" [disabled]="!projects.length" data-cy="moves-edit-project">
+                        <option *ngIf="!projects.length" value="">No projects found — click the button to add one</option>
+                        <option *ngIf="projects.length" value="">Select project</option>
+                        <option *ngFor="let project of projects" [value]="project.id">{{ project.name }}</option>
+                    </select>
+                    <app-drop-down-edit-button *ngIf="hasAuthenticatedUser()" dropdownKey="PROJECTS" (updated)="reloadDropdowns()"></app-drop-down-edit-button>
+                </div>
+            </div>
+            <div class="form-group full-width">
+                <label for="taskAssignee">Assign to</label>
+                <select id="taskAssignee" class="form-select" [(ngModel)]="selectedAssigneeId" name="taskAssignee" [disabled]="!authorizedAssignees.length" data-cy="moves-edit-assignee">
+                    <option *ngIf="!authorizedAssignees.length" value="">No authorized TODD users found</option>
+                    <option *ngFor="let assignee of authorizedAssignees" [value]="assignee.id">{{ assignee.displayName || assignee.email }}<span *ngIf="assignee.role"> — {{ assignee.role }}</span></option>
+                </select>
+                <small class="field-help">Only active users with TODD access can own a move. Contacts below are related people, not assignees.</small>
+            </div>
+            <div class="form-group full-width">
+                <label>Related contacts</label>
+                <select class="form-select" multiple [(ngModel)]="selectedContacts" name="taskContacts" data-cy="moves-edit-contacts">
+                    <option class="text-capitalize" *ngFor="let contact of contacts" [value]="contact.id">{{ contact | appendYou:userId }}</option>
+                </select>
+                <small class="field-help">Hold command or control to select multiple contacts.</small>
+            </div>
+            <div class="form-group full-width">
+                <label for="existingDocument">Link existing document</label>
+                <select id="existingDocument" class="form-select" [(ngModel)]="selectedExistingDocument" name="existingDocument" [disabled]="!hasAuthenticatedUser() || !documents.length" data-cy="moves-edit-existing-document">
+                    <option *ngIf="!hasAuthenticatedUser()" value="">Sign in to link a document</option>
+                    <option *ngIf="hasAuthenticatedUser() && !documents.length" value="">No documents found — use /docs to add one</option>
+                    <option *ngIf="hasAuthenticatedUser() && documents.length" value="">Select document</option>
+                    <option *ngFor="let doc of documents" [value]="doc.id || doc.name">
+                        {{ doc.title || doc.name }}
+                    </option>
+                </select>
+                <small class="field-help">This field links a document you already created. Add new documents in /docs.</small>
+            </div>
+            <div class="form-group full-width">
+                <label>Time worked</label>
+                <div class="task-time-grid">
+                    <input type="datetime-local" class="form-control" [(ngModel)]="timerStartTime" name="timerStartTime" placeholder="Work started" />
+                    <input type="datetime-local" class="form-control" [(ngModel)]="timerEndTime" name="timerEndTime" placeholder="Work ended" />
+                </div>
+                <small class="field-help">Use scheduled dates above for planning. Use these fields to track when work actually started and stopped.</small>
+            </div>
+        </div>
+    </div>
+    <div class="task-edit-card">
+        <div class="task-edit-subheader">
+            <h3>Attached items</h3>
+            <p>These areas are scaffolded now and can be wired up next.</p>
+        </div>
+        <div class="task-edit-grid two-up">
+            <div class="attachment-panel">
+                <h4>Documents</h4>
+                <div class="attachment-empty" *ngIf="!attachedDocuments.length">No documents attached yet.</div>
+                <ul class="attachment-list" *ngIf="attachedDocuments.length">
+                    <li *ngFor="let doc of attachedDocuments">{{ doc.title || doc.name }}</li>
+                </ul>
+            </div>
+            <div class="attachment-panel">
+                <h4>Images</h4>
+                <div class="attachment-empty" *ngIf="!images.length">No images attached yet.</div>
+                <ul class="attachment-list" *ngIf="images.length">
+                    <li *ngFor="let image of images">{{ image.title || image.name || 'Image' }}</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <!-- AI Mission Panel (additive — only shows for new moves, toggle defaults off) -->
+    <div class="task-edit-card ai-mission-panel" *ngIf="!editingTaskId" data-cy="moves-ai-mission-panel">
+        <div class="task-edit-subheader">
+            <div>
+                <h3>Assign to TODD</h3>
+                <p>Let TODD manage this move autonomously instead of assigning it to a human.</p>
+            </div>
+            <label class="todd-toggle-label">
+                <input type="checkbox" [(ngModel)]="isAIMission" name="isAIMission" data-cy="moves-ai-toggle" />
+                <span class="todd-toggle-text">{{ isAIMission ? 'TODD is assigned' : 'Assign to TODD' }}</span>
+            </label>
+        </div>
+        <div class="ai-mission-fields" *ngIf="isAIMission">
+            <div class="form-group full-width">
+                <label for="missionObjective">Objective <span class="field-required">*</span></label>
+                <textarea id="missionObjective" class="form-control" rows="3" [(ngModel)]="missionObjective" name="missionObjective" placeholder="What should TODD accomplish? Be specific." data-cy="moves-ai-objective"></textarea>
+            </div>
+            <div class="form-group full-width">
+                <label for="missionSuccessCriteria">Success Criteria</label>
+                <input id="missionSuccessCriteria" type="text" class="form-control" [(ngModel)]="missionSuccessCriteria" name="missionSuccessCriteria" placeholder="How will we know it succeeded?" data-cy="moves-ai-success" />
+            </div>
+            <div class="form-group full-width">
+                <label for="missionContextText">Context <span class="field-help">(optional)</span></label>
+                <textarea id="missionContextText" class="form-control" rows="2" [(ngModel)]="missionContextText" name="missionContextText" placeholder="Target company, RFP document, survey topic, or other context for TODD." data-cy="moves-ai-context"></textarea>
+            </div>
+            <small class="field-help ai-mission-note">
+                TODD will research, draft, and execute steps automatically. You will be asked to approve any external communication before it is sent.
+            </small>
+        </div>
+    </div>
+
+    <div class="task-edit-card" *ngIf="editingTaskId && !isSubTask">
+        <div class="task-edit-subheader">
+            <div>
+                <h3>Subtasks</h3>
+                <p>Use child moves for the work that rolls up under this parent move.</p>
+            </div>
+            <button type="button" class="btn btn-outline-secondary" (click)="addSubTask()" data-cy="moves-edit-add-subtask">Add Subtask</button>
+        </div>
+        <div class="attachment-empty" *ngIf="!childTasks.length"> No subtasks yet. Add one to break this move into smaller steps. </div>
+        <ul class="attachment-list" *ngIf="childTasks.length">
+            <li *ngFor="let child of childTasks">
+                <div class="d-flex justify-content-between align-items-start gap-3 flex-wrap">
+                    <div>
+                        <strong>{{ child.title || 'Untitled subtask' }}</strong>
+                        <div class="field-help" *ngIf="child.description">{{ child.description }}</div>
+                        <div class="field-help"> Status: {{ child.status || 'not-started' }}
+                            <span *ngIf="child.progress !== undefined"> • Progress: {{ child.progress || 0 }}%</span>
+                            <span *ngIf="child.dueDate"> • Due: {{ child.dueDate | date:'mediumDate' }}</span>
+                        </div>
+                    </div>
+                    <button type="button" class="btn btn-sm btn-outline-secondary" (click)="openSubTask(child)">Open Move</button>
+                </div>
+            </li>
+        </ul>
+    </div>
+    <div class="task-edit-card danger-zone" *ngIf="editingTaskId">
+        <div class="task-edit-subheader">
+            <h3>Danger zone</h3>
+            <p>Delete this task if it is no longer needed.</p>
+        </div>
+        <button type="button" class="btn btn-outline-danger" (click)="onDelete()" data-cy="moves-edit-delete">Delete Move</button>
+    </div>
+    <div class="task-edit-actions task-edit-actions-bottom">
+        <button type="button" class="btn-todd" (click)="onCancel()" data-cy="moves-edit-cancel-bottom">Cancel</button>
+        <button type="button" class="btn-todd" [disabled]="!canSave()" (click)="onSave()" data-cy="moves-edit-save-bottom">
+            {{ editingTaskId ? 'Update Move' : 'Save Move' }}
+        </button>
+    </div>
+</section>
+<app-preloader [isLoading]="isLoading"></app-preloader>
