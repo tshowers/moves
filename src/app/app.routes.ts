@@ -2,6 +2,20 @@ import { Routes } from '@angular/router';
 
 export const routes: Routes = [
   {
+    // The real signed-in app experience - task-home.component.ts ported
+    // from TODD, confirmed as the actual live moves/moves-app route there.
+    path: 'app',
+    loadComponent: () =>
+      import( './features/task-home/task-home.component' ).then( ( m ) => m.TaskHomeComponent ),
+  },
+  {
+    // Legacy alias - the monorepo's 'moves' route also resolves to
+    // TaskHomeComponent, kept here so old links still land somewhere real.
+    path: 'moves',
+    loadComponent: () =>
+      import( './features/task-home/task-home.component' ).then( ( m ) => m.TaskHomeComponent ),
+  },
+  {
     path: 'login',
     loadComponent: () =>
       import( './features/sign-in/sign-in.component' ).then( ( m ) => m.SignInComponent ),
