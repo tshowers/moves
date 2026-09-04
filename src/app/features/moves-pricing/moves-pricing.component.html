@@ -1,0 +1,61 @@
+<div class="moves-pricing-page todd-page" data-cy="moves-pricing-page">
+    <section class="moves-pricing-hero card shadow-sm border-0">
+        <div class="moves-pricing-copy">
+            <div class="moves-pricing-eyebrow">Moves Pricing</div>
+            <h1>Keep work moving past the free limit</h1>
+            <p class="moves-pricing-lead"> Moves helps you keep tasks, follow-up, and next steps in motion. The paid plan removes the free-move wall so you can keep building momentum without stopping at 2 moves. </p>
+            <div class="moves-pricing-actions">
+                <a class="btn-todd me-2" routerLink="/app">Back to Moves</a>
+                <a class="btn-todd me-2" *ngIf="!(entitlements$ | async)?.suite" href="https://todd.taliferro.tech/suite/pricing">Suite Pricing</a>
+                <a class="btn-todd me-2" href="https://todd.taliferro.tech/pricing">Enterprise pricing</a>
+            </div>
+        </div>
+        <div class="moves-pricing-visual">
+            <img src="assets/moves/moves.png" alt="Moves" class="moves-heading-logo img-fluid">
+        </div>
+    </section>
+    <section class="moves-pricing-grid">
+        <article class="moves-pricing-card card shadow-sm border-0 moves-pricing-offer-card">
+            <div class="moves-pricing-card-header">
+                <span class="moves-pricing-badge">What you get</span>
+                <h2>Moves Unlimited</h2>
+                <p>Everything you need to keep work visible, active, and moving.</p>
+            </div>
+            <div class="moves-pricing-price-row">
+                <div>
+                    <div class="moves-pricing-price-label">Monthly price</div>
+                    <div class="moves-pricing-price">{{ monthlyPrice }}</div>
+                </div>
+                <div class="moves-pricing-price-note">Free includes 2 moves. Paid lets you keep momentum going.</div>
+            </div>
+            <ul class="moves-pricing-list">
+                <li *ngFor="let item of highlights">{{ item }}</li>
+            </ul>
+            <div class="moves-pricing-form">
+                <div class="moves-pricing-login-callout" *ngIf="requiresLogin">
+                    <div class="moves-pricing-login-title">Sign in first</div>
+                    <p class="moves-pricing-login-text"> We use your login to find you before starting checkout. </p>
+                    <button type="button" class="btn btn-dark moves-pricing-login-btn" (click)="goToLogin()" data-cy="moves-pricing-sign-in"> Sign in to purchase </button>
+                </div>
+                <label class="moves-pricing-field" *ngIf="!requiresLogin">
+                    <span>Email</span>
+                    <input type="email" [(ngModel)]="email" placeholder="Enter your billing email" data-cy="moves-pricing-email">
+                </label>
+                <button *ngIf="!requiresLogin" type="button" class="btn btn-dark moves-pricing-subscribe" (click)="startCheckout()" [disabled]="isStartingCheckout" data-cy="moves-pricing-subscribe">
+                    {{ isStartingCheckout ? 'Starting checkout...' : 'Subscribe to Moves' }}
+                </button>
+                <div class="moves-pricing-error" *ngIf="checkoutError" data-cy="moves-pricing-error">{{ checkoutError }}</div>
+            </div>
+        </article>
+        <article class="moves-pricing-card card shadow-sm border-0 moves-pricing-card-accent">
+            <div class="moves-pricing-card-header">
+                <span class="moves-pricing-badge">Good to know</span>
+                <h2>How Moves works</h2>
+                <p>Keep a small working set for free. Upgrade when you need more room to keep momentum moving.</p>
+            </div>
+            <ul class="moves-pricing-list moves-pricing-list-notes">
+                <li *ngFor="let item of notes">{{ item }}</li>
+            </ul>
+        </article>
+    </section>
+</div>

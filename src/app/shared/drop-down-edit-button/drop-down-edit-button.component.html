@@ -1,0 +1,48 @@
+<!-- The actual button the user clicks -->
+<button
+  *ngIf="isAuthenticated"
+  type="button"
+  class="btn btn-link btn-sm p-0 ms-2"
+  (click)="openModal($event)"
+  [title]="'Edit ' + collectionLabel"
+>
+  <i class="fa-regular fa-pen-to-square"></i>
+</button>
+<!-- Centered popup card -->
+<div #overlayRef class="dropdown-popup-overlay" *ngIf="showModal" (click)="onBackdropClick($event)">
+  <div class="dropdown-popup" role="dialog" aria-modal="true" (click)="onDialogClick($event)">
+    <div class="dropdown-popup-header">
+      <h5 class="dropdown-popup-title">Edit {{ collectionLabel }}</h5>
+      <button type="button" class="btn-close" aria-label="Close" (click)="closeModal($event)"></button>
+    </div>
+    <div class="dropdown-popup-body">
+      <div class="dropdown-popup-add">
+        <input
+          type="text"
+          class="form-control form-control-sm"
+          placeholder="Add a new {{ dropdownKey === 'TASK_TYPES' ? 'move type' : 'project' }}"
+          [(ngModel)]="newItemName"
+          (keyup.enter)="addItem()"
+        />
+        <button type="button" class="btn btn-todd btn-sm" [disabled]="!newItemName.trim()" (click)="addItem()">Add</button>
+      </div>
+
+      <p *ngIf="isLoading" class="dropdown-popup-loading">Loading...</p>
+
+      <ul class="dropdown-popup-list" *ngIf="!isLoading">
+        <li *ngFor="let item of items" class="dropdown-popup-item">
+          <input
+            type="text"
+            class="form-control form-control-sm"
+            [(ngModel)]="item.name"
+            (change)="updateItem(item)"
+          />
+          <button type="button" class="btn btn-link btn-sm text-danger" (click)="deleteItem(item.id)" title="Delete">
+            <i class="fa-regular fa-trash-can"></i>
+          </button>
+        </li>
+        <li *ngIf="!items.length" class="dropdown-popup-empty">Nothing here yet - add one above.</li>
+      </ul>
+    </div>
+  </div>
+</div>
