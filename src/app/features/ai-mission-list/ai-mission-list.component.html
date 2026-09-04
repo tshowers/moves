@@ -1,0 +1,49 @@
+<div class="mission-list-page">
+
+  <div class="page-header">
+    <div>
+      <h1 class="page-title">AI Missions</h1>
+      <p class="page-subtitle">Tasks assigned to TODD</p>
+    </div>
+    <button class="btn-create" (click)="createMission()">+ New AI Mission</button>
+  </div>
+
+  <!-- Approval alert banner -->
+  <div class="approval-alert" *ngIf="approvalCount > 0">
+    <span>&#9888;</span>
+    TODD needs your approval on {{ approvalCount }} mission{{ approvalCount !== 1 ? 's' : '' }}.
+    <button class="filter-link" (click)="setFilter('needs_approval')">View them</button>
+  </div>
+
+  <!-- Filter tabs -->
+  <div class="filter-tabs">
+    <button
+      *ngFor="let f of filters"
+      class="filter-tab"
+      [class.active]="activeFilter === f.value"
+      (click)="setFilter(f.value)"
+    >
+      {{ f.label }}
+    </button>
+  </div>
+
+  <!-- Loading -->
+  <app-preloader [isLoading]="isLoading" message="Loading missions…" [autoHideAfterMs]="null"></app-preloader>
+
+  <!-- Empty state -->
+  <div class="empty-state" *ngIf="!isLoading && filteredMissions.length === 0">
+    <p>No missions found for this filter.</p>
+    <button class="btn-create-empty" (click)="createMission()">Create your first AI Mission</button>
+  </div>
+
+  <!-- Mission grid -->
+  <div class="mission-grid" *ngIf="!isLoading && filteredMissions.length > 0">
+    <app-ai-mission-card
+      *ngFor="let mission of filteredMissions"
+      [mission]="mission"
+      (viewDetail)="onViewDetail($event)"
+      (approve)="onApprove($event)"
+    ></app-ai-mission-card>
+  </div>
+
+</div>

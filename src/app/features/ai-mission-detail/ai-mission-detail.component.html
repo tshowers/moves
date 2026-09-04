@@ -1,0 +1,129 @@
+<div class="mission-detail" *ngIf="!isLoading && mission; else loading">
+
+  <!-- Header -->
+  <div class="detail-header">
+    <a class="back-link" routerLink="/ai-missions">&#8592; AI Missions</a>
+    <div class="header-title-row">
+      <h1 class="mission-title">{{ mission.title }}</h1>
+      <span class="todd-badge">TODD</span>
+    </div>
+    <div class="header-meta">
+      <app-status-led [tone]="statusTone" [pulse]="mission.status === 'active'"></app-status-led>
+      <span class="status-text">{{ mission.status | titlecase }}</span>
+      <span class="priority-badge" [class]="'priority-' + mission.priority">{{ mission.priority | titlecase }}</span>
+    </div>
+  </div>
+
+  <!-- Approval Panel -->
+  <div class="approval-panel" *ngIf="mission.status === 'needs_approval'">
+    <div class="approval-header">
+      <span class="approval-icon">&#9888;</span>
+      <strong>TODD needs your approval</strong>
+    </div>
+    <p class="approval-summary" *ngIf="mission.pendingApprovalAction">
+      {{ mission.pendingApprovalAction.summary }}
+    </p>
+    <div class="approval-actions">
+      <button class="btn-approve" (click)="approveMissionAction('approve')" [disabled]="isApproving">
+        {{ isApproving ? 'Processing...' : 'Approve' }}
+      </button>
+      <button class="btn-reject" (click)="approveMissionAction('reject')" [disabled]="isApproving">Reject</button>
+      <button class="btn-pause" (click)="approveMissionAction('pause')" [disabled]="isApproving">Pause Mission</button>
+    </div>
+    <p class="approval-feedback success" *ngIf="approvalState === 'success'">{{ approvalMessage }}</p>
+    <p class="approval-feedback error" *ngIf="approvalState === 'error'">{{ approvalMessage }}</p>
+  </div>
+
+  <!-- Mission Body -->
+  <div class="detail-body">
+
+    <!-- Left: Mission info -->
+    <div class="detail-main">
+
+      <section class="section">
+        <h3 class="section-title">Objective</h3>
+        <p class="section-text">{{ mission.objective || '—' }}</p>
+      </section>
+
+      <section class="section" *ngIf="mission.successCriteria">
+        <h3 class="section-title">Success Criteria</h3>
+        <p class="section-text">{{ mission.successCriteria }}</p>
+      </section>
+
+      <!-- Step Plan -->
+      <section class="section" *ngIf="mission.missionPlan?.length">
+        <h3 class="section-title">
+          Mission Plan
+          <span class="step-progress">({{ completedSteps }} / {{ mission.missionPlan.length }} complete)</span>
+        </h3>
+        <ol class="step-list">
+          <li
+            *ngFor="let step of mission.missionPlan"
+            class="step-item"
+            [class]="'step-' + step.status"
+          >
+            <span class="step-icon">{{ stepIcon(step) }}</span>
+            <div class="step-content">
+              <span class="step-desc">{{ step.description }}</span>
+              <span class="step-capability">{{ step.capability }}</span>
+              <span class="step-result" *ngIf="step.result">{{ step.result }}</span>
+              <span class="approval-tag" *ngIf="step.requiresApproval">requires approval</span>
+            </div>
+          </li>
+        </ol>
+      </section>
+
+      <!-- Artifacts -->
+      <section class="section" *ngIf="mission.artifacts?.length">
+        <h3 class="section-title">Created Artifacts</h3>
+        <ul class="artifact-list">
+          <li *ngFor="let artifact of mission.artifacts" class="artifact-item">
+            <span class="artifact-icon">📄</span>
+            <div>
+              <a *ngIf="artifactLink(artifact) as link; else plainTitle" class="artifact-title" [routerLink]="link">{{ artifact.title }}</a>
+              <ng-template #plainTitle><span class="artifact-title">{{ artifact.title }}</span></ng-template>
+              <span class="artifact-type">{{ artifact.type }}</span>
+              <span class="artifact-status" [class]="'artifact-' + artifact.status">{{ artifact.status }}</span>
+            </div>
+          </li>
+        </ul>
+      </section>
+
+      <!-- Escalation -->
+      <section class="section escalation-section" *ngIf="mission.escalationReason">
+        <h3 class="section-title">Escalation Reason</h3>
+        <p class="section-text">{{ mission.escalationReason }}</p>
+      </section>
+
+    </div>
+
+    <!-- Right: Activity log -->
+    <aside class="detail-aside">
+      <h3 class="section-title">Activity Log</h3>
+      <div class="activity-log" *ngIf="activityLog.length; else noActivity">
+        <div class="activity-entry" *ngFor="let entry of activityLog">
+          <div class="entry-actor" [class]="'actor-' + entry.actor">{{ actorLabel(entry.actor) }}</div>
+          <div class="entry-body">
+            <p class="entry-summary">{{ entry.summary }}</p>
+            <span class="entry-time">{{ entry.createdAt | date:'short' }}</span>
+          </div>
+        </div>
+      </div>
+      <ng-template #noActivity>
+        <p class="empty-log">No activity yet.</p>
+      </ng-template>
+
+      <!-- Actions -->
+      <div class="aside-actions" *ngIf="mission.status === 'active' || mission.status === 'draft' || mission.status === 'waiting'">
+        <button class="btn-run" (click)="runMission()" [disabled]="isRunning">
+          {{ isRunning ? 'Running...' : 'Run Mission Now' }}
+        </button>
+      </div>
+    </aside>
+
+  </div>
+</div>
+
+<ng-template #loading>
+  <app-preloader [isLoading]="true" message="Loading mission…" [autoHideAfterMs]="null"></app-preloader>
+</ng-template>

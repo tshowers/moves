@@ -16,6 +16,16 @@ export const routes: Routes = [
       import( './features/task-home/task-home.component' ).then( ( m ) => m.TaskHomeComponent ),
   },
   {
+    path: 'ai-missions',
+    loadComponent: () =>
+      import( './features/ai-mission-list/ai-mission-list.component' ).then( ( m ) => m.AiMissionListComponent ),
+  },
+  {
+    path: 'move/:id/mission',
+    loadComponent: () =>
+      import( './features/ai-mission-detail/ai-mission-detail.component' ).then( ( m ) => m.AiMissionDetailComponent ),
+  },
+  {
     path: 'login',
     loadComponent: () =>
       import( './features/sign-in/sign-in.component' ).then( ( m ) => m.SignInComponent ),

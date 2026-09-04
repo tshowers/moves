@@ -1,0 +1,46 @@
+<div class="mission-card" [class.needs-approval]="mission.status === 'needs_approval'">
+  <div class="card-header">
+    <div class="title-row">
+      <span class="mission-title">{{ mission.title }}</span>
+      <span class="todd-badge">TODD</span>
+    </div>
+    <div class="status-row">
+      <app-status-led [tone]="statusTone" [pulse]="mission.status === 'active'"></app-status-led>
+      <span class="status-label">{{ statusLabel }}</span>
+    </div>
+  </div>
+
+  <p class="objective" *ngIf="mission.objective">{{ mission.objective }}</p>
+
+  <div class="mission-meta">
+    <span class="meta-item" *ngIf="totalSteps > 0">
+      Step {{ completedSteps }} of {{ totalSteps }}
+    </span>
+    <span class="meta-item" *ngIf="artifactCount > 0">
+      {{ artifactCount }} artifact{{ artifactCount !== 1 ? 's' : '' }}
+    </span>
+    <span class="meta-item" *ngIf="mission.priority">
+      {{ mission.priority | titlecase }}
+    </span>
+  </div>
+
+  <p class="next-action" *ngIf="mission.nextAction">
+    <strong>Next:</strong> {{ mission.nextAction }}
+  </p>
+
+  <div class="approval-banner" *ngIf="mission.status === 'needs_approval'">
+    <span class="approval-icon">&#9888;</span>
+    TODD needs your approval
+  </div>
+
+  <div class="card-actions">
+    <button class="btn-view" (click)="onView()">View Mission</button>
+    <button
+      class="btn-approve"
+      *ngIf="mission.status === 'needs_approval'"
+      (click)="onApprove()"
+    >
+      Review &amp; Approve
+    </button>
+  </div>
+</div>
