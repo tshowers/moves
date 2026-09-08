@@ -1,0 +1,27 @@
+<main class="moves-page">
+  <nav class="moves-nav">
+    <a class="moves-brand" routerLink="/"><img src="/assets/logo.png" alt="Moves"><span>MOVES</span></a>
+    <div class="moves-nav__right"><a href="#signal">The signal</a><a href="#system">The system</a><a class="moves-nav__launch" routerLink="/app">Open app <span>↗</span></a><button type="button" class="moves-menu" (click)="toggleMenu()" [attr.aria-expanded]="menuOpen()"><i></i><span>{{ menuOpen() ? 'Close' : 'Menu' }}</span></button></div>
+  </nav>
+
+  <div class="moves-menu-panel" [class.is-open]="menuOpen()" aria-label="Site menu">
+    <div class="moves-menu-panel__inner"><span class="moves-kicker">MOVES / NAVIGATION</span><a routerLink="/app" (click)="closeMenu()">Open Moves <b>↗</b></a><a routerLink="/pricing" (click)="closeMenu()">Pricing <b>↗</b></a><a routerLink="/ios" (click)="closeMenu()">Moves for iOS <b>↗</b></a><a routerLink="/login" (click)="closeMenu()">Sign in <b>↗</b></a></div>
+  </div>
+
+  <section class="moves-hero">
+    <div class="moves-hero__noise"></div>
+    <div class="moves-hero__copy"><p class="moves-kicker">A momentum system for work that matters</p><h1>Make the<br><em>next move.</em></h1><p class="moves-hero__lede">The task is not the work. The next action is. Moves keeps momentum visible until the work is done.</p><div class="moves-hero__actions"><a class="moves-button moves-button--solid" routerLink="/app">Open Moves <span>↗</span></a><a class="moves-text-link" href="#signal">See the signal <span>↓</span></a></div></div>
+    <div class="moves-hero__art"><div class="moves-orbit moves-orbit--one"></div><div class="moves-orbit moves-orbit--two"></div><div class="moves-art__caption">THE WORK<br>IS ALIVE</div><img src="/assets/moves-banner.png" alt="A visual system of connected tasks moving toward a target" class="moves-banner"><div class="moves-float moves-float--top"><span class="moves-dot moves-dot--green"></span> On track <b>72%</b></div><div class="moves-float moves-float--bottom"><span class="moves-dot moves-dot--orange"></span> Stalled work detected</div></div>
+    <div class="moves-hero__stamp">MOVE<br>WITH<br>INTENT</div><div class="moves-hero__scroll">SCROLL TO EXPLORE <span>↓</span></div>
+  </section>
+
+  <section class="moves-signal" id="signal"><div class="moves-wrap"><div class="moves-signal__intro"><p class="moves-kicker">The signal</p><h2>Most work does not stop.<br><span>It quietly slows down.</span></h2><p>Moves catches the moment between “active” and “forgotten”—then tells you where to put your attention.</p></div><div class="moves-signal__diagram"><div class="moves-line"></div><div class="moves-signal__node"><span>01</span><b>created</b><small>clear next action</small></div><div class="moves-signal__node moves-signal__node--warn"><span>02</span><b>drifting</b><small>momentum falling</small></div><div class="moves-signal__node moves-signal__node--hot"><span>03</span><b>move now</b><small>TODD has a signal</small></div></div></div></section>
+
+  <section class="moves-system" id="system"><div class="moves-wrap"><div class="moves-system__top"><p class="moves-kicker">The system</p><h2>One place for every<br><i>next thing.</i></h2><a class="moves-round-link" routerLink="/app">Explore the board <span>↗</span></a></div><div class="moves-features"><article *ngFor="let feature of features" [class]="'moves-feature moves-feature--' + feature.accent"><span class="moves-feature__number">{{ feature.number }}</span><span class="moves-feature__arrow">↗</span><h3>{{ feature.title }}</h3><p>{{ feature.copy }}</p></article></div></div></section>
+
+  <section class="moves-quote"><div class="moves-wrap"><p class="moves-kicker">A different kind of task tracker</p><blockquote>“What needs attention?”<br><strong>should not be a daily mystery.</strong></blockquote><div class="moves-quote__line"></div><p class="moves-quote__note">Built for the work between the meetings, the follow-ups, and the finish line.</p></div></section>
+
+  <section class="moves-faq"><div class="moves-wrap"><div class="moves-faq__head"><p class="moves-kicker">Questions worth asking</p><h2>Start somewhere<br>that moves.</h2></div><div class="moves-faq__list"><div class="moves-faq__item" *ngFor="let faq of faqs; let i = index" [class.is-open]="openFaq() === i"><button (click)="toggleFaq(i)" [attr.aria-expanded]="openFaq() === i">{{ faq.question }} <span>+</span></button><div class="moves-faq__answer"><p>{{ faq.answer }}</p></div></div></div></div></section>
+
+  <section class="moves-footer-cta"><div class="moves-wrap"><p class="moves-kicker">Your next move</p><h2>Keep going.</h2><a class="moves-button moves-button--dark" routerLink="/app">Open Moves <span>↗</span></a><span class="moves-footer-cta__mark">M</span></div></section>
+</main>
