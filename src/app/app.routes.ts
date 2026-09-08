@@ -2,6 +2,17 @@ import { Routes } from '@angular/router';
 
 export const routes: Routes = [
   {
+    path: '',
+    pathMatch: 'full',
+    loadComponent: () =>
+      import( './features/landing/landing.component' ).then( ( m ) => m.LandingComponent ),
+  },
+  {
+    path: 'ios',
+    loadComponent: () =>
+      import( './features/app-showcase/app-showcase.component' ).then( ( m ) => m.AppShowcaseComponent ),
+  },
+  {
     // The real signed-in app experience - task-home.component.ts ported
     // from TODD, confirmed as the actual live moves/moves-app route there.
     path: 'app',

@@ -1,7 +1,7 @@
 <main class="moves-page">
   <nav class="moves-nav">
     <a class="moves-brand" routerLink="/"><img src="/assets/logo.png" alt="Moves"><span>MOVES</span></a>
-    <div class="moves-nav__right"><a href="#signal">The signal</a><a href="#system">The system</a><a class="moves-nav__launch" routerLink="/app">Open app <span>↗</span></a><button type="button" class="moves-menu" (click)="toggleMenu()" [attr.aria-expanded]="menuOpen()"><i></i><span>{{ menuOpen() ? 'Close' : 'Menu' }}</span></button></div>
+    <div class="moves-nav__right"><a href="#signal">The signal</a><a href="#system">The system</a><button type="button" class="moves-theme" (click)="theme.toggle()" [attr.aria-label]="theme.isDark() ? 'Use light mode' : 'Use dark mode'"><span>{{ theme.isDark() ? '☼' : '◐' }}</span><small>{{ theme.isDark() ? 'Light' : 'Dark' }}</small></button><a class="moves-nav__launch" routerLink="/app">Open app <span>↗</span></a><button type="button" class="moves-menu" (click)="toggleMenu()" [attr.aria-expanded]="menuOpen()"><i></i><span>{{ menuOpen() ? 'Close' : 'Menu' }}</span></button></div>
   </nav>
 
   <div class="moves-menu-panel" [class.is-open]="menuOpen()" aria-label="Site menu">

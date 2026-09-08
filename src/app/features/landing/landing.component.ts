@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
-import { Component, signal } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { RouterModule } from '@angular/router';
+import { ThemeService } from '../../services/theme.service';
 
 interface Faq { question: string; answer: string; }
 interface Testimonial { quote: string; name: string; role: string; result: string; }
@@ -13,6 +14,7 @@ interface Testimonial { quote: string; name: string; role: string; result: strin
   styleUrl: './landing.component.css'
 })
 export class LandingComponent {
+  readonly theme = inject(ThemeService);
   readonly menuOpen = signal(false);
   readonly openFaq = signal<number | null>(0);
 

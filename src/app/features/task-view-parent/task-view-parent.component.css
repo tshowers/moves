@@ -1,5 +1,15 @@
+:host {
+    display: block;
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+    overflow-x: hidden;
+}
+
 .task-view-shell {
+    width: 100%;
     max-width: 1400px;
+    min-width: 0;
     margin: 0 auto;
     padding: clamp(1rem, 2vw, 1.5rem);
     display: grid;
@@ -472,6 +482,40 @@
 @media (max-width: 768px) {
     .task-view-shell {
         padding: 0.75rem;
+    }
+
+    .task-view-tabs,
+    .task-view-mission-banner,
+    .task-view-review,
+    .task-view-toolbar,
+    .task-view-content,
+    .selected-task-panel,
+    .task-view-empty-selection {
+        min-width: 0;
+        max-width: 100%;
+        overflow-x: hidden;
+    }
+
+    .task-view-tabs__copy,
+    .task-view-review-copy,
+    .selected-task-copy,
+    .task-view-mission-subtitle {
+        overflow-wrap: anywhere;
+    }
+
+    .task-view-tabs__list {
+        flex-wrap: nowrap;
+        overflow-x: auto;
+        padding-bottom: 0.25rem;
+        scrollbar-width: thin;
+    }
+
+    .task-view-tab {
+        flex: 0 0 auto;
+    }
+
+    .task-view-toolbar-grid {
+        grid-template-columns: minmax(0, 1fr);
     }
 
     .selected-task-summary-grid {

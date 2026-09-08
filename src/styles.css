@@ -1,3 +1,263 @@
+@import "@taliferro/ui/styles/controls.css";
+
+/* Shared explicit dark-mode corrections for pages reached from the landing page. */
+[data-theme='dark'] .task-home-shell,
+[data-theme='dark'] .task-view-shell {
+  --cockpit-text: #f8fafc;
+  --cockpit-muted: rgba(232, 232, 232, .74);
+  --cockpit-panel-bg: rgba(255, 255, 255, .05);
+  --cockpit-panel-border: rgba(255, 255, 255, .1);
+  --cockpit-tile-bg: rgba(255, 255, 255, .04);
+  --page-text: #f8fafc;
+  --muted-text: rgba(232, 232, 232, .74);
+  --panel-bg: rgba(255, 255, 255, .05);
+  --panel-border: rgba(255, 255, 255, .1);
+  --mini-bg: rgba(255, 255, 255, .04);
+  --moves-input-bg: #111c2c;
+  --moves-input-border: rgba(148, 163, 184, .2);
+  --moves-input-text: #f8fafc;
+}
+
+[data-theme='dark'] .tab-bar {
+  background: rgba(255, 255, 255, .05);
+  border-color: rgba(148, 163, 184, .2);
+}
+
+[data-theme='dark'] .tab-bar__tab,
+[data-theme='dark'] .task-view-tab {
+  color: #edf6fb;
+}
+
+[data-theme='dark'] .tab-bar__tab:hover,
+[data-theme='dark'] .task-view-tab:hover {
+  color: #fff;
+}
+
+/* Keep the signal markers crisp and atmospheric instead of neon-heavy. */
+.moves-signal__node--hot span {
+  box-shadow: inset 0 0 0 1px rgba(255,255,255,.12), 0 0 16px rgba(7,89,220,.28) !important;
+}
+.moves-signal__node--warn span {
+  box-shadow: inset 0 0 0 1px rgba(255,116,77,.08), 0 0 0 1px rgba(255,116,77,.07) !important;
+}
+.moves-orbit { opacity: .68; }
+[data-theme='light'] .moves-hero__art,
+:root:not([data-theme='dark']) .moves-hero__art {
+  background: radial-gradient(circle at 52% 50%, rgba(225,244,255,.62) 0, rgba(226,245,255,.2) 34%, transparent 68%);
+}
+[data-theme='dark'] .moves-hero__art {
+  right: -4%;
+  width: 68%;
+  background: radial-gradient(circle at 58% 50%, rgba(94,126,153,.24) 0, rgba(44,73,102,.14) 30%, rgba(10,18,32,0) 66%);
+}
+[data-theme='dark'] .moves-float {
+  color: #08162e !important;
+  background: rgba(255,255,255,.96);
+  border-color: rgba(255,255,255,.82);
+}
+[data-theme='dark'] .moves-float b {
+  color: #0759dc !important;
+}
+
+/* The iOS dark theme keeps its editorial dark sections dark; the page ink token
+   is intentionally light there for readable hero copy. */
+[data-theme='dark'] .ios-statement {
+  background: #07101f;
+  color: #fff;
+}
+[data-theme='dark'] .ios-statement h2 { color: #fff; }
+[data-theme='dark'] .ios-button { color: #08162e; }
+.ios-page.is-dark .ios-statement {
+  background: #07101f !important;
+  color: #fff !important;
+}
+.ios-page.is-dark .ios-statement h2,
+.ios-page.is-dark .ios-statement h2 span {
+  color: #fff !important;
+}
+.ios-page.is-dark .ios-statement__copy {
+  color: #c7d5e8 !important;
+}
+.ios-page.is-dark .ios-button {
+  color: #08162e !important;
+}
+
+[data-theme='dark'] .task-edit-shell {
+  --page-text: #f8fafc;
+  --muted-text: rgba(232, 232, 232, .76);
+  --panel-bg: linear-gradient(180deg, rgba(36, 39, 46, .82), rgba(30, 33, 39, .72));
+  --panel-border: rgba(148, 163, 184, .18);
+  --eyebrow-bg: rgba(148, 163, 184, .1);
+  --eyebrow-border: rgba(148, 163, 184, .18);
+  --eyebrow-text: #e2e8f0;
+  --secondary-bg: linear-gradient(180deg, rgba(40, 43, 50, .74), rgba(30, 33, 39, .66));
+  --secondary-border: rgba(148, 163, 184, .24);
+  --secondary-text: #e2e8f0;
+}
+
+[data-theme='dark'] input.form-control,
+[data-theme='dark'] select.form-select,
+[data-theme='dark'] textarea.form-control {
+  color: #f8fafc !important;
+  background: #1a2535 !important;
+  border-color: rgba(0, 191, 255, .28) !important;
+}
+
+[data-theme='dark'] input.form-control::placeholder,
+[data-theme='dark'] textarea.form-control::placeholder {
+  color: #5e7a94 !important;
+  opacity: .82;
+}
+
+input.form-control:disabled,
+select.form-select:disabled,
+textarea.form-control:disabled {
+  color: var(--tt-control-muted) !important;
+  background: var(--tt-control-surface-subtle) !important;
+  border-color: var(--tt-control-border) !important;
+  opacity: .68 !important;
+}
+
+@media (max-width: 850px) {
+  .moves-menu-panel a {
+    font-size: clamp(2rem, 10vw, 3.8rem) !important;
+    letter-spacing: -.065em !important;
+    white-space: nowrap;
+  }
+}
+
+/* Canonical production field styles, ported from
+   taliferrotech/frontend/src/styles.css. */
+:root {
+  --field-bg: linear-gradient(180deg, rgba(248, 250, 252, .95), rgba(241, 245, 249, .95));
+  --field-border: rgba(148, 163, 184, .22);
+  --field-placeholder: rgba(100, 116, 139, .88);
+  --field-text: #0f172a;
+  --field-shadow: inset 0 1px 0 rgba(255, 255, 255, .7);
+  --focus-ring: rgba(0, 149, 204, .55);
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: .5rem;
+}
+
+.form-control,
+.form-select,
+.todd-select,
+.multi-select {
+  width: 100%;
+  min-height: 48px;
+  border-radius: 16px !important;
+  border: 1px solid var(--field-border) !important;
+  background: var(--field-bg) !important;
+  color: var(--field-text) !important;
+  box-shadow: var(--field-shadow) !important;
+  padding: .85rem .95rem !important;
+  font-family: 'Segoe UI', 'Inter', sans-serif;
+  font-size: .95rem;
+}
+
+.form-select,
+.todd-select {
+  padding-right: 2.5rem !important;
+  font-weight: 700;
+}
+
+.form-control::placeholder,
+textarea.form-control::placeholder,
+.multi-select::placeholder {
+  color: var(--field-placeholder) !important;
+  opacity: 1;
+}
+
+.form-control:focus,
+.form-select:focus,
+.multi-select:focus {
+  outline: none;
+  border-color: rgba(250, 250, 250, .54) !important;
+  box-shadow: 0 0 0 4px var(--focus-ring), 0 10px 24px rgba(37, 99, 235, .1) !important;
+  background: var(--field-bg) !important;
+  color: var(--field-text) !important;
+}
+
+.form-control:disabled,
+.form-select:disabled,
+.multi-select:disabled {
+  opacity: .55 !important;
+  cursor: not-allowed;
+}
+
+textarea.form-control { min-height: 140px; resize: vertical; }
+select[multiple].form-select {
+  min-height: 150px;
+  padding-top: .55rem !important;
+  padding-bottom: .55rem !important;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --field-bg: linear-gradient(180deg, rgba(27, 30, 36, .88), rgba(20, 23, 29, .82));
+    --field-border: rgba(148, 163, 184, .18);
+    --field-placeholder: rgba(148, 163, 184, .72);
+    --field-text: #f8fafc;
+    --field-shadow: inset 0 1px 0 rgba(255, 255, 255, .04);
+    --focus-ring: rgba(0, 191, 255, .65);
+  }
+
+  .form-select option,
+  .todd-select option {
+    background-color: #1e2127;
+    color: #f8fafc;
+  }
+}
+
+[data-theme='dark'] {
+  --field-bg: linear-gradient(180deg, rgba(27, 30, 36, .88), rgba(20, 23, 29, .82));
+  --field-border: rgba(148, 163, 184, .18);
+  --field-placeholder: rgba(148, 163, 184, .72);
+  --field-text: #f8fafc;
+  --field-shadow: inset 0 1px 0 rgba(255, 255, 255, .04);
+  --focus-ring: rgba(0, 191, 255, .65);
+}
+
+/* Match the production task-edit charcoal fields even when another global
+   product stylesheet has supplied blue/navy control tokens. */
+[data-theme='dark'] .task-edit-shell .form-control,
+[data-theme='dark'] .task-edit-shell .form-select,
+[data-theme='dark'] .task-edit-shell .multi-select {
+  background: linear-gradient(180deg, rgba(27, 30, 36, .88), rgba(20, 23, 29, .82)) !important;
+  border-color: rgba(148, 163, 184, .18) !important;
+  color: #f8fafc !important;
+}
+
+/* Disabled selects must retain the same production field surface as inputs;
+   do not substitute the shared navy "subtle surface" token here. */
+.form-select:disabled,
+.todd-select:disabled,
+.multi-select:disabled {
+  background: var(--field-bg) !important;
+  border-color: var(--field-border) !important;
+  color: var(--field-placeholder) !important;
+}
+
+@media (prefers-color-scheme: dark) {
+  .task-edit-shell .form-control,
+  .task-edit-shell .form-select,
+  .task-edit-shell .multi-select {
+    background: linear-gradient(180deg, rgba(27, 30, 36, .88), rgba(20, 23, 29, .82)) !important;
+    border-color: rgba(148, 163, 184, .18) !important;
+    color: #f8fafc !important;
+  }
+}
+
+[data-theme='dark'] .form-select option,
+[data-theme='dark'] .todd-select option {
+  background-color: #1e2127;
+  color: #f8fafc;
+}
+
 /* You can add global styles to this file, and also import other style files */
 
 /*
@@ -62,18 +322,89 @@
  */
 html {
   height: 100%;
+  width: 100%;
+  overflow-x: hidden;
 }
 
 body {
   margin: 0;
   min-height: 100%;
+  width: 100%;
+  max-width: 100%;
+  overflow-x: hidden;
   background: #f6f8fa;
   color: #0d1117;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+app-root,
+router-outlet {
+  display: block;
+  min-width: 0;
+  max-width: 100%;
+}
+
+img,
+svg,
+video,
+canvas {
+  max-width: 100%;
+}
+
+/* Every Moves route is allowed to shrink to the viewport. Several of the
+   screens compose nested Bootstrap grids and standalone Angular components;
+   keeping the route boundary at min-width:0 prevents a child from widening
+   the whole page on phone/tablet emulation. */
+.task-home-shell,
+.task-view-shell,
+.task-dashboard-shell,
+.task-edit-shell,
+.mission-list-page,
+.mission-detail,
+.container-fluid {
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+}
+
+app-task-dashboard,
+app-task-checklist,
+app-timeline,
+app-horizontal-task-timeline,
+app-task-hierarchy,
+app-ai-mission-list,
+app-ai-mission-detail {
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
 }
 
 @media (prefers-color-scheme: dark) {
   body {
     background: #141a1e;
     color: #e8edf2;
+  }
+}
+
+/* Moves landing -> Pricing "magic move": the clicked CTA and the pricing
+   hero share view-transition-name: mv-hero-card (set in their own component
+   templates/styles). This just slows the browser's default morph so the
+   size/position interpolation actually reads instead of snapping. */
+::view-transition-group(mv-hero-card) {
+  animation-duration: .55s;
+  animation-timing-function: cubic-bezier(.16, 1, .3, 1);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-group(*),
+  ::view-transition-old(*),
+  ::view-transition-new(*) {
+    animation: none !important;
   }
 }
