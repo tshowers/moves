@@ -1,0 +1,13 @@
+@media (max-width: 850px) {
+  .ios-hero__visual {
+    width: 100%;
+    height: clamp(360px, 70vw, 560px);
+    margin-left: 0;
+  }
+
+  .ios-art {
+    width: min(100%, 520px);
+    max-height: 100%;
+    object-fit: contain;
+  }
+}

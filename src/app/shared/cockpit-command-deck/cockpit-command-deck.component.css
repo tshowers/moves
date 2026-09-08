@@ -1,6 +1,8 @@
 :host {
   display: grid;
   gap: 1rem;
+  width: 100%;
+  min-width: 0;
   --command-deck-text: var(--cockpit-text, var(--page-text, var(--docs-text, var(--social-text, #0f172a))));
   --command-deck-muted: var(--cockpit-muted, var(--muted-text, var(--docs-muted, var(--social-muted, rgba(15, 23, 42, 0.68)))));
   --command-deck-panel-bg: var(--cockpit-panel-bg, var(--panel-bg, var(--docs-bg, var(--social-card, rgba(255, 255, 255, 0.72)))));
@@ -13,6 +15,7 @@
 .command-deck-panel {
   position: relative;
   overflow: hidden;
+  min-width: 0;
   background: var(--command-deck-panel-bg);
   border: 1px solid var(--command-deck-panel-border);
   box-shadow: var(--command-deck-panel-shadow);
@@ -59,12 +62,19 @@
   align-items: flex-start;
   justify-content: space-between;
   gap: 1rem;
+  min-width: 0;
 }
 
 .command-deck-panel__heading {
   display: flex;
   align-items: center;
   gap: 1rem;
+  min-width: 0;
+}
+
+.command-deck-panel__heading > div {
+  min-width: 0;
+  flex: 1 1 auto;
 }
 
 .command-deck-panel__icon {
@@ -94,7 +104,8 @@
 
 .command-deck-panel__subtitle {
   margin: 0.5rem 0 0;
-  max-width: 760px;
+  max-width: 100%;
+  overflow-wrap: anywhere;
   font-size: 0.98rem;
   line-height: 1.6;
   color: var(--command-deck-muted);
@@ -126,7 +137,7 @@ app-tab-bar {
   display: block;
 }
 
-@media (max-width: 1080px) {
+@media (max-width: 1200px) {
   .command-deck-panel__row {
     flex-direction: column;
   }

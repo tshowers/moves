@@ -83,6 +83,18 @@ export const routes: Routes = [
       import( './features/not-found/not-found.component' ).then( ( m ) => m.NotFoundComponent ),
   },
   {
+    // Keep authorization failures inside the standalone Moves app. These
+    // aliases cover both spellings used by the shared TODD shell.
+    path: 'not-authorized',
+    redirectTo: 'app',
+    pathMatch: 'full',
+  },
+  {
+    path: 'unauthorized',
+    redirectTo: 'app',
+    pathMatch: 'full',
+  },
+  {
     // Catches any unmatched URL - without this the router just silently
     // fails to navigate instead of showing anything.
     path: '**',

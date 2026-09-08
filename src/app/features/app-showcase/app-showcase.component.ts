@@ -8,7 +8,7 @@ import { ThemeService } from '../../services/theme.service';
   standalone: true,
   imports: [CommonModule, RouterModule],
   templateUrl: './app-showcase.component.html',
-  styleUrl: './app-showcase.component.css'
+  styleUrls: [ './app-showcase.component.css', './app-showcase.responsive.css' ]
 } )
 export class AppShowcaseComponent {
   readonly theme = inject(ThemeService);
