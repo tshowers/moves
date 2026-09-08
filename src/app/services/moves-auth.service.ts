@@ -152,7 +152,12 @@ export class MovesAuthService {
   signIn ( returnUrl?: string ): void {
     const state = crypto.randomUUID();
     sessionStorage.setItem( this.pendingLoginStorageKey, JSON.stringify( { state, returnUrl } ) );
-    window.location.href = `https://todd.taliferro.tech/login?client=moves-web&state=${state}`;
+    const client = this.isLocalDevelopmentHost() ? 'moves-web-local' : 'moves-web';
+    window.location.href = `https://todd.taliferro.tech/login?client=${client}&state=${state}`;
+  }
+
+  private isLocalDevelopmentHost (): boolean {
+    return window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
   }
 
   /**
