@@ -1,5 +1,7 @@
 @import "@taliferro/ui/styles/controls.css";
 
+app-root > router-outlet + *:not(app-landing) { padding-top:4.5rem; box-sizing:border-box; }
+
 /* Shared explicit dark-mode corrections for pages reached from the landing page. */
 [data-theme='dark'] .task-home-shell,
 [data-theme='dark'] .task-view-shell {

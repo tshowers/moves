@@ -133,10 +133,6 @@
   color: var(--command-deck-text);
 }
 
-app-tab-bar {
-  display: block;
-}
-
 @media (max-width: 1200px) {
   .command-deck-panel__row {
     flex-direction: column;
