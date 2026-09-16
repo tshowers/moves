@@ -2,8 +2,8 @@
     <div class="task-edit-header">
         <div>
             <span class="task-edit-eyebrow"><a routerLink="/moves">Moves</a></span>
-            <h1>{{ editingTaskId ? 'Edit Move' : 'Create Move' }}</h1>
-            <p> Capture the work, connect the right people, and set the next move. </p>
+            <h1>{{ editingTaskId ? 'Edit Move' : (isAIMission ? 'New AI Mission' : 'Create Move') }}</h1>
+            <p>{{ isAIMission && !editingTaskId ? 'Tell TODD what to accomplish, and it will get to work.' : 'Capture the work, connect the right people, and set the next move.' }}</p>
         </div>
         <div class="task-edit-actions task-edit-actions-top">
             <button type="button" class="btn-todd" (click)="onCancel()" data-cy="moves-edit-cancel-top">Cancel</button>

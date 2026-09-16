@@ -1,0 +1,556 @@
+<div class="todd-page">
+  <div class="container-fluid tal-app mission-page">
+    <app-preloader [isLoading]="loading"></app-preloader>
+    <app-back-to-top></app-back-to-top>
+    <div class="container d-flex justify-content-center">
+      <app-section-jump [items]="sectionLinks" [hideDesktopBar]="true"></app-section-jump>
+    </div>
+    <div class="row g-4">
+      <div class="col-12 col-xl-5">
+        <section id="mission-intake" class="card mission-card">
+          <div class="card-body">
+            <div class="mission-guided-banner" *ngIf="guidedMode">
+              <div class="mission-eyebrow">First win</div>
+              <h2 class="mission-subtitle">Generate a plan from a short intake</h2>
+              <p class="mission-copy mission-copy--muted">TODD prefilled a starter mission so you can go from vague to visible in one step. Tighten anything you want, then generate the plan.</p>
+            </div>
+            <div class="mission-intake-hero">
+              <div class="mission-intake-copy">
+                <div class="mission-eyebrow">Mission Intake</div>
+                <h1 class="mission-title mb-0">Tell TODD the mission</h1>
+              </div>
+              <img src="assets/moves/mission.png" alt="Mission Workspace" class="mission-intake-image img-fluid">
+            </div>
+            <app-cockpit-browse-mode-banner
+              *ngIf="!hasAuthenticatedUser() && !demoModeEnabled"
+              surfaceLabel="Mission Workspace"
+              customTitle="You can try this out, but you won't be able to save"
+              customCopy="You are not signed in, so feel free to explore this form and see how TODD builds a mission plan. Sign in before you approve a plan — guest sessions can't create Moves."
+            ></app-cockpit-browse-mode-banner>
+            <div class="demo-context" *ngIf="demoModeEnabled">
+              <span class="demo-pill">DEMO MODE</span>
+              <p class="mt-2">This is how TODD maps execution.</p>
+              <p>
+                <a class="btn-todd mt-2" [routerLink]="'/login'" [queryParams]="{ returnUrl: '/plan' }" data-cy="moves-guest-sign-in">Sign in to try it with your data</a>
+              </p>
+            </div>
+            <p class="mission-copy mission-copy--muted"> This workspace is for delivery, execution, coordination, and follow-through. It is separate from Daily Momentum. </p>
+            <form #missionForm="ngForm" class="mission-form" (ngSubmit)="generatePlan(missionForm)">
+              <label class="mission-field">
+                <span>Mission type</span>
+                <select class="form-select" name="missionType" [(ngModel)]="form.missionType" required>
+                  <option *ngFor="let option of missionTypeOptions" [value]="option.value">
+                    {{ option.label }}
+                  </option>
+                </select>
+                <small>{{ getSelectedMissionTypeDescription() }}</small>
+              </label>
+              <label class="mission-field">
+                <span>Mission title</span>
+                <input class="form-control" type="text" name="title" [(ngModel)]="form.title" placeholder="Example: Launch the client migration" data-cy="moves-plan-title" />
+              </label>
+              <label class="mission-field">
+                <span>Problem statement</span>
+                <textarea class="form-control" name="problemStatement" [(ngModel)]="form.problemStatement" rows="4" required placeholder="What is going wrong or what is at risk?" data-cy="moves-plan-problem-statement"></textarea>
+              </label>
+              <label class="mission-field">
+                <span>Desired outcome</span>
+                <textarea class="form-control" name="desiredOutcome" [(ngModel)]="form.desiredOutcome" rows="3" required placeholder="What does success look like?" data-cy="moves-plan-desired-outcome"></textarea>
+              </label>
+              <label class="mission-field">
+                <span>Resources</span>
+                <textarea class="form-control" name="resourcesText" [(ngModel)]="form.resourcesText" rows="4" required placeholder="List the people, budget, tools, or assets TODD can work with. One per line." data-cy="moves-plan-resources"></textarea>
+              </label>
+              <label class="mission-field">
+                <span>Stakeholders</span>
+                <textarea class="form-control" name="stakeholdersText" [(ngModel)]="form.stakeholdersText" rows="3" placeholder="Who needs to stay aligned? One per line."></textarea>
+              </label>
+              <label class="mission-field">
+                <span>Constraints</span>
+                <textarea class="form-control" name="constraintsText" [(ngModel)]="form.constraintsText" rows="3" placeholder="What limits or risks must TODD work around? One per line."></textarea>
+              </label>
+              <label class="mission-field">
+                <span>Timeline</span>
+                <input class="form-control" type="text" name="timeline" [(ngModel)]="form.timeline" placeholder="Example: Client go-live in 30 days" />
+              </label>
+              <label class="mission-field">
+                <span>Success criteria</span>
+                <textarea class="form-control" name="successCriteriaText" [(ngModel)]="form.successCriteriaText" rows="4" placeholder="Optional. If you know the success criteria already, list them here. One per line."></textarea>
+              </label>
+              <details class="mission-optional">
+                <summary>Company context</summary>
+                <label class="mission-field">
+                  <span>Company description</span>
+                  <textarea class="form-control" name="companyDescription" [(ngModel)]="form.companyDescription" rows="3" placeholder="Optional company context for TODD."></textarea>
+                </label>
+                <label class="mission-field">
+                  <span>Mission</span>
+                  <textarea class="form-control" name="mission" [(ngModel)]="form.mission" rows="2" placeholder="Optional company mission."></textarea>
+                </label>
+                <label class="mission-field">
+                  <span>Value proposition</span>
+                  <textarea class="form-control" name="valueProposition" [(ngModel)]="form.valueProposition" rows="2" placeholder="Optional company value proposition."></textarea>
+                </label>
+              </details>
+              <div class="mission-actions">
+                <button type="submit" class="btn-todd" [disabled]="generatingPlan" data-cy="moves-plan-generate">
+                  {{ generatingPlan ? 'Generating plan...' : 'Generate Plan' }}
+                </button>
+                <button *ngIf="activeMission && !editingMission" type="button" class="btn btn-outline-secondary" (click)="editIntake()"> Edit Intake </button>
+                <button *ngIf="activeMission && editingMission" type="button" class="btn btn-outline-secondary" [disabled]="savingMission" (click)="saveMissionChanges()">
+                  {{ savingMission ? 'Saving...' : 'Save Changes' }}
+                </button>
+                <button *ngIf="activeMission" type="button" class="btn btn-outline-secondary" (click)="regeneratePlan()"> Regenerate Plan From Current Mission </button>
+                <button *ngIf="previewMission" type="button" class="btn btn-outline-secondary" (click)="regeneratePlan()"> Refresh Preview </button>
+              </div>
+            </form>
+            <div *ngIf="missionError" class="mission-feedback mission-feedback--error">
+              {{ missionError }}
+            </div>
+          </div>
+        </section>
+        <section id="mission-recent" class="card mission-card" *ngIf="recentMissions.length > 0">
+          <div class="card-body">
+            <div class="mission-eyebrow">Recent Missions</div>
+            <div class="mission-copy mission-copy--muted">Open an existing mission to review its plan, moves, and current risk picture.</div>
+            <div class="mission-recent-list">
+              <button type="button" class="mission-recent-item" *ngFor="let mission of recentMissions; trackBy: trackByMissionId" (click)="openMission(mission)">
+                <div>
+                  <strong>{{ mission.title }}</strong>
+                  <div class="mission-mini-copy">{{ formatMissionType(mission.missionType) }}</div>
+                </div>
+                <div class="mission-mini-meta">
+                  <span>{{ formatMissionStatus(mission.status) }}</span>
+                  <span>{{ mission.moveCount || 0 }} moves</span>
+                </div>
+              </button>
+            </div>
+          </div>
+        </section>
+      </div>
+      <div class="col-12 col-xl-7">
+        <section id="mission-plan" class="card mission-card" *ngIf="currentMission as mission; else emptyMissionState">
+          <div class="card-body">
+            <div class="mission-header">
+              <div>
+                <div class="mission-eyebrow">Mission Plan</div>
+                <h2 class="mission-subtitle">{{ mission.title }}</h2>
+                <div class="mission-copy mission-copy--muted">{{ formatMissionType(mission.missionType) }} · {{ formatMissionStatus(mission.status) }}</div>
+              </div>
+              <div class="mission-header-actions">
+                <span class="mission-status-pill" [attr.data-state]="hasLiveMission ? 'active' : 'preview'">
+                  {{ hasLiveMission ? 'Live mission' : 'Plan preview' }}
+                </span>
+                <button *ngIf="canApprove" type="button" class="btn-todd" [disabled]="approvingPlan || (!hasAuthenticatedUser() && !demoModeEnabled)" (click)="approveAndCreateMoves()" data-cy="moves-plan-approve">
+                  {{ approvingPlan ? (activeMission ? 'Applying revision...' : 'Creating Moves...') : (activeMission ? 'Apply revised plan' : 'Approve and Create Moves') }}
+                </button>
+              </div>
+            </div>
+            <div class="mission-revision-actions" *ngIf="hasRevisionPreview">
+              <label class="mission-check">
+                <input type="checkbox" [(ngModel)]="applyNetNewMovesOnApprove" name="applyNetNewMovesOnApprove" />
+                <span>Apply net-new recommended Moves when I approve this revision</span>
+              </label>
+              <div class="mission-mini-copy"> TODD will never delete existing Moves automatically. It will only append new recommended Moves that are not already in flight. </div>
+            </div>
+            <div class="mission-view-toggle" *ngIf="hasLiveMission">
+              <button type="button" class="btn" [class.btn-todd]="!focusMode" [class.btn-outline-secondary]="focusMode" (click)="toggleFocusMode(false)"> Full View </button>
+              <button type="button" class="btn" [class.btn-todd]="focusMode" [class.btn-outline-secondary]="!focusMode" (click)="toggleFocusMode(true)"> Focus Mode </button>
+            </div>
+            <div class="mission-control-panel" *ngIf="healthSummary as health" [hidden]="focusMode">
+              <article class="mission-kpi">
+                <span>Status</span>
+                <strong>{{ formatMissionStatus(mission.status) }}</strong>
+              </article>
+              <article class="mission-kpi">
+                <span>Risk level</span>
+                <strong>{{ mission.health?.currentRiskLevel || 'low' }}</strong>
+              </article>
+              <article class="mission-kpi">
+                <span>Total Moves</span>
+                <strong>{{ health.totalCount || 0 }}</strong>
+              </article>
+              <article class="mission-kpi">
+                <span>Open</span>
+                <strong>{{ health.openCount || 0 }}</strong>
+              </article>
+              <article class="mission-kpi">
+                <span>Blocked</span>
+                <strong>{{ health.blockedCount || 0 }}</strong>
+              </article>
+              <article class="mission-kpi">
+                <span>Completed</span>
+                <strong>{{ health.completedCount || 0 }}</strong>
+              </article>
+              <article class="mission-kpi">
+                <span>Overdue</span>
+                <strong>{{ health.overdueCount || 0 }}</strong>
+              </article>
+              <article class="mission-kpi">
+                <span>Revisions</span>
+                <strong>{{ revisionCount }}</strong>
+              </article>
+              <article class="mission-kpi">
+                <span>Last updated</span>
+                <strong>{{ mission.updatedAt | date:'mediumDate' }}</strong>
+              </article>
+              <article class="mission-kpi" *ngIf="lastRevisedAt">
+                <span>Last revised</span>
+                <strong>{{ lastRevisedAt | date:'mediumDate' }}</strong>
+              </article>
+              <article class="mission-kpi">
+                <span>Next move</span>
+                <strong>{{ mission.plan?.nextRecommendedMove?.label || 'Review plan' }}</strong>
+              </article>
+            </div>
+            <div class="mission-copy mission-copy--muted mission-risk-line" *ngIf="mission.health?.topRisk && !focusMode"> Top current risk: {{ mission.health?.topRisk }}
+            </div>
+            <div class="mission-drift-banner" *ngIf="mission.drift && !focusMode">
+              <strong>{{ mission.drift.label }}</strong>
+              <span>{{ mission.drift.explanation }}</span>
+            </div>
+            <div class="mission-section mission-revision" *ngIf="mission.revision as revision" [hidden]="focusMode">
+              <div class="mission-section-label">Revision review</div>
+              <div class="mission-copy mission-copy--muted"> TODD compared the saved mission plan to this regenerated version so you can evolve execution safely. </div>
+              <div class="mission-revision-summary">
+                <article class="mission-revision-kpi">
+                  <span>Same tasks</span>
+                  <strong>{{ revision.unchangedTaskCount || 0 }}</strong>
+                </article>
+                <article class="mission-revision-kpi">
+                  <span>New tasks</span>
+                  <strong>{{ revision.newTaskCount || 0 }}</strong>
+                </article>
+                <article class="mission-revision-kpi">
+                  <span>Changed tasks</span>
+                  <strong>{{ revision.changedTaskCount || 0 }}</strong>
+                </article>
+                <article class="mission-revision-kpi">
+                  <span>No longer recommended</span>
+                  <strong>{{ revision.removedTaskCount || 0 }}</strong>
+                </article>
+              </div>
+              <div class="mission-grid mission-grid--revision">
+                <article class="mission-panel" *ngIf="revision.summary?.changed">
+                  <div class="mission-section-label">Updated summary</div>
+                  <div class="mission-mini-copy"><strong>Before:</strong> {{ revision.summary?.before }}</div>
+                  <div class="mission-copy"><strong>After:</strong> {{ revision.summary?.after }}</div>
+                </article>
+                <article class="mission-panel" *ngIf="revision.nextRecommendedMove?.changed">
+                  <div class="mission-section-label">Updated next move</div>
+                  <div class="mission-mini-copy"><strong>Before:</strong> {{ revision.nextRecommendedMove?.before?.label }}</div>
+                  <div class="mission-copy"><strong>After:</strong> {{ revision.nextRecommendedMove?.after?.label }}</div>
+                  <div class="mission-mini-copy">{{ revision.nextRecommendedMove?.after?.description }}</div>
+                </article>
+              </div>
+              <div class="mission-revision-columns">
+                <article class="mission-revision-card" *ngIf="shouldShowRevisionSection('new')">
+                  <div class="mission-section-label">New tasks TODD recommends</div>
+                  <ul class="mission-list mission-list--tight">
+                    <li *ngFor="let task of revision.taskChanges?.added">
+                      <strong>{{ task.title }}</strong>
+                      <span class="mission-inline-note" *ngIf="task.alreadyExistsAsMove">Already represented in Moves</span>
+                      <div class="mission-mini-copy">{{ task.description }}</div>
+                    </li>
+                  </ul>
+                </article>
+                <article class="mission-revision-card" *ngIf="shouldShowRevisionSection('modified')">
+                  <div class="mission-section-label">Tasks that changed</div>
+                  <ul class="mission-list mission-list--tight">
+                    <li *ngFor="let task of revision.taskChanges?.modified">
+                      <strong>{{ task.after?.title }}</strong>
+                      <div class="mission-mini-copy"><strong>Before:</strong> {{ task.before?.description }}</div>
+                      <div class="mission-mini-copy"><strong>After:</strong> {{ task.after?.description }}</div>
+                      <div class="mission-revision-task-actions">
+                        <button *ngIf="task.relatedMoveId" type="button" class="btn btn-sm btn-outline-secondary" (click)="updateModifiedMove(task)"> Update existing Move </button>
+                        <button type="button" class="btn btn-sm btn-outline-secondary" (click)="createReplacementMove(task)"> Create replacement Move </button>
+                      </div>
+                    </li>
+                  </ul>
+                </article>
+                <article class="mission-revision-card" *ngIf="shouldShowRevisionSection('removed')">
+                  <div class="mission-section-label">No longer recommended</div>
+                  <ul class="mission-list mission-list--tight">
+                    <li *ngFor="let task of revision.taskChanges?.removed">
+                      <strong>{{ task.title }}</strong>
+                      <div class="mission-mini-copy">{{ task.description }}</div>
+                      <div class="mission-inline-note" *ngIf="task.relatedMoveSuperseded">Related Move already superseded</div>
+                      <div class="mission-revision-task-actions">
+                        <button *ngIf="task.relatedMoveId && !task.relatedMoveSuperseded" type="button" class="btn btn-sm btn-outline-secondary" (click)="markTaskSuperseded(task.relatedMoveId, task.title)"> Mark related Move as superseded </button>
+                      </div>
+                    </li>
+                  </ul>
+                </article>
+                <article class="mission-revision-card" *ngIf="shouldShowRevisionSection('same')">
+                  <div class="mission-section-label">What stayed the same</div>
+                  <ul class="mission-list mission-list--tight">
+                    <li *ngFor="let task of revision.taskChanges?.unchanged">
+                      <strong>{{ task.title }}</strong>
+                    </li>
+                  </ul>
+                </article>
+              </div>
+              <div class="mission-grid mission-grid--revision">
+                <article class="mission-panel" *ngIf="(revision.successCriteria?.added?.length || 0) > 0 || (revision.successCriteria?.removed?.length || 0) > 0">
+                  <div class="mission-section-label">Success criteria changes</div>
+                  <ul class="mission-list mission-list--tight" *ngIf="(revision.successCriteria?.added?.length || 0) > 0">
+                    <li *ngFor="let item of revision.successCriteria?.added">Added: {{ item }}</li>
+                  </ul>
+                  <ul class="mission-list mission-list--tight" *ngIf="(revision.successCriteria?.removed?.length || 0) > 0">
+                    <li *ngFor="let item of revision.successCriteria?.removed">Removed: {{ item }}</li>
+                  </ul>
+                </article>
+                <article class="mission-panel" *ngIf="(revision.blockerAssumptions?.added?.length || 0) > 0 || (revision.blockerAssumptions?.removed?.length || 0) > 0">
+                  <div class="mission-section-label">Blockers and risks changed</div>
+                  <ul class="mission-list mission-list--tight" *ngIf="(revision.blockerAssumptions?.added?.length || 0) > 0">
+                    <li *ngFor="let item of revision.blockerAssumptions?.added">New: {{ item }}</li>
+                  </ul>
+                  <ul class="mission-list mission-list--tight" *ngIf="(revision.blockerAssumptions?.removed?.length || 0) > 0">
+                    <li *ngFor="let item of revision.blockerAssumptions?.removed">No longer surfaced: {{ item }}</li>
+                  </ul>
+                </article>
+                <article class="mission-panel" *ngIf="(revision.milestones?.added?.length || 0) > 0 || (revision.milestones?.modified?.length || 0) > 0 || (revision.milestones?.removed?.length || 0) > 0">
+                  <div class="mission-section-label">Milestone changes</div>
+                  <ul class="mission-list mission-list--tight" *ngIf="(revision.milestones?.added?.length || 0) > 0">
+                    <li *ngFor="let item of revision.milestones?.added">Added: {{ item.title }}</li>
+                  </ul>
+                  <ul class="mission-list mission-list--tight" *ngIf="(revision.milestones?.modified?.length || 0) > 0">
+                    <li *ngFor="let item of revision.milestones?.modified"> Updated: {{ item.after?.title || item.before?.title }}
+                    </li>
+                  </ul>
+                  <ul class="mission-list mission-list--tight" *ngIf="(revision.milestones?.removed?.length || 0) > 0">
+                    <li *ngFor="let item of revision.milestones?.removed">Removed: {{ item.title }}</li>
+                  </ul>
+                </article>
+              </div>
+            </div>
+            <div class="mission-grid" *ngIf="!focusMode">
+              <article class="mission-panel">
+                <div class="mission-section-label">Project summary</div>
+                <div class="mission-copy">{{ mission.plan?.projectSummary }}</div>
+              </article>
+              <article class="mission-panel">
+                <div class="mission-section-label">Next recommended move</div>
+                <div class="mission-copy">{{ mission.plan?.nextRecommendedMove?.label }}</div>
+                <div class="mission-mini-copy">{{ mission.plan?.nextRecommendedMove?.description }}</div>
+              </article>
+              <article class="mission-panel">
+                <div class="mission-section-label">Success criteria</div>
+                <ul class="mission-list">
+                  <li *ngFor="let criterion of mission.plan?.successCriteria">{{ criterion }}</li>
+                </ul>
+              </article>
+              <article class="mission-panel">
+                <div class="mission-section-label">Blocker assumptions</div>
+                <ul class="mission-list">
+                  <li *ngFor="let blocker of mission.plan?.blockerAssumptions">{{ blocker }}</li>
+                </ul>
+              </article>
+            </div>
+            <div class="mission-grid mission-grid--focus" *ngIf="focusMode">
+              <article class="mission-panel">
+                <div class="mission-section-label">Current phase</div>
+                <div class="mission-copy">{{ currentPhaseLabel }}</div>
+                <div class="mission-mini-copy">Focus Mode hides completed, superseded, and future plan sections so you can work the mission that is live now.</div>
+              </article>
+              <article class="mission-panel">
+                <div class="mission-section-label">Next recommended move</div>
+                <div class="mission-copy">{{ mission.plan?.nextRecommendedMove?.label }}</div>
+                <div class="mission-mini-copy">{{ mission.plan?.nextRecommendedMove?.description }}</div>
+              </article>
+            </div>
+            <div class="mission-section">
+              <div class="mission-section-label">Milestones and phases</div>
+              <div class="mission-phase-list">
+                <article class="mission-phase-card" *ngFor="let phase of visibleMilestones">
+                  <div class="mission-phase-title">{{ phase.title }}</div>
+                  <div class="mission-mini-copy">{{ phase.objective }}</div>
+                  <ul class="mission-list mission-list--tight">
+                    <li *ngFor="let item of phase.deliverables">{{ item }}</li>
+                  </ul>
+                </article>
+              </div>
+            </div>
+            <div class="mission-section" *ngIf="!focusMode">
+              <div class="mission-section-label">Generated task plan</div>
+              <div class="mission-task-plan">
+                <article class="mission-task-card" *ngFor="let task of mission.plan?.taskPlan">
+                  <div class="mission-task-top">
+                    <strong>{{ task.title }}</strong>
+                    <span class="mission-task-chip">{{ task.phase }}</span>
+                  </div>
+                  <div class="mission-mini-copy">{{ task.description }}</div>
+                </article>
+              </div>
+            </div>
+            <div class="mission-operator-actions" *ngIf="!focusMode">
+              <button type="button" class="btn btn-outline-secondary" (click)="recommendNextAction()"> Recommend next action </button>
+              <button type="button" class="btn btn-outline-secondary" (click)="draftStatusUpdate()"> Draft status update </button>
+              <button type="button" class="btn btn-outline-secondary" (click)="draftStakeholderStatusUpdate()"> Stakeholder update </button>
+              <button type="button" class="btn btn-outline-secondary" (click)="draftBlockerEscalationUpdate()"> Blocker escalation </button>
+              <button type="button" class="btn btn-outline-secondary" (click)="draftDecisionRequestUpdate()"> Decision request </button>
+              <button type="button" class="btn btn-outline-secondary" (click)="draftProgressSummaryNote()"> Progress summary note </button>
+              <button type="button" class="btn btn-outline-secondary" (click)="summarizeRisks()"> Summarize blockers and risks </button>
+              <button *ngIf="hasLiveMission" type="button" class="btn btn-outline-secondary" (click)="openMissionMovesView()"> Open all Moves </button>
+              <button *ngIf="hasLiveMission && mission.status !== 'completed'" type="button" class="btn btn-outline-secondary" [disabled]="updatingMissionStatus" (click)="completeMission()"> Complete Mission </button>
+              <button *ngIf="hasLiveMission && mission.status !== 'archived'" type="button" class="btn btn-outline-secondary" [disabled]="updatingMissionStatus" (click)="archiveMission()"> Archive Mission </button>
+            </div>
+            <div class="mission-section" *ngIf="communicationDraftEntries.length > 0 && !focusMode">
+              <div class="mission-section-label">Mission communication drafts</div>
+              <div class="mission-draft-grid">
+                <article class="mission-draft-card" *ngFor="let draft of communicationDraftEntries">
+                  <div class="mission-task-top">
+                    <strong>{{ draft.title }}</strong>
+                  </div>
+                  <div class="mission-mini-copy">{{ draft.body }}</div>
+                  <div class="mission-revision-task-actions">
+                    <button type="button" class="btn btn-sm btn-outline-secondary" (click)="copyCommunicationDraft(draft.title, draft.body)"> Copy to clipboard </button>
+                    <button type="button" class="btn btn-sm btn-outline-secondary" (click)="openMissionUpdateComposer(draft)"> Open in Mission Composer </button>
+                  </div>
+                </article>
+              </div>
+            </div>
+            <div class="mission-section" *ngIf="missionComposerOpen && !focusMode">
+              <div class="mission-section-label">Mission Update Composer</div>
+              <div class="mission-panel mission-composer">
+                <div class="mission-composer__context">
+                  <div>
+                    <strong>{{ currentMission.title }}</strong>
+                    <div class="mission-mini-copy">{{ formatMissionStatus(currentMission.status) }} mission</div>
+                  </div>
+                  <div class="mission-mini-copy">
+                    <div *ngIf="currentMission.drift?.label">Drift: {{ currentMission.drift?.label }}</div>
+                    <div *ngIf="currentMission.plan?.nextRecommendedMove?.label">Next move: {{ currentMission.plan?.nextRecommendedMove?.label }}</div>
+                  </div>
+                </div>
+                <label class="mission-field">
+                  <span>Draft type</span>
+                  <input class="form-control" type="text" [ngModel]="missionComposer.draftType" name="missionComposerType" disabled />
+                </label>
+                <label class="mission-field">
+                  <span>Title / subject</span>
+                  <input class="form-control" type="text" [(ngModel)]="missionComposer.title" name="missionComposerTitle" />
+                </label>
+                <label class="mission-field">
+                  <span>Audience</span>
+                  <input class="form-control" type="text" [(ngModel)]="missionComposer.audienceLabel" name="missionComposerAudience" placeholder="Who should receive this update?" />
+                </label>
+                <label class="mission-field">
+                  <span>Body</span>
+                  <textarea class="form-control" [(ngModel)]="missionComposer.body" name="missionComposerBody" rows="8"></textarea>
+                </label>
+                <div class="mission-revision-task-actions">
+                  <button type="button" class="btn btn-sm btn-outline-secondary" (click)="copyMissionComposerDraft()"> Copy to clipboard </button>
+                  <button type="button" class="btn btn-sm btn-outline-secondary" (click)="openMissionComposerInEmail()"> Open in email composer </button>
+                  <button type="button" class="btn btn-sm btn-outline-secondary" (click)="saveMissionComposerAsNote()"> Save as note </button>
+                  <button type="button" class="btn btn-sm btn-outline-secondary" (click)="closeMissionComposer()"> Close without sending </button>
+                </div>
+              </div>
+            </div>
+            <div class="mission-section" *ngIf="missionCommunicationNotes.length > 0 && !focusMode">
+              <div class="mission-section-label">Saved mission notes</div>
+              <div class="mission-revision-history">
+                <article class="mission-revision-history-item" *ngFor="let note of missionCommunicationNotes">
+                  <div class="mission-task-top">
+                    <strong>{{ note.title }}</strong>
+                    <span class="mission-task-chip">{{ note.draftType || 'note' }}</span>
+                  </div>
+                  <div class="mission-mini-copy" *ngIf="note.audienceLabel">Audience: {{ note.audienceLabel }}</div>
+                  <div class="mission-mini-copy">{{ note.body }}</div>
+                  <div class="mission-mini-copy" *ngIf="note.updatedAt">{{ note.updatedAt | date:'medium' }}</div>
+                </article>
+              </div>
+            </div>
+            <div *ngIf="helperCard && !focusMode" #helperCardRef class="mission-helper-card">
+              <div class="mission-section-label">{{ helperCard.title }}</div>
+              <div class="mission-copy">{{ helperCard.body }}</div>
+              <ul class="mission-list" *ngIf="helperCard.bullets.length > 0">
+                <li *ngFor="let bullet of helperCard.bullets">{{ bullet }}</li>
+              </ul>
+            </div>
+            <div class="mission-section" *ngIf="activeMission?.revisions?.length && !focusMode">
+              <div class="mission-section-label">Revision history</div>
+              <div class="mission-revision-history">
+                <article class="mission-revision-history-item" *ngFor="let revision of activeMission?.revisions">
+                  <div class="mission-task-top">
+                    <strong>{{ revision.createdAt | date:'medium' }}</strong>
+                    <span class="mission-task-chip">{{ revision.appliedNetNewMoves ? 'Moves applied' : 'Plan updated only' }}</span>
+                  </div>
+                  <div class="mission-mini-copy" *ngIf="revision.summary?.changed">Summary updated</div>
+                  <div class="mission-mini-copy">
+                    {{ revision.newTaskCount || 0 }} new · {{ revision.changedTaskCount || 0 }} changed · {{ revision.removedTaskCount || 0 }} no longer recommended
+                  </div>
+                </article>
+              </div>
+            </div>
+          </div>
+        </section>
+        <section id="mission-moves" class="card mission-card mt-2" *ngIf="activeMission as mission">
+          <div class="card-body">
+            <div class="mission-header">
+              <div>
+                <div class="mission-eyebrow">Mission Moves</div>
+                <div class="mission-copy mission-copy--muted"> TODD created these Moves from the approved mission plan. They stay tied to this mission and can be opened individually. </div>
+              </div>
+              <div class="mission-progress">
+                <strong>{{ mission.progress?.completedCount || 0 }}</strong>
+                <span>of {{ mission.progress?.totalCount || 0 }} complete</span>
+              </div>
+            </div>
+            <div class="mission-move-columns">
+              <div class="mission-move-column" *ngIf="!focusMode">
+                <div class="mission-section-label">Planned Moves</div>
+                <button type="button" class="mission-move-card" *ngFor="let move of plannedMoves; trackBy: trackByMoveId" (click)="openMove(move.id)">
+                  <strong>{{ move.title }}</strong>
+                  <div class="mission-mini-copy">{{ move.phase || 'Planned' }} · {{ move.priority }}</div>
+                </button>
+                <div *ngIf="plannedMoves.length === 0" class="mission-empty">No planned Moves are waiting.</div>
+              </div>
+              <div class="mission-move-column">
+                <div class="mission-section-label">Open Moves</div>
+                <button type="button" class="mission-move-card" *ngFor="let move of openMoves; trackBy: trackByMoveId" (click)="openMove(move.id)">
+                  <strong>{{ move.title }}</strong>
+                  <div class="mission-mini-copy">{{ move.phase || 'In motion' }} · {{ move.status }}</div>
+                </button>
+                <div *ngIf="openMoves.length === 0" class="mission-empty">No open Moves are active right now.</div>
+              </div>
+              <div class="mission-move-column">
+                <div class="mission-section-label">Blocked Moves</div>
+                <button type="button" class="mission-move-card mission-move-card--blocked" *ngFor="let move of blockedMoves; trackBy: trackByMoveId" (click)="openMove(move.id)">
+                  <strong>{{ move.title }}</strong>
+                  <div class="mission-mini-copy">{{ move.phase || 'Blocked' }} · {{ move.status }}</div>
+                </button>
+                <div *ngIf="blockedMoves.length === 0" class="mission-empty">No blocked Moves are surfaced right now.</div>
+              </div>
+              <div class="mission-move-column" *ngIf="!focusMode">
+                <div class="mission-section-label">Completed Moves</div>
+                <button type="button" class="mission-move-card mission-move-card--complete" *ngFor="let move of completedMoves; trackBy: trackByMoveId" (click)="openMove(move.id)">
+                  <strong>{{ move.title }}</strong>
+                  <div class="mission-mini-copy">{{ move.phase || 'Completed' }} · {{ move.status }}</div>
+                </button>
+                <div *ngIf="completedMoves.length === 0" class="mission-empty">No Moves are completed yet.</div>
+              </div>
+              <div class="mission-move-column" *ngIf="!focusMode">
+                <div class="mission-section-label">Superseded Moves</div>
+                <button type="button" class="mission-move-card mission-move-card--superseded" *ngFor="let move of supersededMoves; trackBy: trackByMoveId" (click)="openMove(move.id)">
+                  <strong>{{ move.title }}</strong>
+                  <div class="mission-mini-copy">Superseded · {{ move.supersededReason || 'No longer part of the active plan' }}</div>
+                </button>
+                <div *ngIf="supersededMoves.length === 0" class="mission-empty">No Moves have been superseded.</div>
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+    </div>
+    <ng-template #emptyMissionState>
+      <section class="card mission-card">
+        <div class="card-body">
+          <div class="mission-eyebrow">Mission Workspace</div>
+          <h2 class="mission-subtitle">TODD will turn the mission into an operating plan</h2>
+          <p class="mission-copy"> Start with the mission intake on the left. TODD will return a practical summary, success criteria, phases, first Moves, risks, and the next recommended move. </p>
+        </div>
+      </section>
+    </ng-template>
+  </div>
+</div>

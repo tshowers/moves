@@ -707,21 +707,23 @@ export class TaskViewParentComponent implements OnInit, OnDestroy {
     this.logger.log( '[handleComplete] called. userId:', this.userId, '| task.id:', task.id, '| task.isCompleted (before toggle):', task.isCompleted );
     if ( !this.userId ) { this.logger.warn( '[handleComplete] no userId — aborting' ); return; }
 
+    const normalizeStatus = ( s: string | undefined, completing: boolean ): string => {
+      if ( completing ) return 'completed';
+      const statusMap: Record<string, string> = { todo: 'not-started', stale: 'on-hold', archived: 'cancelled' };
+      const normalized = ( s || 'not-started' ).toLowerCase();
+      return statusMap[normalized] ?? ( ['not-started', 'in-progress', 'completed', 'on-hold', 'cancelled'].includes( normalized ) ? normalized : 'not-started' );
+    };
+
     const updatedTask: Task = {
       ...task,
       isCompleted: !task.isCompleted,
-      progress: task.isCompleted ? ( task.progress ?? 0 ) : 100
+      progress: task.isCompleted ? ( task.progress ?? 0 ) : 100,
+      status: normalizeStatus( task.status, !task.isCompleted )
     };
     this.logger.log( '[handleComplete] updatedTask.isCompleted:', updatedTask.isCompleted, '| updatedTask.progress:', updatedTask.progress );
 
     try {
       const orUndefined = ( v: string | undefined ) => ( v?.trim() ? v.trim() : undefined );
-      const normalizeStatus = ( s: string | undefined, completing: boolean ): string => {
-        if ( completing ) return 'completed';
-        const statusMap: Record<string, string> = { todo: 'not-started', stale: 'on-hold', archived: 'cancelled' };
-        const normalized = ( s || 'not-started' ).toLowerCase();
-        return statusMap[normalized] ?? ( ['not-started', 'in-progress', 'completed', 'on-hold', 'cancelled'].includes( normalized ) ? normalized : 'not-started' );
-      };
       const normalizePriority = ( p: string | undefined ): 'low' | 'medium' | 'high' | 'urgent' => {
         const allowed: Array<'low' | 'medium' | 'high' | 'urgent'> = ['low', 'medium', 'high', 'urgent'];
         const lower = ( p || '' ).toLowerCase() as 'low' | 'medium' | 'high' | 'urgent';
@@ -732,7 +734,7 @@ export class TaskViewParentComponent implements OnInit, OnDestroy {
         description: updatedTask.description,
         dueDate: orUndefined( updatedTask.dueDate ),
         progress: updatedTask.progress,
-        status: normalizeStatus( updatedTask.status, !!updatedTask.isCompleted ),
+        status: updatedTask.status,
         priority: normalizePriority( updatedTask.priority ),
         isCompleted: updatedTask.isCompleted,
         needsAttention: updatedTask.needsAttention,

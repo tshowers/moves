@@ -56,6 +56,13 @@ export class MovesAuthService {
 
   getUser (): Observable<User | null> {
     return new Observable( ( subscriber ) => {
+      const override = this.getCypressAuthOverride();
+      if ( override ) {
+        subscriber.next( { uid: override.uid, email: override.email } as User );
+        subscriber.complete();
+        return;
+      }
+
       const unsubscribe = onAuthStateChanged( this.auth, ( user ) => subscriber.next( user ) );
       return unsubscribe;
     } );
@@ -67,6 +74,13 @@ export class MovesAuthService {
   getUserId (): Observable<string> {
     if ( !this.userId$ ) {
       this.userId$ = new Observable<string>( ( subscriber ) => {
+        const override = this.getCypressAuthOverride();
+        if ( override ) {
+          subscriber.next( override.uid );
+          subscriber.complete();
+          return;
+        }
+
         const unsubscribe = onAuthStateChanged( this.auth, ( user ) => subscriber.next( user?.uid || '' ) );
         return unsubscribe;
       } ).pipe( shareReplay( { bufferSize: 1, refCount: false } ) );
@@ -80,6 +94,12 @@ export class MovesAuthService {
    * value into localStorage so getTenant() can read it synchronously
    * (see class doc comment). */
   getTenantId (): Observable<string> {
+    const override = this.getCypressAuthOverride();
+    if ( override ) {
+      this.cacheTenantId( override.tenantId );
+      return of( override.tenantId );
+    }
+
     if ( !this.tenantId$ ) {
       this.tenantId$ = this.getUserId().pipe(
         switchMap( ( uid ) => ( uid ? this.resolveTenantId( uid ) : of( '' ) ) ),
@@ -92,16 +112,26 @@ export class MovesAuthService {
 
   isLoggedIn (): Observable<boolean> {
     return new Observable( ( subscriber ) => {
+      if ( this.getCypressAuthOverride() ) {
+        subscriber.next( true );
+        subscriber.complete();
+        return;
+      }
+
       const unsubscribe = onAuthStateChanged( this.auth, ( user ) => subscriber.next( !!user ) );
       return unsubscribe;
     } );
   }
 
   getCurrentUserIdSync (): string {
+    const override = this.getCypressAuthOverride();
+    if ( override ) return override.uid;
     return this.auth.currentUser?.uid || '';
   }
 
   getCurrentUserEmailSync (): string {
+    const override = this.getCypressAuthOverride();
+    if ( override ) return override.email || '';
     return this.auth.currentUser?.email || '';
   }
 
@@ -112,9 +142,49 @@ export class MovesAuthService {
    * usable tenant id even before getTenantId()'s Observable has resolved
    * the real companyId. */
   getTenant (): string {
+    const override = this.getCypressAuthOverride();
+    if ( override ) return override.tenantId;
+
     const cached = this.getCachedTenantId();
     if ( cached ) return cached;
     return this.auth.currentUser?.uid || '';
+  }
+
+  /**
+   * Test-only escape hatch used by the Cypress suite (cypress/support/
+   * commands.ts's visitWithCypressAuth) to sign in as a fake user without
+   * driving Firebase's real hosted-login redirect through
+   * todd.taliferro.tech. Gated on `window.Cypress`, which Cypress injects
+   * into every page it drives and which is never present in a normal
+   * browser session - production and regular dev use are unaffected.
+   * Ported from TODD's own AuthService.getCypressAuthOverride().
+   */
+  private getCypressAuthOverride (): { uid: string; tenantId: string; email: string | null } | null {
+    if ( typeof window === 'undefined' || !( window as any ).Cypress ) {
+      return null;
+    }
+
+    try {
+      const raw = window.localStorage.getItem( '__cypressAuthOverride' );
+      if ( !raw ) return null;
+
+      const parsed = JSON.parse( raw );
+      if ( !parsed || typeof parsed.uid !== 'string' || !parsed.uid.trim() ) {
+        return null;
+      }
+
+      return {
+        uid: parsed.uid.trim(),
+        tenantId: typeof parsed.tenantId === 'string' && parsed.tenantId.trim()
+          ? parsed.tenantId.trim()
+          : parsed.uid.trim(),
+        email: typeof parsed.email === 'string' && parsed.email.trim()
+          ? parsed.email.trim()
+          : null,
+      };
+    } catch {
+      return null;
+    }
   }
 
   private getCachedTenantId (): string {
@@ -153,7 +223,18 @@ export class MovesAuthService {
     const state = crypto.randomUUID();
     sessionStorage.setItem( this.pendingLoginStorageKey, JSON.stringify( { state, returnUrl } ) );
     const client = this.isLocalDevelopmentHost() ? 'moves-web-local' : 'moves-web';
-    window.location.href = `https://todd.taliferro.tech/login?client=${client}&state=${state}`;
+    this.navigateToHostedLogin( `https://todd.taliferro.tech/login?client=${client}&state=${state}` );
+  }
+
+  /**
+   * Split out from signIn() so tests can spy on this instead of the real
+   * window.location.href assignment - `location.href` isn't actually
+   * configurable in real Chrome (Karma) despite what spyOnProperty
+   * expects, and letting this hand-off actually fire in Cypress leaves no
+   * stable, reliably-observable state on this origin afterward.
+   */
+  protected navigateToHostedLogin ( url: string ): void {
+    window.location.href = url;
   }
 
   private isLocalDevelopmentHost (): boolean {

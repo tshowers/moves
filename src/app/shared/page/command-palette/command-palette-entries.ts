@@ -18,15 +18,15 @@ export const COMMAND_PALETTE_ENTRIES: CommandPaletteEntry[] = [
   // --- Moves (this app) ---------------------------------------------------
   { id: 'moves-home', label: 'Home', group: 'Moves', path: '/', keywords: ['home', 'landing', 'moves'] },
   { id: 'moves-app', label: 'App', group: 'Moves', path: '/app', keywords: ['app', 'task home', 'dashboard', 'my moves'] },
-  { id: 'moves-board', label: 'Execution Board', group: 'Moves', path: '/moves-view', keywords: ['board', 'execution board', 'tasks', 'work on'] },
+  { id: 'moves-board', label: 'Execution', group: 'Moves', path: '/moves-view', keywords: ['board', 'execution board', 'execution', 'tasks', 'work on'] },
   { id: 'moves-new', label: 'New Move', group: 'Moves', path: '/move', keywords: ['new move', 'create move', 'add task'] },
-  { id: 'moves-ai-missions', label: 'AI Missions', group: 'Moves', path: '/ai-missions', keywords: ['ai missions', 'missions', 'automation'] },
+  { id: 'moves-plan', label: 'Mission', group: 'Moves', path: '/plan', keywords: ['mission workspace', 'mission', 'plan', 'goal engine'] },
   { id: 'moves-pricing', label: 'Pricing', group: 'Moves', path: '/pricing', keywords: ['pricing', 'plans', 'upgrade', 'billing'] },
   { id: 'moves-login', label: 'Sign In', group: 'Moves', path: '/login', keywords: ['sign in', 'login', 'log in'] },
   { id: 'moves-ios', label: 'iOS App', group: 'Moves', path: '/ios', keywords: ['ios', 'iphone', 'mobile app', 'app store'] },
 
   // --- Other Apps -----------------------------------------------------------
-  { id: 'app-maya', label: 'Maya', group: 'Other Apps', path: 'https://maya.taliferro.tech', icon: 'assets/find/entities/maya/logo-bw-icon.png', external: true, keywords: ['maya', 'marketing director'] },
+  { id: 'app-maya', label: 'Maya', group: 'Other Apps', path: 'https://maya.taliferro.tech', icon: 'assets/find/entities/maya/logo-bw.png', external: true, keywords: ['maya', 'marketing director'] },
   { id: 'app-todd', label: 'Ask TODD', group: 'Other Apps', path: 'https://ask.taliferro.tech', icon: 'assets/find/entities/todd/logo-bw-icon.png', external: true, keywords: ['todd', 'ask todd', 'assistant', 'chat'] },
   { id: 'app-docs', label: 'Docs', group: 'Other Apps', path: 'https://docs.taliferro.tech', icon: 'assets/find/entities/docs/logo-bw-icon.png', external: true, keywords: ['docs', 'documents', 'proposals', 'contracts'] },
   { id: 'app-signature', label: 'Email Signature Builder', group: 'Other Apps', path: 'https://signature.taliferro.tech', icon: 'assets/find/entities/email-signature-builder/logo-bw-icon.png', external: true, keywords: ['email signature', 'signature builder'] },

@@ -60,6 +60,18 @@ export const routes: Routes = [
       import( './features/ai-mission-detail/ai-mission-detail.component' ).then( ( m ) => m.AiMissionDetailComponent ),
   },
   {
+    // Mission Workspace - TODD's Goal Engine mission planner (intake ->
+    // AI plan preview -> approve -> real Moves). Routed at /plan rather
+    // than TODD's own /mission, which collides with the unrelated
+    // autonomous-agent concept at move/:id/mission above - see
+    // mission-workspace-migration-plan.md. No auth guard, matching
+    // ai-missions' current posture; supports ?demo=1 for unauthenticated
+    // preview.
+    path: 'plan',
+    loadComponent: () =>
+      import( './features/mission-workspace/mission-workspace.component' ).then( ( m ) => m.MissionWorkspaceComponent ),
+  },
+  {
     path: 'login',
     loadComponent: () =>
       import( './features/sign-in/sign-in.component' ).then( ( m ) => m.SignInComponent ),

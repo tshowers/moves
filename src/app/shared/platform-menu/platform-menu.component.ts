@@ -1,5 +1,6 @@
 import { CommonModule } from '@angular/common';
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
+import packageJson from '../../../../package.json';
 import { RouterModule } from '@angular/router';
 
 import { getPlatformMenuItems, PlatformMenuItem } from '@taliferro/ui/platform/account-menu.model';
@@ -8,9 +9,10 @@ interface ProductLink {
   label: string;
   url: string;
   icon: string;
+  description: string;
 }
 
-interface AppRouteLink { label: string; route: string; }
+interface AppRouteLink { label: string; route: string; signOut?: boolean; }
 
 /**
  * Top-right hamburger that slides a panel down over the page. Products on
@@ -28,33 +30,40 @@ interface AppRouteLink { label: string; route: string; }
 } )
 export class PlatformMenuComponent {
   @Input() isAdmin = false;
+  @Input() isLoggedIn = false;
+  @Output() readonly signOut = new EventEmitter<void>();
 
   isOpen = false;
+  readonly appVersion = String(packageJson.version || '').trim();
 
-  readonly appRoutes: AppRouteLink[] = [
-    { label: 'Home', route: '/' },
-    { label: 'Moves Home', route: '/app' },
-    { label: 'Execution Board', route: '/moves-view' },
-    { label: 'New Move', route: '/move' },
-    { label: 'AI Missions', route: '/ai-missions' },
-    { label: 'Pricing', route: '/pricing' },
-    { label: 'Sign In', route: '/login' },
-    { label: 'iOS App', route: '/ios' },
-  ];
+  get appRoutes (): AppRouteLink[] {
+    return [
+      { label: 'Home', route: '/' },
+      { label: 'Moves Home', route: '/app' },
+      { label: 'Execution', route: '/moves-view' },
+      { label: 'New Move', route: '/move' },
+      { label: 'Mission', route: '/plan' },
+      { label: 'Pricing', route: '/pricing' },
+      { label: 'iOS App', route: '/ios' },
+      this.isLoggedIn
+        ? { label: 'Sign Out', route: '/', signOut: true }
+        : { label: 'Sign In', route: '/login' },
+    ];
+  }
 
   readonly productLinks: ProductLink[] = [
-    { label: 'Ask TODD', url: 'https://ask.taliferro.tech', icon: 'assets/find/entities/todd/logo-bw-icon.png' },
-    { label: 'Network', url: 'https://network.taliferro.tech', icon: 'assets/find/entities/network/logo-bw-icon.png' },
-    { label: 'Outreach', url: 'https://outreach.taliferro.tech', icon: 'assets/find/entities/outreach/logo-bw-icon.png' },
-    { label: 'Docs', url: 'https://docs.taliferro.tech', icon: 'assets/find/entities/docs/logo-bw-icon.png' },
-    { label: 'Pulse', url: 'https://pulse.taliferro.tech', icon: 'assets/find/entities/pulse/logo-bw-icon.png' },
-    { label: 'Social', url: 'https://social.taliferro.tech', icon: 'assets/find/entities/social/logo-bw-icon.png' },
-    { label: 'Lead Vault', url: 'https://lead-vault.taliferro.tech', icon: 'assets/find/entities/lead-vault/logo-bw-icon.png' },
-    { label: 'Maya', url: 'https://maya.taliferro.tech', icon: 'assets/find/entities/maya/logo-icon.png' },
-    { label: 'SayIt', url: 'https://sayit.taliferro.tech', icon: 'assets/find/entities/sayit/logo-bw-icon.png' },
-    { label: 'Find', url: 'https://find.taliferro.tech', icon: 'assets/find/entities/find/logo-bw-icon.png' },
-    { label: 'Email Signature', url: 'https://signature.taliferro.tech', icon: 'assets/find/entities/email-signature-builder/logo-bw-icon.png' },
-    { label: 'Music', url: 'https://music.taliferro.com', icon: 'assets/find/entities/music/logo-bw-icon.png' },
+    { label: 'Ask TODD', url: 'https://ask.taliferro.tech', icon: 'assets/find/entities/todd/logo-bw-icon.png', description: 'Turn uncertainty into the next move.' },
+    { label: 'Network', url: 'https://network.taliferro.tech', icon: 'assets/find/entities/network/logo-bw-icon.png', description: 'Know who matters before the moment passes.' },
+    { label: 'Outreach', url: 'https://outreach.taliferro.tech', icon: 'assets/find/entities/outreach/logo-bw-icon.png', description: 'Keep the work moving.' },
+    { label: 'Docs', url: 'https://docs.taliferro.tech', icon: 'assets/find/entities/docs/logo-bw-icon.png', description: 'Give your best thinking somewhere to live.' },
+    { label: 'Pulse', url: 'https://pulse.taliferro.tech', icon: 'assets/find/entities/pulse/logo-bw-icon.png', description: 'Hear what people are really saying.' },
+    { label: 'Social', url: 'https://social.taliferro.tech', icon: 'assets/find/entities/social/logo-bw-icon.png', description: 'Stay visible without living online.' },
+    { label: 'Lead Vault', url: 'https://lead-vault.taliferro.tech', icon: 'assets/find/entities/lead-vault/logo-bw-icon.png', description: 'Find the people behind the opportunity.' },
+    { label: 'Maya', url: 'https://maya.taliferro.tech', icon: 'assets/find/entities/maya/logo-bw.png', description: 'Think like your marketing director.' },
+    { label: 'SayIt', url: 'https://sayit.taliferro.tech', icon: 'assets/find/entities/sayit/logo-bw-icon.png', description: 'Make your message worth sharing.' },
+    { label: 'Find', url: 'https://find.taliferro.tech', icon: 'assets/find/entities/find/logo-bw-icon.png', description: 'Get to the answer faster.' },
+    { label: 'Email Signature', url: 'https://signature.taliferro.tech', icon: 'assets/find/entities/email-signature-builder/logo-bw-icon.png', description: 'Make every email carry your brand.' },
+    { label: 'Music', url: 'https://music.taliferro.com', icon: 'assets/find/entities/music/logo-bw-icon.png', description: 'Let the soundtrack keep moving.' },
   ];
 
   get accountItems (): PlatformMenuItem[] {
@@ -67,5 +76,12 @@ export class PlatformMenuComponent {
 
   close (): void {
     this.isOpen = false;
+  }
+
+  handleRouteClick ( event: MouseEvent, link: AppRouteLink ): void {
+    if ( !link.signOut ) return;
+    event.preventDefault();
+    this.close();
+    this.signOut.emit();
   }
 }

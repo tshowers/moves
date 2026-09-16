@@ -75,6 +75,22 @@ export class MovesDataService {
     return snap.docs.map( ( d ) => ( { ...( d.data() as any ), id: d.id } ) as Dropdown );
   }
 
+  /**
+   * Mirrors DataService.getProjectByName(...) - the one lookup TaskLLMService
+   * needs for its showProjectByName/showProject/goProject actions. Same
+   * client-side-filter-over-a-small-collection pattern as
+   * NetworkDataService.findContactsByName.
+   */
+  async getProjectByName ( tenantId: string, name: string ): Promise<Dropdown | null> {
+    const needle = ( name || '' ).trim().toLowerCase();
+    if ( !needle ) return null;
+
+    const all = await this.getProjects( tenantId );
+    return all.find( ( p ) => String( p.name || '' ).trim().toLowerCase() === needle )
+      || all.find( ( p ) => String( p.name || '' ).trim().toLowerCase().includes( needle ) )
+      || null;
+  }
+
   /** Mirrors DataService.getContactFullByIdOnce(tenantId, tenantId) - the
    * tenant's own contact record, which carries any per-tenant product
    * price overrides under company.products. */

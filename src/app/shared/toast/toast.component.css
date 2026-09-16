@@ -10,6 +10,12 @@
 }
 
 .toast {
+  /* Bootstrap's own .toast component CSS (loaded globally in angular.json)
+     ships `display: none`, only shown via its `.show` class from the
+     Bootstrap JS Toast plugin. This component is a from-scratch toast
+     that reuses the `.toast` class name but never adds `.show`, so
+     without this override every toast here is invisible. */
+  display: block;
   position: relative;
   padding: 12px 32px 12px 14px;
   border-radius: 8px;

@@ -9,7 +9,7 @@
     </div>
     <div class="header-meta">
       <app-status-led [tone]="statusTone" [pulse]="mission.status === 'active'"></app-status-led>
-      <span class="status-text">{{ mission.status | titlecase }}</span>
+      <span class="status-text">{{ statusLabel }}</span>
       <span class="priority-badge" [class]="'priority-' + mission.priority">{{ mission.priority | titlecase }}</span>
     </div>
   </div>
@@ -30,9 +30,9 @@
       <button class="btn-reject" (click)="approveMissionAction('reject')" [disabled]="isApproving">Reject</button>
       <button class="btn-pause" (click)="approveMissionAction('pause')" [disabled]="isApproving">Pause Mission</button>
     </div>
-    <p class="approval-feedback success" *ngIf="approvalState === 'success'">{{ approvalMessage }}</p>
-    <p class="approval-feedback error" *ngIf="approvalState === 'error'">{{ approvalMessage }}</p>
   </div>
+  <p class="approval-feedback success" *ngIf="approvalState === 'success'">{{ approvalMessage }}</p>
+  <p class="approval-feedback error" *ngIf="approvalState === 'error'">{{ approvalMessage }}</p>
 
   <!-- Mission Body -->
   <div class="detail-body">

@@ -91,6 +91,19 @@ export class AiMissionDetailComponent implements OnInit, OnDestroy {
     return (this.mission && toneMap[this.mission.status]) || 'idle';
   }
 
+  get statusLabel(): string {
+    const labelMap: Record<string, string> = {
+      draft: 'Draft',
+      active: 'Active',
+      waiting: 'Waiting',
+      blocked: 'Blocked',
+      needs_approval: 'Needs Approval',
+      completed: 'Completed',
+      failed: 'Failed',
+    };
+    return (this.mission && labelMap[this.mission.status]) || this.mission?.status || '';
+  }
+
   get completedSteps(): number {
     return (this.mission?.missionPlan || []).filter((s) => s.status === 'completed').length;
   }

@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
+import { take } from 'rxjs/operators';
 import { MovesAuthService } from '../../services/moves-auth.service';
 
 /**
@@ -26,12 +27,20 @@ export class SignInComponent implements OnInit {
 
   constructor (
     private route: ActivatedRoute,
+    private router: Router,
     private authService: MovesAuthService,
   ) { }
 
   ngOnInit (): void {
     this.returnUrl = this.route.snapshot.queryParamMap.get( 'returnUrl' ) || '/app';
-    this.signIn();
+
+    this.authService.isLoggedIn().pipe( take( 1 ) ).subscribe( ( isLoggedIn ) => {
+      if ( isLoggedIn ) {
+        this.router.navigateByUrl( this.returnUrl );
+      } else {
+        this.signIn();
+      }
+    } );
   }
 
   signIn (): void {
