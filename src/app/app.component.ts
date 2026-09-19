@@ -6,6 +6,7 @@ import { SwUpdate, VersionReadyEvent } from '@angular/service-worker';
 
 import { environment } from '../environments/environment';
 import { MovesAuthService } from './services/moves-auth.service';
+import { ThemeService } from './services/theme.service';
 import { ToastComponent } from './shared/toast/toast.component';
 import { CommandPaletteComponent } from './shared/page/command-palette/command-palette.component';
 import { SiteFooterComponent } from './shared/site-footer/site-footer.component';
@@ -22,6 +23,13 @@ export class AppComponent implements OnInit {
   private readonly router = inject( Router );
   private readonly authService = inject( MovesAuthService );
   private readonly updates = inject( SwUpdate );
+  // Instantiating ThemeService here (rather than only on the landing/showcase
+  // pages that inject it directly) is what sets documentElement's data-theme
+  // attribute for every route. Shared controls like .btn-todd in
+  // @taliferro/ui key their dark-mode styling off [data-theme="dark"], not
+  // prefers-color-scheme, so without this they stayed light-themed on any
+  // route that never happened to inject ThemeService itself.
+  private readonly theme = inject( ThemeService );
   private isReloadingForUpdate = false;
   private isRecoveringFromChunkError = false;
   private pendingUpdateVersion = '';

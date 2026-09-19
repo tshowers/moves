@@ -210,7 +210,9 @@ export class AssistantBoxComponent implements OnInit, OnChanges, OnDestroy {
         if ( !raw ) return '';
 
         const withInlineMarkdown = this.boxHelper.stripBackticksAroundRoutes( raw )
-            .replace( /\*\*(.*?)\*\*/g, '<strong>$1</strong>' );
+            .replace( /\*\*(.*?)\*\*/g, '<strong>$1</strong>' )
+            .replace( /(^|\s)_([^_\n]+?)_(?=$|\s|[.,!?;:])/gm, '$1<em>$2</em>' )
+            .replace( /(^|\s)\*([^*\n]+?)\*(?=$|\s|[.,!?;:])/gm, '$1<em>$2</em>' );
         const looksHtml = /<\s*[a-zA-Z][\s\S]*?>/.test( raw );
         const html = looksHtml
             ? this.boxHelper.linkifyAppRoutes( withInlineMarkdown )

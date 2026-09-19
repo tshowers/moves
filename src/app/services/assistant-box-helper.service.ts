@@ -136,6 +136,8 @@ export class AssistantBoxHelperService {
       .replace( /&lt;\s*Go\s*to[^&]*&gt;/gi, '' )
       .replace( /\bGo\s*to\s*p>/gi, '' )
       .replace( /\*\*(.*?)\*\*/g, '<strong>$1</strong>' )
+      .replace( /(^|\s)_([^_\n]+?)_(?=$|\s|[.,!?;:])/gm, '$1<em>$2</em>' )
+      .replace( /(^|\s)\*([^*\n]+?)\*(?=$|\s|[.,!?;:])/gm, '$1<em>$2</em>' )
       .replace( /\n\-\s(.+)/g, '<li>$1</li>' )
       .replace( /\bGo\s*to\s*strong>/gi, '' );
 

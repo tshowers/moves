@@ -1,6 +1,9 @@
 @import "@taliferro/ui/styles/controls.css";
 
-app-root > router-outlet + *:not(app-landing):not(app-moves-ios-showcase) { padding-top:4.5rem; box-sizing:border-box; }
+app-root>router-outlet+*:not(app-landing):not(app-moves-ios-showcase) {
+  padding-top: 4.5rem;
+  box-sizing: border-box;
+}
 
 /* Shared explicit dark-mode corrections for pages reached from the landing page. */
 [data-theme='dark'] .task-home-shell,
@@ -452,5 +455,16 @@ app-ai-mission-detail {
   ::view-transition-old(*),
   ::view-transition-new(*) {
     animation: none !important;
+  }
+}
+
+/** Logo **/
+.logo {
+  transition: filter 0.3s ease;
+}
+
+@media (prefers-color-scheme: dark) {
+  .logo {
+    filter: brightness(4);
   }
 }
