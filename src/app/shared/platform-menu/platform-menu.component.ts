@@ -54,14 +54,13 @@ export class PlatformMenuComponent implements OnChanges {
       { label: 'Execution', route: '/moves-view' },
       { label: 'New Move', route: '/move' },
       { label: 'Mission', route: '/plan' },
-      { label: 'Pricing', route: '/pricing' },
       { label: 'iOS App', route: '/ios' },
       this.isLoggedIn
         ? { label: 'Sign Out', route: '/', signOut: true }
         : { label: 'Sign In', route: '/login' },
     ];
 
-    this.accountItems = getPlatformMenuItems().filter( ( item ) => !item.adminOnly || this.isAdmin );
+    this.accountItems = getPlatformMenuItems().filter( ( item ) => item.label !== 'Billing' && ( !item.adminOnly || this.isAdmin ) );
   }
 
   trackByLabel ( _index: number, item: { label: string } ): string {

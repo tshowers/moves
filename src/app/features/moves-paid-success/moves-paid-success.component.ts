@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnDestroy, OnInit, inject } from '@angular/core';
-import { ActivatedRoute, Router, RouterLink } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { MovesAssistantSignalService } from '../../services/moves-assistant-signal.service';
 import { MovesPurchaseFlowService } from '../../services/moves-purchase-flow.service';
@@ -10,7 +10,7 @@ import { ClickSoundDirective } from '../../shared/directives/click-sound.directi
 @Component( {
   selector: 'app-moves-paid-success',
   standalone: true,
-  imports: [CommonModule, RouterLink, ClickSoundDirective],
+  imports: [CommonModule, ClickSoundDirective],
   templateUrl: './moves-paid-success.component.html',
   styleUrl: './moves-paid-success.component.css'
 } )

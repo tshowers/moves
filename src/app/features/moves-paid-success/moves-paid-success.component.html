@@ -10,7 +10,6 @@
         <p> You can now keep creating moves beyond the free limit and continue building momentum inside Moves. </p>
         <div class="moves-success-actions">
             <button type="button" class="btn btn-dark" (click)="goToMoves()" data-cy="moves-success-go-to-moves">Go to Moves</button>
-            <a class="btn btn-outline-dark" routerLink="/pricing">View pricing</a>
         </div>
     </section>
     <section class="moves-success-card card shadow-sm border-0 moves-success-error-card" *ngIf="!isConfirming && !isSuccess" data-cy="moves-success-error">
@@ -18,7 +17,6 @@
         <h1>We could not confirm your subscription</h1>
         <p>{{ errorMessage }}</p>
         <div class="moves-success-actions">
-            <a class="btn-todd btn-glow" routerLink="/pricing">Back to Moves pricing</a>
             <button type="button" class="btn-todd" (click)="goToMoves()">Go to Moves</button>
         </div>
     </section>
