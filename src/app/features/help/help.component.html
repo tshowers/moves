@@ -1,0 +1,147 @@
+<main class="moves-help" data-cy="help-shell">
+  <header class="help-hero">
+    <div class="help-hero__eyebrow">Moves Help</div>
+    <div class="help-hero__content">
+      <div>
+        <p class="help-hero__context">Work · Context · Execution · Momentum</p>
+        <h1>Turn intentions into work that moves.</h1>
+        <p class="help-hero__lead">Most task trackers tell you what exists. Moves shows you what needs attention next. Every Move carries an owner, a next action, its context, and a momentum signal, so follow-up doesn't disappear between meetings.</p>
+      </div>
+      <img src="assets/find/entities/moves/logo.png" alt="Moves" class="help-hero__logo" />
+    </div>
+    <nav class="help-quick-links" aria-label="Moves help topics">
+      <a routerLink="/app">Moves Home</a>
+      <a routerLink="/moves-view">Execution</a>
+      <a routerLink="/move">New Move</a>
+      <a routerLink="/plan">Mission</a>
+      <a routerLink="/ai-missions">AI Missions</a>
+    </nav>
+  </header>
+
+  <section class="help-section" aria-labelledby="help-what-title">
+    <div class="help-section__heading">
+      <p class="help-section-kicker">What is Moves?</p>
+      <h2 id="help-what-title">A workspace for work that can't afford to stall</h2>
+      <p>Work rarely fails because nobody created a task. It fails because the task becomes invisible: a proposal waits for a reply, a project loses its next action, or an important relationship drifts away from the work that serves it. Moves makes that drift visible and gives you and your team one shared view that answers:</p>
+    </div>
+    <ul class="help-questions">
+      <li *ngFor="let question of questions"><i class="fa-solid fa-circle-question" aria-hidden="true"></i>{{ question }}</li>
+    </ul>
+  </section>
+
+  <section class="help-section" aria-labelledby="help-who-title">
+    <div class="help-section__heading">
+      <p class="help-section-kicker">Who it's for</p>
+      <h2 id="help-who-title">For people whose work depends on follow-through</h2>
+      <p>If you own outcomes that depend on other people, deadlines, and follow-ups, Moves is built for you.</p>
+    </div>
+    <div class="help-persona-grid">
+      <article class="help-persona" *ngFor="let persona of personas">
+        <i [class]="persona.icon" aria-hidden="true"></i>
+        <h3>{{ persona.title }}</h3>
+        <p class="help-persona__pain">{{ persona.pain }}</p>
+        <p class="help-persona__value">{{ persona.value }}</p>
+      </article>
+    </div>
+    <p class="help-note"><strong>Probably not what you need:</strong> a personal checklist or grocery list. Moves is designed for work with owners, stakes, and deadlines.</p>
+  </section>
+
+  <section class="help-section" aria-labelledby="help-why-title">
+    <div class="help-section__heading">
+      <p class="help-section-kicker">Why it's different</p>
+      <h2 id="help-why-title">Not another to-do list</h2>
+      <p>Moves turns task tracking into an execution system. Here's how it compares with a typical task list:</p>
+    </div>
+    <div class="help-contrast" role="table" aria-label="A typical task list compared with Moves">
+      <div class="help-contrast__row help-contrast__row--head" role="row">
+        <span role="columnheader">A typical task list</span>
+        <span role="columnheader">Moves</span>
+      </div>
+      <div class="help-contrast__row" role="row" *ngFor="let contrast of contrasts">
+        <span role="cell">{{ contrast.typical }}</span>
+        <span role="cell"><i class="fa-solid fa-check" aria-hidden="true"></i>{{ contrast.moves }}</span>
+      </div>
+    </div>
+  </section>
+
+  <section class="help-section help-section--highlight" aria-labelledby="help-first-title">
+    <div class="help-section__heading">
+      <p class="help-section-kicker">What to do first</p>
+      <h2 id="help-first-title">Your first five minutes</h2>
+      <p>Don't set everything up at once. Start with one real piece of work and follow it through.</p>
+    </div>
+    <ol class="help-quickstart">
+      <li *ngFor="let item of quickStart; let i = index">
+        <span class="help-quickstart__number">{{ i + 1 }}</span>
+        <div>
+          <h3>{{ item.title }}</h3>
+          <p>{{ item.copy }}</p>
+          <a *ngIf="item.route" class="help-try-link" [routerLink]="item.route">{{ item.action }} <span aria-hidden="true">→</span></a>
+        </div>
+      </li>
+    </ol>
+  </section>
+
+  <section class="help-todd-callout" aria-labelledby="help-todd-title">
+    <div class="help-todd-callout__icon"><i class="fa-solid fa-message" aria-hidden="true"></i></div>
+    <div>
+      <p class="help-section-kicker">Meet TODD</p>
+      <h2 id="help-todd-title">Your AI teammate, on every page</h2>
+      <p>TODD is the AI assistant built into Moves. It reads the context of the page and the Moves you're working on, so you can ask questions in plain language without leaving your work. TODD can:</p>
+      <ul class="help-todd-callout__list">
+        <li *ngFor="let ability of toddAbilities">{{ ability }}</li>
+      </ul>
+      <p><strong>You stay in control.</strong> TODD proposes, and you approve. Mission plans don't become real Moves until you say so.</p>
+      <p class="help-todd-callout__tip"><i class="fa-solid fa-lightbulb" aria-hidden="true"></i> To open TODD, move your mouse toward the bottom-right corner of any page and click <strong>Talk to TODD</strong>. On a touch device, tap the bottom-right area.</p>
+    </div>
+  </section>
+
+  <section class="help-section" aria-labelledby="help-terms-title">
+    <div class="help-section__heading">
+      <p class="help-section-kicker">Key terms</p>
+      <h2 id="help-terms-title">The Moves vocabulary</h2>
+    </div>
+    <dl class="help-terms">
+      <div *ngFor="let item of terms">
+        <dt>{{ item.term }}</dt>
+        <dd>{{ item.definition }}</dd>
+      </div>
+    </dl>
+  </section>
+
+  <section class="help-section" aria-labelledby="help-start-title">
+    <div class="help-section__heading">
+      <p class="help-section-kicker">The full walkthrough</p>
+      <h2 id="help-start-title">From an intention to an executed Move</h2>
+      <p>Once you've made your first Move, this is the complete tour of the workflow. Come back any time, or use the menu to jump straight to the part you need.</p>
+    </div>
+
+    <div class="help-steps">
+      <article class="help-step" *ngFor="let step of steps">
+        <div class="help-step__number">{{ step.number }}</div>
+        <div class="help-step__body">
+          <h3>{{ step.title }}</h3>
+          <p class="help-step__copy">{{ step.copy }}</p>
+          <ul>
+            <li *ngFor="let detail of step.details">{{ detail }}</li>
+          </ul>
+          <a class="help-try-link" [routerLink]="step.route">{{ step.action }} <span aria-hidden="true">→</span></a>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <section class="help-section help-section--compact" aria-labelledby="help-account-title">
+    <div class="help-section__heading">
+      <p class="help-section-kicker">Other places to go</p>
+      <h2 id="help-account-title">Explore Moves at your own pace</h2>
+    </div>
+    <div class="help-destination-grid">
+      <a class="help-destination" routerLink="/login"><span><strong>Sign in</strong><small>Connect your account to save Moves, missions, and execution context.</small></span><i class="fa-solid fa-arrow-right" aria-hidden="true"></i></a>
+      <a class="help-destination" routerLink="/pricing"><span><strong>Pricing</strong><small>See the plans for keeping more work in motion.</small></span><i class="fa-solid fa-arrow-right" aria-hidden="true"></i></a>
+      <a class="help-destination" routerLink="/ios"><span><strong>Moves for iOS</strong><small>See the mobile Moves experience.</small></span><i class="fa-solid fa-arrow-right" aria-hidden="true"></i></a>
+    </div>
+  </section>
+
+  <footer class="help-footer"><a routerLink="/">← Back to Moves</a><span>Need help right now? Move to the bottom-right corner and Talk to TODD.</span></footer>
+</main>

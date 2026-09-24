@@ -24,12 +24,14 @@ export const COMMAND_PALETTE_ENTRIES: CommandPaletteEntry[] = [
   { id: 'moves-pricing', label: 'Pricing', group: 'Moves', path: '/pricing', keywords: ['pricing', 'plans', 'upgrade', 'billing'] },
   { id: 'moves-login', label: 'Sign In', group: 'Moves', path: '/login', keywords: ['sign in', 'login', 'log in'] },
   { id: 'moves-ios', label: 'iOS App', group: 'Moves', path: '/ios', keywords: ['ios', 'iphone', 'mobile app', 'app store'] },
+  { id: 'moves-help', label: 'Help', group: 'Moves', path: '/help', keywords: ['help', 'guide', 'how to', 'todd', 'assistance'] },
 
   // --- Other Apps -----------------------------------------------------------
   { id: 'app-maya', label: 'Maya', group: 'Other Apps', path: 'https://maya.taliferro.tech', icon: 'assets/find/entities/maya/logo-bw.png', external: true, keywords: ['maya', 'marketing director'] },
   { id: 'app-todd', label: 'Ask TODD', group: 'Other Apps', path: 'https://ask.taliferro.tech', icon: 'assets/find/entities/todd/logo-bw-icon.png', external: true, keywords: ['todd', 'ask todd', 'assistant', 'chat'] },
   { id: 'app-docs', label: 'Docs', group: 'Other Apps', path: 'https://docs.taliferro.tech', icon: 'assets/find/entities/docs/logo-bw-icon.png', external: true, keywords: ['docs', 'documents', 'proposals', 'contracts'] },
   { id: 'app-signature', label: 'Email Signature Builder', group: 'Other Apps', path: 'https://signature.taliferro.tech', icon: 'assets/find/entities/email-signature-builder/logo-bw-icon.png', external: true, keywords: ['email signature', 'signature builder'] },
+  { id: 'app-image-creator', label: 'Image Creator', group: 'Other Apps', path: 'https://images.taliferro.tech', icon: 'assets/find/entities/image-creator/logo-bw-icon.svg', external: true, keywords: ['image creator', 'images', 'generate image', 'logo', 'icon', 'banner'] },
   { id: 'app-find', label: 'Find', group: 'Other Apps', path: 'https://find.taliferro.tech', icon: 'assets/find/entities/find/logo-bw-icon.png', external: true, keywords: ['find', 'ask a question'] },
   { id: 'app-lead-vault', label: 'Lead Vault', group: 'Other Apps', path: 'https://lead-vault.taliferro.tech', icon: 'assets/find/entities/lead-vault/logo-bw-icon.png', external: true, keywords: ['lead vault', 'leads', 'purchased leads'] },
   { id: 'app-network', label: 'Network', group: 'Other Apps', path: 'https://network.taliferro.tech', icon: 'assets/find/entities/network/logo-bw-icon.png', external: true, keywords: ['network', 'contacts', 'crm', 'relationships'] },
