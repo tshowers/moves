@@ -77,6 +77,21 @@ export const routes: Routes = [
       import( './features/mission-workspace/mission-workspace.component' ).then( ( m ) => m.MissionWorkspaceComponent ),
   },
   {
+    // Pre-sign-in wizard: plan a first Move, give your name, then sign in
+    // (ONBOARDING-PROFILE-BILLING-PLAYBOOK.md). /login stays the direct
+    // handoff for returning users and deep links.
+    path: 'get-started',
+    loadComponent: () =>
+      import( './features/get-started/get-started.component' ).then( ( m ) => m.GetStartedComponent ),
+  },
+  {
+    // In-app profile (shared fields/API with the iOS apps' TODDProfileKit),
+    // replacing the menu's link out to TODD's /update-profile.
+    path: 'profile',
+    loadComponent: () =>
+      import( './features/profile/profile.component' ).then( ( m ) => m.ProfileComponent ),
+  },
+  {
     path: 'login',
     loadComponent: () =>
       import( './features/sign-in/sign-in.component' ).then( ( m ) => m.SignInComponent ),
@@ -92,14 +107,19 @@ export const routes: Routes = [
       import( './features/mobile-handoff/mobile-handoff.component' ).then( ( m ) => m.MobileHandoffComponent ),
   },
   {
+    // The old Stripe checkout return page - Moves is sold through the App
+    // Store now (Ty, 2026-09-28), so old links land on the app.
     path: 'success',
-    loadComponent: () =>
-      import( './features/moves-paid-success/moves-paid-success.component' ).then( ( m ) => m.MovesPaidSuccessComponent ),
+    redirectTo: 'app',
   },
   {
+    // "Browse free, create with the app" (Ty, 2026-09-28) - shared wording
+    // in @taliferro/ui/platform/get-the-app.model.ts; replaces the old
+    // Stripe plan page.
     path: 'pricing',
+    data: { product: 'moves' },
     loadComponent: () =>
-      import( './features/moves-pricing/moves-pricing.component' ).then( ( m ) => m.MovesPricingComponent ),
+      import( './features/get-the-app/get-the-app.component' ).then( ( m ) => m.GetTheAppComponent ),
   },
   {
     path: 'not-found',

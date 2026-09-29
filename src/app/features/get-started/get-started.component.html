@@ -1,0 +1,105 @@
+<main class="gs-shell" data-cy="get-started-shell">
+  <section class="gs-card" aria-live="polite">
+    <div class="gs-card__nav">
+      <button *ngIf="stepIndex > 0" type="button" class="gs-back" (click)="back()" data-cy="get-started-back">
+        <span aria-hidden="true">&lsaquo;</span> Back
+      </button>
+      <span class="gs-count">Step {{ step.section + 1 }} of {{ sections.length }}</span>
+    </div>
+
+    <ol class="gs-progress" role="progressbar" aria-label="Setup progress"
+        [attr.aria-valuenow]="step.section + 1" aria-valuemin="1" [attr.aria-valuemax]="sections.length" data-cy="get-started-progress">
+      <li *ngFor="let section of sections; let i = index" class="gs-progress__segment"
+          [class.is-done]="sectionFill(i) >= 1" [class.is-active]="i === step.section">
+        <span class="gs-progress__track"><span class="gs-progress__fill" [style.width.%]="sectionFill(i) * 100"></span></span>
+        <span class="gs-progress__label">
+          <span *ngIf="sectionFill(i) >= 1" class="gs-progress__check" aria-hidden="true">&#10003;</span>{{ section }}
+        </span>
+      </li>
+    </ol>
+
+    <ng-container [ngSwitch]="step.key">
+      <ng-container *ngSwitchCase="'what'">
+        <p class="gs-lede">You're already 1 step in. Pick one thing you need to get done and Moves keeps it in front of you until it's finished &mdash; sign up only happens at the very end.</p>
+        <h1 class="gs-question" data-cy="get-started-question">What's one thing you need to get done?</h1>
+        <div class="gs-chips" role="radiogroup" aria-label="Your first Move">
+          <button *ngFor="let option of starters" type="button" class="gs-chip" role="radio"
+                  [class.is-selected]="draft.starterKey === option.key" [attr.aria-checked]="draft.starterKey === option.key"
+                  (click)="chooseStarter(option)" data-cy="get-started-starter">
+            <span *ngIf="draft.starterKey === option.key" aria-hidden="true">&#10003;</span>
+            {{ option.label }}
+          </button>
+        </div>
+        <form *ngIf="isOther" (ngSubmit)="next()">
+          <input #textInput class="gs-input" name="title" aria-label="Your Move" placeholder="Type your Move"
+                 [(ngModel)]="draft.title" (ngModelChange)="persist()" data-cy="get-started-input" />
+        </form>
+      </ng-container>
+
+      <ng-container *ngSwitchCase="'when'">
+        <h1 class="gs-question" data-cy="get-started-question">When should it be done?</h1>
+        <p class="gs-asked">{{ draft.title }}</p>
+        <div class="gs-chips" role="radiogroup" aria-label="When">
+          <button *ngFor="let option of whens" type="button" class="gs-chip" role="radio"
+                  [class.is-selected]="draft.whenKey === option.key" [attr.aria-checked]="draft.whenKey === option.key"
+                  (click)="choose('whenKey', option.key)" data-cy="get-started-when">
+            <span *ngIf="draft.whenKey === option.key" aria-hidden="true">&#10003;</span>
+            {{ option.label }}
+          </button>
+        </div>
+      </ng-container>
+
+      <ng-container *ngSwitchCase="'priority'">
+        <h1 class="gs-question" data-cy="get-started-question">How important is it?</h1>
+        <p class="gs-hint">Moves puts the important ones first.</p>
+        <div class="gs-chips" role="radiogroup" aria-label="Priority">
+          <button *ngFor="let option of priorities" type="button" class="gs-chip" role="radio"
+                  [class.is-selected]="draft.priority === option.key" [attr.aria-checked]="draft.priority === option.key"
+                  (click)="choose('priority', option.key)" data-cy="get-started-priority">
+            <span *ngIf="draft.priority === option.key" aria-hidden="true">&#10003;</span>
+            {{ option.label }}
+          </button>
+        </div>
+      </ng-container>
+
+      <ng-container *ngSwitchCase="'preview'">
+        <h1 class="gs-question" data-cy="get-started-question">Here's your first Move</h1>
+        <p class="gs-hint">It goes to the top of your list. Continue and it's saved to your account.</p>
+        <div class="gs-preview" data-cy="get-started-preview">
+          <span class="gs-preview__category">{{ priorityLabel }}</span>
+          <h2><span class="gs-preview__circle" aria-hidden="true"></span>{{ draft.title }}</h2>
+          <p class="gs-preview__due">Due {{ dueDate | date: 'EEEE, MMM d' }}</p>
+        </div>
+      </ng-container>
+
+      <ng-container *ngSwitchCase="'firstName'">
+        <h1 class="gs-question" data-cy="get-started-question">What's your first name?</h1>
+        <p class="gs-hint">So TODD knows who's making the moves.</p>
+        <form (ngSubmit)="next()"><input #textInput class="gs-input" name="firstName" autocomplete="given-name" aria-label="First name"
+               [(ngModel)]="draft.firstName" (ngModelChange)="persist()" data-cy="get-started-input" /></form>
+      </ng-container>
+
+      <ng-container *ngSwitchCase="'lastName'">
+        <h1 class="gs-question" data-cy="get-started-question">And your last name?</h1>
+        <form (ngSubmit)="next()"><input #textInput class="gs-input" name="lastName" autocomplete="family-name" aria-label="Last name"
+               [(ngModel)]="draft.lastName" (ngModelChange)="persist()" data-cy="get-started-input" /></form>
+      </ng-container>
+
+      <ng-container *ngSwitchCase="'signUp'">
+        <h1 class="gs-question" data-cy="get-started-question">Last step: create your account</h1>
+        <p class="gs-hint">"{{ draft.title }}" &middot; your Move is ready. Sign in with TODD to save it.</p>
+        <div class="gs-actions">
+          <button type="button" class="gs-button" [disabled]="isSigningIn" (click)="signIn()" data-cy="get-started-sign-in">
+            {{ isSigningIn ? 'Redirecting...' : 'Sign in with TODD' }}</button>
+        </div>
+      </ng-container>
+    </ng-container>
+
+    <div *ngIf="step.key !== 'signUp'" class="gs-actions">
+      <button type="button" class="gs-button" [disabled]="!canAdvance" (click)="next()" data-cy="get-started-next">
+        {{ step.key === 'preview' ? 'Continue to sign up' : 'Next' }}</button>
+    </div>
+
+    <a class="gs-existing" routerLink="/login" [queryParams]="{ returnUrl: '/app' }" data-cy="get-started-existing">Already have an account? Sign in</a>
+  </section>
+</main>

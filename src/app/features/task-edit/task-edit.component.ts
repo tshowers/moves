@@ -23,6 +23,7 @@ import { LoggerService } from '../../services/logger.service';
 import { MovesNotificationService } from '../../services/moves-notification.service';
 import { ClickSoundDirective } from '../../shared/directives/click-sound.directive';
 import { CockpitBrowseModeBannerComponent } from '../../shared/cockpit-browse-mode-banner/cockpit-browse-mode-banner.component';
+import { GetTheAppBannerComponent } from '../../shared/get-the-app-banner/get-the-app-banner.component';
 import { RelativeTimePipe } from '../../pipes/relative-time.pipe';
 import { MovesAdminService } from '../../services/moves-admin.service';
 
@@ -51,7 +52,7 @@ import { MovesAdminService } from '../../services/moves-admin.service';
 @Component( {
   selector: 'app-task-edit',
   standalone: true,
-  imports: [CommonModule, FormsModule, RouterModule, AppendYouPipe, DropDownEditButtonComponent, PreloaderComponent, ClickSoundDirective, CockpitBrowseModeBannerComponent, RelativeTimePipe],
+  imports: [CommonModule, FormsModule, RouterModule, AppendYouPipe, DropDownEditButtonComponent, PreloaderComponent, ClickSoundDirective, CockpitBrowseModeBannerComponent, GetTheAppBannerComponent, RelativeTimePipe],
   templateUrl: './task-edit.component.html',
   styleUrl: './task-edit.component.css'
 } )
@@ -164,7 +165,8 @@ export class TaskEditComponent implements OnInit, OnChanges, OnDestroy {
   public canSave (): boolean {
     if ( this.isLoading ) return false;
     if ( !this.userId || this.userId === 'user not logged in' ) return false;
-    if ( !this.editingTaskId && this.moveLimits && !this.moveLimits.isPaidUser && !this.moveLimits.canCreateMove ) return false;
+    // Creating and editing need the Moves app (the backend's limits say so).
+    if ( this.moveLimits && !this.moveLimits.canCreateMove ) return false;
     return !!this.newTaskTitle.trim();
   }
 
@@ -177,23 +179,15 @@ export class TaskEditComponent implements OnInit, OnChanges, OnDestroy {
       return 'Add a title before saving this move.';
     }
 
-    if ( !this.editingTaskId && this.moveLimits && !this.moveLimits.isPaidUser && !this.moveLimits.canCreateMove ) {
-      return 'You have used all 10 free moves. Upgrade to keep creating moves.';
+    if ( this.moveLimits && !this.moveLimits.canCreateMove ) {
+      return 'Creating and editing Moves needs the Moves app. Get it on the App Store, then sign in here with the same account.';
     }
 
     return null;
   }
 
-  public get moveLimitMessage (): string {
-    const limit = this.moveLimits;
-    if ( !limit || limit.isPaidUser ) return '';
-    if ( limit.currentCount <= 0 ) return `${ limit.freeMoveLimit } free moves available`;
-    if ( limit.remainingFreeMoves <= 0 ) return 'You have used all 10 free moves. Upgrade to keep creating moves.';
-    return `${ limit.remainingFreeMoves } of ${ limit.freeMoveLimit } free moves left`;
-  }
-
   private async loadMoveLimits (): Promise<void> {
-    if ( !this.userId || this.userId === 'user not logged in' || this.editingTaskId ) {
+    if ( !this.userId || this.userId === 'user not logged in' ) {
       this.moveLimits = null;
       this.publishPageContext();
       return;
@@ -544,7 +538,8 @@ export class TaskEditComponent implements OnInit, OnChanges, OnDestroy {
 
         if ( task ) {
           this.hydrateFormFromTask( task );
-          this.moveLimits = null;
+          // Editing needs the Moves app too - check it for this Move as well.
+          void this.loadMoveLimits();
           await this.loadChildTasks();
           this.emitAssistantActivity( 'move_edit_opened', {
             source: 'route_with_id',

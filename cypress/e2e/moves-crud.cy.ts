@@ -12,6 +12,15 @@ describe( 'Moves CRUD workflows', () => {
     cy.intercept( { hostname: 'firestore.googleapis.com' }, { statusCode: 403, body: {} } );
   };
 
+  // Saving (create and edit) needs canCreateMove from /moves/limits - stub a
+  // user who has the Moves app so the Save button isn't disabled.
+  beforeEach( () => {
+    cy.intercept( 'GET', '**/moves/limits', {
+      statusCode: 200,
+      body: { success: true, limits: { isPaidUser: true, currentCount: 0, freeMoveLimit: 0, remainingFreeMoves: 0, canCreateMove: true } },
+    } );
+  } );
+
   it( 'lets a signed-in user create and update a move', () => {
     const createdMove = {
       id: 'move-crud-1',

@@ -17,6 +17,7 @@
     customTitle="You can explore Moves, but you won't be able to save"
     customCopy="You are not signed in, so feel free to look around and see how TODD tracks moves. Sign in to create a move, track progress, or keep anything you see here."
   ></app-cockpit-browse-mode-banner>
+  <app-get-the-app-banner *ngIf="!isEmbedded && userId && userId !== 'user not logged in'"></app-get-the-app-banner>
   <section class="task-view-mission-banner glass-card shadow-sm mb-3" *ngIf="!isEmbedded && missionBanner as mission" data-cy="moves-mission-banner">
     <div class="task-view-mission-banner__copy">
       <span class="task-view-section-label">Mission filter active</span>

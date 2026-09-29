@@ -90,3 +90,21 @@
 @media (prefers-color-scheme: light) { .moves-help { --help-ink: #17252a; --help-muted: #5d737c; --help-panel: rgba(255,255,255,.84); --help-panel-soft: rgba(255,255,255,.62); --help-line: rgba(24,84,82,.14); --help-shadow: 0 24px 60px rgba(15,23,42,.08), inset 0 1px 0 rgba(255,255,255,.72); } }
 @media (prefers-color-scheme: dark) { .moves-help { --help-ink: #edf7f7; --help-muted: #a4b9bd; --help-panel: rgba(23,34,42,.92); --help-panel-soft: rgba(31,45,57,.82); --help-line: rgba(121,213,232,.18); --help-shadow: 0 24px 60px rgba(0,0,0,.32), inset 0 1px 0 rgba(255,255,255,.06); } .help-hero__logo { box-shadow: 0 16px 34px rgba(0,0,0,.42); } .help-todd-callout__tip { color: var(--help-ink) !important; } }
 @media (prefers-reduced-motion: reduce) { .help-try-link span { transition: none; } }
+
+/* Getting Started progress (signed in) */
+.help-progress__meter { height: 8px; border-radius: 999px; background: var(--help-line); overflow: hidden; margin-top: 8px; }
+.help-progress__meter-fill { display: block; height: 100%; border-radius: inherit; background: var(--tl-blue-mid, #0095cc); transition: width .35s ease; }
+.help-progress__count { margin: 8px 0 16px; color: var(--help-muted); font-weight: 600; font-size: .9rem; }
+.help-progress__list { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
+.help-progress__step { display: grid; grid-template-columns: 28px 1fr auto; align-items: center; gap: 12px; padding: 14px 16px; border: 1px solid var(--help-line); border-radius: 16px; background: var(--help-panel); }
+.help-progress__check { display: grid; place-items: center; width: 24px; height: 24px; border-radius: 50%; border: 2px solid var(--help-line); font-weight: 800; font-size: .8rem; }
+.help-progress__step.is-done .help-progress__check { border-color: #1f9d55; background: #1f9d55; color: #fff; }
+.help-progress__step.is-done strong { text-decoration: line-through; color: var(--help-muted); }
+.help-progress__body { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+.help-progress__body span { color: var(--help-muted); font-size: .9rem; }
+.help-progress__toggle { display: flex; align-items: center; gap: 8px; margin-top: 14px; color: var(--help-muted); font-size: .9rem; }
+@media (max-width: 575.98px) {
+  .help-progress__step { grid-template-columns: 28px 1fr; }
+  .help-progress__step .help-try-link { grid-column: 2; }
+}
+.visually-hidden { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }

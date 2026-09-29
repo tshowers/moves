@@ -10,7 +10,7 @@
 
   <section class="moves-hero">
     <div class="moves-hero__noise"></div>
-    <div class="moves-hero__copy"><p class="moves-kicker">A momentum system for work that matters</p><h1>Make the<br><em>next move.</em></h1><p class="moves-hero__lede">The task is not the work. The next action is. Moves keeps momentum visible until the work is done.</p><div class="moves-hero__actions"><a class="moves-button moves-button--solid" routerLink="/app">Open Moves <span>↗</span></a><a class="moves-text-link" href="#signal">See the signal <span>↓</span></a></div></div>
+    <div class="moves-hero__copy"><p class="moves-kicker">A momentum system for work that matters</p><h1>Make the<br><em>next move.</em></h1><p class="moves-hero__lede">The task is not the work. The next action is. Moves keeps momentum visible until the work is done.</p><div class="moves-hero__actions"><a class="moves-button moves-button--solid" routerLink="/get-started">Get started <span>↗</span></a><a class="moves-text-link" href="#signal">See the signal <span>↓</span></a></div></div>
     <div class="moves-hero__art"><div class="moves-orbit moves-orbit--one"></div><div class="moves-orbit moves-orbit--two"></div><div class="moves-art__caption">THE WORK<br>IS ALIVE</div><img src="/assets/moves-banner.png" alt="A visual system of connected tasks moving toward a target" class="moves-banner"><div class="moves-float moves-float--top"><span class="moves-dot moves-dot--green"></span> On track <b>72%</b></div><div class="moves-float moves-float--bottom"><span class="moves-dot moves-dot--orange"></span> Stalled work detected</div></div>
     <div class="moves-hero__stamp">MOVE<br>WITH<br>INTENT</div><div class="moves-hero__scroll">SCROLL TO EXPLORE <span>↓</span></div>
   </section>
@@ -27,5 +27,5 @@
 
   <section class="moves-faq"><div class="moves-wrap"><div class="moves-faq__head"><p class="moves-kicker">Questions worth asking</p><h2>Start somewhere<br>that moves.</h2></div><div class="moves-faq__list"><div class="moves-faq__item" *ngFor="let faq of faqs; let i = index" [class.is-open]="openFaq() === i"><button (click)="toggleFaq(i)" [attr.aria-expanded]="openFaq() === i">{{ faq.question }} <span>+</span></button><div class="moves-faq__answer"><p>{{ faq.answer }}</p></div></div></div></div></section>
 
-  <section class="moves-footer-cta"><div class="moves-wrap"><p class="moves-kicker">Your next move</p><h2>Keep going.</h2><a class="moves-button moves-button--dark" routerLink="/app">Open Moves <span>↗</span></a><span class="moves-footer-cta__mark">M</span></div></section>
+  <section class="moves-footer-cta"><div class="moves-wrap"><p class="moves-kicker">Your next move</p><h2>Keep going.</h2><a class="moves-button moves-button--dark" routerLink="/get-started">Get started <span>↗</span></a> <a class="moves-text-link" routerLink="/pricing" data-cy="landing-pricing">Pricing <span>→</span></a><span class="moves-footer-cta__mark">M</span></div></section>
 </main>

@@ -62,10 +62,4 @@ describe( 'Moves route workflows', () => {
     cy.get( '[data-cy="moves-edit-shell"]' ).should( 'be.visible' );
     cy.get( '[data-cy="moves-edit-title"]' ).should( 'have.value', routeMove.title );
   } );
-
-  it( 'shows the fallback confirmation state when success is missing session data', () => {
-    cy.visit( '/success' );
-    cy.get( '[data-cy="moves-success-error"]' ).should( 'be.visible' );
-    cy.contains( 'Missing session information. Please try again.' ).should( 'exist' );
-  } );
 } );

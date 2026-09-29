@@ -14,6 +14,7 @@ import { TaskApiService } from '../../services/task-api.service';
 import { MovesPageActionsService } from '../../services/moves-page-actions.service';
 import { CockpitCommandDeckComponent, CockpitCommandDeckLink } from '../../shared/cockpit-command-deck/cockpit-command-deck.component';
 import { CockpitBrowseModeBannerComponent } from '../../shared/cockpit-browse-mode-banner/cockpit-browse-mode-banner.component';
+import { GetTheAppBannerComponent } from '../../shared/get-the-app-banner/get-the-app-banner.component';
 import { PageAction } from '../../models/page-actions.models';
 import { StatusLedComponent } from '../../shared/status-led/status-led.component';
 import { buildCockpitDiagnosisRows, CockpitDiagnosisRowVm } from '../../shared/utils/cockpit-diagnosis-board.util';
@@ -36,7 +37,7 @@ import { buildCockpitDiagnosisRows, CockpitDiagnosisRowVm } from '../../shared/u
 @Component( {
   selector: 'app-task-home',
   standalone: true,
-  imports: [CommonModule, RouterModule, BackToTopComponent, ArcGaugeComponent, CockpitCommandDeckComponent, CockpitBrowseModeBannerComponent, StatusLedComponent],
+  imports: [CommonModule, RouterModule, BackToTopComponent, ArcGaugeComponent, CockpitCommandDeckComponent, CockpitBrowseModeBannerComponent, GetTheAppBannerComponent, StatusLedComponent],
   templateUrl: './task-home.component.html',
   styleUrl: './task-home.component.css'
 } )

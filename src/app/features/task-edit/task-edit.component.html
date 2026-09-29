@@ -27,15 +27,7 @@
             <a class="btn-todd" [routerLink]="'/login'" [queryParams]="{ returnUrl: '/move' }" data-cy="moves-guest-sign-in">Sign In to Save</a>
         </div>
     </div>
-    <div class="task-edit-card guest-warning" *ngIf="hasAuthenticatedUser() && moveLimits && !moveLimits.isPaidUser" data-cy="moves-limit-banner">
-        <div class="d-flex justify-content-between align-items-center gap-3 flex-wrap">
-            <div>
-                <h3 class="mb-1">Free Moves</h3>
-                <p class="mb-0">{{ moveLimitMessage }}</p>
-            </div>
-            <a *ngIf="moveLimits.remainingFreeMoves <= 0" class="btn-todd" routerLink="/pricing">Upgrade Moves</a>
-        </div>
-    </div>
+    <app-get-the-app-banner *ngIf="hasAuthenticatedUser()"></app-get-the-app-banner>
     <div class="task-edit-card">
         <div class="task-edit-grid">
             <div class="form-group full-width">

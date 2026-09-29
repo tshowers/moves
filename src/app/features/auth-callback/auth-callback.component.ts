@@ -3,6 +3,9 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { firstValueFrom } from 'rxjs';
 import { MovesAuthService } from '../../services/moves-auth.service';
+import { MovesSignupDraftService } from '../../services/moves-signup-draft.service';
+import { GettingStartedService } from '../../services/getting-started.service';
+import { WriteAccessService } from '../../services/write-access.service';
 
 /**
  * Lands here after TODD's hosted login (todd.taliferro.tech/login) hands
@@ -34,6 +37,9 @@ export class AuthCallbackComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private authService: MovesAuthService,
+    private signupDraft: MovesSignupDraftService,
+    private writeAccess: WriteAccessService,
+    private gettingStarted: GettingStartedService,
   ) { }
 
   async ngOnInit (): Promise<void> {
@@ -49,7 +55,20 @@ export class AuthCallbackComponent implements OnInit {
     try {
       await this.authService.signInWithCustomToken( token );
       await firstValueFrom( this.authService.getTenantId() );
-      await this.router.navigateByUrl( pending.returnUrl || '/app' );
+      this.writeAccess.refresh();
+      // Came through /get-started: save the name to the profile and the
+      // planned Move (kept, with a "get the app" banner, until they have
+      // the Moves app - see MovesSignupDraftService).
+      await this.signupDraft.submitIfPending();
+
+      const returnUrl = pending.returnUrl || '/app';
+      // Heading to the default landing (not a deep link) and steps remain:
+      // show the Getting Started checklist first, once per session.
+      if ( ( returnUrl === '/app' || returnUrl === '/' ) && await this.gettingStarted.shouldShowAfterSignIn() ) {
+        await this.router.navigate( ['/help'], { fragment: 'your-progress' } );
+        return;
+      }
+      await this.router.navigateByUrl( returnUrl );
     } catch ( error: any ) {
       this.errorMessage = error?.message || 'Sign-in failed. Please try again.';
     }

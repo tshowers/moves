@@ -1,6 +1,8 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { RouterLink } from '@angular/router';
+import { MovesAuthService } from '../../services/moves-auth.service';
+import { GettingStarted, GettingStartedService, GettingStartedStep } from '../../services/getting-started.service';
 
 interface HelpStep {
   number: string;
@@ -42,7 +44,36 @@ interface HelpTerm {
   templateUrl: './help.component.html',
   styleUrl: './help.component.css',
 })
-export class HelpComponent {
+export class HelpComponent implements OnInit {
+  /** Signed-in only: the Getting Started checklist, checked off from real data. */
+  progress: GettingStarted | null = null;
+  showAfterSignIn = true;
+
+  constructor (
+    private readonly authService: MovesAuthService,
+    readonly gettingStarted: GettingStartedService,
+  ) { }
+
+  ngOnInit (): void {
+    this.showAfterSignIn = this.gettingStarted.showAfterSignIn;
+    this.authService.getUserId().subscribe( ( userId ) => {
+      if ( !userId || userId === 'user not logged in' ) {
+        this.progress = null;
+        return;
+      }
+      this.gettingStarted.load().then( ( progress ) => ( this.progress = progress ) ).catch( () => ( this.progress = null ) );
+    } );
+  }
+
+  toggleShowAfterSignIn ( value: boolean ): void {
+    this.showAfterSignIn = value;
+    this.gettingStarted.showAfterSignIn = value;
+  }
+
+  trackStep ( _index: number, step: GettingStartedStep ): string {
+    return step.id;
+  }
+
   readonly questions: string[] = [
     'What needs attention today?',
     'Which work is fresh, active, stalled, or at risk?',
@@ -89,8 +120,8 @@ export class HelpComponent {
   readonly quickStart: HelpQuickStart[] = [
     {
       title: 'Sign in',
-      copy: 'Guests can look around, but nothing is saved until you sign in.',
-      route: '/login',
+      copy: 'Guests can look around. Plan your first Move and sign in to keep it.',
+      route: '/get-started',
       action: 'Sign in',
     },
     {

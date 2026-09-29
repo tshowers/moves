@@ -34,10 +34,10 @@ describe( 'Moves UI smoke', () => {
     cy.get( '[data-cy="moves-home-shell"]' ).should( 'be.visible' );
 
     cy.visit( '/pricing' );
-    cy.get( '[data-cy="moves-pricing-page"]' ).should( 'be.visible' );
+    cy.get( '[data-cy="get-the-app"]' ).should( 'be.visible' );
 
-    cy.visit( '/success' );
-    cy.get( '[data-cy="moves-success-page"]' ).should( 'be.visible' );
+    cy.visit( '/get-started' );
+    cy.get( '[data-cy="get-started-shell"]' ).should( 'be.visible' );
   } );
 
   it( 'renders the moves cockpit with list data for an authenticated user', () => {

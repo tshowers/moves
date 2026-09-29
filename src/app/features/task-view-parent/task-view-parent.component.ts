@@ -26,6 +26,7 @@ import { GoalApiService } from '../../services/goal-api.service';
 import { ToddMissionRecord } from '../../models/mission.model';
 import { ClickSoundDirective } from '../../shared/directives/click-sound.directive';
 import { CockpitBrowseModeBannerComponent } from '../../shared/cockpit-browse-mode-banner/cockpit-browse-mode-banner.component';
+import { GetTheAppBannerComponent } from '../../shared/get-the-app-banner/get-the-app-banner.component';
 import { CockpitCommandDeckComponent, CockpitCommandDeckLink } from '../../shared/cockpit-command-deck/cockpit-command-deck.component';
 
 type AutomationLaneKey = 'schedule' | 'status' | 'suggestions';
@@ -84,7 +85,7 @@ const MOVES_AUTOMATION_SETTINGS_KEY = 'moves-automation-settings';
     TaskHierarchyComponent,
     RouterModule,
     ClickSoundDirective,
-    CockpitBrowseModeBannerComponent,
+    CockpitBrowseModeBannerComponent, GetTheAppBannerComponent,
     CockpitCommandDeckComponent],
   templateUrl: './task-view-parent.component.html',
   styleUrl: './task-view-parent.component.css'

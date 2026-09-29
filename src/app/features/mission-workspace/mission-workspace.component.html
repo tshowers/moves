@@ -22,6 +22,7 @@
               <img src="assets/moves/moves.png" alt="Mission Workspace" class="mission-intake-image img-fluid">
             </div>
             <app-cockpit-browse-mode-banner *ngIf="!hasAuthenticatedUser() && !demoModeEnabled" surfaceLabel="Mission Workspace" customTitle="You can try this out, but you won't be able to save" customCopy="You are not signed in, so feel free to explore this form and see how TODD builds a mission plan. Sign in before you approve a plan — guest sessions can't create Moves."></app-cockpit-browse-mode-banner>
+            <app-get-the-app-banner *ngIf="hasAuthenticatedUser() && !demoModeEnabled"></app-get-the-app-banner>
             <div class="demo-context" *ngIf="demoModeEnabled">
               <span class="demo-pill">DEMO MODE</span>
               <p class="mt-2">This is how TODD maps execution.</p>

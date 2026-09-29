@@ -13,6 +13,15 @@ describe( 'Move subtasks', () => {
     cy.intercept( { hostname: 'firestore.googleapis.com' }, { statusCode: 403, body: {} } );
   };
 
+  // Saving (create and edit) needs canCreateMove from /moves/limits - stub a
+  // user who has the Moves app so the Save button isn't disabled.
+  beforeEach( () => {
+    cy.intercept( 'GET', '**/moves/limits', {
+      statusCode: 200,
+      body: { success: true, limits: { isPaidUser: true, currentCount: 0, freeMoveLimit: 0, remainingFreeMoves: 0, canCreateMove: true } },
+    } );
+  } );
+
   it( 'adds a subtask from an existing move and reopens it from the parent\'s subtask list', () => {
     const parentTask = {
       id: 'move-parent-1',

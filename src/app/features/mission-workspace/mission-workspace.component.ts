@@ -18,6 +18,7 @@ import { MovesOnboardingService } from '../../services/moves-onboarding.service'
 import { MovesAuthService } from '../../services/moves-auth.service';
 import { ClickSoundDirective } from '../../shared/directives/click-sound.directive';
 import { CockpitBrowseModeBannerComponent } from '../../shared/cockpit-browse-mode-banner/cockpit-browse-mode-banner.component';
+import { GetTheAppBannerComponent } from '../../shared/get-the-app-banner/get-the-app-banner.component';
 
 type MissionFormModel = {
   title: string;
@@ -90,7 +91,7 @@ type AssistantPageContext = {
 @Component( {
   selector: 'app-mission-workspace',
   standalone: true,
-  imports: [CommonModule, FormsModule, RouterModule, PreloaderComponent, BackToTopComponent, SectionJumpComponent, ClickSoundDirective, CockpitBrowseModeBannerComponent],
+  imports: [CommonModule, FormsModule, RouterModule, PreloaderComponent, BackToTopComponent, SectionJumpComponent, ClickSoundDirective, CockpitBrowseModeBannerComponent, GetTheAppBannerComponent],
   templateUrl: './mission-workspace.component.html',
   styleUrl: './mission-workspace.component.css'
 } )

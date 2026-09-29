@@ -1,0 +1,64 @@
+:host {
+  display: block;
+  --gta-brand: #0759dc;
+  --gta-bg: #eef4ff;
+  --gta-text: #0b1220;
+  --gta-subtext: #30435e;
+}
+
+:host-context([data-theme='dark']) {
+  --gta-brand: #5b9bff;
+  --gta-bg: #111c2c;
+  --gta-text: #f8fafc;
+  --gta-subtext: #aebbd0;
+}
+
+.gta-banner {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px 20px;
+  margin: 0 0 16px;
+  padding: 16px 18px;
+  border: 1px solid color-mix(in srgb, var(--gta-brand) 35%, transparent);
+  border-radius: 14px;
+  background: var(--gta-bg);
+  color: var(--gta-text);
+}
+
+.gta-banner > div {
+  flex: 1 1 280px;
+  min-width: 0;
+}
+
+.gta-banner__eyebrow {
+  margin: 0 0 4px;
+  color: var(--gta-brand);
+  font-size: .75rem;
+  font-weight: 800;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+}
+
+.gta-banner__title {
+  margin: 0 0 4px;
+  font-size: 1.1rem;
+  font-weight: 800;
+}
+
+.gta-banner__copy {
+  margin: 0;
+  color: var(--gta-subtext);
+  line-height: 1.45;
+}
+
+.gta-banner__link {
+  flex: none;
+  padding: 10px 18px;
+  border-radius: 999px;
+  background: var(--gta-brand);
+  color: #fff;
+  font-weight: 700;
+  text-decoration: none;
+}

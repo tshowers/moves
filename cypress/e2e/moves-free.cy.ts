@@ -1,49 +1,67 @@
-describe( 'Moves free-plan workflows', () => {
-  const freeUser = {
-    uid: 'moves-free-user',
-    tenantId: 'moves-free-tenant',
-    email: 'moves-free@example.com',
-    paid: false
+/**
+ * "Browse free, create with the app" (Ty, 2026-09-28): anyone can look at
+ * every Moves page; creating and editing needs the Moves App Store
+ * subscription (or the master tenant). Replaces the old 10-free-Moves /
+ * Stripe checkout specs.
+ */
+describe( 'Moves browse-free, create-with-the-app', () => {
+  const signedInUser = {
+    uid: 'moves-browse-user',
+    tenantId: 'moves-browse-tenant',
+    email: 'moves-browse@example.com',
   };
 
-  it( 'shows the guest purchase gate on Moves pricing', () => {
+  const stubAccess = ( canWrite: boolean ) => {
+    cy.intercept( { hostname: 'firestore.googleapis.com' }, { statusCode: 403, body: {} } );
+    cy.intercept( 'GET', '**/moves/limits', {
+      statusCode: 200,
+      body: { success: true, limits: { isPaidUser: canWrite, currentCount: 0, freeMoveLimit: 0, remainingFreeMoves: 0, canCreateMove: canWrite } },
+    } ).as( 'limits' );
+    cy.intercept( 'GET', '**/account/summary*', {
+      statusCode: 200,
+      body: { success: true, data: { tenant: {}, writeAccess: { moves: canWrite } } },
+    } ).as( 'summary' );
+  };
+
+  it( 'explains the model on /pricing', () => {
     cy.visit( '/pricing' );
-    cy.get( '[data-cy="moves-pricing-page"]' ).should( 'be.visible' );
-    cy.contains( 'Free includes 2 moves. Paid lets you keep momentum going.' ).should( 'exist' );
-    cy.contains( 'Sign in first' ).should( 'exist' );
-
-    cy.get( '[data-cy="moves-pricing-sign-in"]' ).click();
-
-    // See the equivalent assertion in moves-auth.cy.ts: SignInComponent
-    // auto-fires signIn() on load, which hands off to a different origin
-    // immediately - there's no stable post-navigation state for Cypress
-    // to reliably read here (two attempts both hit real Cypress-internal
-    // failures racing that navigation). The returnUrl/CSRF-token behavior
-    // is covered by moves-auth.service.spec.ts instead; this only checks
-    // what Cypress can reliably observe.
-    cy.location( 'pathname' ).should( 'eq', '/login' );
+    cy.get( '[data-cy="get-the-app"]' ).should( 'be.visible' );
+    cy.contains( 'Browse Moves free' ).should( 'exist' );
+    cy.get( '[data-cy="get-the-app-faq"]' ).should( 'contain.text', 'Not yet.' );
   } );
 
-  it( 'shows the real free-plan save wall when a tenant is already at the move limit', () => {
-    cy.intercept( { hostname: 'firestore.googleapis.com' }, { statusCode: 403, body: {} } );
+  it( 'sends old Stripe checkout links to the app', () => {
+    cy.visit( '/success?session_id=old-session' );
+    cy.location( 'pathname' ).should( 'eq', '/app' );
+  } );
 
-    cy.intercept( 'POST', '**/moves', {
-      statusCode: 403,
-      body: {
-        message: 'Free plan allows up to 2 tasks.'
-      }
-    } ).as( 'createMoveRejected' );
-
-    cy.visitWithCypressAuth( '/move', freeUser );
-    cy.get( '#preloader', { timeout: 8000 } ).should( 'not.exist' );
+  it( 'lets a signed-in user without the app look, but not save', () => {
+    stubAccess( false );
+    cy.visitWithCypressAuth( '/move', signedInUser );
     cy.get( '[data-cy="moves-edit-shell"]' ).should( 'be.visible' );
-    cy.get( '[data-cy="moves-edit-title"]' ).type( 'Third free move' );
-    cy.get( '[data-cy="moves-edit-description"]' ).type( 'This should stop at the real free quota.' );
-    cy.get( '[data-cy="moves-edit-save-top"]' ).click();
+    cy.get( '[data-cy="moves-get-the-app-banner"]' ).should( 'contain.text', 'Get the Moves app to create and edit' );
+    cy.get( '[data-cy="moves-get-the-app-link"]' ).should( 'have.attr', 'href', '/pricing' );
+    cy.get( '[data-cy="moves-edit-title"]' ).type( 'Call the printer' );
+    cy.get( '[data-cy="moves-edit-save-top"]' ).should( 'be.disabled' );
+  } );
 
-    cy.wait( '@createMoveRejected' );
-    cy.contains( '.toast-header', 'Save Failed' ).should( 'exist' );
-    cy.contains( 'Free plan allows up to 2 tasks.' ).should( 'exist' );
-    cy.get( '[data-cy="moves-edit-delete"]' ).should( 'not.exist' );
+  it( 'shows the Move planned in /get-started as waiting', () => {
+    stubAccess( false );
+    cy.visitWithCypressAuth( '/move', signedInUser, {
+      onBeforeLoad: ( win ) => {
+        win.localStorage.setItem( 'moves_signup_draft', JSON.stringify( { title: 'Send a proposal', readyToSubmit: true } ) );
+      },
+    } );
+    cy.get( '[data-cy="moves-get-the-app-banner"]' ).should( 'contain.text', '"Send a proposal", is waiting' );
+  } );
+
+  it( 'lets a user with the app save', () => {
+    stubAccess( true );
+    cy.visitWithCypressAuth( '/move', signedInUser );
+    cy.get( '[data-cy="moves-edit-shell"]' ).should( 'be.visible' );
+    cy.wait( '@limits' );
+    cy.get( '[data-cy="moves-edit-title"]' ).type( 'Call the printer' );
+    cy.get( '[data-cy="moves-edit-save-top"]' ).should( 'not.be.disabled' );
+    cy.get( '[data-cy="moves-get-the-app-banner"]' ).should( 'not.exist' );
   } );
 } );

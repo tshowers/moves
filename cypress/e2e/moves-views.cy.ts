@@ -12,6 +12,15 @@ describe( 'Moves view switching and completion workflows', () => {
     cy.intercept( { hostname: 'firestore.googleapis.com' }, { statusCode: 403, body: {} } );
   };
 
+  // Saving (create and edit) needs canCreateMove from /moves/limits - stub a
+  // user who has the Moves app so the Save button isn't disabled.
+  beforeEach( () => {
+    cy.intercept( 'GET', '**/moves/limits', {
+      statusCode: 200,
+      body: { success: true, limits: { isPaidUser: true, currentCount: 0, freeMoveLimit: 0, remainingFreeMoves: 0, canCreateMove: true } },
+    } );
+  } );
+
   it( 'creates a move, confirms its status/progress in the moves-view command panel, cycles through every view, and completes it from the hierarchy view', () => {
     // horizontal-task-timeline.component.ts's calendar view defaults its
     // 30-day window to start from today, and excludes anything outside

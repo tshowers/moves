@@ -28,6 +28,7 @@ describe( 'Moves help (/help)', () => {
   it( 'starts a new user by creating a Move', () => {
     cy.visit( '/help' );
     cy.contains( '.help-quickstart a', 'New Move' ).should( 'have.attr', 'href', '/move' );
-    cy.contains( '.help-quickstart a', 'Sign in' ).should( 'have.attr', 'href', '/login' );
+    // New visitors sign in through the wizard (plan a Move first).
+    cy.contains( '.help-quickstart a', 'Sign in' ).should( 'have.attr', 'href', '/get-started' );
   } );
 } );
