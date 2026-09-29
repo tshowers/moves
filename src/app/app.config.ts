@@ -7,6 +7,7 @@ import { initializeApp } from 'firebase/app';
 import { routes } from './app.routes';
 import { environment } from '../environments/environment';
 import { tenantInterceptor } from './core/interceptors/tenant.interceptor';
+import { idTokenInterceptor } from './core/interceptors/id-token.interceptor';
 
 initializeApp( environment.firebaseConfig );
 
@@ -21,7 +22,7 @@ export const appConfig: ApplicationConfig = {
     // request, not against manually-built headers per call. Registering
     // the same interceptor here keeps those services a near-verbatim port
     // instead of hand-editing headers into every call site.
-    provideHttpClient(withInterceptors([tenantInterceptor])),
+    provideHttpClient(withInterceptors([idTokenInterceptor, tenantInterceptor])),
     provideServiceWorker('ngsw-worker.js', {
       enabled: environment.production,
       registrationStrategy: 'registerWhenStable:30000',
