@@ -1,4 +1,5 @@
 @import "@taliferro/ui/styles/controls.css";
+@import "@taliferro/ui/styles/universal-menu.css";
 
 app-root>router-outlet+*:not(app-landing):not(app-moves-ios-showcase) {
   padding-top: 4.5rem;

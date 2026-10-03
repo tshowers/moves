@@ -8,14 +8,13 @@ import { environment } from '../environments/environment';
 import { MovesAuthService } from './services/moves-auth.service';
 import { ThemeService } from './services/theme.service';
 import { ToastComponent } from './shared/toast/toast.component';
-import { CommandPaletteComponent } from './shared/page/command-palette/command-palette.component';
 import { SiteFooterComponent } from './shared/site-footer/site-footer.component';
 import { PlatformMenuComponent } from './shared/platform-menu/platform-menu.component';
 import { MovesAssistantLauncherComponent } from './shared/page/assistant-box/moves-assistant-launcher.component';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, ToastComponent, CommandPaletteComponent, SiteFooterComponent, PlatformMenuComponent, MovesAssistantLauncherComponent, AsyncPipe, NgIf],
+  imports: [RouterOutlet, ToastComponent, SiteFooterComponent, PlatformMenuComponent, MovesAssistantLauncherComponent, AsyncPipe, NgIf],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })
@@ -40,6 +39,8 @@ export class AppComponent implements OnInit {
 
   readonly isAdmin$ = this.authService.getUser().pipe( map( user => user?.uid === environment.taliferroTenantId ) );
   readonly isLoggedIn$ = this.authService.isLoggedIn();
+  readonly userName$ = this.authService.getUser().pipe( map( user => user?.displayName || '' ) );
+  readonly userEmail$ = this.authService.getUser().pipe( map( user => user?.email || '' ) );
   // Routes with their own local nav bar (landing, the iOS showcase) render
   // app-platform-menu inline as part of that bar instead of the global
   // fixed corner button, so the global one - and its clearance padding in

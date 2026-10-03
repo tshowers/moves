@@ -1,7 +1,6 @@
 @if (!hasOwnNav()) {
-  <div class="app-global-actions"><app-platform-menu [isAdmin]="(isAdmin$ | async) ?? false" [isLoggedIn]="(isLoggedIn$ | async) ?? false" (signOut)="signOut()" /></div>
+  <div class="app-global-actions"><app-platform-menu [isAdmin]="(isAdmin$ | async) ?? false" [isLoggedIn]="(isLoggedIn$ | async) ?? false" [userName]="(userName$ | async) ?? ''" [userEmail]="(userEmail$ | async) ?? ''" (signOut)="signOut()" /></div>
 }
-<app-command-palette />
 <router-outlet></router-outlet>
 <app-moves-assistant-launcher></app-moves-assistant-launcher>
 <app-toast></app-toast>
