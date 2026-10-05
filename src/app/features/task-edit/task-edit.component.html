@@ -39,7 +39,21 @@
                 <label for="taskDescription">Description</label>
                 <textarea id="taskDescription" class="form-control" rows="4" [(ngModel)]="newTaskDescription" name="taskDescription" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="Describe the task" data-cy="moves-edit-description"></textarea>
             </div>
-            <div class="form-group full-width" *ngIf="selectedTask?.url" data-cy="moves-edit-link">
+            <div class="form-group full-width maya-handoff" *ngIf="selectedTask?.id && hasAuthenticatedUser()" data-cy="moves-maya-panel">
+                <label>Maya</label>
+                <ng-container *ngIf="mayaJobUrl; else offerMaya">
+                    <p class="mb-0">Maya is on this one. Her questions, progress and anything to approve are on her work page.</p>
+                    <a class="btn-todd" [href]="mayaJobUrl" target="_blank" rel="noopener" data-cy="moves-maya-progress">See Maya’s progress</a>
+                </ng-container>
+                <ng-template #offerMaya>
+                    <p class="mb-0">Maya can do emails, social posts and images. She’ll ask if she needs anything, and nothing goes out without your approval.</p>
+                    <button type="button" class="btn-todd" [disabled]="isStartingMaya" (click)="haveMayaDoIt()" data-cy="moves-maya-start">
+                        {{ isStartingMaya ? 'Starting…' : 'Have Maya do this' }}
+                    </button>
+                </ng-template>
+                <small class="field-help field-help--error" *ngIf="mayaError">{{ mayaError }}</small>
+            </div>
+            <div class="form-group full-width" *ngIf="selectedTask?.url && selectedTask?.url !== mayaJobUrl" data-cy="moves-edit-link">
                 <label>Link</label>
                 <p class="mb-0"><a [href]="selectedTask?.url" target="_blank">{{ selectedTask?.url }}</a></p>
             </div>

@@ -19,6 +19,7 @@ import { MovesAuthService } from '../../services/moves-auth.service';
 import { MovesDataService } from '../../services/moves-data.service';
 import { MoveLimits, TaskApiService } from '../../services/task-api.service';
 import { AiMissionApiService } from '../../services/ai-mission-api.service';
+import { MAYA_WORK_URL, MayaJobsApiService } from '../../services/maya-jobs-api.service';
 import { LoggerService } from '../../services/logger.service';
 import { MovesNotificationService } from '../../services/moves-notification.service';
 import { ClickSoundDirective } from '../../shared/directives/click-sound.directive';
@@ -128,6 +129,12 @@ export class TaskEditComponent implements OnInit, OnChanges, OnDestroy {
   isSavingNote = false;
   noteError: string | null = null;
 
+  // "Have Maya do this": hands a saved move to one of Maya's jobs.
+  isStartingMaya = false;
+  mayaError: string | null = null;
+  /** Shown when the move already had a different link, so the job link couldn't be saved on it. */
+  private startedMayaUrl = '';
+
   constructor ( private authService: MovesAuthService,
     private dataService: MovesDataService,
     private taskService: TaskApiService,
@@ -137,8 +144,36 @@ export class TaskEditComponent implements OnInit, OnChanges, OnDestroy {
     private router: Router,
     private logger: LoggerService,
     private notificationService: MovesNotificationService,
-    private adminControlService: MovesAdminService
+    private adminControlService: MovesAdminService,
+    private mayaJobs: MayaJobsApiService
   ) { }
+
+  /** The Maya job this move is linked to, if any (Maya's chat links her moves when she creates them). */
+  get mayaJobUrl (): string {
+    const url = String( this.selectedTask?.url || '' );
+    return url.startsWith( MAYA_WORK_URL ) ? url : this.startedMayaUrl;
+  }
+
+  async haveMayaDoIt (): Promise<void> {
+    const task = this.selectedTask;
+    if ( !task?.id || this.isStartingMaya ) return;
+    this.isStartingMaya = true;
+    this.mayaError = null;
+    try {
+      const request = [`From my move: ${task.title}`, String( task.description || '' ).trim()].filter( Boolean ).join( '\n' ).slice( 0, 4000 );
+      const url = await this.mayaJobs.start( request );
+      if ( task.url ) {
+        this.startedMayaUrl = url;
+      } else {
+        await this.taskService.updateTask( task.id, { url }, this.userId );
+        this.selectedTask = { ...task, url };
+      }
+    } catch ( error: any ) {
+      this.mayaError = error?.error?.message || error?.message || 'Maya couldn’t start that.';
+    } finally {
+      this.isStartingMaya = false;
+    }
+  }
 
   public hasAuthenticatedUser (): boolean {
     return !!this.uid && !!this.userId;

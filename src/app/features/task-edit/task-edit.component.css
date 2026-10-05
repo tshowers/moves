@@ -389,3 +389,6 @@
         align-items: stretch;
     }
 }
+/* "Have Maya do this" / "See Maya's progress" on a saved move. */
+.maya-handoff { display: flex; flex-direction: column; align-items: flex-start; gap: 10px; }
+.maya-handoff a.btn-todd { text-decoration: none; }
