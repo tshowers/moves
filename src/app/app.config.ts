@@ -8,6 +8,7 @@ import { routes } from './app.routes';
 import { environment } from '../environments/environment';
 import { tenantInterceptor } from './core/interceptors/tenant.interceptor';
 import { idTokenInterceptor } from './core/interceptors/id-token.interceptor';
+import { provideCanonicalUrl } from './shared/canonical-url';
 
 initializeApp( environment.firebaseConfig );
 
@@ -15,6 +16,7 @@ export const appConfig: ApplicationConfig = {
   providers: [
     provideZoneChangeDetection({ eventCoalescing: true }),
     provideRouter(routes),
+    provideCanonicalUrl(),
     // Mirrors TODD's own core/interceptors/tenant.interceptor.ts - every
     // ported service (TaskApiService, AiMissionApiService, GoalApiService,
     // MovesEmailService...) was written against the monorepo's HttpClient
