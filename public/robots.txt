@@ -1,0 +1,16 @@
+User-agent: *
+Allow: /
+Disallow: /app
+Disallow: /moves
+Disallow: /move/
+Disallow: /ai-missions
+Disallow: /plan
+Disallow: /profile
+Disallow: /get-started
+Disallow: /login
+Disallow: /auth/
+Disallow: /mobile-handoff
+Disallow: /success
+Disallow: /not-found
+
+Sitemap: https://moves.taliferro.tech/sitemap.xml
