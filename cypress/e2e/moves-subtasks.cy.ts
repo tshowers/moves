@@ -20,6 +20,12 @@ describe( 'Move subtasks', () => {
       statusCode: 200,
       body: { success: true, limits: { isPaidUser: true, currentCount: 0, freeMoveLimit: 0, remainingFreeMoves: 0, canCreateMove: true } },
     } );
+    // Buttons marked appWriteAction (Delete, Add Subtask, ...) only act for
+    // a user whose /account/summary says they have the Moves app.
+    cy.intercept( 'GET', '**/account/summary*', {
+      statusCode: 200,
+      body: { success: true, data: { tenant: {}, writeAccess: { moves: true } } },
+    } );
   } );
 
   it( 'adds a subtask from an existing move and reopens it from the parent\'s subtask list', () => {

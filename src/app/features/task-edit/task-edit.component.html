@@ -47,7 +47,7 @@
                 </ng-container>
                 <ng-template #offerMaya>
                     <p class="mb-0">Maya can do emails, social posts and images. She’ll ask if she needs anything, and nothing goes out without your approval.</p>
-                    <button type="button" class="btn-todd" [disabled]="isStartingMaya" (click)="haveMayaDoIt()" data-cy="moves-maya-start">
+                    <button type="button" class="btn-todd" [disabled]="isStartingMaya" appWriteAction="hand this move to Maya" (click)="haveMayaDoIt()" data-cy="moves-maya-start">
                         {{ isStartingMaya ? 'Starting…' : 'Have Maya do this' }}
                     </button>
                 </ng-template>
@@ -73,7 +73,7 @@
                 </ng-template>
                 <div class="task-note-reply">
                     <textarea class="form-control" rows="2" [(ngModel)]="newNoteText" name="newNoteText" placeholder="Reply to Maya - e.g. answer a blocker or leave direction" [disabled]="isSavingNote" data-cy="moves-notes-input"></textarea>
-                    <button type="button" class="btn-todd btn-todd-secondary" [disabled]="!newNoteText.trim() || isSavingNote" (click)="addNote()" data-cy="moves-notes-submit">
+                    <button type="button" class="btn-todd btn-todd-secondary" [disabled]="!newNoteText.trim() || isSavingNote" appWriteAction="reply to Maya here" (click)="addNote()" data-cy="moves-notes-submit">
                         {{ isSavingNote ? 'Saving…' : 'Reply' }}
                     </button>
                 </div>
@@ -212,7 +212,7 @@
                 <h3>Subtasks</h3>
                 <p>Use child moves for the work that rolls up under this parent move.</p>
             </div>
-            <button type="button" class="btn btn-outline-secondary" (click)="addSubTask()" data-cy="moves-edit-add-subtask">Add Subtask</button>
+            <button type="button" class="btn btn-outline-secondary" appWriteAction="add a subtask" (click)="addSubTask()" data-cy="moves-edit-add-subtask">Add Subtask</button>
         </div>
         <div class="attachment-empty" *ngIf="!childTasks.length"> No subtasks yet. Add one to break this move into smaller steps. </div>
         <ul class="attachment-list" *ngIf="childTasks.length">
@@ -236,7 +236,7 @@
             <h3>Danger zone</h3>
             <p>Delete this task if it is no longer needed.</p>
         </div>
-        <button type="button" class="btn btn-outline-danger" (click)="onDelete()" data-cy="moves-edit-delete">Delete Move</button>
+        <button type="button" class="btn btn-outline-danger" appWriteAction="delete this move" (click)="onDelete()" data-cy="moves-edit-delete">Delete Move</button>
     </div>
     <div class="task-edit-actions task-edit-actions-bottom">
         <button type="button" class="btn-todd" (click)="onCancel()" data-cy="moves-edit-cancel-bottom">Cancel</button>

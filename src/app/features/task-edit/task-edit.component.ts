@@ -27,6 +27,7 @@ import { CockpitBrowseModeBannerComponent } from '../../shared/cockpit-browse-mo
 import { GetTheAppBannerComponent } from '../../shared/get-the-app-banner/get-the-app-banner.component';
 import { RelativeTimePipe } from '../../pipes/relative-time.pipe';
 import { MovesAdminService } from '../../services/moves-admin.service';
+import { WriteActionDirective } from '../../shared/write-access/write-action.directive';
 
 
 /**
@@ -53,7 +54,7 @@ import { MovesAdminService } from '../../services/moves-admin.service';
 @Component( {
   selector: 'app-task-edit',
   standalone: true,
-  imports: [CommonModule, FormsModule, RouterModule, AppendYouPipe, DropDownEditButtonComponent, PreloaderComponent, ClickSoundDirective, CockpitBrowseModeBannerComponent, GetTheAppBannerComponent, RelativeTimePipe],
+  imports: [WriteActionDirective, CommonModule, FormsModule, RouterModule, AppendYouPipe, DropDownEditButtonComponent, PreloaderComponent, ClickSoundDirective, CockpitBrowseModeBannerComponent, GetTheAppBannerComponent, RelativeTimePipe],
   templateUrl: './task-edit.component.html',
   styleUrl: './task-edit.component.css'
 } )
