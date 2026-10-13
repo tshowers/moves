@@ -1,13 +1,14 @@
 import { Component, computed, inject, signal } from '@angular/core';
 import { Router } from '@angular/router';
 
+import { fmtLong } from '../flow-dates';
 import { choiceLabel } from '../flow-engine';
 import { Issue, ToddActionType } from '../flow.models';
 import { FlowStore } from '../flow.store';
 import { TODD_ICON } from '../ui/flow-ui.components';
 import { KIND_LABEL, LogRowsComponent } from '../ui/issue-card.component';
 
-type Filter = 'all' | ToddActionType;
+type Filter = 'all' | 'practice' | ToddActionType;
 
 /** 04 TODD - what needs the PM, everything TODD did (with Undo), and the rules it acts within. */
 @Component( {
@@ -21,7 +22,7 @@ type Filter = 'all' | ToddActionType;
           <img [src]="todd" alt="" class="mv-plate">
           <div>
             <h1 class="mv-title">TODD</h1>
-            <p class="mv-sub">Your project assistant · acting within {{ enabledRules() }} rules</p>
+            <p class="mv-sub">Your project assistant · {{ modeLine() }}</p>
           </div>
         </header>
 
@@ -51,6 +52,30 @@ type Filter = 'all' | ToddActionType;
       </div>
 
       <aside class="rules">
+        <div class="mode" [class]="'mode mode--' + store.autonomy().mode" data-cy="todd-mode">
+          @switch (store.autonomy().mode) {
+            @case ('dry_run') {
+              <p><strong>Practising{{ practiceEnds() ? ' until ' + practiceEnds() : '' }}.</strong> I log what I would do and change nothing. Then I switch on.</p>
+              <div class="mode-actions">
+                <button type="button" class="mv-btn mv-btn--primary mv-btn--sm" (click)="store.setAutonomy('on')">Turn on now</button>
+                <button type="button" class="mv-btn mv-btn--sm" (click)="store.setAutonomy('off')">Pause</button>
+              </div>
+            }
+            @case ('on') {
+              <p><strong>On.</strong> I act within these rules and log everything with Undo.</p>
+              <div class="mode-actions">
+                <button type="button" class="mv-btn mv-btn--sm" (click)="store.setAutonomy('off')">Pause</button>
+                <button type="button" class="mv-btn mv-btn--sm" (click)="store.setAutonomy('dry_run')">Practise instead</button>
+              </div>
+            }
+            @default {
+              <p><strong>Paused.</strong> I still flag breaks; I just won’t act on them.</p>
+              <div class="mode-actions">
+                <button type="button" class="mv-btn mv-btn--primary mv-btn--sm" (click)="store.setAutonomy('on')">Turn on</button>
+              </div>
+            }
+          }
+        </div>
         <h2>Rules I follow</h2>
         <p class="intro">I act on these without asking. Everything else comes to you.</p>
         @for (r of store.state().rules; track r.id) {
@@ -84,6 +109,11 @@ type Filter = 'all' | ToddActionType;
     .more { margin-top: 14px; font-size: 14px; }
     .rules { align-self: start; margin-top: 30px; background: var(--surface); border-radius: 32px; padding: 26px 22px; position: sticky; top: 20px; }
     .rules h2 { font-size: 22px; }
+    .mode { border-radius: 20px; padding: 14px 16px; margin-bottom: 20px; background: var(--bg); font-size: 13px; line-height: 1.45; color: var(--text2); }
+    .mode strong { color: var(--text); }
+    .mode--dry_run { box-shadow: inset 0 0 0 1.5px var(--blue); }
+    .mode--off { box-shadow: inset 0 0 0 1.5px var(--n500); }
+    .mode-actions { display: flex; gap: 6px; margin-top: 10px; flex-wrap: wrap; }
     .intro { font-size: 13px; color: var(--text2); margin: 8px 0 6px !important; }
     .rule { display: flex; gap: 12px; align-items: flex-start; justify-content: space-between; padding: 14px 0; border-top: 1px solid var(--surface2); }
     .rule p { font-size: 14px; line-height: 1.4; color: var(--text); }
@@ -108,6 +138,14 @@ export class ToddComponent {
   readonly showAll = signal( false );
 
   readonly enabledRules = computed( () => this.store.state().rules.filter( r => r.enabled ).length );
+  readonly practiceEnds = computed( () => {
+    const at = this.store.autonomy().practiceEndsAt;
+    return at ? fmtLong( at ) : '';
+  } );
+  readonly modeLine = computed( () => {
+    const n = this.enabledRules();
+    return { on: `acting within ${n} rules`, dry_run: `practising within ${n} rules`, off: 'paused' }[this.store.autonomy().mode];
+  } );
   readonly log = computed( () => [...this.store.state().actions].sort( ( a, b ) => b.createdAt.localeCompare( a.createdAt ) ) );
   readonly filters = computed( () => {
     const count = this.log().length;
@@ -115,9 +153,15 @@ export class ToddComponent {
       { key: 'all', label: `All ${count}` }, { key: 'reassigned', label: 'Reassigned' }, { key: 'nudged', label: 'Nudged' },
       { key: 'rescheduled', label: 'Rescheduled' }, { key: 'split', label: 'Split' },
     ];
-    return base;
+    const practice = this.log().filter( a => a.dryRun ).length;
+    return practice ? [...base, { key: 'practice' as Filter, label: `Would have ${practice}` }] : base;
   } );
-  readonly filtered = computed( () => this.filter() === 'all' ? this.log() : this.log().filter( a => a.type === this.filter() ) );
+  readonly filtered = computed( () => {
+    const f = this.filter();
+    if ( f === 'all' ) return this.log();
+    if ( f === 'practice' ) return this.log().filter( a => a.dryRun );
+    return this.log().filter( a => a.type === f && !a.dryRun );
+  } );
   readonly visible = computed( () => this.showAll() ? this.filtered() : this.filtered().slice( 0, 6 ) );
 
   where ( i: Issue ): string {

@@ -1,0 +1,40 @@
+{
+  "_about": "Shared by todd-backend (__tests__/moves.flowRules.test.js) and the moves web app (src/app/flow/flow-engine.spec.ts, copy at src/app/flow/testing/flow-team.fixture.json). Keep both copies identical: the server's rules and the app's engine must agree on stalls, the 48h lane rule, order breaks and who has the most room.",
+  "now": "2026-10-13T16:00:00.000Z",
+  "tenantId": "tenant-1",
+  "leadId": "dana",
+  "members": [
+    {"id": "dana", "displayName": "Dana Reyes", "email": "dana@example.com", "companyId": "tenant-1", "status": "active"},
+    {"id": "priya", "displayName": "Priya Shah", "email": "priya@example.com", "companyId": "tenant-1", "status": "active"},
+    {"id": "ken", "displayName": "Ken Ortiz", "email": "ken@example.com", "companyId": "tenant-1", "status": "active"},
+    {"id": "sam", "displayName": "Sam Kim", "email": "sam@example.com", "companyId": "tenant-1", "status": "active"}
+  ],
+  "capacity": {"sam": 2},
+  "projects": [
+    {"id": "harbor", "name": "Harbor app launch", "shipsOn": "2026-11-04", "memberIds": ["dana", "priya", "ken", "sam"], "leadId": "dana"}
+  ],
+  "moves": [
+    {"id": "scope", "title": "Scope", "projectId": "harbor", "assigneeId": "priya", "executionLane": "person", "dueDate": "2026-10-06T00:00:00.000Z", "isCompleted": true, "lastActivityAt": "2026-10-06T10:00:00.000Z", "nextAction": "Done"},
+    {"id": "copy", "title": "Homepage copy", "projectId": "harbor", "assigneeId": "sam", "executionLane": "person", "dueDate": "2026-10-11T00:00:00.000Z", "lastActivityAt": "2026-10-07T10:00:00.000Z", "nextAction": "Finish the hero section"},
+    {"id": "qa", "title": "QA sign-off", "projectId": "harbor", "assigneeId": "", "executionLane": "maya", "dueDate": "2026-10-15T00:00:00.000Z", "laneEnteredAt": "2026-10-10T09:00:00.000Z", "lastActivityAt": "2026-10-12T10:00:00.000Z", "laneNotes": {"todd": "Can't. Sign-off needs a person's judgment.", "maya": "Can't. QA isn't content work."}, "nextAction": "Run the QA checklist"},
+    {"id": "pricing", "title": "Send renewal proposal", "projectId": "harbor", "assigneeId": "", "executionLane": "maya", "dueDate": "2026-10-16T00:00:00.000Z", "laneEnteredAt": "2026-10-05T09:00:00.000Z", "lastActivityAt": "2026-10-12T10:00:00.000Z", "notesLog": [{"at": "2026-10-08T09:00:00.000Z", "author": "maya", "text": "Needs pricing before I can draft."}], "nextAction": "Draft the proposal"},
+    {"id": "build", "title": "API build", "projectId": "harbor", "assigneeId": "ken", "executionLane": "person", "dueDate": "2026-10-16T00:00:00.000Z", "lastActivityAt": "2026-10-13T09:00:00.000Z", "nextAction": "Ship the endpoints"},
+    {"id": "invites", "title": "Beta invites", "projectId": "harbor", "assigneeId": "ken", "executionLane": "person", "dueDate": "2026-10-14T00:00:00.000Z", "dependsOn": ["build"], "lastActivityAt": "2026-10-13T09:00:00.000Z", "nextAction": "Send the invites"},
+    {"id": "kickoff", "title": "Design kickoff", "projectId": "harbor", "assigneeId": "ken", "executionLane": "person", "dueDate": "2026-10-15T00:00:00.000Z", "dependsOn": ["build"], "dateLockedBy": "manual", "lastActivityAt": "2026-10-13T09:00:00.000Z", "nextAction": "Run kickoff"},
+    {"id": "listing", "title": "Store listing", "projectId": "harbor", "assigneeId": "sam", "executionLane": "person", "dueDate": "2026-10-20T00:00:00.000Z", "lastActivityAt": "2026-10-13T09:00:00.000Z", "nextAction": "Upload screenshots"},
+    {"id": "notes", "title": "Release notes", "projectId": "harbor", "assigneeId": "ken", "executionLane": "person", "dueDate": "2026-10-25T00:00:00.000Z", "dependsOn": ["invites"], "lastActivityAt": "2026-10-13T09:00:00.000Z", "nextAction": "Draft from the changelog"}
+  ],
+  "expect": {
+    "mostRoom": {"harbor": "priya"},
+    "stalls": ["copy"],
+    "laneStalls": ["qa", "pricing"],
+    "orderBreaks": ["invites", "kickoff"],
+    "proposals": [
+      {"ruleId": "split", "moveId": "pricing", "to": "priya", "creates": "Pricing"},
+      {"ruleId": "handoff", "moveId": "qa", "to": "priya"},
+      {"ruleId": "reschedule", "moveId": "invites", "due": "2026-10-17"},
+      {"ruleId": "nudge", "moveId": "copy", "to": "sam"}
+    ],
+    "untouched": ["kickoff", "build", "listing", "notes", "scope"]
+  }
+}

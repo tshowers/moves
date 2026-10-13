@@ -5,7 +5,7 @@ import { firstValueFrom } from 'rxjs';
 import { environment } from '../../environments/environment';
 import { Task } from '../models/task.model';
 import { TaskApiService } from '../services/task-api.service';
-import { MoveChange, ToddAction } from './flow.models';
+import { Autonomy, MoveChange, ToddAction } from './flow.models';
 
 export interface ServerRule { id: string; enabled: boolean; locked: boolean }
 export interface ServerDismissal { reason: 'keep' | 'skip' | 'park'; until?: string | null }
@@ -18,6 +18,7 @@ export interface ServerFlowState {
   capacity: Record<string, number>;
   projects: ServerProject[];
   imported: boolean;
+  autonomy?: Autonomy;
 }
 
 export interface ActionRequest {
@@ -75,6 +76,11 @@ export class FlowApiService {
 
   updateProject ( projectId: string, body: Partial<Omit<ServerProject, 'id' | 'name'>> ): Promise<unknown> {
     return firstValueFrom( this.http.put( `${this.base}/projects/${encodeURIComponent( projectId )}`, body ) );
+  }
+
+  async setAutonomy ( mode: Autonomy['mode'] ): Promise<Autonomy> {
+    const res = await firstValueFrom( this.http.put<{ autonomy: Autonomy }>( `${this.base}/autonomy`, { mode } ) );
+    return res.autonomy;
   }
 
   importLocal ( body: unknown ): Promise<unknown> {

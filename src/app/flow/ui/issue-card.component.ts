@@ -92,12 +92,13 @@ export class IssueCardComponent {
   standalone: true,
   template: `
     @for (a of actions(); track a.id) {
-      <div class="lr" [class.undone]="!!a.undoneAt">
-        <span class="mv-tag tag" [class]="'mv-tag tag tag--' + a.type">{{ typeLabel(a) }}</span>
+      <div class="lr" [class.undone]="!!a.undoneAt" [class.dry]="a.dryRun">
+        <span class="mv-tag tag" [class]="'mv-tag tag tag--' + (a.dryRun ? 'dry' : a.type)">{{ a.dryRun ? 'Would have' : typeLabel(a) }}</span>
         <p><strong>{{ a.subject }}</strong> {{ a.text }}</p>
         @if (showProject()) { <span class="proj">{{ projectName(a.projectId) }}</span> }
         <span class="time">{{ time(a) }}</span>
-        @if (a.undoneAt) { <span class="undo muted">Undone</span> }
+        @if (a.dryRun) { <span class="undo muted">Practice</span> }
+        @else if (a.undoneAt) { <span class="undo muted">Undone</span> }
         @else if (a.changes.length) { <button type="button" class="mv-link undo" (click)="store.undo(a.id)">Undo</button> }
         @else { <span class="undo"></span> }
       </div>
@@ -112,6 +113,8 @@ export class IssueCardComponent {
     .tag { justify-content: center; font-size: 11px; padding: 3px 6px; }
     .tag--reassigned, .tag--split, .tag--assigned, .tag--sequenced, .tag--completed { background: var(--t-green); color: var(--t-green-fg); }
     .tag--rescheduled { background: var(--t-pink); color: var(--t-pink-fg); }
+    .tag--dry { background: transparent; color: var(--muted); box-shadow: inset 0 0 0 1px var(--n400); }
+    .lr.dry p { color: var(--text2); }
     p { font-size: 14px; line-height: 1.4; color: var(--text); }
     .proj, .time { font-size: 14px; color: var(--text2); }
     .undo { font-size: 14px; justify-self: end; }

@@ -17,7 +17,7 @@ import {
   byRoom, computeIssues, defaultRules, Dismissal, firstName, FlowState, MAYA_ID, moveById, needsYou, ownerOf, personById,
   projectById, sequenceProposal, TODD_ID,
 } from './flow-engine';
-import { FlowMove, FlowProject, Issue, IssueChoice, Lane, MoveChange, Person, RangeKey, ToddAction, ToddActionType } from './flow.models';
+import { Autonomy, FlowMove, FlowProject, Issue, IssueChoice, Lane, MoveChange, Person, RangeKey, ToddAction, ToddActionType } from './flow.models';
 
 export interface FlowToast { id: number; msg: string; undo?: () => void }
 
@@ -84,6 +84,8 @@ export class FlowStore {
   readonly state = signal<FlowState>( demoState() );
   readonly range = signal<RangeKey>( '3w' );
   readonly toast = signal<FlowToast | null>( null );
+  /** Whether TODD acts on its own. The demo shows it on. */
+  readonly autonomy = signal<Autonomy>( { mode: 'on' } );
   /** Review items decided this session, in order - the left list keeps them ticked. */
   readonly reviewed = signal<string[]>( [] );
 
@@ -125,6 +127,7 @@ export class FlowStore {
 
   private useDemo (): void {
     this.state.set( demoState() );
+    this.autonomy.set( { mode: 'on' } );
     this.mode.set( 'demo' );
   }
 
@@ -188,6 +191,7 @@ export class FlowStore {
         dismissed: Object.fromEntries( Object.entries( flowState?.dismissed || {} ).map( ( [id, d] ) => [id, { reason: d.reason, until: d.until || undefined }] ) ),
         now: new Date(), pmId: user!.uid,
       } );
+      this.autonomy.set( flowState?.autonomy || { mode: 'dry_run' } );
       if ( !flowState ) this.error.set( 'TODD’s log and rules didn’t load. Changes you make now still save to your moves.' );
       this.mode.set( 'live' );
     } catch ( err ) {
@@ -242,7 +246,8 @@ export class FlowStore {
       lastActivityAt: t.lastActivityAt || t.updatedAt || t.createdAt || new Date().toISOString(),
       dateLockedBy: t.dateLockedBy || undefined,
       dateLockedById: t.dateLockedById || undefined,
-      laneEnteredAt: t.laneEnteredAt || undefined,
+      // Older moves have no laneEnteredAt; like the server, count from when they were created.
+      laneEnteredAt: t.laneEnteredAt || ( lane !== 'person' ? t.createdAt : '' ) || undefined,
       laneNotes: t.laneNotes && Object.keys( t.laneNotes ).length ? t.laneNotes : undefined,
       createdBy: t.createdByTodd ? 'todd' : t.employeeType === 'maya' ? 'maya' : 'person',
       history: [
@@ -532,6 +537,27 @@ export class FlowStore {
     const flip = ( on: boolean ) => this.state.update( s => ( { ...s, rules: s.rules.map( r => r.id === ruleId && !r.locked ? { ...r, enabled: on } : r ) } ) );
     flip( enabled );
     this.sync( this.api.setRule( ruleId, enabled ), () => flip( !enabled ) );
+  }
+
+  /** Turn TODD on, pause it, or send it back to practising. */
+  setAutonomy ( mode: Autonomy['mode'] ): void {
+    if ( !this.canWrite( 'change what TODD does on its own' ) ) return;
+    const before = this.autonomy();
+    this.autonomy.set( { ...before, mode, chosenBy: this.state().pmId } );
+    const said = { on: 'TODD is on. It acts within its rules and logs everything with Undo.', off: 'TODD is paused. It still flags breaks; it just won’t act.', dry_run: 'TODD is practising. It logs what it would do and changes nothing.' }[mode];
+    if ( this.mode() !== 'live' ) {
+      this.say( said );
+      return;
+    }
+    this.api.setAutonomy( mode )
+      .then( a => {
+        this.autonomy.set( a );
+        this.say( said );
+      } )
+      .catch( err => {
+        this.autonomy.set( before );
+        this.say( FlowApiService.message( err, 'That didn’t save. Try again.' ) );
+      } );
   }
 
   /** How many open moves someone can carry before Team shows them full. */

@@ -190,6 +190,11 @@ export class MomentumComponent {
     const s = this.store.state();
     const broke = this.rows().filter( r => r.note.kind === 'needs' ).length;
     const fixed = liveActions( s ).filter( a => a.auto && daysBetween( a.createdAt, s.now ) === 0 );
+    const practice = this.store.autonomy().mode === 'dry_run' ? s.actions.filter( a => a.dryRun && daysBetween( a.createdAt, s.now ) === 0 ).length : 0;
+    if ( practice ) {
+      const lead = broke ? `${broke} line${broke === 1 ? '' : 's'} broke overnight.` : 'Every line is moving.';
+      return { lead, rest: `I’m still practising: ${practice} thing${practice === 1 ? '' : 's'} I would have fixed today ${practice === 1 ? 'is' : 'are'} in the log. Nothing changed.` };
+    }
     const words = ['zero', 'One', 'Two', 'Three', 'Four', 'Five', 'Six'];
     const lead = broke ? `${words[broke] || broke} line${broke === 1 ? '' : 's'} broke overnight.` : 'Every line is moving.';
     if ( !fixed.length ) return { lead, rest: broke ? 'They need you. Everything else is on track.' : 'Nothing needs you today.' };

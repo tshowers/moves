@@ -122,8 +122,9 @@ export function downstream ( s: FlowState, moveId: string ): FlowMove[] {
   return [...out.values()];
 }
 
+/** Actions that really changed something and still stand (not undone, not practice). */
 export function liveActions ( s: FlowState ): ToddAction[] {
-  return s.actions.filter( a => !a.undoneAt );
+  return s.actions.filter( a => !a.undoneAt && !a.dryRun );
 }
 
 /** The latest action TODD took today that touched this move and wasn't undone. */
@@ -172,9 +173,11 @@ export function computeIssues ( s: FlowState ): Issue[] {
       }
     }
 
-    // Stall: sitting too long in TODD's or Maya's lane.
+    // Stall: sitting too long in TODD's or Maya's lane - unless it's waiting
+    // on another open move (Maya's part after a split), which isn't stuck.
     const handoffHours = rule( s, 'handoff' )?.params?.['hours'] ?? 48;
-    if ( m.lane !== 'person' && m.laneEnteredAt && ( s.now.getTime() - toDate( m.laneEnteredAt ).getTime() ) / 3_600_000 >= handoffHours ) {
+    const waiting = m.dependsOn.some( id => { const d = moveById( s, id ); return !!d && isOpen( d ); } );
+    if ( m.lane !== 'person' && !waiting && m.laneEnteredAt && ( s.now.getTime() - toDate( m.laneEnteredAt ).getTime() ) / 3_600_000 >= handoffHours ) {
       issues.push( laneStallIssue( s, m ) );
       continue;
     }

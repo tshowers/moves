@@ -140,6 +140,20 @@ describe( 'Moves flow map - signed in', () => {
     cy.wait( '@rule' ).its( 'request.body' ).should( 'deep.equal', { enabled: false } );
   } );
 
+  it( 'shows TODD’s practice week and lets the lead turn it on', () => {
+    stub( true );
+    const practice = { id: 'dry-handoff-live-2-2026-10-13', type: 'reassigned', moveId: 'live-2', projectId: '', subject: 'Follow up with procurement', text: 'from Maya to Priya. It sat 3 days with Maya.', reason: '', ruleId: 'handoff', auto: true, dryRun: true, createdAt: new Date().toISOString(), changes: [{ moveId: 'live-2', before: { assigneeId: null, lane: 'maya' }, after: { assigneeId: 'priya', lane: 'person' } }] };
+    cy.intercept( 'GET', '**/moves/flow', { statusCode: 200, body: flowState( { actions: [practice], autonomy: { mode: 'dry_run', practiceEndsAt: new Date( Date.now() + 5 * 86_400_000 ).toISOString() } } ) } );
+    cy.intercept( 'PUT', '**/moves/flow/autonomy', { statusCode: 200, body: { success: true, autonomy: { mode: 'on', chosenBy: 'flow-user' } } } ).as( 'autonomy' );
+    cy.visitWithCypressAuth( '/app/todd', signedInUser );
+    cy.wait( '@loadMoves' );
+    cy.get( '[data-cy="todd-mode"]' ).should( 'contain.text', 'Practising until' );
+    cy.contains( '.lr', 'Follow up with procurement' ).should( 'contain.text', 'Would have' ).and( 'contain.text', 'Practice' ).find( 'button' ).should( 'not.exist' );
+    cy.contains( 'button', 'Turn on now' ).click();
+    cy.wait( '@autonomy' ).its( 'request.body' ).should( 'deep.equal', { mode: 'on' } );
+    cy.get( '[data-cy="todd-mode"]' ).should( 'contain.text', 'On.' );
+  } );
+
   it( 'uploads what this browser kept before the server stored it, once', () => {
     stub( true );
     cy.intercept( 'POST', '**/moves/flow/import', { statusCode: 200, body: { success: true, movesUpdated: 1, actionsImported: 0 } } ).as( 'import' );

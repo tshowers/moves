@@ -100,6 +100,18 @@ export interface ToddAction {
   changes: MoveChange[];
   createdAt: string;
   undoneAt?: string;
+  /** Logged during TODD's practice week: what it would have done. Nothing changed, nothing to undo. */
+  dryRun?: boolean;
+  /** Who TODD told, and how (email until the iOS app takes push). */
+  notified?: { uid: string; channel: string; ok: boolean }[];
+}
+
+/** Whether TODD acts on its own: practising (logs only), on, or off. */
+export interface Autonomy {
+  mode: 'dry_run' | 'on' | 'off';
+  /** When the practice week ends and TODD switches itself on (unless someone chose). */
+  practiceEndsAt?: string;
+  chosenBy?: string;
 }
 
 export interface ToddRule {
