@@ -1,6 +1,6 @@
 import { ApplicationConfig, provideZoneChangeDetection } from '@angular/core';
 import { provideRouter } from '@angular/router';
-import { provideHttpClient, withInterceptors } from '@angular/common/http';
+import { provideHttpClient, withFetch, withInterceptors } from '@angular/common/http';
 import { provideServiceWorker } from '@angular/service-worker';
 import { initializeApp } from 'firebase/app';
 
@@ -24,7 +24,7 @@ export const appConfig: ApplicationConfig = {
     // request, not against manually-built headers per call. Registering
     // the same interceptor here keeps those services a near-verbatim port
     // instead of hand-editing headers into every call site.
-    provideHttpClient(withInterceptors([idTokenInterceptor, tenantInterceptor])),
+    provideHttpClient(withFetch(), withInterceptors([idTokenInterceptor, tenantInterceptor])),
     provideServiceWorker('ngsw-worker.js', {
       enabled: environment.production,
       registrationStrategy: 'registerWhenStable:30000',

@@ -17,9 +17,9 @@ interface Step { key: StepKey; section: number; }
  * (see ONBOARDING-PROFILE-BILLING-PLAYBOOK.md). One thing per screen under
  * a 4-segment progress bar whose first segment ("Start") is already done:
  * plan a first Move (what, when, how important - one tap each), then name,
- * then sign in. The draft is saved after sign-in by
- * MovesSignupDraftService.submitIfPending() in AuthCallbackComponent.
- * Returning users skip to /login.
+ * then sign in. After sign-in, AuthCallbackComponent saves the name
+ * (MovesSignupDraftService.saveProfileIfPending) and opens New project with
+ * the drafted Move as the start of the plan. Returning users skip to /login.
  */
 @Component( {
   selector: 'app-get-started',

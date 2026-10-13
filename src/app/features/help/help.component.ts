@@ -1,5 +1,6 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
+import { Meta } from '@angular/platform-browser';
 import { RouterLink } from '@angular/router';
 import { MovesAuthService } from '../../services/moves-auth.service';
 import { GettingStarted, GettingStartedService, GettingStartedStep } from '../../services/getting-started.service';
@@ -10,6 +11,8 @@ interface HelpStep {
   copy: string;
   details: string[];
   route: string;
+  /** The sample team (?demo=1) for steps that point at a specific project or move. */
+  queryParams?: Record<string, string>;
   action: string;
 }
 
@@ -45,6 +48,11 @@ interface HelpTerm {
   styleUrl: './help.component.css',
 })
 export class HelpComponent implements OnInit {
+  /** Prerendered for search engines (app.routes.server.ts); the route sets the title. */
+  private readonly meta = inject( Meta ).updateTag( {
+    name: 'description',
+    content: 'How to use Moves: paste a plan, read Momentum, fix the breaks, run the weekly review and set TODD’s rules. Answers to common questions.',
+  } );
   /** Signed-in only: the Getting Started checklist, checked off from real data. */
   progress: GettingStarted | null = null;
   showAfterSignIn = true;
@@ -75,11 +83,11 @@ export class HelpComponent implements OnInit {
   }
 
   readonly questions: string[] = [
-    'What needs attention today?',
-    'Which work is fresh, active, stalled, or at risk?',
-    'Who owns the next move?',
-    'Which contact, project, or document is connected to it?',
-    'What action will move the work forward?',
+    'Which projects broke overnight, and why?',
+    'Which move has no owner, or no next action?',
+    'What has gone still, and for how many days?',
+    'Is anything set before the work it waits on?',
+    'Who has room to take the next thing?',
   ];
 
   readonly personas: HelpPersona[] = [
@@ -110,140 +118,133 @@ export class HelpComponent implements OnInit {
   ];
 
   readonly contrasts: HelpContrast[] = [
-    { typical: 'Records that a task exists.', moves: 'Shows how long the work has sat still, so stalled work surfaces before it is lost.' },
-    { typical: 'Uses vague statuses like “in progress.”', moves: 'Anchors every Move to a concrete next action and an owner.' },
-    { typical: 'Keeps tasks in isolation.', moves: 'Links each Move to the people, projects, documents, and images it depends on.' },
-    { typical: 'Waits for you to go looking for problems.', moves: 'TODD points out aging work, blockers, and missing context for you.' },
-    { typical: 'Leaves planning to you.', moves: 'Mission turns a goal into a proposed plan of Moves that you review and approve.' },
+    { typical: 'Records that a task exists.', moves: 'Draws every project as a line of moves against today, so a break shows the moment it happens.' },
+    { typical: 'Uses vague statuses like “in progress.”', moves: 'Anchors every move to an owner and a concrete next action. A move without one is a gap.' },
+    { typical: 'Lets work sit until someone asks.', moves: 'Counts the days a move has gone still and nudges the owner before it’s lost.' },
+    { typical: 'Leaves the order to luck.', moves: 'Catches a move set before the work it waits on, and proposes a fix.' },
+    { typical: 'Waits for you to do the admin.', moves: 'TODD hands off, reschedules and splits within rules you set, and logs every change with Undo.' },
   ];
 
   readonly quickStart: HelpQuickStart[] = [
     {
       title: 'Sign in',
-      copy: 'Guests can look around. Plan your first Move and sign in to keep it.',
+      copy: 'Guests can look around the sample team. Plan a first move and sign in to keep it.',
       route: '/get-started',
       action: 'Sign in',
     },
     {
-      title: 'Create your first Move',
-      copy: 'Pick something real that is waiting on you. Give it a clear title, a next action, and a due date.',
-      route: '/move',
-      action: 'New Move',
+      title: 'Paste a plan you already have',
+      copy: 'A list, a doc or meeting notes. TODD turns it into a line of moves and checks the order, owners and next actions.',
+      route: '/app/new',
+      action: 'New project',
     },
     {
-      title: 'Find it on the Execution board',
-      copy: 'This board is where you will start each day: scan what is active, blocked, or waiting.',
-      route: '/moves-view',
-      action: 'Open Execution',
+      title: 'Read Momentum',
+      copy: 'Every project is a line against today. Problems show as breaks, with TODD’s note in the margin.',
+      route: '/app',
+      action: 'Open Momentum',
     },
     {
-      title: 'Ask TODD about it',
-      copy: 'Open the Move, move to the bottom-right corner, and ask TODD, “What is the next step here?”',
+      title: 'Fix the first break',
+      copy: 'Give a gap an owner, apply TODD’s proposed order, or open the move and write its next action.',
     },
   ];
 
   readonly toddAbilities: string[] = [
-    'Explain the page you are on and what to do next.',
-    'Spot blockers, missing context, and work that is aging.',
-    'Draft status updates, stakeholder updates, escalations, and decision requests.',
-    'Turn a goal into a Mission plan of proposed Moves.',
-    'Take on AI Missions and report back for your approval.',
+    'Find gaps, stalls, wrong order, Maya’s pile-up and anyone over capacity.',
+    'Hand off what Maya and it can’t do to the person with the most room.',
+    'Nudge an owner after four quiet days, and reschedule internal dates within slack.',
+    'Split a move when part of it is Maya’s work, so the person’s part comes first.',
+    'Send the project lead what needs a decision, and a morning digest at 6am.',
   ];
 
   readonly terms: HelpTerm[] = [
-    { term: 'Move', definition: 'One concrete piece of work, with enough context (owner, next action, dates, people, files) for someone to move it forward.' },
-    { term: 'Next action', definition: 'The specific thing that has to happen next for a Move to make progress.' },
-    { term: 'Momentum', definition: 'How recently a Move has progressed. Fresh work is moving; stalled work has gone still and needs attention.' },
-    { term: 'Moves Home', definition: 'Your overview: health meters and a diagnosis board showing what is active, what is at risk, and where to look next.' },
-    { term: 'Command deck', definition: 'The shortcut panel on Moves Home for jumping into Execution, New Move, or Mission.' },
-    { term: 'Execution board', definition: 'The board view of your Moves, grouped by status and lane. It is your daily working surface.' },
-    { term: 'Mission', definition: 'A goal you hand to TODD. TODD proposes a plan and a set of Moves, and none of them become real until you approve.' },
-    { term: 'AI Missions', definition: 'The list of work TODD is responsible for: waiting for approval, in progress, completed, or needing your direction.' },
-    { term: 'Focus Mode', definition: 'A distraction-free view for working through a single mission.' },
+    { term: 'Move', definition: 'One concrete piece of work with an owner, a next action and a date. Moves are the points on a project’s line.' },
+    { term: 'Next action', definition: 'The specific thing that has to happen next. A move without one is a gap.' },
+    { term: 'Flow map', definition: 'Each project drawn as a line of moves against today. Breaks in the line are the problems.' },
+    { term: 'Gap', definition: 'A move with no owner or no next action - nobody will move it.' },
+    { term: 'Stall', definition: 'A move with no activity. The number in the yellow dot is how many days it has sat still.' },
+    { term: 'Out of order', definition: 'A move set before the move it waits on.' },
+    { term: 'Most room', definition: 'The person on the project with the fewest open moves against their capacity.' },
+    { term: 'Lanes', definition: 'Who can carry a move: TODD (admin), Maya (content) or a person.' },
+    { term: 'Undo', definition: 'Every change TODD or you make is logged with the state before it. Undo puts it back, unless the move changed since.' },
+    { term: 'Practice week', definition: 'TODD’s first week in a workspace: it logs what it would do and changes nothing, then switches on.' },
   ];
 
   readonly steps: HelpStep[] = [
     {
       number: '01',
-      title: 'Start at Moves Home',
-      copy: 'Moves Home is your execution cockpit. It gives you a high-level view of what is active, what is at risk, and where work needs attention next.',
+      title: 'Start at Momentum',
+      copy: 'Momentum is home for the project lead: every project as a line against today, with TODD’s notes in the margin.',
       details: [
-        'Review the health meters and the diagnosis board for your current work.',
-        'Use the command deck to jump into Execution, New Move, or Mission.',
-        'Let TODD surface aging work, missing context, blockers, and next actions.',
-        'Guests can preview the workspace; sign in to see and save your live Moves.',
+        'Switch the range between 1 week, 3 weeks and a quarter.',
+        'A dashed yellow line is a stall; a pink “?” has no owner; a violet “⇄” is out of order; a green “✓” is something TODD fixed.',
+        'A note that needs you has a button; a note about something TODD did has Undo.',
+        'Guests see a sample team; sign in to see your own projects.',
       ],
       route: '/app',
-      action: 'Try Moves Home',
+      action: 'Open Momentum',
     },
     {
       number: '02',
-      title: 'Create a Move',
-      copy: 'A Move is a concrete piece of work with enough context for a person—or TODD—to move it forward.',
+      title: 'Open a project',
+      copy: 'A project’s Flow tab draws its phases and owners; Diagnosis on the right is TODD explaining each break in the first person.',
       details: [
-        'Give the Move a clear title and describe the outcome or work required.',
-        'Add notes, due dates, scheduled start dates, status, type, and project.',
-        'Assign the Move to an active user and relate the people who matter to it.',
-        'Attach existing documents or images when the work depends on supporting material.',
-        'Add subtasks when the Move is easier to complete as a sequence of smaller actions.',
-        'Use the time-worked fields to record when execution actually started and stopped.',
+        'Forecast, critical path and how many next actions are set sit under the line.',
+        'Sequence shows the current order and TODD’s proposed fix, with what changes and what stays.',
+        'Moves, People and Log list the moves, who carries them (and their capacity), and every change.',
       ],
-      route: '/move',
-      action: 'Try New Move',
+      route: '/app/projects/harbor',
+      queryParams: { demo: '1' },
+      action: 'See a sample project',
     },
     {
       number: '03',
-      title: 'Work from the Execution board',
-      copy: 'Execution is the board view for the Moves you need to work. Use it to scan status, focus on the right lane, and open the details behind a task.',
+      title: 'Open a move',
+      copy: 'Any dot on a line opens the move: its next action, who can do it (TODD, Maya or a person) and what happened.',
       details: [
-        'Review work by its current status and execution lane.',
-        'Open a Move to read its description, notes, relationships, files, and subtasks.',
-        'Update the status as the work moves from not started to active, blocked, or complete.',
-        'Use the board as the daily starting point for deciding what should happen next.',
+        'Click the next action to write or change it.',
+        'Give it to someone else, mark it done, or leave a note for its owner.',
+        'Every step TODD took is in the timeline, with Undo.',
       ],
-      route: '/moves-view',
-      action: 'Try Execution',
+      route: '/app/projects/acme',
+      queryParams: { demo: '1', move: 'a2' },
+      action: 'See a sample move',
     },
     {
       number: '04',
-      title: 'Use TODD to move work forward',
-      copy: 'TODD can help you understand a Move, identify missing context, draft updates, and recommend the next action based on the work around it.',
+      title: 'Run the weekly review',
+      copy: 'Review shows only what needs a decision, one at a time, with TODD’s suggestion first.',
       details: [
-        'Open a Move and ask TODD about the blocker, next action, or missing information.',
-        'Use notes to leave direction, answer a question, or record a decision for the people involved.',
-        'Ask TODD to draft a status update, stakeholder update, blocker escalation, or decision request.',
-        'When context is missing, add the related contact, document, project, or supporting asset to the Move.',
+        'Press 1–4 to choose, or Talk it through to park it for standup.',
+        'Share to standup copies the list for your team channel.',
       ],
-      route: '/moves-view',
-      action: 'Try the Execution board',
+      route: '/app/review',
+      action: 'Start a review',
     },
     {
       number: '05',
-      title: 'Give TODD a mission',
-      copy: 'Mission turns a problem or goal into an operating plan. Give TODD the outcome, constraints, resources, and stakeholders, then review the proposed Moves before approving them.',
+      title: 'Set TODD’s rules',
+      copy: 'The TODD page shows what needs you, everything TODD did, and the rules it acts within.',
       details: [
-        'Describe the mission title, problem, and desired outcome.',
-        'List the people, budget, tools, and assets TODD can work with.',
-        'Add stakeholders, constraints, timeline, and success criteria when you know them.',
-        'Review the generated plan and planned Moves in the preview.',
-        'Approve the plan to create real Moves, or edit the intake and regenerate it.',
-        'Use Focus Mode when you want to work through the mission without the surrounding workspace.',
+        'Turn hand-offs, nudges, rescheduling and splits on or off.',
+        'Two rules are locked: TODD never moves a client-facing or hand-set date, and never messages anyone outside the team.',
+        'Pause TODD, or keep it practising, from the top of the rules.',
       ],
-      route: '/plan',
-      action: 'Try Mission',
+      route: '/app/todd',
+      action: 'Open TODD',
     },
     {
       number: '06',
-      title: 'Review AI Missions',
-      copy: 'AI Missions collects work assigned to TODD so you can see what is waiting for approval, in progress, completed, or needs your direction.',
+      title: 'Keep the team in the loop',
+      copy: 'Teammates mostly hear from TODD: a push or email when a move is handed to them, a nudge when one goes quiet.',
       details: [
-        'Open AI Missions to review work TODD is responsible for.',
-        'Filter or open a mission to inspect its objective, criteria, and current state.',
-        'Approve, redirect, or update the work when human judgment is needed.',
-        'Use the resulting Moves and notes as the operational record of what happened.',
+        'On iPhone, Done and Can’t do it are right on the notification.',
+        'Can’t do it sends the move back to TODD, which routes it again and tells the lead only if a date moves.',
+        'Team shows everyone’s load across projects, assistants first.',
       ],
-      route: '/ai-missions',
-      action: 'Try AI Missions',
+      route: '/app/team',
+      action: 'Open Team',
     },
   ];
 }

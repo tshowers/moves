@@ -31,13 +31,12 @@ type RenderedGuidanceCard = MovesGuidanceCard & { toneClass: string };
  * web-products/pulse's launcher components. See NetworkAssistantLauncherComponent's
  * header comment for the full rationale.
  *
- * Covers four pages that already publish rich page context:
- * task-home (feature 'moves', page 'task-home'), task-edit ('task-edit'),
- * task-view-parent ('moves-view'), and mission-workspace - which publishes
- * under feature 'todd', page 'mission-workspace' (not 'moves'), since it's
- * TODD's own Mission Workspace feature (Goal Engine mission planning,
- * already scoped down to just that slice via GoalApiService - see that
- * file's own header comment) rather than a plain Moves page.
+ * Every flow-map screen under /app publishes its page context (FlowRoot ->
+ * flow-assistant-context.ts): feature 'moves', page momentum | project |
+ * team | todd | digest | review | new-project | my-moves, plus the move open
+ * in the drawer as selectedEntity. The guidance card below reads that same
+ * summary, so the card, the chat and the screen agree. Pages outside /app
+ * (landing, help, pricing) publish nothing and get the orientation card.
  */
 @Component( {
   selector: 'app-moves-assistant-launcher',
@@ -96,6 +95,7 @@ export class MovesAssistantLauncherComponent implements OnInit, OnDestroy {
     // pointer is anywhere near the hotzone. Only re-enter the zone
     // (`this.zone.run`) on the rare occasion the pointer is actually in the
     // hotzone and launcherVisible needs to update.
+    if ( typeof document === 'undefined' ) return; // prerendering
     this.zone.runOutsideAngular( () => {
       document.addEventListener( 'mousemove', this.onDocumentMouseMove, { passive: true } );
       document.addEventListener( 'touchstart', this.onDocumentTouchStart, { passive: true } );
@@ -105,6 +105,7 @@ export class MovesAssistantLauncherComponent implements OnInit, OnDestroy {
   ngOnDestroy (): void {
     if ( this.launcherHideTimer ) clearTimeout( this.launcherHideTimer );
     this.subscriptions.forEach( ( s ) => s.unsubscribe() );
+    if ( typeof document === 'undefined' ) return;
     document.removeEventListener( 'mousemove', this.onDocumentMouseMove );
     document.removeEventListener( 'touchstart', this.onDocumentTouchStart );
   }
@@ -164,255 +165,120 @@ export class MovesAssistantLauncherComponent implements OnInit, OnDestroy {
   guidanceCard: RenderedGuidanceCard | null = null;
 
   private refreshGuidanceCard (): void {
-    const card = this.isLoggedIn ? this.computeGuidanceCard( this.pageContext ) : this.guestOrientationCard;
-    this.guidanceCard = card ? { ...card, toneClass: `todd-activation-card--${card.tone}` } : null;
+    const sample = this.pageContext?.summary?.['isSample'] === true;
+    // Signed out on the sample team: the page card, with a sign-in nudge.
+    const card = this.isLoggedIn || sample ? this.computeGuidanceCard( this.pageContext ) : this.guestOrientationCard;
+    const withSample = card && sample ? { ...card, bullets: [...card.bullets, 'This is a sample team. Sign in to see your own projects.'] } : card;
+    this.guidanceCard = withSample ? { ...withSample, toneClass: `todd-activation-card--${withSample.tone}` } : this.isLoggedIn ? null : { ...this.guestOrientationCard, toneClass: 'todd-activation-card--neutral' };
   }
 
   private get guestOrientationCard (): MovesGuidanceCard {
     return {
-      eyebrow: 'WHAT IS THIS PAGE',
+      eyebrow: 'WHAT IS MOVES',
       stageLabel: 'Overview',
       tone: 'neutral',
       icon: 'fa-solid fa-compass',
-      title: 'Moves turns work into tracked execution',
-      message: 'TODD watches your moves for pressure, blockers, and flow so nothing important slips silently. Sign in to see it work with your own data.',
-      whyItMatters: "A to-do list doesn't tell you what's actually at risk - Moves is what turns tasks into a system TODD can watch.",
+      title: 'Every project as a line against today',
+      message: 'Moves shows a project lead where work is about to stall - no owner, no next action, gone quiet, or out of order - and TODD fixes the small things within rules you set.',
+      whyItMatters: 'Work rarely fails because nobody wrote it down. It fails because it goes still and nobody notices.',
       bullets: [
-        'Create a Move to start tracking a piece of work.',
-        'TODD flags overdue or stale moves before they slip further.',
-        'Ask this chat how Moves works, or what TODD actually does.',
+        'Open the app to look around a sample team.',
+        'Paste a plan you already have and TODD checks it before anyone starts.',
+        'Ask this chat how Moves works, or what TODD does on its own.',
       ],
     };
   }
 
   private computeGuidanceCard ( ctx: MovesAssistantPageContext | null ): MovesGuidanceCard | null {
-    if ( !ctx ) return null;
+    if ( !ctx || String( ctx.feature || '' ).toLowerCase() !== 'moves' ) return null;
+    const summary = ctx.summary || {};
+    const preview = ctx.dataPreview || {};
+    if ( ctx.selectedEntityType === 'move' && preview['move'] ) return this.moveCard( preview['move'] );
 
-    const feature = String( ctx.feature || '' ).toLowerCase();
-    const page = String( ctx.page || '' ).toLowerCase();
+    const needs = Number( summary['needsYouCount'] || 0 );
+    const first = ( summary['needsYou'] as { title: string; project: string }[] | undefined )?.[0];
+    const todd = String( summary['todd'] || 'on' );
+    const toddLine = todd === 'dry_run' ? 'TODD is practising: it logs what it would do and changes nothing.' : todd === 'off' ? 'TODD is paused: it flags breaks but won’t act.' : '';
+    const fixed = Number( summary['toddFixedToday'] || 0 );
 
-    if ( feature === 'moves' ) {
-      switch ( page ) {
-        case 'task-home': return this.taskHomeCard( ctx );
-        case 'task-edit': return this.taskEditCard( ctx );
-        case 'moves-view': return this.movesViewCard( ctx );
-        default: return null;
+    switch ( String( ctx.page || '' ) ) {
+      case 'momentum':
+      case 'digest':
+        if ( Number( summary['projectCount'] || 0 ) === 0 ) {
+          return { eyebrow: 'MOMENTUM', stageLabel: 'No projects yet', tone: 'attention', icon: 'fa-solid fa-triangle-exclamation', title: 'Start your first project', message: 'Paste a plan you already have. TODD turns it into a line and checks the order, owners and next actions.', whyItMatters: 'TODD can only watch work that’s on a line.', bullets: [] };
+        }
+        return needs ? {
+          eyebrow: 'MOMENTUM', stageLabel: 'Needs you', tone: 'attention', icon: 'fa-solid fa-triangle-exclamation',
+          title: `${needs} thing${needs === 1 ? '' : 's'} need${needs === 1 ? 's' : ''} you`,
+          message: first ? `Start with ${first.project ? first.project + ': ' : ''}${first.title}. Or run the review to decide them one at a time.` : 'Run the review to decide them one at a time.',
+          whyItMatters: 'These are the breaks TODD can’t fix inside its rules.',
+          bullets: [fixed ? `TODD fixed ${fixed} smaller thing${fixed === 1 ? '' : 's'} today - each has Undo.` : '', toddLine].filter( Boolean ),
+        } : {
+          eyebrow: 'MOMENTUM', stageLabel: 'Moving', tone: 'ready', icon: 'fa-solid fa-circle-check',
+          title: 'Every line is moving', message: 'Nothing needs you right now. TODD will flag the next break in the margin.',
+          whyItMatters: 'A clean board stays clean when every move keeps an owner and a next action.',
+          bullets: [fixed ? `TODD fixed ${fixed} smaller thing${fixed === 1 ? '' : 's'} today.` : '', toddLine].filter( Boolean ),
+        };
+      case 'project': {
+        const diagnosis = ( preview['diagnosis'] as { status: string; title: string }[] | undefined ) || [];
+        const urgent = diagnosis.filter( d => d.status === 'needs_you' );
+        return urgent.length ? {
+          eyebrow: String( summary['project'] || 'PROJECT' ).toUpperCase(), stageLabel: String( summary['health'] || 'Needs a look' ), tone: 'attention', icon: 'fa-solid fa-triangle-exclamation',
+          title: urgent[0].title, message: `Forecast: ${summary['forecast'] || 'unknown'}. Diagnosis on the right has the fix.`,
+          whyItMatters: 'The critical path is where a break costs the ship date.',
+          bullets: [`${summary['nextActionsSet'] || ''} next actions set.`, ...urgent.slice( 1, 3 ).map( d => d.title )].filter( b => b.trim() !== 'next actions set.' ),
+        } : {
+          eyebrow: String( summary['project'] || 'PROJECT' ).toUpperCase(), stageLabel: 'Moving', tone: 'ready', icon: 'fa-solid fa-circle-check',
+          title: `${summary['forecast'] || 'On track'}`, message: 'Nothing here needs you. Sequence shows the order; People shows who has room.',
+          whyItMatters: 'Every move with an owner and a next action is one TODD can keep moving.', bullets: [],
+        };
       }
+      case 'team': {
+        const over = ( summary['overCapacity'] as string[] | undefined ) || [];
+        const noOwner = Number( summary['noOwnerCount'] || 0 );
+        return over.length || noOwner ? {
+          eyebrow: 'TEAM', stageLabel: 'Uneven load', tone: 'attention', icon: 'fa-solid fa-triangle-exclamation',
+          title: over.length ? `${over[0]}${over.length > 1 ? ` and ${over.length - 1} more` : ''} over capacity` : `${noOwner} move${noOwner === 1 ? '' : 's'} with no owner`,
+          message: 'TODD hands work to whoever on the project has the most room. Set each person’s capacity on a project’s People tab.',
+          whyItMatters: 'An overloaded owner is the most common reason a move goes still.', bullets: [],
+        } : { eyebrow: 'TEAM', stageLabel: 'Balanced', tone: 'ready', icon: 'fa-solid fa-circle-check', title: 'Everyone has room', message: 'Nobody is over capacity for the next two weeks.', whyItMatters: 'Room on the team is what lets TODD hand off without asking.', bullets: [] };
+      }
+      case 'todd':
+        return {
+          eyebrow: 'TODD', stageLabel: todd === 'dry_run' ? 'Practising' : todd === 'off' ? 'Paused' : 'On', tone: todd === 'on' ? 'ready' : 'progress', icon: 'fa-solid fa-robot',
+          title: todd === 'dry_run' ? 'TODD is practising' : todd === 'off' ? 'TODD is paused' : 'TODD is acting within its rules',
+          message: todd === 'dry_run' ? '“Would have” entries in the log show what it would do. Turn it on when they look right.' : 'Everything it did is in the log with Undo. Turn a rule off to keep that decision for yourself.',
+          whyItMatters: 'Two rules are locked: never move a client-facing or hand-set date, never message anyone outside the team.',
+          bullets: needs ? [`${needs} thing${needs === 1 ? '' : 's'} need${needs === 1 ? 's' : ''} you at the top of this page.`] : [],
+        };
+      case 'review':
+        return { eyebrow: 'WEEKLY REVIEW', stageLabel: `${needs} left`, tone: needs ? 'progress' : 'ready', icon: 'fa-solid fa-list-check', title: needs ? `${needs} decision${needs === 1 ? '' : 's'} to make` : 'Nothing to decide', message: 'Press 1–4 to choose. TODD’s suggestion is always first.', whyItMatters: 'Only what TODD can’t fix lands here, so this list stays short.', bullets: ['Share to standup copies the list for your team channel.'] };
+      case 'new-project':
+        return { eyebrow: 'NEW PROJECT', stageLabel: 'Plan', tone: 'neutral', icon: 'fa-solid fa-compass', title: 'Paste the plan you already have', message: 'A list, a doc or meeting notes. TODD draws it as a line and checks the order, owners and next actions.', whyItMatters: 'Fixing a wrong order or a missing owner now is free; fixing it mid-project costs a date.', bullets: ['Content work (emails, posts, images) can go to Maya.'] };
+      case 'my-moves': {
+        const mine = Number( summary['myOpenMoves'] || 0 );
+        return { eyebrow: 'MY MOVES', stageLabel: `${mine} open`, tone: 'neutral', icon: 'fa-solid fa-list-check', title: mine ? `${mine} next move${mine === 1 ? '' : 's'}` : 'Nothing on your plate', message: 'Done when it’s done. Can’t do it sends it back to TODD, which finds someone else.', whyItMatters: 'Saying “can’t” early is what keeps a line from stalling.', bullets: [] };
+      }
+      default:
+        return null;
     }
-
-    if ( feature === 'todd' && page === 'mission-workspace' ) {
-      return this.missionWorkspaceCard( ctx );
-    }
-
-    return null;
   }
 
-  private taskHomeCard ( ctx: MovesAssistantPageContext ): MovesGuidanceCard {
-    const summary = ctx.summary || {};
-    const total = Number( summary['totalMoveCount'] || 0 );
-    const overdue = Number( summary['overdueMoveCount'] || 0 );
-    const onHold = Number( summary['onHoldMoveCount'] || 0 );
-    const executionScore = Number( summary['executionScore'] || 0 );
-
-    if ( total === 0 ) {
+  private moveCard ( m: Record<string, any> ): MovesGuidanceCard {
+    const issues = ( m['issues'] as { title: string; explanation: string }[] | undefined ) || [];
+    if ( issues.length ) {
       return {
-        eyebrow: 'GETTING STARTED',
-        stageLabel: 'No moves yet',
-        tone: 'attention',
-        icon: 'fa-solid fa-triangle-exclamation',
-        title: 'Create your first Move',
-        message: "TODD doesn't see any moves yet. Add one to start tracking execution.",
-        whyItMatters: 'Execution only has something to watch once there’s work tracked here.',
-        bullets: [],
+        eyebrow: 'MOVE', stageLabel: 'Needs a look', tone: 'attention', icon: 'fa-solid fa-triangle-exclamation',
+        title: issues[0].title, message: issues[0].explanation,
+        whyItMatters: m['blocks']?.length ? `${m['blocks'].length} move${m['blocks'].length === 1 ? ' waits' : 's wait'} on this one.` : 'A move with an owner and a next action is one TODD can keep moving.',
+        bullets: [`Owner: ${m['owner']}`, `Due ${m['due']}`],
       };
     }
-
-    if ( overdue > 0 ) {
-      return {
-        eyebrow: 'EXECUTION',
-        stageLabel: 'Overdue',
-        tone: 'attention',
-        icon: 'fa-solid fa-triangle-exclamation',
-        title: `${overdue} move${overdue === 1 ? ' is' : 's are'} overdue`,
-        message: 'Review overdue moves in the Moves Browser and either reschedule or close them out.',
-        whyItMatters: 'Overdue work is the clearest signal something is actually stuck, not just busy.',
-        bullets: [`${total.toLocaleString()} total moves tracked.`],
-      };
-    }
-
-    if ( onHold > 0 ) {
-      return {
-        eyebrow: 'EXECUTION',
-        stageLabel: 'On hold',
-        tone: 'progress',
-        icon: 'fa-solid fa-hourglass-half',
-        title: `${onHold} move${onHold === 1 ? '' : 's'} on hold`,
-        message: 'On-hold moves don’t show up as overdue, but they’re not moving either. Worth a check-in.',
-        whyItMatters: 'On-hold work can silently stall a mission if nobody revisits it.',
-        bullets: [],
-      };
-    }
-
     return {
-      eyebrow: 'EXECUTION',
-      stageLabel: executionScore >= 70 ? 'Healthy' : executionScore >= 40 ? 'Mixed' : 'Watch',
-      tone: executionScore >= 70 ? 'ready' : executionScore >= 40 ? 'progress' : 'attention',
-      icon: executionScore >= 70 ? 'fa-solid fa-circle-check' : 'fa-solid fa-hourglass-half',
-      title: `Execution score: ${executionScore}`,
-      message: `${total.toLocaleString()} moves tracked, nothing overdue right now. Review the panel for pressure and flow.`,
-      whyItMatters: 'A clean execution score only holds if new moves keep getting picked up as they land.',
-      bullets: [],
-    };
-  }
-
-  private taskEditCard ( ctx: MovesAssistantPageContext ): MovesGuidanceCard {
-    const summary = ctx.summary || {};
-    const isSubTask = summary['isSubTask'] === true;
-    const hasTitle = summary['hasTitle'] === true;
-    const selectedContactCount = Number( summary['selectedContactCount'] || 0 );
-
-    if ( !hasTitle ) {
-      return {
-        eyebrow: isSubTask ? 'SUB-MOVE' : ( ctx.mode === 'edit' ? 'EDIT MOVE' : 'CREATE MOVE' ),
-        stageLabel: 'Getting started',
-        tone: 'attention',
-        icon: 'fa-solid fa-triangle-exclamation',
-        title: 'Give this Move a title',
-        message: 'A clear title is what shows up on the board and in search - describe the actual action, not just the topic.',
-        whyItMatters: 'Vague titles are the #1 reason a move goes stale - nobody remembers what "follow up" meant.',
-        bullets: [],
-      };
-    }
-
-    return {
-      eyebrow: isSubTask ? 'SUB-MOVE' : ( ctx.mode === 'edit' ? 'EDIT MOVE' : 'CREATE MOVE' ),
-      stageLabel: 'Ready',
-      tone: 'ready',
-      icon: 'fa-solid fa-circle-check',
-      title: 'This Move is ready to save',
-      message: selectedContactCount > 0
-        ? `Connected to ${selectedContactCount} contact${selectedContactCount === 1 ? '' : 's'}. Save when ready.`
-        : 'Consider connecting a contact if this move is tied to a relationship.',
-      whyItMatters: 'Connecting contacts and projects is what lets TODD surface this move from more than one place.',
-      bullets: [],
-    };
-  }
-
-  private movesViewCard ( ctx: MovesAssistantPageContext ): MovesGuidanceCard {
-    const summary = ctx.summary || {};
-    const totalMoves = Number( summary['totalMoves'] || 0 );
-    const overdueMoves = Number( summary['overdueMoves'] || 0 );
-    const staleMoves = Number( summary['staleMoves'] || 0 );
-    const disconnectedMoves = Number( summary['disconnectedMoves'] || 0 );
-
-    if ( totalMoves === 0 ) {
-      return {
-        eyebrow: 'MOVES BROWSER',
-        stageLabel: 'Empty',
-        tone: 'attention',
-        icon: 'fa-solid fa-triangle-exclamation',
-        title: 'No moves to show',
-        message: 'Create a move to see it listed here.',
-        whyItMatters: 'This is where you filter, sort, and open every move you’re tracking.',
-        bullets: [],
-      };
-    }
-
-    if ( overdueMoves > 0 || staleMoves > 0 ) {
-      return {
-        eyebrow: 'MOVES BROWSER',
-        stageLabel: 'Needs attention',
-        tone: 'attention',
-        icon: 'fa-solid fa-triangle-exclamation',
-        title: `${overdueMoves + staleMoves} move${( overdueMoves + staleMoves ) === 1 ? '' : 's'} overdue or stale`,
-        message: 'Filter to overdue or stale to see exactly which ones, then reschedule or close them out.',
-        whyItMatters: 'Stale moves (no update in a while) are often as much of a problem as overdue ones - they’re just quieter about it.',
-        bullets: [`${totalMoves.toLocaleString()} total moves in view.`],
-      };
-    }
-
-    if ( disconnectedMoves > 0 ) {
-      return {
-        eyebrow: 'MOVES BROWSER',
-        stageLabel: 'Disconnected moves',
-        tone: 'progress',
-        icon: 'fa-solid fa-hourglass-half',
-        title: `${disconnectedMoves} move${disconnectedMoves === 1 ? '' : 's'} not linked to a mission`,
-        message: 'These moves aren’t tied to a Mission Workspace plan. Not required, but worth checking if they belong to a larger outcome.',
-        whyItMatters: 'Mission-linked moves get tracked against a bigger goal; standalone ones only show up here.',
-        bullets: [],
-      };
-    }
-
-    return {
-      eyebrow: 'MOVES BROWSER',
-      stageLabel: 'Healthy',
-      tone: 'ready',
-      icon: 'fa-solid fa-circle-check',
-      title: `${totalMoves.toLocaleString()} moves, all current`,
-      message: 'Nothing overdue or stale right now. Use the filters to narrow by view, or click any move to open it.',
-      whyItMatters: 'Staying current is what keeps the Execution score on task-home meaningful.',
-      bullets: [],
-    };
-  }
-
-  private missionWorkspaceCard ( ctx: MovesAssistantPageContext ): MovesGuidanceCard {
-    const summary = ctx.summary || {};
-    const hasLiveMission = summary['hasLiveMission'] === true;
-    const hasPreview = summary['hasPreview'] === true;
-    const totalMoves = Number( summary['totalMoves'] || 0 );
-    const blockedMoves = Number( summary['blockedMoves'] || 0 );
-    const overdueMoves = Number( summary['overdueMoves'] || 0 );
-    const riskLevel = String( summary['healthRiskLevel'] || '' ).toLowerCase();
-
-    if ( !hasLiveMission && !hasPreview ) {
-      return {
-        eyebrow: 'MISSION WORKSPACE',
-        stageLabel: 'New mission',
-        tone: 'neutral',
-        icon: 'fa-solid fa-compass',
-        title: 'Describe the outcome you’re after',
-        message: 'Tell TODD the mission and the desired outcome - it will draft a plan of moves for you to review before anything is created.',
-        whyItMatters: 'A mission plan only helps if it starts from a real, specific outcome - not just a task list.',
-        bullets: [],
-      };
-    }
-
-    if ( hasPreview && !hasLiveMission ) {
-      return {
-        eyebrow: 'MISSION WORKSPACE',
-        stageLabel: 'Plan ready',
-        tone: 'progress',
-        icon: 'fa-solid fa-hourglass-half',
-        title: 'A plan is ready for review',
-        message: 'TODD drafted a set of moves for this mission. Review them and approve to turn the plan into real Moves.',
-        whyItMatters: 'Nothing is created until you approve - this is the checkpoint before it becomes real tracked work.',
-        bullets: [],
-      };
-    }
-
-    if ( blockedMoves > 0 || overdueMoves > 0 || riskLevel === 'high' ) {
-      return {
-        eyebrow: 'MISSION WORKSPACE',
-        stageLabel: 'At risk',
-        tone: 'attention',
-        icon: 'fa-solid fa-triangle-exclamation',
-        title: 'This mission needs attention',
-        message: `${blockedMoves} blocked, ${overdueMoves} overdue out of ${totalMoves} moves. Ask TODD to recommend the next action or draft a blocker escalation.`,
-        whyItMatters: 'A mission’s health is only as good as its slowest-moving blocker.',
-        bullets: [],
-      };
-    }
-
-    return {
-      eyebrow: 'MISSION WORKSPACE',
-      stageLabel: 'On track',
-      tone: 'ready',
-      icon: 'fa-solid fa-circle-check',
-      title: `${totalMoves.toLocaleString()} moves, on track`,
-      message: 'Ask TODD to recommend the next action, or draft a status update to share progress.',
-      whyItMatters: 'Regular status updates are what keep a mission visible to everyone who needs to see it.',
-      bullets: [],
+      eyebrow: 'MOVE', stageLabel: m['done'] ? 'Done' : 'Moving', tone: m['done'] ? 'ready' : 'neutral', icon: 'fa-solid fa-circle-check',
+      title: String( m['title'] || 'This move' ), message: `Next: ${m['nextAction']}`,
+      whyItMatters: 'Ask TODD to draft a note for the owner, or what to do if this slips.',
+      bullets: [`Owner: ${m['owner']}`, `Due ${m['due']}`],
     };
   }
 }

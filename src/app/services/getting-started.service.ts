@@ -65,18 +65,18 @@ export class GettingStartedService {
   routeFor ( step: GettingStartedStep ): string {
     switch ( step.id ) {
       case 'profile': return '/profile';
-      case 'firstMove': return step.done ? '/moves-view' : '/move';
-      case 'completeMove': return '/moves-view';
-      default: return '/plan';
+      case 'firstMove': return step.done ? '/app' : '/app/new';
+      case 'completeMove': return '/app';
+      default: return '/app/new';
     }
   }
 
   actionFor ( step: GettingStartedStep ): string {
     switch ( step.id ) {
       case 'profile': return step.done ? 'View profile' : 'Complete profile';
-      case 'firstMove': return step.done ? 'View Moves' : 'Create a Move';
-      case 'completeMove': return 'Open your Moves';
-      default: return step.done ? 'View missions' : 'Plan a mission';
+      case 'firstMove': return step.done ? 'Open Momentum' : 'Start a project';
+      case 'completeMove': return 'Open Momentum';
+      default: return step.done ? 'Open Momentum' : 'Start a project';
     }
   }
 }

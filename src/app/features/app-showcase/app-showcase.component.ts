@@ -1,5 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, inject } from '@angular/core';
+import { Meta } from '@angular/platform-browser';
 import { Router, RouterModule } from '@angular/router';
 import { map } from 'rxjs';
 import { ThemeService } from '../../services/theme.service';
@@ -15,6 +16,11 @@ import { environment } from '../../../environments/environment';
   styleUrls: [ './app-showcase.component.css', './app-showcase.responsive.css' ]
 } )
 export class AppShowcaseComponent {
+  /** Prerendered for search engines (app.routes.server.ts); the route sets the title. */
+  private readonly meta = inject( Meta ).updateTag( {
+    name: 'description',
+    content: 'Moves for iPhone: your next moves, hand-offs from TODD with Done and Can’t do it right on the notification, and the same account as the web.',
+  } );
   readonly theme = inject(ThemeService);
   private readonly router = inject( Router );
   private readonly authService = inject( MovesAuthService );

@@ -1,6 +1,20 @@
+@import "@taliferro/ui/styles/tokens.css";
 @import "@taliferro/ui/styles/controls.css";
 @import "@taliferro/ui/styles/universal-menu.css";
 @import "@taliferro/ui/styles/site-footer.css";
+@import "@taliferro/ui/styles/product-pages.css";
+
+/* The page behind every route (the 4.5rem strip under the floating menu shows
+   it): Find theme white, and dark when the site is dark. */
+html,
+body {
+  background: #ffffff;
+}
+
+html[data-theme='dark'],
+html[data-theme='dark'] body {
+  background: #0c0e13;
+}
 
 app-root>router-outlet+*:not(app-landing):not(app-moves-ios-showcase):not(mv-flow-root) {
   padding-top: 4.5rem;
@@ -77,16 +91,6 @@ app-root>router-outlet+*:not(app-landing):not(app-moves-ios-showcase):not(mv-flo
   background: radial-gradient(circle at 58% 50%, rgba(94, 126, 153, .24) 0, rgba(44, 73, 102, .14) 30%, rgba(10, 18, 32, 0) 66%);
 }
 
-
-[data-theme='dark'] .moves-float {
-  color: #08162e !important;
-  background: rgba(255, 255, 255, .96);
-  border-color: rgba(255, 255, 255, .82);
-}
-
-[data-theme='dark'] .moves-float b {
-  color: #0759dc !important;
-}
 
 /* The iOS dark theme keeps its editorial dark sections dark; the page ink token
    is intentionally light there for readable hero copy. */

@@ -103,7 +103,7 @@ export class TaskLLMService {
                 if ( found?.id ) {
                   patchState( {
                     assistantResponse: `📌 Showing project: <strong>${projectName}</strong>`,
-                    pendingAction: { action: 'navigate', param: `/moves-view?project=${found.id}` },
+                    pendingAction: { action: 'navigate', param: `/app/projects/${found.id}` },
                     showConfirmPrompt: true,
                     inlineReply: null
                   } );

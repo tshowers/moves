@@ -37,14 +37,13 @@ export interface MovesAssistantTranscriptMessage {
 }
 
 /**
- * Real implementation of the bus every ported Moves page already calls
- * into - same pattern as web-products/pulse's PulseAssistantSignalService.
- * `signalState$` and `engagementActionRequest$` stay exactly as they were
- * in the no-op stub (always idle, never emits) since task-home/task-edit/
- * task-view-parent/moves-pricing/moves-paid-success subscribe to them but
- * nothing renders signalState$ and wiring engagementActionRequest$ to
- * something real would mean pulling in the suite-wide engagement-decision
- * engine this scoping decision keeps out. Everything else
+ * The page-context bus between Moves' screens and TODD's assistant - same
+ * pattern as web-products/pulse's PulseAssistantSignalService. The flow map
+ * publishes here from FlowRootComponent (flow-assistant-context.ts).
+ * `signalState$` and `engagementActionRequest$` stay as they were in the
+ * no-op stub (always idle, never emits): nothing renders signalState$, and
+ * wiring engagementActionRequest$ would mean pulling in the suite-wide
+ * engagement-decision engine this scoping decision keeps out. Everything else
  * (pageContext$/transcriptIn$/unread$) is the same real bus pattern as
  * Network's and Pulse's signal services.
  */

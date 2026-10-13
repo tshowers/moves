@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { getAuth } from 'firebase/auth';
 import { firstValueFrom } from 'rxjs';
 import { environment } from '../../environments/environment';
@@ -43,22 +43,18 @@ export interface MovesSignupDraft {
   readyToSubmit: boolean;
 }
 
-/** What happened to a pending draft after sign-in. */
-export type SignupDraftResult = 'none' | 'saved' | 'needsApp';
-
 /**
  * The pre-sign-in /get-started wizard's draft - the web twin of moves-ios's
  * FirstMoveDraft: a first Move (what, when, how important), then name.
  * Kept in localStorage because sign-in leaves the site for
  * todd.taliferro.tech and comes back to /auth/callback.
  *
- * After sign-in, submitIfPending() saves the name to the TODD profile
- * (POST /api/onboarding/profile, blank fields only) and creates the Move
- * (POST /api/mobile/moves, ID-token auth). Creating a Move needs the Moves
- * app ("browse free, create with the app", Ty 2026-09-28): without it the
- * backend answers 403 APP_PURCHASE_REQUIRED, the draft is kept, and the
- * "get the app" banner shows it waiting - it saves on the next sign-in
- * after the purchase.
+ * After sign-in, saveProfileIfPending() saves the name to the TODD profile
+ * (POST /api/onboarding/profile, blank fields only) and the visitor lands on
+ * New project with the drafted Move as the start of the plan (flow map,
+ * design_handoff_moves_flow_map 08). The draft is cleared once that project
+ * is created; creating needs Moves ("browse free, create with the app"), so
+ * without it the draft waits for the next try.
  */
 @Injectable( { providedIn: 'root' } )
 export class MovesSignupDraftService {
@@ -118,13 +114,11 @@ export class MovesSignupDraftService {
     return day;
   }
 
-  /** Never throws. The draft is cleared only once the Move is saved. */
-  async submitIfPending (): Promise<SignupDraftResult> {
+  /** Never throws. Saves the wizard's name (blank profile fields only); the Move waits for New project. */
+  async saveProfileIfPending (): Promise<void> {
     const draft = this.load();
     const user = getAuth().currentUser;
-    const title = draft.title.trim();
-    if ( !draft.readyToSubmit || !user || !title ) return 'none';
-
+    if ( !draft.readyToSubmit || !user || !( draft.firstName.trim() || draft.lastName.trim() ) ) return;
     try {
       const headers = { Authorization: `Bearer ${await user.getIdToken()}` };
       await firstValueFrom( this.http.post( `${environment.backendURL}/onboarding/profile`, {
@@ -134,20 +128,18 @@ export class MovesSignupDraftService {
           lastName: draft.lastName,
           timezone: Intl.DateTimeFormat().resolvedOptions().timeZone || '',
         },
-      }, { headers } ) ).catch( () => undefined );
-
-      await firstValueFrom( this.http.post( `${environment.backendURL}/mobile/moves`, {
-        title,
-        status: 'not-started',
-        priority: draft.priority,
-        dueDate: this.dueDate( draft.whenKey ).toISOString(),
       }, { headers } ) );
-      this.clear();
-      return 'saved';
     } catch ( error ) {
-      if ( error instanceof HttpErrorResponse && error.status === 403 ) return 'needsApp';
-      console.warn( '[MovesSignupDraftService] saving the sign-up Move failed; will retry next sign-in', error );
-      return 'none';
+      console.warn( '[MovesSignupDraftService] saving the sign-up name failed', error );
     }
+  }
+
+  /** The drafted Move as the start of a pasted plan for New project, or '' when there's none. */
+  planText (): string {
+    const title = this.pendingTitle();
+    if ( !title ) return '';
+    const due = this.dueDate( this.load().whenKey );
+    const day = due.toLocaleDateString( 'en-US', { month: 'short', day: 'numeric' } );
+    return `${title}, by ${day}\n- ${title}`;
   }
 }

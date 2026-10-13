@@ -127,3 +127,11 @@
 :where(.mv) button { min-height: 0; padding: 0; border: 0; border-radius: 0; line-height: inherit; font-weight: inherit; background: none; }
 :where(.mv) button:not(:disabled):hover { transform: none; }
 :where(.mv) button:disabled { opacity: 1; cursor: default; }
+
+/* TODD's assistant (app-moves-assistant-launcher) sits above the phone tab
+   bar inside the flow map. !important: the launcher's own styles are
+   component-scoped and more specific. */
+@media (max-width: 900px) {
+  body:has(mv-flow-shell) .talk-to-todd-glass { bottom: calc(80px + env(safe-area-inset-bottom)) !important; }
+  body:has(mv-flow-shell) .todd-assistant-window { bottom: calc(136px + env(safe-area-inset-bottom)) !important; max-height: min(560px, 70vh) !important; }
+}

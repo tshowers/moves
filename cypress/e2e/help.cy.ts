@@ -21,13 +21,13 @@ describe( 'Moves help (/help)', () => {
     cy.get( '.help-persona' ).should( 'have.length', 4 );
     cy.get( '.help-contrast__row' ).not( '.help-contrast__row--head' ).should( 'have.length', 5 );
     cy.get( '.help-quickstart li' ).should( 'have.length', 4 );
-    cy.get( '.help-terms dt' ).should( 'contain', 'Move' ).and( 'contain', 'AI Missions' );
+    cy.get( '.help-terms dt' ).should( 'contain', 'Move' ).and( 'contain', 'Flow map' );
     cy.get( '.help-step' ).should( 'have.length', 6 );
   } );
 
-  it( 'starts a new user by creating a Move', () => {
+  it( 'starts a new user with a project', () => {
     cy.visit( '/help' );
-    cy.contains( '.help-quickstart a', 'New Move' ).should( 'have.attr', 'href', '/move' );
+    cy.contains( '.help-quickstart a', 'New project' ).should( 'have.attr', 'href', '/app/new' );
     // New visitors sign in through the wizard (plan a Move first).
     cy.contains( '.help-quickstart a', 'Sign in' ).should( 'have.attr', 'href', '/get-started' );
   } );

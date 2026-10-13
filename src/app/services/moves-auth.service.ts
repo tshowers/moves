@@ -54,7 +54,13 @@ export class MovesAuthService {
   // but kept identical in name for consistency/debuggability.
   private readonly tenantStorageKey = 'todd_active_tenant_id';
 
+  /** Prerendering public pages at build time (no browser): signed out, no Firebase. */
+  private get isServer (): boolean {
+    return typeof window === 'undefined';
+  }
+
   getUser (): Observable<User | null> {
+    if ( this.isServer ) return of( null );
     return new Observable( ( subscriber ) => {
       const override = this.getCypressAuthOverride();
       if ( override ) {
@@ -111,6 +117,7 @@ export class MovesAuthService {
   }
 
   isLoggedIn (): Observable<boolean> {
+    if ( this.isServer ) return of( false );
     return new Observable( ( subscriber ) => {
       if ( this.getCypressAuthOverride() ) {
         subscriber.next( true );

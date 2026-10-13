@@ -10,11 +10,13 @@ import { LoggerService } from './logger.service';
 export class AssistantBoxHelperService {
 
   private routeLabelMap: Record<string, string> = {
-    '/app': 'Execution',
-    '/moves-view': 'Moves Browser',
-    '/move': 'Create Move',
-    '/ai-missions': 'AI Missions',
-    '/plan': 'Mission Workspace',
+    '/app': 'Momentum',
+    '/app/team': 'Team',
+    '/app/review': 'Weekly review',
+    '/app/todd': 'TODD',
+    '/app/new': 'New project',
+    '/app/digest': 'Morning digest',
+    '/app/me': 'My next moves',
     '/pricing': 'Pricing',
     '/help': 'Help',
   };
@@ -33,7 +35,7 @@ export class AssistantBoxHelperService {
   public stripBackticksAroundRoutes ( s: string ): string {
     if ( !s ) return s;
 
-    const terms = ['Moves', 'Moves Browser', 'Execution', 'AI Missions', 'Mission Workspace', 'Home'];
+    const terms = ['Moves', 'Momentum', 'Team', 'Weekly review', 'New project', 'Morning digest', 'Home'];
     for ( const term of terms ) {
       const esc = term.replace( /[.*+?^${}()|[\]\\]/g, '\\$&' );
       s = s.replace( new RegExp( '`\\s*' + esc + '\\s*`', 'g' ), term );

@@ -48,8 +48,9 @@ export class AppComponent implements OnInit {
   // and a stacked-header gap.
   private static readonly routesWithOwnNav = ['/', '/ios'];
   readonly hasOwnNav = signal( AppComponent.matchesOwnNavRoute( this.router.url ) );
-  // The flow-map app under /app has its own rail with the menu and TODD
-  // built in, so the corner menu and the floating assistant stay off there.
+  // The flow-map app under /app has its own rail (and phone top bar) with
+  // the menu built in, so the corner menu stays off there. The assistant
+  // stays on everywhere; the flow screens publish their own page context.
   readonly isFlowRoute = signal( AppComponent.matchesFlowRoute( this.router.url ) );
 
   title = 'moves';
@@ -62,11 +63,12 @@ export class AppComponent implements OnInit {
   }
 
   private static matchesOwnNavRoute ( url: string ): boolean {
-    return AppComponent.routesWithOwnNav.includes( url.split( '?' )[0] );
+    // Path only: in-page anchors ("/#signal") must not count as another page.
+    return AppComponent.routesWithOwnNav.includes( url.split( /[?#]/ )[0] );
   }
 
   private static matchesFlowRoute ( url: string ): boolean {
-    const path = url.split( '?' )[0];
+    const path = url.split( /[?#]/ )[0];
     return path === '/app' || path.startsWith( '/app/' );
   }
 
@@ -76,6 +78,8 @@ export class AppComponent implements OnInit {
   }
 
   ngOnInit (): void {
+    // Prerendering (no browser): no update notice, version checks or error hooks.
+    if ( typeof window === 'undefined' ) return;
     this.showUpdateNoticeAfterReload();
     if ( !environment.production ) return;
     window.addEventListener( 'error', this.handleWindowError, true );
@@ -182,9 +186,10 @@ export class AppComponent implements OnInit {
     void this.activateAndReload( version );
   }
 
+  /** Mid-edit in the flow map: pasting a plan (New project) or a move open in the drawer. */
   private isEditingMove (): boolean {
-    const path = this.router.url.split( '?' )[0];
-    return path === '/move' || path.startsWith( '/move/' );
+    const [path, query = ''] = this.router.url.split( '#' )[0].split( '?' );
+    return path === '/app/new' || new URLSearchParams( query ).has( 'move' );
   }
 
   private async activateAndReload ( version: string ): Promise<void> {

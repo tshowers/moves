@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, inject, signal } from '@angular/core';
+import { Component, ElementRef, OnDestroy, afterNextRender, effect, inject, signal, untracked, viewChild } from '@angular/core';
 import { Router, RouterModule } from '@angular/router';
 import { map } from 'rxjs';
 import { environment } from '../../../environments/environment';
@@ -20,8 +20,16 @@ interface Testimonial { quote: string; name: string; role: string; result: strin
   templateUrl: './landing.component.html',
   styleUrl: './landing.component.css'
 })
-export class LandingComponent {
+export class LandingComponent implements OnDestroy {
   readonly theme = inject(ThemeService);
+
+  /** TODD demo video beside the quote (handoff_landing_video): light/dark MP4s in assets/video/. */
+  private readonly demoVideo = viewChild<ElementRef<HTMLVideoElement>>('demoVideo');
+  /** The MP4s aren't in assets yet (or failed to load): hide the empty frame rather than show it. */
+  readonly demoVideoMissing = signal(false);
+  private readonly reducedMotion = typeof window !== 'undefined' && !!window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
+  private demoInView = false;
+  private demoObserver?: IntersectionObserver;
   private readonly auth = inject(MovesAuthService);
   private readonly router = inject(Router);
   // The universal menu (and its ⌘K search) sits inline in this page's nav;
@@ -58,6 +66,52 @@ export class LandingComponent {
     ,{ question: 'How does Moves work with projects?', answer: 'Projects stay connected to their individual moves, so teams can see the next action, the owner, the blocker, and the momentum behind the bigger outcome.' }
     ,{ question: 'Can Moves help recover stalled revenue?', answer: 'Moves surfaces aging proposals, follow-ups, and client commitments so your team can act before an opportunity quietly goes cold.' }
   ];
+
+  constructor() {
+    // Browser only (the landing page is prerendered): reduced motion gets controls
+    // and no autoplay; otherwise play only while at least 25% is on screen.
+    afterNextRender(() => {
+      const video = this.demoVideo()?.nativeElement;
+      if (!video) return;
+      // Angular creates the element in code, where the muted attribute alone
+      // doesn't mute it - and browsers only autoplay muted video.
+      video.muted = true;
+      if (this.reducedMotion) {
+        video.autoplay = false;
+        video.controls = true;
+        video.pause();
+        return;
+      }
+      if (typeof IntersectionObserver === 'undefined') return;
+      this.demoObserver = new IntersectionObserver(([entry]) => {
+        this.demoInView = entry.intersectionRatio >= 0.25;
+        if (this.demoInView) void video.play().catch(() => undefined);
+        else video.pause();
+      }, { threshold: [0, 0.25] });
+      this.demoObserver.observe(video);
+      // From here the observer starts and stops playback; autoplay would also
+      // restart it off screen whenever the theme swaps the source.
+      video.autoplay = false;
+    });
+
+    // The theme picks the source; when it changes, load and start the new one.
+    effect(() => {
+      this.theme.isDark();
+      untracked(() => {
+        if (typeof window === 'undefined') return;
+        const video = this.demoVideo()?.nativeElement;
+        if (!video) return;
+        setTimeout(() => {
+          video.load();
+          if (!this.reducedMotion && this.demoInView) void video.play().catch(() => undefined);
+        });
+      });
+    });
+  }
+
+  ngOnDestroy(): void {
+    this.demoObserver?.disconnect();
+  }
 
   async signOut(): Promise<void> {
     await this.auth.signOut();

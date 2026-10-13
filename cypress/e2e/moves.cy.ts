@@ -59,6 +59,18 @@ describe( 'Moves flow map - sample team', () => {
     cy.contains( 'have no owner' ).should( 'not.exist' );
   } );
 
+  it( 'TODD’s assistant knows which screen and move you’re on', () => {
+    cy.visit( '/app' );
+    cy.get( '[data-cy="momentum"]' ).should( 'be.visible' );
+    cy.get( '.talk-to-todd-glass' ).click( { force: true } );
+    cy.get( '.todd-activation-card' ).should( 'contain.text', 'need you' ).and( 'contain.text', 'sample team' );
+    cy.get( '.todd-assistant-close' ).click();
+    cy.visit( '/app/projects/acme?move=a2' );
+    cy.get( '[data-cy="move-drawer"]' ).should( 'be.visible' );
+    cy.get( '.talk-to-todd-glass' ).click( { force: true } );
+    cy.get( '.todd-activation-card' ).should( 'contain.text', 'MOVE' );
+  } );
+
   it( 'sends the old task-list links into the flow map', () => {
     cy.visit( '/moves-view' );
     cy.location( 'pathname' ).should( 'eq', '/app' );
@@ -175,6 +187,15 @@ describe( 'Moves flow map - signed in', () => {
     cy.contains( 'button', 'Done' ).click();
     cy.wait( '@record' );
     cy.get( '[data-cy="flow-toast"]' ).should( 'contain.text', 'Marked done. TODD told flow by push.' );
+  } );
+
+  it( 'starts New project from the move planned in /get-started', () => {
+    stub( true );
+    cy.visitWithCypressAuth( '/app/new', signedInUser, {
+      onBeforeLoad: ( win ) => win.localStorage.setItem( 'moves_signup_draft', JSON.stringify( { title: 'Send a proposal', whenKey: 'tomorrow', readyToSubmit: true } ) ),
+    } );
+    cy.get( '[data-cy="new-project"] textarea' ).should( 'contain.value', 'Send a proposal, by ' ).and( 'contain.value', '- Send a proposal' );
+    cy.contains( 'Send a proposal, as a line' ).should( 'be.visible' );
   } );
 
   it( 'uploads what this browser kept before the server stored it, once', () => {

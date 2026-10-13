@@ -11,11 +11,21 @@ export const routes: Routes = [
   },
   {
     path: 'ios',
+    title: 'Moves for iPhone | Taliferro Tech',
     loadComponent: () =>
       import( './features/app-showcase/app-showcase.component' ).then( ( m ) => m.AppShowcaseComponent ),
   },
   {
+    // The shared About page (taliferro-ui product-pages; copy in
+    // product-pages.model.ts under 'moves').
+    path: 'about',
+    data: { page: 'about' },
+    loadComponent: () =>
+      import( './shared/product-pages/product-pages.component' ).then( ( m ) => m.ProductPagesComponent ),
+  },
+  {
     path: 'help',
+    title: 'Moves Help: how to use Moves | Taliferro Tech',
     loadComponent: () =>
       import( './features/help/help.component' ).then( ( m ) => m.HelpComponent ),
   },

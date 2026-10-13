@@ -3,18 +3,18 @@
     <div class="help-hero__eyebrow">Moves Help</div>
     <div class="help-hero__content">
       <div>
-        <p class="help-hero__context">Work · Context · Execution · Momentum</p>
-        <h1>Turn intentions into work that moves.</h1>
-        <p class="help-hero__lead">Most task trackers tell you what exists. Moves shows you what needs attention next. Every Move carries an owner, a next action, its context, and a momentum signal, so follow-up doesn't disappear between meetings.</p>
+        <p class="help-hero__context">Lines · Breaks · Owners · TODD</p>
+        <h1>Keep work from stalling unnoticed.</h1>
+        <p class="help-hero__lead">Moves draws every project as a line of moves against today. Gaps, stalls and wrong order show as breaks in the line, and TODD fixes what its rules allow, logging every change with Undo.</p>
       </div>
       <img src="assets/find/entities/moves/logo.png" alt="Moves" class="help-hero__logo" />
     </div>
     <nav class="help-quick-links" aria-label="Moves help topics">
-      <a routerLink="/app">Moves Home</a>
-      <a routerLink="/moves-view">Execution</a>
-      <a routerLink="/move">New Move</a>
-      <a routerLink="/plan">Mission</a>
-      <a routerLink="/ai-missions">AI Missions</a>
+      <a routerLink="/app">Momentum</a>
+      <a routerLink="/app/team">Team</a>
+      <a routerLink="/app/review">Review</a>
+      <a routerLink="/app/todd">TODD</a>
+      <a routerLink="/app/new">New project</a>
     </nav>
   </header>
 
@@ -48,8 +48,8 @@
   <section class="help-section" aria-labelledby="help-what-title">
     <div class="help-section__heading">
       <p class="help-section-kicker">What is Moves?</p>
-      <h2 id="help-what-title">A workspace for work that can't afford to stall</h2>
-      <p>Work rarely fails because nobody created a task. It fails because the task becomes invisible: a proposal waits for a reply, a project loses its next action, or an important relationship drifts away from the work that serves it. Moves makes that drift visible and gives you and your team one shared view that answers:</p>
+      <h2 id="help-what-title">An assistant for the person who keeps the team moving</h2>
+      <p>Work rarely fails because nobody wrote it down. It fails because it goes still: a move has no owner, nobody knows the next step, or something starts before the thing it waits on. Moves makes those breaks visible to the project lead, and TODD fixes the small ones on its own. It answers:</p>
     </div>
     <ul class="help-questions">
       <li *ngFor="let question of questions"><i class="fa-solid fa-circle-question" aria-hidden="true"></i>{{ question }}</li>
@@ -113,13 +113,13 @@
     <div class="help-todd-callout__icon"><i class="fa-solid fa-message" aria-hidden="true"></i></div>
     <div>
       <p class="help-section-kicker">Meet TODD</p>
-      <h2 id="help-todd-title">Your AI teammate, on every page</h2>
-      <p>TODD is the AI assistant built into Moves. It reads the context of the page and the Moves you're working on, so you can ask questions in plain language without leaving your work. TODD can:</p>
+      <h2 id="help-todd-title">Your project assistant, acting within rules</h2>
+      <p>TODD watches every line and acts on its own within the rules you set. Maya, the content assistant, writes the emails and posts. TODD can:</p>
       <ul class="help-todd-callout__list">
         <li *ngFor="let ability of toddAbilities">{{ ability }}</li>
       </ul>
-      <p><strong>You stay in control.</strong> TODD proposes, and you approve. Mission plans don't become real Moves until you say so.</p>
-      <p class="help-todd-callout__tip"><i class="fa-solid fa-lightbulb" aria-hidden="true"></i> To open TODD, move your mouse toward the bottom-right corner of any page and click <strong>Talk to TODD</strong>. On a touch device, tap the bottom-right area.</p>
+      <p><strong>You stay in control.</strong> Everything TODD does is in its log with Undo, it never moves a client-facing or hand-set date, and anything outside its rules comes to you.</p>
+      <p class="help-todd-callout__tip"><i class="fa-solid fa-lightbulb" aria-hidden="true"></i> TODD’s first week in a workspace is practice: it logs what it would have done and changes nothing.</p>
     </div>
   </section>
 
@@ -139,8 +139,8 @@
   <section class="help-section" aria-labelledby="help-start-title">
     <div class="help-section__heading">
       <p class="help-section-kicker">The full walkthrough</p>
-      <h2 id="help-start-title">From an intention to an executed Move</h2>
-      <p>Once you've made your first Move, this is the complete tour of the workflow. Come back any time, or use the menu to jump straight to the part you need.</p>
+      <h2 id="help-start-title">From a plan to a line that keeps moving</h2>
+      <p>Once your first project is on the board, this is the full tour. Come back any time, or press ⌘K to jump straight to a page.</p>
     </div>
 
     <div class="help-steps">
@@ -152,7 +152,7 @@
           <ul>
             <li *ngFor="let detail of step.details">{{ detail }}</li>
           </ul>
-          <a class="help-try-link" [routerLink]="step.route">{{ step.action }} <span aria-hidden="true">→</span></a>
+          <a class="help-try-link" [routerLink]="step.route" [queryParams]="step.queryParams">{{ step.action }} <span aria-hidden="true">→</span></a>
         </div>
       </article>
     </div>
@@ -164,7 +164,7 @@
       <h2 id="help-account-title">Explore Moves at your own pace</h2>
     </div>
     <div class="help-destination-grid">
-      <a class="help-destination" routerLink="/get-started"><span><strong>Sign in</strong><small>Connect your account to save Moves, missions, and execution context.</small></span><i class="fa-solid fa-arrow-right" aria-hidden="true"></i></a>
+      <a class="help-destination" routerLink="/get-started"><span><strong>Sign in</strong><small>Connect your account to see your own projects and team.</small></span><i class="fa-solid fa-arrow-right" aria-hidden="true"></i></a>
       <a class="help-destination" routerLink="/pricing"><span><strong>Pricing</strong><small>Browse free. Create and edit with the Moves app.</small></span><i class="fa-solid fa-arrow-right" aria-hidden="true"></i></a>
       <a class="help-destination" routerLink="/ios"><span><strong>Moves for iOS</strong><small>See the mobile Moves experience.</small></span><i class="fa-solid fa-arrow-right" aria-hidden="true"></i></a>
     </div>

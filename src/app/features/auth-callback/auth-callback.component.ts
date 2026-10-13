@@ -56,10 +56,13 @@ export class AuthCallbackComponent implements OnInit {
       await this.authService.signInWithCustomToken( token );
       await firstValueFrom( this.authService.getTenantId() );
       this.writeAccess.refresh();
-      // Came through /get-started: save the name to the profile and the
-      // planned Move (kept, with a "get the app" banner, until they have
-      // the Moves app - see MovesSignupDraftService).
-      await this.signupDraft.submitIfPending();
+      // Came through /get-started: save the name, then plan the drafted
+      // Move as the start of a project (MovesSignupDraftService).
+      await this.signupDraft.saveProfileIfPending();
+      if ( this.signupDraft.pendingTitle() ) {
+        await this.router.navigate( ['/app/new'] );
+        return;
+      }
 
       const returnUrl = pending.returnUrl || '/app';
       // Heading to the default landing (not a deep link) and steps remain:

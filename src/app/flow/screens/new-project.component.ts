@@ -5,6 +5,7 @@ import { Router, RouterLink } from '@angular/router';
 import { addDays, daysBetween, fmtDay, isoDay } from '../flow-dates';
 import { byRoom, firstName, MAYA_ID } from '../flow-engine';
 import { Lane, Person, TrackModel } from '../flow.models';
+import { MovesSignupDraftService } from '../../services/moves-signup-draft.service';
 import { FlowStore, PlanDraft } from '../flow.store';
 import { FlowTrackComponent } from '../ui/flow-track.component';
 import { MOVES_ICON, TODD_ICON } from '../ui/flow-ui.components';
@@ -177,6 +178,9 @@ const PUBLIC = /press|announce|publish/i;
 export class NewProjectComponent implements OnInit {
   readonly store = inject( FlowStore );
   private readonly router = inject( Router );
+  private readonly signupDraft = inject( MovesSignupDraftService );
+  /** Started from the /get-started wizard's drafted Move: clear it once the project exists. */
+  private fromSignup = false;
   readonly logo = MOVES_ICON;
   readonly todd = TODD_ICON;
   readonly sample = SAMPLE;
@@ -249,6 +253,14 @@ export class NewProjectComponent implements OnInit {
   } );
 
   ngOnInit (): void {
+    const drafted = this.signupDraft.planText();
+    if ( drafted && !this.store.isDemo() ) {
+      this.fromSignup = true;
+      this.text.set( drafted );
+      this.name = this.signupDraft.pendingTitle();
+      this.step.set( 2 );
+      return;
+    }
     if ( this.store.isDemo() ) {
       this.text.set( SAMPLE );
       this.name = 'Fall campaign';
@@ -337,6 +349,7 @@ export class NewProjectComponent implements OnInit {
     };
     const id = await this.store.createProject( draft );
     this.busy.set( false );
+    if ( id && this.fromSignup ) this.signupDraft.clear();
     if ( id ) void this.router.navigate( ['/app/projects', id] );
   }
 

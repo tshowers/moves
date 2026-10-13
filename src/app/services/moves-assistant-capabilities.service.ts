@@ -26,24 +26,36 @@ export type CapabilityContext = {
 /**
  * Moves' own slice of TODD's AssistantCapabilitiesService - same scoping
  * decision as web-products/network and web-products/pulse's capabilities
- * services. Only Moves' own routes and the create-move workflow guide
- * (adapted from TODD's original '/task-edit' + '/moves/app' + '/mission'
- * paths to this app's own '/move' + '/app' + '/plan').
+ * services. Only Moves' own routes (the flow map under /app) and a few
+ * workflow guides.
  */
 @Injectable( { providedIn: 'root' } )
 export class MovesAssistantCapabilitiesService {
   private readonly directRouteAliases: Record<string, string> = {
     'moves': 'app',
-    'my moves': 'app',
-    'execution': 'app',
-    'create move': 'move',
-    'new move': 'move',
-    'add move': 'move',
-    'moves browser': 'moves-view',
-    'browse moves': 'moves-view',
-    'ai missions': 'ai-missions',
-    'mission workspace': 'plan',
-    'plan': 'plan',
+    'momentum': 'app',
+    'board': 'app',
+    'projects': 'app',
+    'team': 'app/team',
+    'people': 'app/team',
+    'capacity': 'app/team',
+    'review': 'app/review',
+    'weekly review': 'app/review',
+    'standup': 'app/review',
+    'todd': 'app/todd',
+    'log': 'app/todd',
+    'rules': 'app/todd',
+    'todd rules': 'app/todd',
+    'new project': 'app/new',
+    'create project': 'app/new',
+    'paste a plan': 'app/new',
+    'new move': 'app/new',
+    'create move': 'app/new',
+    'digest': 'app/digest',
+    'morning digest': 'app/digest',
+    'my moves': 'app/me',
+    'my next moves': 'app/me',
+    'help': 'help',
     'pricing': 'pricing',
     'home': '',
   };
@@ -51,27 +63,51 @@ export class MovesAssistantCapabilitiesService {
   private readonly directCommandRoutes: { path: string; requiresId?: boolean; idParam?: string; }[] = [
     { path: '' },
     { path: 'app' },
+    { path: 'app/team' },
+    { path: 'app/review' },
+    { path: 'app/todd' },
+    { path: 'app/new' },
+    { path: 'app/digest' },
+    { path: 'app/me' },
+    { path: 'help' },
     { path: 'login' },
     { path: 'pricing' },
-    { path: 'moves-view' },
-    { path: 'move' },
-    { path: 'move/:id', requiresId: true, idParam: 'id' },
-    { path: 'ai-missions' },
-    { path: 'plan' },
   ];
 
   private readonly workflowGuides: WorkflowGuide[] = [
     {
-      id: 'create-move',
+      id: 'create-project',
       patterns: [
-        /\bhow do i create (a )?(move|task)\b/i,
-        /\bhow to create (a )?(move|task)\b/i,
+        /\bhow (do i|to) (create|start|add|make) (a )?(new )?(project|move|task|plan)\b/i,
       ],
       message: [
-        '<p><strong>To create a Move, you have two good options.</strong></p>',
-        '<p><strong>A.</strong> Open <strong>/move</strong> for a direct new Move.</p>',
-        '<p><strong>B.</strong> Open the Execution cockpit at <strong>/app</strong> if you want TODD to help you place that work in context.</p>',
-        '<p>If the work belongs to a larger outcome, use Mission Workspace at <strong>/plan</strong>.</p>'
+        '<p><strong>Start from the plan you already have.</strong></p>',
+        '<p>Open <strong>/app/new</strong> and paste a list, a doc or meeting notes - one move per line, owners in brackets like “(Sam)”.</p>',
+        '<p>TODD draws it as a line and checks it first: anything in the wrong order, without an owner (Maya can take content work), or without a next action. Fix what you like, then create it.</p>',
+      ].join( '' )
+    },
+    {
+      id: 'fix-break',
+      patterns: [
+        /\bwhat (needs|does .* need) (me|my attention)\b/i,
+        /\bhow (do i|to) (fix|clear) (a |the )?(break|gap|stall)s?\b/i,
+      ],
+      message: [
+        '<p><strong>Everything that needs you is in one place.</strong></p>',
+        '<p>Run the weekly review at <strong>/app/review</strong>: one decision at a time, TODD’s suggestion first, keys 1–4 to choose.</p>',
+        '<p>Or fix it where you see it - the note in Momentum’s margin, or Diagnosis on the project.</p>',
+      ].join( '' )
+    },
+    {
+      id: 'todd-on-its-own',
+      patterns: [
+        /\bwhat (does|can) todd do\b/i,
+        /\b(turn|switch) (todd )?(on|off)\b/i,
+        /\bpractic(e|ing)\b/i,
+      ],
+      message: [
+        '<p><strong>TODD acts within rules you set</strong> - hand off what Maya and it can’t do, nudge after four quiet days, reschedule within slack, split Maya’s part off a move.</p>',
+        '<p>Its first week is practice: it logs what it would do and changes nothing. Turn it on, pause it, or switch rules off at <strong>/app/todd</strong>. Everything it does has Undo.</p>',
       ].join( '' )
     },
   ];
@@ -173,17 +209,24 @@ export class MovesAssistantCapabilitiesService {
   public getLocalCapabilities ( ctx: CapabilityContext ): LocalCapability[] {
     const base: LocalCapability[] = [
       {
-        id: 'create-move',
-        label: 'Create a Move',
-        hint: 'New task from a description',
-        patterns: ['create move', 'new move', 'add move'],
+        id: 'new-project',
+        label: 'New project',
+        hint: 'Paste a plan; TODD checks it',
+        patterns: ['new project', 'create project', 'paste a plan', 'new move'],
         guard: () => true
       },
       {
-        id: 'browse-moves',
-        label: 'Browse Moves',
-        hint: 'Filter, sort, and open moves',
-        patterns: ['moves browser', 'browse moves', 'moves view'],
+        id: 'review',
+        label: 'Weekly review',
+        hint: 'Decide what needs you',
+        patterns: ['review', 'standup', 'what needs me'],
+        guard: () => true
+      },
+      {
+        id: 'team',
+        label: 'Team',
+        hint: 'Who has room',
+        patterns: ['team', 'capacity', 'who has room'],
         guard: () => true
       },
       {
