@@ -154,6 +154,29 @@ describe( 'Moves flow map - signed in', () => {
     cy.get( '[data-cy="todd-mode"]' ).should( 'contain.text', 'On.' );
   } );
 
+  it( 'sends “Can’t do it” to TODD on the server, which routes it again', () => {
+    stub( true );
+    const routed = { id: 'srv-c1', type: 'reassigned', moveId: 'live-1', projectId: '', subject: 'Send contract to legal', text: 'from flow to Priya.', reason: '', auto: false, createdAt: new Date().toISOString(), changes: [{ moveId: 'live-1', before: { assigneeId: 'flow-user' }, after: { assigneeId: 'priya' } }] };
+    cy.intercept( 'POST', '**/moves/live-1/cant-do', { statusCode: 200, body: { success: true, outcome: 'back-to-todd', action: routed, tasks: [task( 'live-1', 'Send contract to legal', { assigneeId: '', executionLane: 'todd' } )] } } ).as( 'cantDo' );
+    cy.visitWithCypressAuth( '/app/me', signedInUser );
+    cy.wait( '@loadMoves' );
+    cy.contains( 'button', 'Can’t do it' ).click();
+    cy.contains( 'button', 'I’m blocked' ).click();
+    cy.wait( '@cantDo' ).its( 'request.body' ).should( 'deep.equal', { reason: 'blocked' } );
+    cy.get( '[data-cy="flow-toast"]' ).should( 'contain.text', 'your project lead will decide' );
+  } );
+
+  it( 'says who TODD told, once the server confirms it went out', () => {
+    stub( true );
+    const saved = { id: 'srv-2', type: 'rescheduled', moveId: 'live-1', projectId: '', subject: 'Send contract to legal', text: 'to Mon.', reason: '', auto: false, createdAt: new Date().toISOString(), changes: [], notified: [{ uid: 'flow-user', channel: 'push', ok: true }] };
+    cy.intercept( 'POST', '**/moves/flow/actions', { statusCode: 200, body: { success: true, action: saved, tasks: [] } } ).as( 'record' );
+    cy.visitWithCypressAuth( '/app/me', signedInUser );
+    cy.wait( '@loadMoves' );
+    cy.contains( 'button', 'Done' ).click();
+    cy.wait( '@record' );
+    cy.get( '[data-cy="flow-toast"]' ).should( 'contain.text', 'Marked done. TODD told flow by push.' );
+  } );
+
   it( 'uploads what this browser kept before the server stored it, once', () => {
     stub( true );
     cy.intercept( 'POST', '**/moves/flow/import', { statusCode: 200, body: { success: true, movesUpdated: 1, actionsImported: 0 } } ).as( 'import' );

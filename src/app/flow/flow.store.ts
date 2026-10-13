@@ -283,10 +283,25 @@ export class FlowStore {
 
   // --------------------------------------------------------------- toast
 
-  say ( msg: string, undo?: () => void ): void {
+  say ( msg: string, undo?: () => void ): number {
     clearTimeout( this.toastTimer );
     this.toast.set( { id: ++this.toastSeq, msg, undo } );
     this.toastTimer = setTimeout( () => this.toast.set( null ), 5000 );
+    return this.toastSeq;
+  }
+
+  /** The toast that announced a local action, so the save can add who TODD told. */
+  private readonly toastForAction = new Map<string, number>();
+
+  /** After a save: "TODD told Priya by push." - only what the server says actually went out. */
+  private sayWhoWasTold ( localId: string, notified: ToddAction['notified'] ): void {
+    const toastId = this.toastForAction.get( localId );
+    this.toastForAction.delete( localId );
+    const sent = ( notified || [] ).filter( n => n.ok && ( n.channel === 'push' || n.channel === 'email' ) );
+    const t = this.toast();
+    if ( !sent.length || !t || t.id !== toastId ) return;
+    const told = sent.map( n => `${firstName( personById( this.state(), n.uid ) )} by ${n.channel}` ).join( ' and ' );
+    this.say( `${t.msg} TODD told ${told}.`, t.undo );
   }
 
   dismissToast (): void {
@@ -331,6 +346,7 @@ export class FlowStore {
         changes: local.changes.filter( c => c.after ).map( c => ( { moveId: c.moveId, after: flowPatch( c.after! ) } ) ),
       } );
       this.serverIds.set( local.id, action.id );
+      this.sayWhoWasTold( local.id, action.notified );
       this.state.update( s => ( { ...s, actions: s.actions.map( a => a.id === local.id ? { ...local, ...action, changes: action.changes } : a ) } ) );
       this.applyServerTasks( tasks );
     } catch ( err ) {
@@ -397,7 +413,7 @@ export class FlowStore {
       reason: why || 'You decided.',
     } );
     const told = this.isDemo() ? ` TODD told ${firstName( p )} by push.` : '';
-    this.say( `${m.title} is now ${firstName( p )}’s.${told}`, () => this.undo( a.id ) );
+    this.toastForAction.set( a.id, this.say( `${m.title} is now ${firstName( p )}’s.${told}`, () => this.undo( a.id ) ) );
   }
 
   reschedule ( moveIds: string[], days: number ): void {
@@ -409,7 +425,7 @@ export class FlowStore {
       subject: moves.length === 1 ? moves[0].title : `${moves.length} moves`,
       text: `to ${fmtDay( changes[0].after.due )}.`, reason: 'You decided.',
     } );
-    this.say( `${moves.length === 1 ? moves[0].title + ' moved' : moves.length + ' moves moved'} to ${fmtWeekday( changes[0].after.due )} ${fmtDay( changes[0].after.due )}.`, () => this.undo( a.id ) );
+    this.toastForAction.set( a.id, this.say( `${moves.length === 1 ? moves[0].title + ' moved' : moves.length + ' moves moved'} to ${fmtWeekday( changes[0].after.due )} ${fmtDay( changes[0].after.due )}.`, () => this.undo( a.id ) ) );
   }
 
   applySequence ( issueId: string ): void {
@@ -425,7 +441,7 @@ export class FlowStore {
       note: `Swapped ${b.title.toLowerCase()} and ${a.title.toLowerCase()}.`, reason: p.why,
     } );
     const names = p.notify.map( firstName ).join( ' and ' );
-    this.say( `Order swapped.${this.isDemo() && names ? ` TODD told ${names}.` : ''}`, () => this.undo( action.id ) );
+    this.toastForAction.set( action.id, this.say( `Order swapped.${this.isDemo() && names ? ` TODD told ${names}.` : ''}`, () => this.undo( action.id ) ) );
   }
 
   dismiss ( issueId: string, reason: Dismissal['reason'] ): void {
@@ -470,7 +486,7 @@ export class FlowStore {
     } );
     const waiting = this.state().moves.filter( x => x.dependsOn.includes( moveId ) && !x.done );
     const next = waiting[0] ? ` ${firstName( ownerOf( this.state(), waiting[0] ) )} can start ${waiting[0].title.toLowerCase()}.` : '';
-    this.say( `Marked done.${next}`, () => this.undo( a.id ) );
+    this.toastForAction.set( a.id, this.say( `Marked done.${next}`, () => this.undo( a.id ) ) );
   }
 
   /** "Can't do it" from the member's phone: TODD routes it again to whoever has the most room. */
@@ -478,6 +494,11 @@ export class FlowStore {
     const s = this.state();
     const m = moveById( s, moveId );
     if ( !m || !this.canWrite( 'hand this back' ) ) return;
+    // Live, the server routes it (and tells the lead only if the date moved).
+    if ( this.mode() === 'live' ) {
+      void this.cantDoOnServer( m, reason );
+      return;
+    }
     const from = ownerOf( s, m );
     if ( reason === 'not-this-week' && !m.dateLockedBy ) {
       const due = isoDay( addDays( m.due, 7 ) );
@@ -497,6 +518,25 @@ export class FlowStore {
       subject: m.title, text: `from ${firstName( from )} to ${firstName( to )}. ${why}`, reason: why,
     } );
     this.say( 'Sent back to TODD. It will find another owner.', () => this.undo( a.id ) );
+  }
+
+  private async cantDoOnServer ( m: FlowMove, reason: 'someone-else' | 'blocked' | 'not-this-week' ): Promise<void> {
+    try {
+      const { action, tasks, outcome } = await this.api.cantDo( m.id, reason );
+      this.state.update( s => ( { ...s, actions: [...s.actions, action] } ) );
+      this.applyServerTasks( tasks );
+      const undo = () => this.undo( action.id );
+      if ( outcome === 'rescheduled' ) {
+        this.say( `Moved to ${fmtDay( moveById( this.state(), m.id )?.due || m.due )}. TODD told your project lead because the date moved.`, undo );
+      } else if ( outcome === 'back-to-todd' ) {
+        this.say( 'Sent back to TODD. Nobody else has room, so your project lead will decide.', undo );
+      } else {
+        const to = moveById( this.state(), m.id );
+        this.say( `Sent back to TODD. ${to ? firstName( ownerOf( this.state(), to ) ) + ' has it now.' : 'It found another owner.'}`, undo );
+      }
+    } catch ( err ) {
+      this.say( FlowApiService.message( err, 'That didn’t go through. Try again.' ) );
+    }
   }
 
   updateNextAction ( moveId: string, nextAction: string ): void {

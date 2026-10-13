@@ -83,6 +83,12 @@ export class FlowApiService {
     return res.autonomy;
   }
 
+  /** The assignee can't do it: the server routes it again (todd-backend flowMember.service). */
+  async cantDo ( moveId: string, reason: 'someone-else' | 'blocked' | 'not-this-week' ): Promise<{ action: ToddAction; tasks: Task[]; outcome: 'rescheduled' | 'reassigned' | 'back-to-todd' }> {
+    const res = await firstValueFrom( this.http.post<{ action: ToddAction; tasks: unknown[]; outcome: 'rescheduled' | 'reassigned' | 'back-to-todd' }>( `${environment.backendURL}/moves/${encodeURIComponent( moveId )}/cant-do`, { reason } ) );
+    return { action: res.action, tasks: res.tasks.map( row => this.tasks.toTask( row ) ), outcome: res.outcome };
+  }
+
   importLocal ( body: unknown ): Promise<unknown> {
     return firstValueFrom( this.http.post( `${this.base}/import`, body ) );
   }
