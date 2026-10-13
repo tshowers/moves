@@ -1,8 +1,8 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit, inject } from '@angular/core';
-import { Meta } from '@angular/platform-browser';
 import { RouterLink } from '@angular/router';
 import { MovesAuthService } from '../../services/moves-auth.service';
+import { SeoService } from '../../services/seo.service';
 import { GettingStarted, GettingStartedService, GettingStartedStep } from '../../services/getting-started.service';
 
 interface HelpStep {
@@ -48,10 +48,10 @@ interface HelpTerm {
   styleUrl: './help.component.css',
 })
 export class HelpComponent implements OnInit {
-  /** Prerendered for search engines (app.routes.server.ts); the route sets the title. */
-  private readonly meta = inject( Meta ).updateTag( {
-    name: 'description',
-    content: 'How to use Moves: paste a plan, read Momentum, fix the breaks, run the weekly review and set TODD’s rules. Answers to common questions.',
+  /** Prerendered for search engines (app.routes.server.ts). Same title as the route's. */
+  private readonly seo = inject( SeoService ).page( {
+    title: 'Moves Help: how to use Moves | Taliferro Tech',
+    description: 'How to use Moves: paste a plan, read Momentum, fix the breaks, run the weekly review and set TODD’s rules. Answers to common questions.',
   } );
   /** Signed-in only: the Getting Started checklist, checked off from real data. */
   progress: GettingStarted | null = null;

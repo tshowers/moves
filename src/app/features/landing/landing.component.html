@@ -6,7 +6,7 @@
 
   <section class="moves-hero">
     <div class="moves-hero__noise"></div>
-    <div class="moves-hero__copy"><p class="moves-kicker">A momentum system for work that matters</p><h1>Make the<br><em>next move.</em></h1><p class="moves-hero__lede">The task is not the work. The next action is. Moves keeps momentum visible until the work is done.</p><div class="moves-hero__actions"><a class="moves-button moves-button--solid" routerLink="/get-started">Get started <span>↗</span></a><a class="moves-text-link" href="#signal">See the signal <span>↓</span></a></div><p class="tt-made-by moves-made-by"><a href="https://todd.taliferro.tech" target="_blank" rel="noopener"><span class="tt-made-by__todd"><img src="assets/TODD-icon.png" alt=""></span>Powered by <strong>TODD</strong></a><i aria-hidden="true"></i><a appAlsoFromUs></a></p></div>
+    <div class="moves-hero__copy"><p class="moves-kicker">A momentum system for work that matters</p><h1>Make the<br><em>next move.</em></h1><p class="moves-hero__lede">The task is not the work. The next action is. Moves keeps momentum visible until the work is done.</p><div class="moves-hero__actions"><a class="moves-button moves-button--solid" routerLink="/get-started">Get started <span>↗</span></a><a class="moves-text-link" href="#signal">See the signal <span>↓</span></a></div><p class="tt-made-by moves-made-by"><a href="https://todd.taliferro.tech" target="_blank" rel="noopener"><span class="tt-made-by__todd"><img src="assets/find/entities/todd/logo-bw-icon.png" alt=""></span>Powered by <strong>TODD</strong></a><i aria-hidden="true"></i><a appAlsoFromUs></a></p></div>
     <div class="moves-hero__art"><div class="moves-orbit moves-orbit--one"></div><div class="moves-orbit moves-orbit--two"></div><div class="moves-art__caption">THE WORK<br>IS ALIVE</div><img src="/assets/moves-banner.png" alt="A visual system of connected tasks moving toward a target" class="moves-banner"><div class="moves-float moves-float--top"><span class="moves-dot moves-dot--green"></span> On track <b>72%</b></div><div class="moves-float moves-float--bottom"><span class="moves-dot moves-dot--orange"></span> Stalled work detected</div></div>
     <div class="moves-hero__stamp">MOVE<br>WITH<br>INTENT</div><div class="moves-hero__scroll">SCROLL TO EXPLORE <span>↓</span></div>
   </section>
@@ -25,6 +25,7 @@
       <figure class="moves-quote__media">
         <video #demoVideo class="moves-quote__video"
           [src]="theme.isDark() ? 'assets/video/moves-todd-demo-dark.mp4' : 'assets/video/moves-todd-demo-light.mp4'"
+          [poster]="theme.isDark() ? 'assets/video/moves-todd-demo-dark.jpg' : 'assets/video/moves-todd-demo-light.jpg'"
           autoplay muted [muted]="true" loop playsinline preload="metadata"
           (error)="demoVideoMissing.set(true)"
           aria-label="TODD spots a stalled task and reassigns it, a PM gives an unowned task to Priya from a push notification, and TODD reorders two tasks so a deadline holds."></video>

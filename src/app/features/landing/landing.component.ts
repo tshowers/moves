@@ -4,6 +4,8 @@ import { Router, RouterModule } from '@angular/router';
 import { map } from 'rxjs';
 import { environment } from '../../../environments/environment';
 import { MovesAuthService } from '../../services/moves-auth.service';
+import { GET_THE_APP_PRODUCTS } from '@taliferro/ui/platform/get-the-app.model';
+import { SITE_URL, SeoService } from '../../services/seo.service';
 import { ThemeService } from '../../services/theme.service';
 import { AlsoFromUsComponent } from '../../shared/also-from-us/also-from-us.component';
 import { PlatformMenuComponent } from '../../shared/platform-menu/platform-menu.component';
@@ -30,6 +32,7 @@ export class LandingComponent implements OnDestroy {
   private readonly reducedMotion = typeof window !== 'undefined' && !!window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
   private demoInView = false;
   private demoObserver?: IntersectionObserver;
+  private readonly seo = inject(SeoService);
   private readonly auth = inject(MovesAuthService);
   private readonly router = inject(Router);
   // The universal menu (and its ⌘K search) sits inline in this page's nav;
@@ -68,6 +71,36 @@ export class LandingComponent implements OnDestroy {
   ];
 
   constructor() {
+    // What Moves is and the demo video, for search engines (prerendered).
+    // The home title and description stay in index.html.
+    const description = 'Moves draws every project as a line of moves against today. Gaps, stalls and wrong order show up as breaks, and TODD fixes the small ones within rules you set, with Undo.';
+    this.seo.structuredData('moves-app', {
+      '@context': 'https://schema.org',
+      '@type': 'SoftwareApplication',
+      name: 'Moves',
+      url: `${SITE_URL}/`,
+      applicationCategory: 'BusinessApplication',
+      operatingSystem: 'Web, iOS',
+      description,
+      publisher: { '@type': 'Organization', name: 'Taliferro Tech', url: 'https://taliferro.tech' },
+      offers: {
+        '@type': 'Offer',
+        price: GET_THE_APP_PRODUCTS.moves.monthlyPrice.replace(/[^0-9.]/g, ''),
+        priceCurrency: 'USD',
+        url: `${SITE_URL}/pricing`,
+      },
+    });
+    this.seo.structuredData('moves-demo-video', {
+      '@context': 'https://schema.org',
+      '@type': 'VideoObject',
+      name: 'TODD keeps work moving in Moves',
+      description: 'TODD spots a stalled task and reassigns it, a project lead gives an unowned task to Priya from a push notification, and TODD reorders two tasks so a deadline holds.',
+      thumbnailUrl: [`${SITE_URL}/assets/video/moves-todd-demo-light.jpg`, `${SITE_URL}/assets/video/moves-todd-demo-dark.jpg`],
+      contentUrl: `${SITE_URL}/assets/video/moves-todd-demo-light.mp4`,
+      uploadDate: '2026-10-13',
+      duration: 'PT20S',
+    });
+
     // Browser only (the landing page is prerendered): reduced motion gets controls
     // and no autoplay; otherwise play only while at least 25% is on screen.
     afterNextRender(() => {
@@ -111,6 +144,9 @@ export class LandingComponent implements OnDestroy {
 
   ngOnDestroy(): void {
     this.demoObserver?.disconnect();
+    // Only the home page describes the app and its video.
+    this.seo.removeStructuredData('moves-app');
+    this.seo.removeStructuredData('moves-demo-video');
   }
 
   async signOut(): Promise<void> {

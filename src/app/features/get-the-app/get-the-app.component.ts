@@ -1,6 +1,5 @@
 import { CommonModule } from '@angular/common';
 import { Component, Input, OnInit, inject } from '@angular/core';
-import { Title } from '@angular/platform-browser';
 import { ActivatedRoute, RouterModule } from '@angular/router';
 import { Observable } from 'rxjs';
 import {
@@ -12,6 +11,7 @@ import {
   getTheAppFaqs,
   isLiveOnAppStore,
 } from '@taliferro/ui/platform/get-the-app.model';
+import { SeoService } from '../../services/seo.service';
 import { WriteAccessService, WriteAccessState } from '../../services/write-access.service';
 import { WebCheckoutService } from '../../shared/write-access/web-checkout.service';
 import { WriteAccessPromptService } from '../../shared/write-access/write-access-prompt.service';
@@ -35,7 +35,7 @@ export class GetTheAppComponent implements OnInit {
   @Input() productKey: GetTheAppProductKey = 'moves';
 
   private readonly route = inject( ActivatedRoute );
-  private readonly title = inject( Title );
+  private readonly seo = inject( SeoService );
   private readonly writeAccess = inject( WriteAccessService );
   private readonly prompts = inject( WriteAccessPromptService );
   private readonly checkout = inject( WebCheckoutService );
@@ -53,7 +53,10 @@ export class GetTheAppComponent implements OnInit {
     this.product = GET_THE_APP_PRODUCTS[key];
     this.faqs = getTheAppFaqs( this.product );
     this.state$ = this.writeAccess.state( key );
-    this.title.setTitle( `Pricing — ${this.product.shortName} | Taliferro Tech` );
+    this.seo.page( {
+      title: `Pricing — ${this.product.shortName} | Taliferro Tech`,
+      description: `Browse ${this.product.shortName} free in any browser. Subscribe for ${this.product.monthlyPrice} a month to create and edit, here or in the ${this.product.appName} app. One subscription works in both.`,
+    } );
     this.isLive = await isLiveOnAppStore( this.product );
     this.appStoreLink = this.isLive ? appStoreUrl( this.product ) : '';
   }

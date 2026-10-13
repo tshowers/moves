@@ -4,7 +4,9 @@ import { FlowStore } from '../flow.store';
 import { loadOf } from '../flow-engine';
 import { Person } from '../flow.models';
 
-export const TODD_ICON = 'assets/TODD-icon.png';
+// Lowercase: public/assets/todd-icon.png. (A TODD-icon.png twin used to collide with it
+// on case-insensitive disks at build time, so the live site served neither name reliably.)
+export const TODD_ICON = 'assets/todd-icon.png';
 export const MAYA_ICON = 'assets/find/entities/maya/logo-bw-icon.png';
 export const MOVES_ICON = 'assets/find/entities/moves/logo-bw-icon.png';
 
