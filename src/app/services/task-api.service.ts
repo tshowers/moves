@@ -41,6 +41,11 @@ export class TaskApiService {
     private logger: LoggerService
   ) { }
 
+  /** One API row as a Task - also used by FlowApiService for the moves an action returns. */
+  toTask ( row: unknown ): Task {
+    return this.mapTaskRow( row );
+  }
+
   private mapTaskRow ( row: any ): Task {
     return {
       id: row.id,
@@ -82,7 +87,14 @@ export class TaskApiService {
       plannedForDate: row.plannedForDate || '',
       notesLog: Array.isArray( row.notesLog ) ? row.notesLog : [],
       url: row.url || '',
-      timeToComplete: row.timeToComplete || undefined
+      timeToComplete: row.timeToComplete || undefined,
+      nextAction: row.nextAction || '',
+      dependsOn: Array.isArray( row.dependsOn ) ? row.dependsOn : [],
+      dateLockedBy: row.dateLockedBy || '',
+      dateLockedById: row.dateLockedById || '',
+      laneNotes: row.laneNotes && typeof row.laneNotes === 'object' ? row.laneNotes : {},
+      laneEnteredAt: row.laneEnteredAt || '',
+      lastActivityAt: row.lastActivityAt || ''
     } as Task;
   }
 

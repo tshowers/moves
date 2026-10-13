@@ -8,14 +8,13 @@ import { environment } from '../environments/environment';
 import { MovesAuthService } from './services/moves-auth.service';
 import { ThemeService } from './services/theme.service';
 import { ToastComponent } from './shared/toast/toast.component';
-import { SiteFooterComponent } from './shared/site-footer/site-footer.component';
 import { PlatformMenuComponent } from './shared/platform-menu/platform-menu.component';
 import { MovesAssistantLauncherComponent } from './shared/page/assistant-box/moves-assistant-launcher.component';
 import { WriteAccessPromptComponent } from './shared/write-access/write-access-prompt.component';
 
 @Component({
   selector: 'app-root',
-  imports: [WriteAccessPromptComponent, RouterOutlet, ToastComponent, SiteFooterComponent, PlatformMenuComponent, MovesAssistantLauncherComponent, AsyncPipe, NgIf],
+  imports: [WriteAccessPromptComponent, RouterOutlet, ToastComponent, PlatformMenuComponent, MovesAssistantLauncherComponent, AsyncPipe, NgIf],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })
@@ -49,17 +48,26 @@ export class AppComponent implements OnInit {
   // and a stacked-header gap.
   private static readonly routesWithOwnNav = ['/', '/ios'];
   readonly hasOwnNav = signal( AppComponent.matchesOwnNavRoute( this.router.url ) );
+  // The flow-map app under /app has its own rail with the menu and TODD
+  // built in, so the corner menu and the floating assistant stay off there.
+  readonly isFlowRoute = signal( AppComponent.matchesFlowRoute( this.router.url ) );
 
   title = 'moves';
 
   constructor () {
     this.router.events.pipe( filter( event => event instanceof NavigationEnd ) ).subscribe( event => {
       this.hasOwnNav.set( AppComponent.matchesOwnNavRoute( ( event as NavigationEnd ).urlAfterRedirects ) );
+      this.isFlowRoute.set( AppComponent.matchesFlowRoute( ( event as NavigationEnd ).urlAfterRedirects ) );
     } );
   }
 
   private static matchesOwnNavRoute ( url: string ): boolean {
     return AppComponent.routesWithOwnNav.includes( url.split( '?' )[0] );
+  }
+
+  private static matchesFlowRoute ( url: string ): boolean {
+    const path = url.split( '?' )[0];
+    return path === '/app' || path.startsWith( '/app/' );
   }
 
   async signOut (): Promise<void> {

@@ -1,21 +1,35 @@
 import { CommonModule } from '@angular/common';
 import { Component, inject, signal } from '@angular/core';
-import { RouterModule } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
+import { map } from 'rxjs';
+import { environment } from '../../../environments/environment';
+import { MovesAuthService } from '../../services/moves-auth.service';
 import { ThemeService } from '../../services/theme.service';
+import { AlsoFromUsComponent } from '../../shared/also-from-us/also-from-us.component';
+import { PlatformMenuComponent } from '../../shared/platform-menu/platform-menu.component';
+import { SiteFooterComponent } from '../../shared/site-footer/site-footer.component';
 
 interface Faq { question: string; answer: string; }
 interface Testimonial { quote: string; name: string; role: string; result: string; }
 
 @Component({
   selector: 'app-landing',
+  host: { class: 'tt-page' },
   standalone: true,
-  imports: [CommonModule, RouterModule],
+  imports: [SiteFooterComponent, PlatformMenuComponent, AlsoFromUsComponent, CommonModule, RouterModule],
   templateUrl: './landing.component.html',
   styleUrl: './landing.component.css'
 })
 export class LandingComponent {
   readonly theme = inject(ThemeService);
-  readonly menuOpen = signal(false);
+  private readonly auth = inject(MovesAuthService);
+  private readonly router = inject(Router);
+  // The universal menu (and its ⌘K search) sits inline in this page's nav;
+  // app.component leaves its floating copy off on '/'.
+  readonly isLoggedIn$ = this.auth.isLoggedIn();
+  readonly isAdmin$ = this.auth.getUser().pipe(map(user => user?.uid === environment.taliferroTenantId));
+  readonly userName$ = this.auth.getUser().pipe(map(user => user?.displayName || ''));
+  readonly userEmail$ = this.auth.getUser().pipe(map(user => user?.email || ''));
   readonly openFaq = signal<number | null>(0);
 
   readonly features = [
@@ -45,7 +59,9 @@ export class LandingComponent {
     ,{ question: 'Can Moves help recover stalled revenue?', answer: 'Moves surfaces aging proposals, follow-ups, and client commitments so your team can act before an opportunity quietly goes cold.' }
   ];
 
-  toggleMenu(): void { this.menuOpen.update(open => !open); }
-  closeMenu(): void { this.menuOpen.set(false); }
+  async signOut(): Promise<void> {
+    await this.auth.signOut();
+    await this.router.navigateByUrl('/');
+  }
   toggleFaq(index: number): void { this.openFaq.set(this.openFaq() === index ? null : index); }
 }

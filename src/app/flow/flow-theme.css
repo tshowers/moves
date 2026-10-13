@@ -1,0 +1,129 @@
+/*
+ * Find theme for the flow-map app (design_handoff_moves_flow_map). Every
+ * color comes from these tokens; data-theme on <html> (ThemeService)
+ * switches light/dark. Class names are mv- prefixed so Bootstrap's
+ * .btn/.card/.badge never apply.
+ */
+.mv {
+  --bg: #ffffff; --surface: #f2f3f6; --surface2: #e4e7ed; --canvas: #d9dce3;
+  --text: #0f1115; --text2: #3a404c; --muted: #5a6170; --n400: #c3c8d2; --n500: #9aa1ae;
+  --blue: #2f6bff; --blue-ink: #1f55e0; --t-blue: #e3ecff; --t-blue-fg: #1d4fd6;
+  --green: #22b35e; --t-green: #e0f6e6; --t-green-fg: #17703a;
+  --yellow: #ffd92e; --t-yellow: #fff4c2; --stall: #e5a800;
+  --pink: #ff4fa8; --t-pink: #ffe3f1; --t-pink-fg: #a8105a;
+  --violet: #a259ff; --t-violet: #efe5ff; --t-violet-fg: #6427c9;
+  --shadow: 0 20px 50px rgba(15, 17, 21, .12); --shadow-md: 0 6px 20px rgba(15, 17, 21, .10); --shadow-sm: 0 1px 3px rgba(15, 17, 21, .08);
+  --scrim: rgba(5, 6, 10, .45);
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  line-height: 1.45;
+  color: var(--text);
+  background: var(--bg);
+}
+
+[data-theme='dark'] .mv {
+  --bg: #0c0e13; --surface: #171a22; --surface2: #242936; --canvas: #05060a;
+  --text: #f2f4f8; --text2: #c9ced8; --muted: #9aa2b2; --n400: #3a4050; --n500: #5f6676;
+  --blue: #3d7bff; --blue-ink: #86aeff; --t-blue: #15254a; --t-blue-fg: #a3c1ff;
+  --green: #3dd27a; --t-green: #0e2c19; --t-green-fg: #80e2a4;
+  --yellow: #ffd92e; --t-yellow: #2f2906; --stall: #ffd92e;
+  --pink: #ff6bb8; --t-pink: #3a1029; --t-pink-fg: #ff92c9;
+  --violet: #b47bff; --t-violet: #2a1847; --t-violet-fg: #cdaaff;
+  --shadow: 0 20px 50px rgba(0, 0, 0, .55); --shadow-md: 0 6px 20px rgba(0, 0, 0, .45); --shadow-sm: 0 1px 3px rgba(0, 0, 0, .4);
+}
+
+.mv *, .mv *::before, .mv *::after { box-sizing: border-box; }
+.mv h1, .mv h2, .mv h3, .mv h4 { font-weight: 700; letter-spacing: -0.03em; margin: 0; color: var(--text); }
+.mv p { margin: 0; }
+.mv a { color: var(--blue-ink); text-decoration: underline; text-underline-offset: 3px; cursor: pointer; }
+.mv a:hover { color: var(--blue); }
+:where(.mv) button { font: inherit; color: inherit; }
+.mv a.mv-btn { text-decoration: none; color: var(--text); }
+.mv a.mv-btn--primary { color: #fff; }
+.mv a.mv-btn--dark { color: var(--bg); }
+.mv :focus-visible { outline: 2px solid var(--blue); outline-offset: 2px; }
+
+/* Page title 40/1.05; panel title 22-24; section labels 11-12 caps. */
+.mv-title { font-size: 40px; line-height: 1.05; }
+.mv-sub { font-size: 15px; color: var(--text2); margin-top: 6px; }
+.mv-label { font-size: 11px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); }
+.mv-muted { color: var(--muted); }
+.mv-crumb { font-size: 13px; color: var(--muted); }
+.mv-crumb a { color: var(--muted); text-decoration: none; }
+
+/* Buttons - pills. */
+.mv-btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 6px;
+  border-radius: 999px; border: 1px solid var(--surface2); background: var(--bg); color: var(--text);
+  padding: 7px 16px; font-size: 14px; font-weight: 700; cursor: pointer; white-space: nowrap; line-height: 1.2;
+  transition: opacity .12s, filter .12s;
+}
+.mv-btn:hover { filter: brightness(.96); }
+.mv-btn:disabled { opacity: .5; cursor: default; }
+.mv-btn--primary { background: var(--blue); border-color: var(--blue); color: #fff; }
+.mv-btn--primary:hover { opacity: .88; filter: none; }
+.mv-btn--dark { background: var(--text); border-color: var(--text); color: var(--bg); }
+.mv-btn--dark:hover { opacity: .88; filter: none; }
+.mv-btn--sm { padding: 5px 12px; font-size: 13px; }
+.mv-btn--lg { padding: 12px 24px; font-size: 15px; }
+.mv-link { background: none; border: 0; padding: 0; color: var(--blue-ink); text-decoration: underline; text-underline-offset: 3px; cursor: pointer; font: inherit; }
+.mv-link--pink { color: var(--t-pink-fg); text-decoration: none; font-weight: 700; }
+
+/* Tags. */
+.mv-tag { display: inline-flex; align-items: center; border-radius: 999px; padding: 3px 10px; font-size: 12px; font-weight: 700; white-space: nowrap; background: var(--surface); color: var(--text2); }
+.mv-tag--pink { background: var(--t-pink); color: var(--t-pink-fg); }
+.mv-tag--green { background: var(--t-green); color: var(--t-green-fg); }
+.mv-tag--violet { background: var(--t-violet); color: var(--t-violet-fg); }
+.mv-tag--blue { background: var(--blue); color: #fff; }
+.mv-tag--yellow { background: var(--t-yellow); color: var(--text); }
+.mv-tag--outline { background: var(--bg); border: 1px solid var(--surface2); color: var(--text); font-weight: 500; font-size: 13px; padding: 4px 12px; }
+.mv-tag--lg { font-size: 14px; padding: 5px 12px; }
+
+/* Segmented control. */
+.mv-seg { display: inline-flex; border: 1px solid var(--surface2); border-radius: 999px; overflow: hidden; background: var(--bg); }
+.mv-seg button { border: 0; background: none; padding: 7px 14px; font-size: 13px; cursor: pointer; color: var(--text); }
+.mv-seg button.on { background: var(--blue); color: #fff; font-weight: 700; }
+
+/* Avatars. */
+.mv-avatar { width: 34px; height: 34px; flex: none; border-radius: 50%; background: var(--t-blue); color: var(--t-blue-fg); display: inline-flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 700; overflow: hidden; }
+.mv-avatar img { width: 100%; height: 100%; object-fit: cover; }
+.mv-avatar--plate { background: #fff; }
+.mv-avatar--none { background: transparent; border: 2px dashed var(--t-pink-fg); color: var(--t-pink-fg); }
+
+/* Cards. */
+.mv-card { background: var(--bg); border: 1px solid var(--surface2); border-radius: 20px; padding: 18px 20px; }
+.mv-card--surface { background: var(--surface); border-color: transparent; }
+.mv-card--note { box-shadow: var(--shadow-md); border-color: transparent; }
+.mv-card--dashed { border: 1.5px dashed var(--n500); background: transparent; }
+
+.mv-icon { width: 40px; height: 40px; border-radius: 50%; flex: none; }
+[data-theme='dark'] .mv-plate { background: #fff; border-radius: 50%; }
+
+/* Toggle. */
+.mv-toggle { position: relative; width: 38px; height: 22px; border-radius: 999px; background: var(--n400); border: 0; cursor: pointer; flex: none; transition: background .15s; }
+.mv-toggle::after { content: ''; position: absolute; top: 3px; left: 3px; width: 16px; height: 16px; border-radius: 50%; background: #fff; transition: transform .15s; }
+.mv-toggle.on { background: var(--pink); }
+.mv-toggle.on::after { transform: translateX(16px); }
+
+/* Tabs. */
+.mv-tabs { display: flex; gap: 2px; border-bottom: 1px solid var(--surface2); overflow-x: auto; }
+.mv-tabs a { padding: 10px 17px; font-size: 15px; font-weight: 700; color: var(--text); text-decoration: none; border-bottom: 3px solid transparent; white-space: nowrap; }
+.mv-tabs a.on { color: var(--t-pink-fg); border-bottom-color: var(--pink); }
+
+.mv-input { width: 100%; border: 1px solid var(--surface2); background: var(--bg); color: var(--text); border-radius: 14px; padding: 10px 14px; font: inherit; font-size: 15px; }
+
+/* Page padding inside the shell. */
+.mv-page { padding: 30px 36px 48px; min-width: 0; }
+@media (max-width: 720px) {
+  .mv-page { padding: 20px 16px 96px; }
+  .mv-title { font-size: 32px; }
+}
+
+.mv-empty { padding: 40px 0; color: var(--muted); font-size: 15px; }
+
+/* Undo @taliferro/ui's global button look (min-height, padding, hover lift,
+   disabled fade) inside the flow app. :where keeps this at element
+   specificity so .mv-btn and component styles still win. */
+:where(.mv) button { min-height: 0; padding: 0; border: 0; border-radius: 0; line-height: inherit; font-weight: inherit; background: none; }
+:where(.mv) button:not(:disabled):hover { transform: none; }
+:where(.mv) button:disabled { opacity: 1; cursor: default; }

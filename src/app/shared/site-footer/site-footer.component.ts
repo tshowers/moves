@@ -1,24 +1,27 @@
-import { Component, OnInit } from '@angular/core';
+// SYNCED FROM taliferro-ui/site-footer-component - edit it there, then run
+// taliferro-ui/site-footer-component/sync.sh.
+import { CommonModule } from '@angular/common';
+import { Component } from '@angular/core';
 
+import { MENU_COMPANY, MENU_PRODUCTS } from '@taliferro/ui/platform/universal-menu.model';
+
+/**
+ * The landing-page footer, identical in every Taliferro web product. Plain
+ * links, always in the page, so search engines can follow them (the
+ * universal menu only renders once it's opened). The look is in
+ * @taliferro/ui/styles/site-footer.css; put it last inside a `tt-page`
+ * column so it sits at the bottom of the window on short pages.
+ * Anything between the tags (an app's Help and About links) goes in the first row.
+ */
 @Component( {
   selector: 'app-site-footer',
   standalone: true,
+  imports: [CommonModule],
   templateUrl: './site-footer.component.html',
-  styleUrl: './site-footer.component.css'
 } )
-export class SiteFooterComponent implements OnInit {
+export class SiteFooterComponent {
+  readonly company = MENU_COMPANY;
+  readonly products = MENU_PRODUCTS;
+  readonly phoneHref = 'tel:+1' + MENU_COMPANY.phone.replace( /\D/g, '' );
   readonly year = new Date().getFullYear();
-  version = '2026.9.7-build.1';
-
-  async ngOnInit (): Promise<void> {
-    try {
-      const response = await fetch( 'assets/version.json', { cache: 'no-store' } );
-      if ( response.ok ) {
-        const payload = await response.json() as { version?: string };
-        if ( payload.version ) this.version = payload.version;
-      }
-    } catch {
-      // Keep the packaged fallback visible if the version asset is unavailable.
-    }
-  }
 }

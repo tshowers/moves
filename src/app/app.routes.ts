@@ -20,62 +20,25 @@ export const routes: Routes = [
       import( './features/help/help.component' ).then( ( m ) => m.HelpComponent ),
   },
   {
-    // The real signed-in app experience - task-home.component.ts ported
-    // from TODD, confirmed as the actual live moves/moves-app route there.
+    // Flow map (team edition) - design_handoff_moves_flow_map. Every
+    // project as a line of moves against today; TODD finds the breaks and
+    // fixes what its rules allow. Signed out (or ?demo=1) shows the sample
+    // team; signed in shows the tenant's own moves.
     path: 'app',
     loadComponent: () =>
-      import( './features/task-home/task-home.component' ).then( ( m ) => m.TaskHomeComponent ),
+      import( './flow/shell/flow-root.component' ).then( ( m ) => m.FlowRootComponent ),
+    loadChildren: () =>
+      import( './flow/flow.routes' ).then( ( m ) => m.FLOW_ROUTES ),
   },
-  {
-    // Legacy alias - the monorepo's 'moves' route also resolves to
-    // TaskHomeComponent, kept here so old links still land somewhere real.
-    path: 'moves',
-    loadComponent: () =>
-      import( './features/task-home/task-home.component' ).then( ( m ) => m.TaskHomeComponent ),
-  },
-  {
-    path: 'moves-view',
-    loadComponent: () =>
-      import( './features/task-view-parent/task-view-parent.component' ).then( ( m ) => m.TaskViewParentComponent ),
-  },
-  {
-    // Legacy 'tasks' route redirects to the execution board in the
-    // monorepo too - kept as a redirect rather than a duplicate route.
-    path: 'tasks',
-    redirectTo: 'moves-view',
-  },
-  {
-    path: 'move',
-    loadComponent: () =>
-      import( './features/task-edit/task-edit.component' ).then( ( m ) => m.TaskEditComponent ),
-  },
-  {
-    path: 'move/:id',
-    loadComponent: () =>
-      import( './features/task-edit/task-edit.component' ).then( ( m ) => m.TaskEditComponent ),
-  },
-  {
-    path: 'ai-missions',
-    loadComponent: () =>
-      import( './features/ai-mission-list/ai-mission-list.component' ).then( ( m ) => m.AiMissionListComponent ),
-  },
-  {
-    path: 'move/:id/mission',
-    loadComponent: () =>
-      import( './features/ai-mission-detail/ai-mission-detail.component' ).then( ( m ) => m.AiMissionDetailComponent ),
-  },
-  {
-    // Mission Workspace - TODD's Goal Engine mission planner (intake ->
-    // AI plan preview -> approve -> real Moves). Routed at /plan rather
-    // than TODD's own /mission, which collides with the unrelated
-    // autonomous-agent concept at move/:id/mission above - see
-    // mission-workspace-migration-plan.md. No auth guard, matching
-    // ai-missions' current posture; supports ?demo=1 for unauthenticated
-    // preview.
-    path: 'plan',
-    loadComponent: () =>
-      import( './features/mission-workspace/mission-workspace.component' ).then( ( m ) => m.MissionWorkspaceComponent ),
-  },
+  // The old task-list screens, folded into the flow map.
+  { path: 'moves', redirectTo: 'app', pathMatch: 'full' },
+  { path: 'moves-view', redirectTo: 'app', pathMatch: 'full' },
+  { path: 'tasks', redirectTo: 'app', pathMatch: 'full' },
+  { path: 'move', redirectTo: 'app/new', pathMatch: 'full' },
+  { path: 'move/:id', redirectTo: ( { params } ) => `/app?move=${encodeURIComponent( params['id'] )}` },
+  { path: 'move/:id/mission', redirectTo: ( { params } ) => `/app?move=${encodeURIComponent( params['id'] )}` },
+  { path: 'ai-missions', redirectTo: 'app/todd', pathMatch: 'full' },
+  { path: 'plan', redirectTo: 'app/new', pathMatch: 'full' },
   {
     // Pre-sign-in wizard: plan a first Move, give your name, then sign in
     // (ONBOARDING-PROFILE-BILLING-PLAYBOOK.md). /login stays the direct

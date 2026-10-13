@@ -1,6 +1,3 @@
-:host {
-    display: block
-}
 
 .moves-page {
     --ink: #08162e;
@@ -78,74 +75,14 @@
     margin-left: 7px
 }
 
-.moves-menu {
-    border: 0;
-    background: transparent;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    color: var(--ink);
-    font-weight: 800;
-    font-size: .73rem;
-    cursor: pointer
-}
 
-.moves-menu i {
-    display: block;
-    width: 22px;
-    height: 13px;
-    border-top: 2px solid var(--ink);
-    border-bottom: 2px solid var(--ink);
-    position: relative
-}
 
-.moves-menu i:after {
-    content: "";
-    position: absolute;
-    top: 4px;
-    left: 0;
-    width: 15px;
-    border-top: 2px solid var(--ink)
-}
 
-.moves-menu-panel {
-    position: fixed;
-    z-index: 9;
-    inset: 0;
-    background: var(--blue);
-    color: #fff;
-    transform: translateY(-105%);
-    transition: transform .65s cubic-bezier(.77, 0, .18, 1);
-    padding: 150px max(32px, calc((100% - 1180px)/2)) 50px
-}
 
-.moves-menu-panel.is-open {
-    transform: translateY(0)
-}
 
-.moves-menu-panel__inner {
-    display: grid;
-    gap: 12px
-}
 
-.moves-menu-panel a {
-    color: #fff;
-    text-decoration: none;
-    font-size: clamp(3.5rem, 9vw, 8rem);
-    font-weight: 900;
-    letter-spacing: -.1em;
-    line-height: .9
-}
 
-.moves-menu-panel a:hover {
-    color: #d4ff37
-}
 
-.moves-menu-panel a b {
-    font-size: .4em;
-    vertical-align: top;
-    letter-spacing: 0
-}
 
 .moves-hero {
     height: 100svh;
@@ -771,9 +708,6 @@
         display: none
     }
 
-    .moves-menu-panel {
-        padding: 120px 32px 40px
-    }
 
     .moves-hero {
         min-height: 760px;
@@ -1114,7 +1048,6 @@
 
 :host-context([data-theme="dark"]) .moves-brand,
 :host-context([data-theme="dark"]) .moves-nav__right>a,
-:host-context([data-theme="dark"]) .moves-menu,
 :host-context([data-theme="dark"]) .moves-text-link {
     color: var(--ink)
 }
@@ -1198,15 +1131,7 @@
 }
 
 @media(max-width:850px) {
-    .moves-menu-panel a {
-        font-size: clamp(2.35rem, 11.5vw, 4.2rem);
-        letter-spacing: -.075em;
-        white-space: nowrap
-    }
 
-    .moves-menu-panel__inner {
-        gap: 15px
-    }
 
     .moves-nav__right {
         gap: 10px
@@ -1223,4 +1148,60 @@
     .moves-nav__launch {
         display: none
     }
+}
+/* "Powered by TODD · Also from us" (PRODUCT-STANDARD.md) on the blue CTA.
+   strong and .um-logo live in AlsoFromUsComponent's template, hence ::ng-deep. */
+.moves-made-by {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 6px 12px;
+    margin: 48px 0 0;
+    font-size: .8rem;
+    color: #ffffffb3
+}
+
+.moves-made-by a {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    color: #ffffffb3;
+    text-decoration: none
+}
+
+.moves-made-by ::ng-deep strong {
+    color: #fff;
+    font-weight: 800
+}
+
+.moves-made-by a:hover ::ng-deep strong {
+    text-decoration: underline
+}
+
+.moves-made-by i {
+    width: 3px;
+    height: 3px;
+    border-radius: 50%;
+    background: #ffffff66
+}
+
+.moves-made-by .tt-made-by__todd {
+    display: grid;
+    place-items: center;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: #fff
+}
+
+.moves-made-by .tt-made-by__todd img {
+    width: 20px;
+    height: 20px;
+    object-fit: contain
+}
+
+.moves-made-by ::ng-deep .um-logo {
+    width: 18px;
+    height: 18px;
+    border-radius: 4px
 }

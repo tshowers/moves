@@ -91,6 +91,16 @@ export interface Task extends TaskState {
   // not written to directly.
   notesLog?: EmployeeActionNoteEntry[];
   blocked?: boolean;
+  // Flow map (todd-backend moves.service): the next concrete step (empty = a
+  // gap), the moves this one waits on, dates TODD must never move, and
+  // server-owned activity times that drive stalls and the 48h lane rule.
+  nextAction?: string;
+  dependsOn?: string[];
+  dateLockedBy?: '' | 'client' | 'manual';
+  dateLockedById?: string;
+  laneNotes?: Partial<Record<'todd' | 'maya' | 'person', string>>;
+  laneEnteredAt?: string;
+  lastActivityAt?: string;
 }
 
 export interface TaskType {

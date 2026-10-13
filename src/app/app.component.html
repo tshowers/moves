@@ -1,11 +1,12 @@
-@if (!hasOwnNav()) {
+@if (!hasOwnNav() && !isFlowRoute()) {
   <div class="app-global-actions"><app-platform-menu [isAdmin]="(isAdmin$ | async) ?? false" [isLoggedIn]="(isLoggedIn$ | async) ?? false" [userName]="(userName$ | async) ?? ''" [userEmail]="(userEmail$ | async) ?? ''" (signOut)="signOut()" /></div>
 }
 <router-outlet></router-outlet>
-<app-moves-assistant-launcher></app-moves-assistant-launcher>
+@if (!isFlowRoute()) {
+  <app-moves-assistant-launcher></app-moves-assistant-launcher>
+}
 <app-toast></app-toast>
 <app-write-access-prompt />
-<app-site-footer></app-site-footer>
 @if (updateNotice) {
   <div class="moves-update-notice" role="status" aria-live="polite">
     <span>{{ updateNotice }}</span>

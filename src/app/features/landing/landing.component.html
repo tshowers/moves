@@ -1,12 +1,8 @@
 <main class="moves-page">
   <nav class="moves-nav">
     <a class="moves-brand" routerLink="/"><img src="/assets/logo.png" alt="Moves"><span>MOVES</span></a>
-    <div class="moves-nav__right"><a href="#signal">The signal</a><a href="#system">The system</a><button type="button" class="moves-theme" (click)="theme.toggle()" [attr.aria-label]="theme.isDark() ? 'Use light mode' : 'Use dark mode'"><span>{{ theme.isDark() ? '☼' : '◐' }}</span><small>{{ theme.isDark() ? 'Light' : 'Dark' }}</small></button><a class="moves-nav__launch" routerLink="/app">Open app <span>↗</span></a><button type="button" class="moves-menu" (click)="toggleMenu()" [attr.aria-expanded]="menuOpen()"><i></i><span>{{ menuOpen() ? 'Close' : 'Menu' }}</span></button></div>
+    <div class="moves-nav__right"><a href="#signal">The signal</a><a href="#system">The system</a><button type="button" class="moves-theme" (click)="theme.toggle()" [attr.aria-label]="theme.isDark() ? 'Use light mode' : 'Use dark mode'"><span>{{ theme.isDark() ? '☼' : '◐' }}</span><small>{{ theme.isDark() ? 'Light' : 'Dark' }}</small></button><a class="moves-nav__launch" routerLink="/app">Open app <span>↗</span></a><app-platform-menu [isLoggedIn]="(isLoggedIn$ | async) ?? false" [isAdmin]="(isAdmin$ | async) ?? false" [userName]="(userName$ | async) ?? ''" [userEmail]="(userEmail$ | async) ?? ''" (signOut)="signOut()" /></div>
   </nav>
-
-  <div class="moves-menu-panel" [class.is-open]="menuOpen()" aria-label="Site menu">
-    <div class="moves-menu-panel__inner"><span class="moves-kicker">MOVES / NAVIGATION</span><a routerLink="/app" (click)="closeMenu()">Open Moves <b>↗</b></a><a routerLink="/ios" (click)="closeMenu()">Moves for iOS <b>↗</b></a></div>
-  </div>
 
   <section class="moves-hero">
     <div class="moves-hero__noise"></div>
@@ -27,5 +23,6 @@
 
   <section class="moves-faq"><div class="moves-wrap"><div class="moves-faq__head"><p class="moves-kicker">Questions worth asking</p><h2>Start somewhere<br>that moves.</h2></div><div class="moves-faq__list"><div class="moves-faq__item" *ngFor="let faq of faqs; let i = index" [class.is-open]="openFaq() === i"><button (click)="toggleFaq(i)" [attr.aria-expanded]="openFaq() === i">{{ faq.question }} <span>+</span></button><div class="moves-faq__answer"><p>{{ faq.answer }}</p></div></div></div></div></section>
 
-  <section class="moves-footer-cta"><div class="moves-wrap"><p class="moves-kicker">Your next move</p><h2>Keep going.</h2><a class="moves-button moves-button--dark" routerLink="/get-started">Get started <span>↗</span></a> <a class="moves-text-link" routerLink="/pricing" data-cy="landing-pricing">Pricing <span>→</span></a><span class="moves-footer-cta__mark">M</span></div></section>
+  <section class="moves-footer-cta"><div class="moves-wrap"><p class="moves-kicker">Your next move</p><h2>Keep going.</h2><a class="moves-button moves-button--dark" routerLink="/get-started">Get started <span>↗</span></a> <a class="moves-text-link" routerLink="/pricing" data-cy="landing-pricing">Pricing <span>→</span></a><p class="tt-made-by moves-made-by"><a href="https://todd.taliferro.tech" target="_blank" rel="noopener"><span class="tt-made-by__todd"><img src="assets/TODD-icon.png" alt=""></span>Powered by <strong>TODD</strong></a><i aria-hidden="true"></i><a appAlsoFromUs></a></p><span class="moves-footer-cta__mark">M</span></div></section>
 </main>
+<app-site-footer><a routerLink="/help">Help</a><a routerLink="/pricing">Pricing</a><a routerLink="/ios">Moves for iPhone</a></app-site-footer>

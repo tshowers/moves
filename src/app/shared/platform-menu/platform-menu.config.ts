@@ -6,10 +6,10 @@ export const PLATFORM_MENU_CONFIG: MenuAppConfig = {
   name: 'Moves',
   items: [
     { label: 'Home', icon: 'home', route: '/' },
-    { label: 'Moves Home', icon: 'grid', route: '/app' },
-    { label: 'Execution', icon: 'list', route: '/moves-view' },
-    { label: 'New Move', icon: 'plus', route: '/move', keywords: 'create add' },
-    { label: 'Mission', icon: 'target', route: '/plan', keywords: 'plan goals' },
+    { label: 'Momentum', icon: 'grid', route: '/app', keywords: 'projects lines today' },
+    { label: 'Team', icon: 'list', route: '/app/team', keywords: 'people capacity load' },
+    { label: 'Weekly review', icon: 'target', route: '/app/review', keywords: 'standup decide' },
+    { label: 'New project', icon: 'plus', route: '/app/new', keywords: 'create add plan paste' },
   ],
   secondaryItems: [
     { label: 'Profile', icon: 'user', route: '/profile' },

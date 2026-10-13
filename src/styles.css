@@ -1,7 +1,8 @@
 @import "@taliferro/ui/styles/controls.css";
 @import "@taliferro/ui/styles/universal-menu.css";
+@import "@taliferro/ui/styles/site-footer.css";
 
-app-root>router-outlet+*:not(app-landing):not(app-moves-ios-showcase) {
+app-root>router-outlet+*:not(app-landing):not(app-moves-ios-showcase):not(mv-flow-root) {
   padding-top: 4.5rem;
   box-sizing: border-box;
 }
