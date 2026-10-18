@@ -218,7 +218,22 @@
   "outcomeType": "insight",
   "summary": "",
   "questions": [],
-  "estimate": {},
+  "estimate": {
+    "counts": {},
+    "yourMinutes": 0,
+    "approvals": 0,
+    "split": {
+      "todd": 4,
+      "maya": 0,
+      "person": 0
+    },
+    "waitBusinessDays": 0,
+    "products": [
+      "find",
+      "lead-vault",
+      "todd"
+    ]
+  },
   "planner": {
     "provider": "test",
     "model": "test"

@@ -362,7 +362,27 @@
   "outcomeType": "shortlist",
   "summary": "",
   "questions": [],
-  "estimate": {},
+  "estimate": {
+    "counts": {
+      "emails": 1
+    },
+    "yourMinutes": 4,
+    "approvals": 1,
+    "split": {
+      "todd": 5,
+      "maya": 1,
+      "person": 2
+    },
+    "waitBusinessDays": 0,
+    "products": [
+      "network",
+      "find",
+      "todd",
+      "email-creator",
+      "outreach",
+      "moves"
+    ]
+  },
   "planner": {
     "provider": "test",
     "model": "test"

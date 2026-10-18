@@ -175,7 +175,8 @@ export class PlanReplyComponent implements OnInit {
 
   readonly placeholder = computed( () => ( this.agent() === 'maya' ? 'What should Maya work on?' : 'What do you need done?' ) );
   readonly outcome = computed( () => ( { action: 'Action', insight: 'Insight', shortlist: 'Shortlist', program: 'Program', assetSet: 'Asset set' }[this.mission()?.outcomeType || 'action'] ) );
-  readonly approvals = computed( () => ( this.mission()?.steps || [] ).filter( ( s ) => s.kind === 'approval' && !s.when && s.holder.assigneeId === this.viewerId() ).length );
+  /** Approvals on the main path (the server's estimate leaves out the "if they reply" ones). */
+  readonly approvals = computed( () => this.mission()?.estimate?.approvals ?? ( this.mission()?.steps || [] ).filter( ( s ) => s.kind === 'approval' && !s.when ).length );
   readonly minutesText = computed( () => {
     const m = this.mission();
     const minutes = m && m.estimate ? m.estimate.yourMinutes : 0;

@@ -781,7 +781,28 @@
       "outcomeType": "action",
       "summary": "",
       "questions": [],
-      "estimate": {},
+      "estimate": {
+        "counts": {
+          "images": 1,
+          "emails": 2
+        },
+        "yourMinutes": 3,
+        "approvals": 1,
+        "split": {
+          "todd": 7,
+          "maya": 5,
+          "person": 6
+        },
+        "waitBusinessDays": 5,
+        "products": [
+          "network",
+          "maya",
+          "image-creator",
+          "email-creator",
+          "outreach",
+          "todd"
+        ]
+      },
       "planner": {
         "provider": "test",
         "model": "test"
@@ -1155,7 +1176,23 @@
       "outcomeType": "action",
       "summary": "",
       "questions": [],
-      "estimate": {},
+      "estimate": {
+        "counts": {},
+        "yourMinutes": 5,
+        "approvals": 1,
+        "split": {
+          "todd": 5,
+          "maya": 0,
+          "person": 2
+        },
+        "waitBusinessDays": 0,
+        "products": [
+          "moves",
+          "outreach",
+          "docs",
+          "todd"
+        ]
+      },
       "planner": {
         "provider": "test",
         "model": "test"
@@ -1992,7 +2029,28 @@
       "outcomeType": "action",
       "summary": "",
       "questions": [],
-      "estimate": {},
+      "estimate": {
+        "counts": {
+          "images": 1,
+          "emails": 2
+        },
+        "yourMinutes": 3,
+        "approvals": 1,
+        "split": {
+          "todd": 7,
+          "maya": 5,
+          "person": 6
+        },
+        "waitBusinessDays": 5,
+        "products": [
+          "network",
+          "maya",
+          "image-creator",
+          "email-creator",
+          "outreach",
+          "todd"
+        ]
+      },
       "planner": {
         "provider": "test",
         "model": "test"
@@ -2259,7 +2317,22 @@
       "outcomeType": "insight",
       "summary": "",
       "questions": [],
-      "estimate": {},
+      "estimate": {
+        "counts": {},
+        "yourMinutes": 0,
+        "approvals": 0,
+        "split": {
+          "todd": 4,
+          "maya": 0,
+          "person": 0
+        },
+        "waitBusinessDays": 0,
+        "products": [
+          "find",
+          "lead-vault",
+          "todd"
+        ]
+      },
       "planner": {
         "provider": "test",
         "model": "test"
@@ -2816,7 +2889,28 @@
       "outcomeType": "program",
       "summary": "",
       "questions": [],
-      "estimate": {},
+      "estimate": {
+        "counts": {
+          "images": 1
+        },
+        "yourMinutes": 3,
+        "approvals": 1,
+        "split": {
+          "todd": 6,
+          "maya": 2,
+          "person": 1
+        },
+        "waitBusinessDays": 0,
+        "products": [
+          "find",
+          "todd",
+          "maya",
+          "image-creator",
+          "docs",
+          "moves",
+          "pulse"
+        ]
+      },
       "planner": {
         "provider": "test",
         "model": "test"

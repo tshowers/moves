@@ -153,8 +153,9 @@ export class WaitingOnYouComponent implements OnInit {
     return `${item.missionId}:${item.step.id}`;
   }
 
+  /** A step handed to you is your task now, whatever it was planned as. */
   kind ( item: WaitingItem ): string {
-    return KIND_LABEL[item.step.kind];
+    return item.step.handoff ? KIND_LABEL.task : KIND_LABEL[item.step.kind];
   }
 
   preview ( item: WaitingItem ) {

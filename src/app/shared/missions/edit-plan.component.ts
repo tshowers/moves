@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, computed, inject, input, output, signal, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, input, output, signal, OnInit } from '@angular/core';
 
 import { MissionsApiService } from './missions-api.service';
 import { KIND_LABEL, MissionView, Person, StepKind, StepView, Who, nameOf, whoOf } from './missions.model';

@@ -739,7 +739,28 @@
     "outcomeType": "action",
     "summary": "",
     "questions": [],
-    "estimate": {},
+    "estimate": {
+      "counts": {
+        "images": 1,
+        "emails": 2
+      },
+      "yourMinutes": 3,
+      "approvals": 1,
+      "split": {
+        "todd": 7,
+        "maya": 5,
+        "person": 6
+      },
+      "waitBusinessDays": 5,
+      "products": [
+        "network",
+        "maya",
+        "image-creator",
+        "email-creator",
+        "outreach",
+        "todd"
+      ]
+    },
     "planner": {
       "provider": "test",
       "model": "test"
@@ -987,7 +1008,22 @@
     "outcomeType": "action",
     "summary": "",
     "questions": [],
-    "estimate": {},
+    "estimate": {
+      "counts": {},
+      "yourMinutes": 13,
+      "approvals": 1,
+      "split": {
+        "todd": 3,
+        "maya": 0,
+        "person": 2
+      },
+      "waitBusinessDays": 0,
+      "products": [
+        "docs",
+        "network",
+        "todd"
+      ]
+    },
     "planner": {
       "provider": "test",
       "model": "test"
@@ -1595,7 +1631,27 @@
     "outcomeType": "action",
     "summary": "",
     "questions": [],
-    "estimate": {},
+    "estimate": {
+      "counts": {
+        "emails": 2
+      },
+      "yourMinutes": 3,
+      "approvals": 1,
+      "split": {
+        "todd": 7,
+        "maya": 3,
+        "person": 4
+      },
+      "waitBusinessDays": 5,
+      "products": [
+        "network",
+        "find",
+        "email-creator",
+        "outreach",
+        "maya",
+        "todd"
+      ]
+    },
     "planner": {
       "provider": "test",
       "model": "test"
@@ -1918,7 +1974,24 @@
     "outcomeType": "action",
     "summary": "",
     "questions": [],
-    "estimate": {},
+    "estimate": {
+      "counts": {},
+      "yourMinutes": 60,
+      "approvals": 0,
+      "split": {
+        "todd": 6,
+        "maya": 0,
+        "person": 1
+      },
+      "waitBusinessDays": 0,
+      "products": [
+        "network",
+        "find",
+        "docs",
+        "moves",
+        "todd"
+      ]
+    },
     "planner": {
       "provider": "test",
       "model": "test"
@@ -2162,7 +2235,23 @@
     "outcomeType": "shortlist",
     "summary": "",
     "questions": [],
-    "estimate": {},
+    "estimate": {
+      "counts": {},
+      "yourMinutes": 1,
+      "approvals": 0,
+      "split": {
+        "todd": 4,
+        "maya": 0,
+        "person": 1
+      },
+      "waitBusinessDays": 0,
+      "products": [
+        "network",
+        "lead-vault",
+        "find",
+        "todd"
+      ]
+    },
     "planner": {
       "provider": "test",
       "model": "test"
@@ -2770,7 +2859,26 @@
     "outcomeType": "action",
     "summary": "",
     "questions": [],
-    "estimate": {},
+    "estimate": {
+      "counts": {
+        "emails": 2
+      },
+      "yourMinutes": 8,
+      "approvals": 1,
+      "split": {
+        "todd": 6,
+        "maya": 3,
+        "person": 5
+      },
+      "waitBusinessDays": 5,
+      "products": [
+        "moves",
+        "email-creator",
+        "outreach",
+        "maya",
+        "todd"
+      ]
+    },
     "planner": {
       "provider": "test",
       "model": "test"
@@ -3093,7 +3201,25 @@
     "outcomeType": "action",
     "summary": "",
     "questions": [],
-    "estimate": {},
+    "estimate": {
+      "counts": {},
+      "yourMinutes": 3,
+      "approvals": 1,
+      "split": {
+        "todd": 5,
+        "maya": 1,
+        "person": 1
+      },
+      "waitBusinessDays": 0,
+      "products": [
+        "network",
+        "find",
+        "maya",
+        "outreach",
+        "moves",
+        "todd"
+      ]
+    },
     "planner": {
       "provider": "test",
       "model": "test"
@@ -3420,7 +3546,26 @@
     "outcomeType": "action",
     "summary": "",
     "questions": [],
-    "estimate": {},
+    "estimate": {
+      "counts": {
+        "emails": 1
+      },
+      "yourMinutes": 6,
+      "approvals": 2,
+      "split": {
+        "todd": 4,
+        "maya": 1,
+        "person": 2
+      },
+      "waitBusinessDays": 0,
+      "products": [
+        "docs",
+        "network",
+        "email-creator",
+        "outreach",
+        "todd"
+      ]
+    },
     "planner": {
       "provider": "test",
       "model": "test"
@@ -3907,7 +4052,26 @@
     "outcomeType": "action",
     "summary": "",
     "questions": [],
-    "estimate": {},
+    "estimate": {
+      "counts": {
+        "emails": 1
+      },
+      "yourMinutes": 4,
+      "approvals": 1,
+      "split": {
+        "todd": 5,
+        "maya": 2,
+        "person": 4
+      },
+      "waitBusinessDays": 5,
+      "products": [
+        "network",
+        "email-creator",
+        "outreach",
+        "maya",
+        "todd"
+      ]
+    },
     "planner": {
       "provider": "test",
       "model": "test"
@@ -4553,7 +4717,27 @@
     "outcomeType": "action",
     "summary": "",
     "questions": [],
-    "estimate": {},
+    "estimate": {
+      "counts": {
+        "emails": 2
+      },
+      "yourMinutes": 3,
+      "approvals": 1,
+      "split": {
+        "todd": 7,
+        "maya": 4,
+        "person": 4
+      },
+      "waitBusinessDays": 5,
+      "products": [
+        "docs",
+        "find",
+        "maya",
+        "email-creator",
+        "outreach",
+        "todd"
+      ]
+    },
     "planner": {
       "provider": "test",
       "model": "test"
@@ -4960,7 +5144,22 @@
     "outcomeType": "action",
     "summary": "",
     "questions": [],
-    "estimate": {},
+    "estimate": {
+      "counts": {},
+      "yourMinutes": 1,
+      "approvals": 0,
+      "split": {
+        "todd": 5,
+        "maya": 0,
+        "person": 4
+      },
+      "waitBusinessDays": 0,
+      "products": [
+        "docs",
+        "todd",
+        "knowledge-base"
+      ]
+    },
     "planner": {
       "provider": "test",
       "model": "test"
@@ -5566,7 +5765,26 @@
     "outcomeType": "action",
     "summary": "",
     "questions": [],
-    "estimate": {},
+    "estimate": {
+      "counts": {
+        "emails": 1
+      },
+      "yourMinutes": 23,
+      "approvals": 1,
+      "split": {
+        "todd": 7,
+        "maya": 2,
+        "person": 5
+      },
+      "waitBusinessDays": 5,
+      "products": [
+        "docs",
+        "outreach",
+        "maya",
+        "email-creator",
+        "todd"
+      ]
+    },
     "planner": {
       "provider": "test",
       "model": "test"
@@ -5890,7 +6108,26 @@
     "outcomeType": "assetSet",
     "summary": "",
     "questions": [],
-    "estimate": {},
+    "estimate": {
+      "counts": {
+        "images": 1
+      },
+      "yourMinutes": 3,
+      "approvals": 1,
+      "split": {
+        "todd": 4,
+        "maya": 2,
+        "person": 1
+      },
+      "waitBusinessDays": 0,
+      "products": [
+        "docs",
+        "pulse",
+        "maya",
+        "image-creator",
+        "todd"
+      ]
+    },
     "planner": {
       "provider": "test",
       "model": "test"
@@ -6175,7 +6412,21 @@
     "outcomeType": "action",
     "summary": "",
     "questions": [],
-    "estimate": {},
+    "estimate": {
+      "counts": {},
+      "yourMinutes": 35,
+      "approvals": 1,
+      "split": {
+        "todd": 3,
+        "maya": 0,
+        "person": 3
+      },
+      "waitBusinessDays": 0,
+      "products": [
+        "docs",
+        "todd"
+      ]
+    },
     "planner": {
       "provider": "test",
       "model": "test"
@@ -6495,7 +6746,22 @@
     "outcomeType": "action",
     "summary": "",
     "questions": [],
-    "estimate": {},
+    "estimate": {
+      "counts": {},
+      "yourMinutes": 63,
+      "approvals": 1,
+      "split": {
+        "todd": 5,
+        "maya": 0,
+        "person": 2
+      },
+      "waitBusinessDays": 0,
+      "products": [
+        "moves",
+        "docs",
+        "todd"
+      ]
+    },
     "planner": {
       "provider": "test",
       "model": "test"
@@ -6700,7 +6966,21 @@
     "outcomeType": "action",
     "summary": "",
     "questions": [],
-    "estimate": {},
+    "estimate": {
+      "counts": {},
+      "yourMinutes": 3,
+      "approvals": 1,
+      "split": {
+        "todd": 3,
+        "maya": 0,
+        "person": 1
+      },
+      "waitBusinessDays": 0,
+      "products": [
+        "docs",
+        "todd"
+      ]
+    },
     "planner": {
       "provider": "test",
       "model": "test"
@@ -7023,7 +7303,26 @@
     "outcomeType": "program",
     "summary": "",
     "questions": [],
-    "estimate": {},
+    "estimate": {
+      "counts": {
+        "emails": 1
+      },
+      "yourMinutes": 8,
+      "approvals": 1,
+      "split": {
+        "todd": 4,
+        "maya": 1,
+        "person": 2
+      },
+      "waitBusinessDays": 0,
+      "products": [
+        "docs",
+        "moves",
+        "email-creator",
+        "outreach",
+        "todd"
+      ]
+    },
     "planner": {
       "provider": "test",
       "model": "test"
@@ -7347,7 +7646,23 @@
     "outcomeType": "action",
     "summary": "",
     "questions": [],
-    "estimate": {},
+    "estimate": {
+      "counts": {},
+      "yourMinutes": 5,
+      "approvals": 1,
+      "split": {
+        "todd": 5,
+        "maya": 0,
+        "person": 2
+      },
+      "waitBusinessDays": 0,
+      "products": [
+        "moves",
+        "outreach",
+        "docs",
+        "todd"
+      ]
+    },
     "planner": {
       "provider": "test",
       "model": "test"
@@ -7597,7 +7912,21 @@
     "outcomeType": "action",
     "summary": "",
     "questions": [],
-    "estimate": {},
+    "estimate": {
+      "counts": {},
+      "yourMinutes": 1,
+      "approvals": 0,
+      "split": {
+        "todd": 4,
+        "maya": 0,
+        "person": 1
+      },
+      "waitBusinessDays": 0,
+      "products": [
+        "moves",
+        "todd"
+      ]
+    },
     "planner": {
       "provider": "test",
       "model": "test"
@@ -7840,7 +8169,23 @@
     "outcomeType": "action",
     "summary": "",
     "questions": [],
-    "estimate": {},
+    "estimate": {
+      "counts": {},
+      "yourMinutes": 5,
+      "approvals": 1,
+      "split": {
+        "todd": 4,
+        "maya": 0,
+        "person": 1
+      },
+      "waitBusinessDays": 0,
+      "products": [
+        "moves",
+        "docs",
+        "pulse",
+        "todd"
+      ]
+    },
     "planner": {
       "provider": "test",
       "model": "test"
@@ -8124,7 +8469,22 @@
     "outcomeType": "action",
     "summary": "",
     "questions": [],
-    "estimate": {},
+    "estimate": {
+      "counts": {},
+      "yourMinutes": 3,
+      "approvals": 1,
+      "split": {
+        "todd": 5,
+        "maya": 0,
+        "person": 1
+      },
+      "waitBusinessDays": 0,
+      "products": [
+        "pulse",
+        "outreach",
+        "todd"
+      ]
+    },
     "planner": {
       "provider": "test",
       "model": "test"
@@ -8485,7 +8845,26 @@
     "outcomeType": "action",
     "summary": "",
     "questions": [],
-    "estimate": {},
+    "estimate": {
+      "counts": {
+        "emails": 1
+      },
+      "yourMinutes": 33,
+      "approvals": 1,
+      "split": {
+        "todd": 5,
+        "maya": 1,
+        "person": 2
+      },
+      "waitBusinessDays": 0,
+      "products": [
+        "pulse",
+        "docs",
+        "email-creator",
+        "outreach",
+        "todd"
+      ]
+    },
     "planner": {
       "provider": "test",
       "model": "test"
@@ -8850,7 +9229,25 @@
     "outcomeType": "assetSet",
     "summary": "",
     "questions": [],
-    "estimate": {},
+    "estimate": {
+      "counts": {
+        "images": 2,
+        "socialPosts": 2
+      },
+      "yourMinutes": 3,
+      "approvals": 1,
+      "split": {
+        "todd": 1,
+        "maya": 6,
+        "person": 1
+      },
+      "waitBusinessDays": 0,
+      "products": [
+        "image-creator",
+        "social",
+        "todd"
+      ]
+    },
     "planner": {
       "provider": "test",
       "model": "test"
@@ -9216,7 +9613,29 @@
     "outcomeType": "assetSet",
     "summary": "",
     "questions": [],
-    "estimate": {},
+    "estimate": {
+      "counts": {
+        "images": 1,
+        "emails": 1,
+        "socialPosts": 1
+      },
+      "yourMinutes": 3,
+      "approvals": 1,
+      "split": {
+        "todd": 2,
+        "maya": 5,
+        "person": 1
+      },
+      "waitBusinessDays": 0,
+      "products": [
+        "maya",
+        "image-creator",
+        "email-creator",
+        "social",
+        "outreach",
+        "todd"
+      ]
+    },
     "planner": {
       "provider": "test",
       "model": "test"
@@ -9620,7 +10039,27 @@
     "outcomeType": "assetSet",
     "summary": "",
     "questions": [],
-    "estimate": {},
+    "estimate": {
+      "counts": {
+        "images": 1,
+        "socialPosts": 1
+      },
+      "yourMinutes": 8,
+      "approvals": 2,
+      "split": {
+        "todd": 4,
+        "maya": 3,
+        "person": 2
+      },
+      "waitBusinessDays": 0,
+      "products": [
+        "docs",
+        "pulse",
+        "image-creator",
+        "social",
+        "todd"
+      ]
+    },
     "planner": {
       "provider": "test",
       "model": "test"
@@ -9828,7 +10267,22 @@
     "outcomeType": "insight",
     "summary": "",
     "questions": [],
-    "estimate": {},
+    "estimate": {
+      "counts": {},
+      "yourMinutes": 0,
+      "approvals": 0,
+      "split": {
+        "todd": 4,
+        "maya": 0,
+        "person": 0
+      },
+      "waitBusinessDays": 0,
+      "products": [
+        "find",
+        "lead-vault",
+        "todd"
+      ]
+    },
     "planner": {
       "provider": "test",
       "model": "test"
@@ -10590,7 +11044,29 @@
     "outcomeType": "action",
     "summary": "",
     "questions": [],
-    "estimate": {},
+    "estimate": {
+      "counts": {
+        "emails": 2
+      },
+      "yourMinutes": 4,
+      "approvals": 1,
+      "split": {
+        "todd": 10,
+        "maya": 3,
+        "person": 5
+      },
+      "waitBusinessDays": 5,
+      "products": [
+        "find",
+        "network",
+        "lead-vault",
+        "todd",
+        "email-creator",
+        "outreach",
+        "maya",
+        "moves"
+      ]
+    },
     "planner": {
       "provider": "test",
       "model": "test"
@@ -11080,7 +11556,31 @@
     "outcomeType": "assetSet",
     "summary": "",
     "questions": [],
-    "estimate": {},
+    "estimate": {
+      "counts": {
+        "images": 1,
+        "emails": 1,
+        "socialPosts": 1
+      },
+      "yourMinutes": 3,
+      "approvals": 1,
+      "split": {
+        "todd": 4,
+        "maya": 6,
+        "person": 1
+      },
+      "waitBusinessDays": 0,
+      "products": [
+        "maya",
+        "image-creator",
+        "email-creator",
+        "social",
+        "sayit",
+        "outreach",
+        "pulse",
+        "todd"
+      ]
+    },
     "planner": {
       "provider": "test",
       "model": "test"
@@ -11367,7 +11867,24 @@
     "outcomeType": "insight",
     "summary": "",
     "questions": [],
-    "estimate": {},
+    "estimate": {
+      "counts": {},
+      "yourMinutes": 0,
+      "approvals": 0,
+      "split": {
+        "todd": 5,
+        "maya": 1,
+        "person": 0
+      },
+      "waitBusinessDays": 0,
+      "products": [
+        "find",
+        "outreach",
+        "pulse",
+        "todd",
+        "maya"
+      ]
+    },
     "planner": {
       "provider": "test",
       "model": "test"
@@ -11734,7 +12251,30 @@
     "outcomeType": "assetSet",
     "summary": "",
     "questions": [],
-    "estimate": {},
+    "estimate": {
+      "counts": {
+        "images": 1,
+        "emails": 1,
+        "socialPosts": 1
+      },
+      "yourMinutes": 3,
+      "approvals": 1,
+      "split": {
+        "todd": 2,
+        "maya": 5,
+        "person": 1
+      },
+      "waitBusinessDays": 0,
+      "products": [
+        "docs",
+        "maya",
+        "image-creator",
+        "email-creator",
+        "social",
+        "sayit",
+        "todd"
+      ]
+    },
     "planner": {
       "provider": "test",
       "model": "test"
@@ -12097,7 +12637,26 @@
     "outcomeType": "action",
     "summary": "",
     "questions": [],
-    "estimate": {},
+    "estimate": {
+      "counts": {},
+      "yourMinutes": 0,
+      "approvals": 0,
+      "split": {
+        "todd": 7,
+        "maya": 1,
+        "person": 0
+      },
+      "waitBusinessDays": 0,
+      "products": [
+        "find",
+        "network",
+        "lead-vault",
+        "docs",
+        "maya",
+        "moves",
+        "todd"
+      ]
+    },
     "planner": {
       "provider": "test",
       "model": "test"
@@ -12463,7 +13022,27 @@
     "outcomeType": "shortlist",
     "summary": "",
     "questions": [],
-    "estimate": {},
+    "estimate": {
+      "counts": {
+        "emails": 1
+      },
+      "yourMinutes": 4,
+      "approvals": 1,
+      "split": {
+        "todd": 5,
+        "maya": 1,
+        "person": 2
+      },
+      "waitBusinessDays": 0,
+      "products": [
+        "network",
+        "find",
+        "todd",
+        "email-creator",
+        "outreach",
+        "moves"
+      ]
+    },
     "planner": {
       "provider": "test",
       "model": "test"
@@ -12792,7 +13371,28 @@
     "outcomeType": "assetSet",
     "summary": "",
     "questions": [],
-    "estimate": {},
+    "estimate": {
+      "counts": {
+        "images": 1,
+        "socialPosts": 1
+      },
+      "yourMinutes": 3,
+      "approvals": 1,
+      "split": {
+        "todd": 3,
+        "maya": 3,
+        "person": 1
+      },
+      "waitBusinessDays": 0,
+      "products": [
+        "maya",
+        "image-creator",
+        "email-signature",
+        "docs",
+        "social",
+        "todd"
+      ]
+    },
     "planner": {
       "provider": "test",
       "model": "test"
@@ -13355,7 +13955,34 @@
     "outcomeType": "program",
     "summary": "",
     "questions": [],
-    "estimate": {},
+    "estimate": {
+      "counts": {
+        "images": 1,
+        "emails": 1,
+        "socialPosts": 1
+      },
+      "yourMinutes": 23,
+      "approvals": 1,
+      "split": {
+        "todd": 7,
+        "maya": 4,
+        "person": 2
+      },
+      "waitBusinessDays": 0,
+      "products": [
+        "find",
+        "network",
+        "maya",
+        "image-creator",
+        "email-creator",
+        "social",
+        "outreach",
+        "events",
+        "moves",
+        "pulse",
+        "todd"
+      ]
+    },
     "planner": {
       "provider": "test",
       "model": "test"
@@ -13725,7 +14352,28 @@
     "outcomeType": "shortlist",
     "summary": "",
     "questions": [],
-    "estimate": {},
+    "estimate": {
+      "counts": {
+        "emails": 1
+      },
+      "yourMinutes": 3,
+      "approvals": 1,
+      "split": {
+        "todd": 6,
+        "maya": 1,
+        "person": 1
+      },
+      "waitBusinessDays": 0,
+      "products": [
+        "find",
+        "lead-vault",
+        "network",
+        "todd",
+        "docs",
+        "email-creator",
+        "outreach"
+      ]
+    },
     "planner": {
       "provider": "test",
       "model": "test"
@@ -14133,7 +14781,29 @@
     "outcomeType": "assetSet",
     "summary": "",
     "questions": [],
-    "estimate": {},
+    "estimate": {
+      "counts": {
+        "images": 1,
+        "socialPosts": 1
+      },
+      "yourMinutes": 3,
+      "approvals": 1,
+      "split": {
+        "todd": 3,
+        "maya": 5,
+        "person": 1
+      },
+      "waitBusinessDays": 0,
+      "products": [
+        "docs",
+        "maya",
+        "image-creator",
+        "social",
+        "sayit",
+        "moves",
+        "todd"
+      ]
+    },
     "planner": {
       "provider": "test",
       "model": "test"
@@ -14575,7 +15245,30 @@
     "outcomeType": "action",
     "summary": "",
     "questions": [],
-    "estimate": {},
+    "estimate": {
+      "counts": {
+        "socialPosts": 1,
+        "emails": 1
+      },
+      "yourMinutes": 3,
+      "approvals": 1,
+      "split": {
+        "todd": 6,
+        "maya": 3,
+        "person": 1
+      },
+      "waitBusinessDays": 0,
+      "products": [
+        "outreach",
+        "pulse",
+        "find",
+        "todd",
+        "maya",
+        "social",
+        "email-creator",
+        "moves"
+      ]
+    },
     "planner": {
       "provider": "test",
       "model": "test"
@@ -14899,7 +15592,25 @@
     "outcomeType": "insight",
     "summary": "",
     "questions": [],
-    "estimate": {},
+    "estimate": {
+      "counts": {},
+      "yourMinutes": 0,
+      "approvals": 0,
+      "split": {
+        "todd": 6,
+        "maya": 1,
+        "person": 0
+      },
+      "waitBusinessDays": 0,
+      "products": [
+        "pulse",
+        "find",
+        "network",
+        "lead-vault",
+        "todd",
+        "maya"
+      ]
+    },
     "planner": {
       "provider": "test",
       "model": "test"
@@ -15341,7 +16052,27 @@
     "outcomeType": "action",
     "summary": "",
     "questions": [],
-    "estimate": {},
+    "estimate": {
+      "counts": {
+        "emails": 1
+      },
+      "yourMinutes": 80,
+      "approvals": 1,
+      "split": {
+        "todd": 7,
+        "maya": 1,
+        "person": 2
+      },
+      "waitBusinessDays": 0,
+      "products": [
+        "find",
+        "network",
+        "docs",
+        "todd",
+        "email-creator",
+        "moves"
+      ]
+    },
     "planner": {
       "provider": "test",
       "model": "test"
@@ -15745,7 +16476,28 @@
     "outcomeType": "shortlist",
     "summary": "",
     "questions": [],
-    "estimate": {},
+    "estimate": {
+      "counts": {
+        "emails": 1
+      },
+      "yourMinutes": 4,
+      "approvals": 1,
+      "split": {
+        "todd": 6,
+        "maya": 1,
+        "person": 2
+      },
+      "waitBusinessDays": 0,
+      "products": [
+        "find",
+        "network",
+        "lead-vault",
+        "todd",
+        "email-creator",
+        "outreach",
+        "moves"
+      ]
+    },
     "planner": {
       "provider": "test",
       "model": "test"
@@ -16030,7 +16782,24 @@
     "outcomeType": "insight",
     "summary": "",
     "questions": [],
-    "estimate": {},
+    "estimate": {
+      "counts": {},
+      "yourMinutes": 0,
+      "approvals": 0,
+      "split": {
+        "todd": 6,
+        "maya": 0,
+        "person": 0
+      },
+      "waitBusinessDays": 0,
+      "products": [
+        "pulse",
+        "docs",
+        "find",
+        "todd",
+        "moves"
+      ]
+    },
     "planner": {
       "provider": "test",
       "model": "test"
@@ -16435,7 +17204,27 @@
     "outcomeType": "action",
     "summary": "",
     "questions": [],
-    "estimate": {},
+    "estimate": {
+      "counts": {
+        "emails": 1
+      },
+      "yourMinutes": 3,
+      "approvals": 1,
+      "split": {
+        "todd": 7,
+        "maya": 1,
+        "person": 1
+      },
+      "waitBusinessDays": 0,
+      "products": [
+        "network",
+        "outreach",
+        "todd",
+        "email-creator",
+        "moves",
+        "pulse"
+      ]
+    },
     "planner": {
       "provider": "test",
       "model": "test"
@@ -16799,7 +17588,26 @@
     "outcomeType": "assetSet",
     "summary": "",
     "questions": [],
-    "estimate": {},
+    "estimate": {
+      "counts": {
+        "images": 1
+      },
+      "yourMinutes": 3,
+      "approvals": 1,
+      "split": {
+        "todd": 6,
+        "maya": 1,
+        "person": 1
+      },
+      "waitBusinessDays": 0,
+      "products": [
+        "find",
+        "docs",
+        "todd",
+        "image-creator",
+        "moves"
+      ]
+    },
     "planner": {
       "provider": "test",
       "model": "test"
@@ -17085,7 +17893,23 @@
     "outcomeType": "insight",
     "summary": "",
     "questions": [],
-    "estimate": {},
+    "estimate": {
+      "counts": {},
+      "yourMinutes": 10,
+      "approvals": 0,
+      "split": {
+        "todd": 5,
+        "maya": 0,
+        "person": 1
+      },
+      "waitBusinessDays": 0,
+      "products": [
+        "docs",
+        "find",
+        "pulse",
+        "todd"
+      ]
+    },
     "planner": {
       "provider": "test",
       "model": "test"
@@ -17564,7 +18388,29 @@
     "outcomeType": "program",
     "summary": "",
     "questions": [],
-    "estimate": {},
+    "estimate": {
+      "counts": {
+        "emails": 1
+      },
+      "yourMinutes": 4,
+      "approvals": 1,
+      "split": {
+        "todd": 8,
+        "maya": 1,
+        "person": 2
+      },
+      "waitBusinessDays": 0,
+      "products": [
+        "pulse",
+        "find",
+        "lead-vault",
+        "network",
+        "todd",
+        "email-creator",
+        "outreach",
+        "moves"
+      ]
+    },
     "planner": {
       "provider": "test",
       "model": "test"
@@ -17930,7 +18776,27 @@
     "outcomeType": "action",
     "summary": "",
     "questions": [],
-    "estimate": {},
+    "estimate": {
+      "counts": {
+        "emails": 1
+      },
+      "yourMinutes": 3,
+      "approvals": 1,
+      "split": {
+        "todd": 6,
+        "maya": 1,
+        "person": 1
+      },
+      "waitBusinessDays": 0,
+      "products": [
+        "find",
+        "lead-vault",
+        "email-creator",
+        "outreach",
+        "pulse",
+        "todd"
+      ]
+    },
     "planner": {
       "provider": "test",
       "model": "test"
@@ -18213,7 +19079,24 @@
     "outcomeType": "insight",
     "summary": "",
     "questions": [],
-    "estimate": {},
+    "estimate": {
+      "counts": {},
+      "yourMinutes": 0,
+      "approvals": 0,
+      "split": {
+        "todd": 6,
+        "maya": 0,
+        "person": 0
+      },
+      "waitBusinessDays": 0,
+      "products": [
+        "pulse",
+        "network",
+        "outreach",
+        "moves",
+        "todd"
+      ]
+    },
     "planner": {
       "provider": "test",
       "model": "test"
@@ -18617,7 +19500,28 @@
     "outcomeType": "program",
     "summary": "",
     "questions": [],
-    "estimate": {},
+    "estimate": {
+      "counts": {
+        "images": 1
+      },
+      "yourMinutes": 3,
+      "approvals": 1,
+      "split": {
+        "todd": 6,
+        "maya": 2,
+        "person": 1
+      },
+      "waitBusinessDays": 0,
+      "products": [
+        "find",
+        "todd",
+        "maya",
+        "image-creator",
+        "docs",
+        "moves",
+        "pulse"
+      ]
+    },
     "planner": {
       "provider": "test",
       "model": "test"
@@ -18985,7 +19889,28 @@
     "outcomeType": "assetSet",
     "summary": "",
     "questions": [],
-    "estimate": {},
+    "estimate": {
+      "counts": {
+        "images": 1,
+        "socialPosts": 1
+      },
+      "yourMinutes": 3,
+      "approvals": 1,
+      "split": {
+        "todd": 2,
+        "maya": 5,
+        "person": 1
+      },
+      "waitBusinessDays": 0,
+      "products": [
+        "maya",
+        "image-creator",
+        "social",
+        "sayit",
+        "pulse",
+        "todd"
+      ]
+    },
     "planner": {
       "provider": "test",
       "model": "test"
@@ -19387,7 +20312,27 @@
     "outcomeType": "action",
     "summary": "",
     "questions": [],
-    "estimate": {},
+    "estimate": {
+      "counts": {
+        "emails": 1
+      },
+      "yourMinutes": 23,
+      "approvals": 1,
+      "split": {
+        "todd": 6,
+        "maya": 1,
+        "person": 2
+      },
+      "waitBusinessDays": 0,
+      "products": [
+        "find",
+        "network",
+        "docs",
+        "email-creator",
+        "outreach",
+        "todd"
+      ]
+    },
     "planner": {
       "provider": "test",
       "model": "test"

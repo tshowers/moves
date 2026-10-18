@@ -790,7 +790,28 @@
   "outcomeType": "action",
   "summary": "",
   "questions": [],
-  "estimate": {},
+  "estimate": {
+    "counts": {
+      "images": 1,
+      "emails": 2
+    },
+    "yourMinutes": 3,
+    "approvals": 1,
+    "split": {
+      "todd": 7,
+      "maya": 5,
+      "person": 6
+    },
+    "waitBusinessDays": 5,
+    "products": [
+      "network",
+      "maya",
+      "image-creator",
+      "email-creator",
+      "outreach",
+      "todd"
+    ]
+  },
   "planner": {
     "provider": "test",
     "model": "test"

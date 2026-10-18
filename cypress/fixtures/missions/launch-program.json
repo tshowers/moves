@@ -411,7 +411,28 @@
   "outcomeType": "program",
   "summary": "",
   "questions": [],
-  "estimate": {},
+  "estimate": {
+    "counts": {
+      "images": 1
+    },
+    "yourMinutes": 3,
+    "approvals": 1,
+    "split": {
+      "todd": 6,
+      "maya": 2,
+      "person": 1
+    },
+    "waitBusinessDays": 0,
+    "products": [
+      "find",
+      "todd",
+      "maya",
+      "image-creator",
+      "docs",
+      "moves",
+      "pulse"
+    ]
+  },
   "planner": {
     "provider": "test",
     "model": "test"
