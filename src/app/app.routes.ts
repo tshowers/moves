@@ -40,6 +40,16 @@ export const routes: Routes = [
     loadChildren: () =>
       import( './flow/flow.routes' ).then( ( m ) => m.FLOW_ROUTES ),
   },
+  {
+    // Missions (design_handoff_todd_missions): a started Mission is a Move.
+    // /missions/:id is the link on every Mission's Move and in its notices.
+    path: 'missions',
+    children: [
+      { path: '', title: 'Missions | Moves', loadComponent: () => import( './features/missions/missions-pages.component' ).then( ( m ) => m.MissionsPageComponent ) },
+      { path: 'cockpit', title: 'Missions cockpit | Moves', loadComponent: () => import( './features/missions/missions-pages.component' ).then( ( m ) => m.MissionsCockpitPageComponent ) },
+      { path: ':id', title: 'Mission | Moves', loadComponent: () => import( './features/missions/missions-pages.component' ).then( ( m ) => m.MissionPageComponent ) },
+    ],
+  },
   // The old task-list screens, folded into the flow map.
   { path: 'moves', redirectTo: 'app', pathMatch: 'full' },
   { path: 'moves-view', redirectTo: 'app', pathMatch: 'full' },
