@@ -189,7 +189,9 @@ export class PlanReplyComponent implements OnInit {
   readonly split = computed( () => splitLine( stripColumns( this.mission()?.steps || [], this.viewerId(), this.people() ) ) );
   readonly directText = computed( () => {
     const d = this.direct();
-    return d ? d.summary || 'Here’s what I found.' : '';
+    if ( !d ) return '';
+    // No tool: a question about TODD itself, which the assistant answers.
+    return d.summary || ( d.tool ? 'Here’s what I found.' : 'No plan needed for that one. Ask it in the TODD chat and it answers right away.' );
   } );
   readonly detailLink = computed( () => `${this.detailBase()}${encodeURIComponent( this.mission()?.id || '' )}` );
 
