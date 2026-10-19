@@ -1,6 +1,6 @@
 {
   "name": "moves",
-  "version": "2026.10.14-build.4",
+  "version": "2026.10.19-build.1",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
@@ -13,7 +13,7 @@
     "cy:open": "cypress open",
     "cy:run": "cypress run",
     "typecheck:cypress": "tsc -p tsconfig.cypress.json --noEmit --pretty false",
-    "e2e": "start-server-and-test start http://localhost:4200 cy:run",
+    "e2e": "bash scripts/e2e.sh",
     "e2e:open": "start-server-and-test start http://localhost:4200 cy:open"
   },
   "private": true,
