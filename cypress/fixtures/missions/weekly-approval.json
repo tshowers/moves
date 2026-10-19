@@ -78,7 +78,7 @@
       "tool": "outreach.engagement",
       "product": "outreach",
       "effect": "read",
-      "automated": false,
+      "automated": true,
       "status": "done",
       "skipReason": "",
       "when": "",
@@ -97,7 +97,7 @@
       "handoff": null,
       "reassigned": null,
       "timedOut": false,
-      "resultSummary": "",
+      "resultSummary": "120 sent, 54 opened, 9 clicked, 4 replied in undefined days",
       "output": {
         "sent": 120,
         "opened": 54,

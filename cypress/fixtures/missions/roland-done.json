@@ -433,7 +433,7 @@
       "tool": "outreach.waitForReply",
       "product": "outreach",
       "effect": "wait",
-      "automated": false,
+      "automated": true,
       "status": "done",
       "skipReason": "",
       "when": "",
@@ -454,7 +454,7 @@
       "handoff": null,
       "reassigned": null,
       "timedOut": false,
-      "resultSummary": "replied",
+      "resultSummary": "They replied",
       "output": {
         "outcome": "replied",
         "replyText": "Sounds good, let's talk Tuesday.",
@@ -1008,7 +1008,7 @@
           "id": ""
         },
         "finishedAt": "2026-10-14T16:07:00.000Z",
-        "result": "replied",
+        "result": "They replied",
         "status": "done",
         "timedOut": false,
         "skipReason": "",

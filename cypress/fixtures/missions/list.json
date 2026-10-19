@@ -424,7 +424,7 @@
           "tool": "outreach.waitForReply",
           "product": "outreach",
           "effect": "wait",
-          "automated": false,
+          "automated": true,
           "status": "pending",
           "skipReason": "",
           "when": "",
@@ -929,7 +929,7 @@
           "tool": "outreach.engagement",
           "product": "outreach",
           "effect": "read",
-          "automated": false,
+          "automated": true,
           "status": "done",
           "skipReason": "",
           "when": "",
@@ -948,7 +948,7 @@
           "handoff": null,
           "reassigned": null,
           "timedOut": false,
-          "resultSummary": "",
+          "resultSummary": "120 sent, 54 opened, 9 clicked, 4 replied in undefined days",
           "output": {
             "sent": 120,
             "opened": 54,
@@ -1672,7 +1672,7 @@
           "tool": "outreach.waitForReply",
           "product": "outreach",
           "effect": "wait",
-          "automated": false,
+          "automated": true,
           "status": "active",
           "skipReason": "",
           "when": "",
@@ -2058,10 +2058,10 @@
       "planFallback": false,
       "planErrors": [],
       "examplesUsed": [],
-      "statusDetail": "Next check at 2026-10-14T17:07:00.000Z.",
+      "statusDetail": "Next check at 2026-10-14T18:07:00.000Z.",
       "startedAt": "2026-10-14T16:00:00.000Z",
-      "resumeAt": "2026-10-14T17:07:00.000Z",
-      "nextCheckAt": "2026-10-14T17:07:00.000Z",
+      "resumeAt": "2026-10-14T18:07:00.000Z",
+      "nextCheckAt": "2026-10-14T18:07:00.000Z",
       "phase": "waiting_on_world",
       "plan": {
         "missionId": "reach-named-person",
@@ -2078,7 +2078,7 @@
           "assigneeId": "",
           "handedOff": false
         },
-        "nextCheckAt": "2026-10-14T17:07:00.000Z",
+        "nextCheckAt": "2026-10-14T18:07:00.000Z",
         "playbookId": "reach-named-person"
       },
       "products": [

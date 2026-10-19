@@ -437,19 +437,19 @@
         "owner": "todd",
         "assigneeId": "",
         "holder": {
-          "owner": "person",
-          "assigneeId": "uid-owner"
+          "owner": "todd",
+          "assigneeId": ""
         },
         "kind": "wait",
         "tool": "outreach.waitForReply",
         "product": "outreach",
         "effect": "wait",
-        "automated": false,
+        "automated": true,
         "status": "done",
         "skipReason": "",
         "when": "",
         "branch": null,
-        "why": "TODD can't watch for this reply on its own yet. Tell TODD when they reply, or mark it 'no reply' after 5 business days.",
+        "why": "",
         "doneWhen": "",
         "options": [],
         "minutes": 0,
@@ -458,31 +458,21 @@
         ],
         "activeSince": "2026-10-14T16:14:00.000Z",
         "waitUntil": "2026-10-21T16:14:00.000Z",
-        "finishedAt": "2026-10-14T16:21:00.000Z",
+        "finishedAt": "2026-10-14T16:14:00.000Z",
         "finishedBy": {
-          "type": "person",
-          "id": "uid-owner"
+          "type": "todd"
         },
-        "handoff": {
-          "from": "todd",
-          "code": "not_wired",
-          "reason": "TODD can't watch for this reply on its own yet. Tell TODD when they reply, or mark it 'no reply' after 5 business days.",
-          "at": "2026-10-14T16:14:00.000Z"
-        },
+        "handoff": null,
         "reassigned": null,
         "timedOut": false,
-        "resultSummary": "Did it by hand: Wait 5 business days for a reply",
+        "resultSummary": "They replied",
         "output": {
           "outcome": "replied",
           "replyText": "Sounds good, let's talk Tuesday.",
           "opens": 2,
-          "clicks": 0,
-          "note": "Did it by hand: Wait 5 business days for a reply"
+          "clicks": 0
         },
-        "error": {
-          "code": "not_wired",
-          "message": "TODD can't watch for this reply on its own yet. Tell TODD when they reply, or mark it 'no reply' after 5 business days."
-        },
+        "error": null,
         "revisions": 0
       },
       {
@@ -515,9 +505,9 @@
         "dependsOn": [
           "watch"
         ],
-        "activeSince": "2026-10-14T16:21:00.000Z",
+        "activeSince": "2026-10-14T16:14:00.000Z",
         "waitUntil": null,
-        "finishedAt": "2026-10-14T16:21:00.000Z",
+        "finishedAt": "2026-10-14T16:14:00.000Z",
         "finishedBy": {
           "type": "maya"
         },
@@ -560,9 +550,9 @@
         "dependsOn": [
           "reply"
         ],
-        "activeSince": "2026-10-14T16:21:00.000Z",
+        "activeSince": "2026-10-14T16:14:00.000Z",
         "waitUntil": null,
-        "finishedAt": "2026-10-14T16:28:00.000Z",
+        "finishedAt": "2026-10-14T16:21:00.000Z",
         "finishedBy": {
           "type": "person",
           "id": "uid-owner"
@@ -605,9 +595,9 @@
         "dependsOn": [
           "approveReply"
         ],
-        "activeSince": "2026-10-14T16:28:00.000Z",
+        "activeSince": "2026-10-14T16:21:00.000Z",
         "waitUntil": null,
-        "finishedAt": "2026-10-14T16:35:00.000Z",
+        "finishedAt": "2026-10-14T16:28:00.000Z",
         "finishedBy": {
           "type": "person",
           "id": "uid-owner"
@@ -616,7 +606,7 @@
           "from": "todd",
           "code": "not_wired",
           "reason": "Sending from a Mission isn't switched on yet. Send the approved email from Outreach and mark this done.",
-          "at": "2026-10-14T16:28:00.000Z"
+          "at": "2026-10-14T16:21:00.000Z"
         },
         "reassigned": null,
         "timedOut": false,
@@ -665,7 +655,7 @@
         ],
         "activeSince": null,
         "waitUntil": null,
-        "finishedAt": "2026-10-14T16:21:00.000Z",
+        "finishedAt": "2026-10-14T16:14:00.000Z",
         "finishedBy": null,
         "handoff": null,
         "reassigned": null,
@@ -704,7 +694,7 @@
         ],
         "activeSince": null,
         "waitUntil": null,
-        "finishedAt": "2026-10-14T16:21:00.000Z",
+        "finishedAt": "2026-10-14T16:14:00.000Z",
         "finishedBy": null,
         "handoff": null,
         "reassigned": null,
@@ -743,7 +733,7 @@
         ],
         "activeSince": null,
         "waitUntil": null,
-        "finishedAt": "2026-10-14T16:21:00.000Z",
+        "finishedAt": "2026-10-14T16:14:00.000Z",
         "finishedBy": null,
         "handoff": null,
         "reassigned": null,
@@ -785,7 +775,7 @@
         ],
         "activeSince": null,
         "waitUntil": null,
-        "finishedAt": "2026-10-14T16:21:00.000Z",
+        "finishedAt": "2026-10-14T16:14:00.000Z",
         "finishedBy": null,
         "handoff": null,
         "reassigned": null,
@@ -825,9 +815,9 @@
           "sendFollow",
           "bounced"
         ],
-        "activeSince": "2026-10-14T16:35:00.000Z",
+        "activeSince": "2026-10-14T16:28:00.000Z",
         "waitUntil": null,
-        "finishedAt": "2026-10-14T16:35:00.000Z",
+        "finishedAt": "2026-10-14T16:28:00.000Z",
         "finishedBy": {
           "type": "todd"
         },
@@ -883,14 +873,14 @@
     "startedAt": "2026-10-14T16:00:00.000Z",
     "resumeAt": null,
     "nextCheckAt": null,
-    "finishedAt": "2026-10-14T16:35:00.000Z",
+    "finishedAt": "2026-10-14T16:28:00.000Z",
     "report": {
       "missionId": "reach-named-person",
       "title": "Reach a named person",
       "outcomeType": "action",
       "headline": "Did it by hand: Send the response",
       "startedAt": "2026-10-14T16:00:00.000Z",
-      "finishedAt": "2026-10-14T16:35:00.000Z",
+      "finishedAt": "2026-10-14T16:28:00.000Z",
       "days": 0,
       "rows": [
         {
@@ -1035,16 +1025,16 @@
           "title": "Wait 5 business days for a reply",
           "kind": "wait",
           "by": {
-            "type": "person",
-            "id": "uid-owner"
+            "type": "todd",
+            "id": ""
           },
-          "finishedAt": "2026-10-14T16:21:00.000Z",
-          "result": "Did it by hand: Wait 5 business days for a reply",
+          "finishedAt": "2026-10-14T16:14:00.000Z",
+          "result": "They replied",
           "status": "done",
           "timedOut": false,
           "skipReason": "",
-          "handedOff": true,
-          "handoffReason": "TODD can't watch for this reply on its own yet. Tell TODD when they reply, or mark it 'no reply' after 5 business days.",
+          "handedOff": false,
+          "handoffReason": "",
           "artifacts": []
         },
         {
@@ -1055,7 +1045,7 @@
             "type": "maya",
             "id": ""
           },
-          "finishedAt": "2026-10-14T16:21:00.000Z",
+          "finishedAt": "2026-10-14T16:14:00.000Z",
           "result": "Re: Tuesday",
           "status": "done",
           "timedOut": false,
@@ -1078,7 +1068,7 @@
             "type": "person",
             "id": "uid-owner"
           },
-          "finishedAt": "2026-10-14T16:28:00.000Z",
+          "finishedAt": "2026-10-14T16:21:00.000Z",
           "result": "Approved",
           "status": "done",
           "timedOut": false,
@@ -1095,7 +1085,7 @@
             "type": "person",
             "id": "uid-owner"
           },
-          "finishedAt": "2026-10-14T16:35:00.000Z",
+          "finishedAt": "2026-10-14T16:28:00.000Z",
           "result": "Did it by hand: Send the response",
           "status": "done",
           "timedOut": false,
@@ -1106,9 +1096,9 @@
         }
       ],
       "split": {
-        "todd": 2,
+        "todd": 3,
         "maya": 4,
-        "owner": 5,
+        "owner": 4,
         "teammates": 0
       },
       "ownerMinutes": 6,
@@ -1138,7 +1128,7 @@
           "title": "Re: Tuesday"
         }
       ],
-      "line": "2 steps by TODD, 4 by Maya, 5 by you. About 6 minutes of your time."
+      "line": "3 steps by TODD, 4 by Maya, 4 by you. About 6 minutes of your time."
     },
     "phase": "done",
     "plan": {
@@ -1161,9 +1151,9 @@
       "todd"
     ],
     "split": {
-      "todd": 4,
+      "todd": 5,
       "maya": 4,
-      "you": 6,
+      "you": 5,
       "teammates": 0
     },
     "isOwner": true
@@ -1828,19 +1818,19 @@
         "owner": "todd",
         "assigneeId": "",
         "holder": {
-          "owner": "person",
-          "assigneeId": "uid-owner"
+          "owner": "todd",
+          "assigneeId": ""
         },
         "kind": "wait",
         "tool": "outreach.waitForReply",
         "product": "outreach",
         "effect": "wait",
-        "automated": false,
+        "automated": true,
         "status": "done",
         "skipReason": "",
         "when": "",
         "branch": null,
-        "why": "TODD can't watch for this reply on its own yet. Tell TODD when they reply, or mark it 'no reply' after 5 business days.",
+        "why": "",
         "doneWhen": "",
         "options": [],
         "minutes": 0,
@@ -1849,31 +1839,21 @@
         ],
         "activeSince": "2026-10-14T16:14:00.000Z",
         "waitUntil": "2026-10-21T16:14:00.000Z",
-        "finishedAt": "2026-10-14T16:21:00.000Z",
+        "finishedAt": "2026-10-14T16:14:00.000Z",
         "finishedBy": {
-          "type": "person",
-          "id": "uid-owner"
+          "type": "todd"
         },
-        "handoff": {
-          "from": "todd",
-          "code": "not_wired",
-          "reason": "TODD can't watch for this reply on its own yet. Tell TODD when they reply, or mark it 'no reply' after 5 business days.",
-          "at": "2026-10-14T16:14:00.000Z"
-        },
+        "handoff": null,
         "reassigned": null,
         "timedOut": false,
-        "resultSummary": "Did it by hand: Wait 5 business days for a reply",
+        "resultSummary": "They replied",
         "output": {
           "outcome": "replied",
           "replyText": "Sounds good, let's talk Tuesday.",
           "opens": 2,
-          "clicks": 0,
-          "note": "Did it by hand: Wait 5 business days for a reply"
+          "clicks": 0
         },
-        "error": {
-          "code": "not_wired",
-          "message": "TODD can't watch for this reply on its own yet. Tell TODD when they reply, or mark it 'no reply' after 5 business days."
-        },
+        "error": null,
         "revisions": 0
       },
       {
@@ -1906,9 +1886,9 @@
         "dependsOn": [
           "watch"
         ],
-        "activeSince": "2026-10-14T16:21:00.000Z",
+        "activeSince": "2026-10-14T16:14:00.000Z",
         "waitUntil": null,
-        "finishedAt": "2026-10-14T16:21:00.000Z",
+        "finishedAt": "2026-10-14T16:14:00.000Z",
         "finishedBy": {
           "type": "maya"
         },
@@ -1951,9 +1931,9 @@
         "dependsOn": [
           "reply"
         ],
-        "activeSince": "2026-10-14T16:21:00.000Z",
+        "activeSince": "2026-10-14T16:14:00.000Z",
         "waitUntil": null,
-        "finishedAt": "2026-10-14T16:28:00.000Z",
+        "finishedAt": "2026-10-14T16:21:00.000Z",
         "finishedBy": {
           "type": "person",
           "id": "uid-owner"
@@ -1996,9 +1976,9 @@
         "dependsOn": [
           "approveReply"
         ],
-        "activeSince": "2026-10-14T16:28:00.000Z",
+        "activeSince": "2026-10-14T16:21:00.000Z",
         "waitUntil": null,
-        "finishedAt": "2026-10-14T16:35:00.000Z",
+        "finishedAt": "2026-10-14T16:28:00.000Z",
         "finishedBy": {
           "type": "person",
           "id": "uid-owner"
@@ -2007,7 +1987,7 @@
           "from": "todd",
           "code": "not_wired",
           "reason": "Sending from a Mission isn't switched on yet. Send the approved email from Outreach and mark this done.",
-          "at": "2026-10-14T16:28:00.000Z"
+          "at": "2026-10-14T16:21:00.000Z"
         },
         "reassigned": null,
         "timedOut": false,
@@ -2056,7 +2036,7 @@
         ],
         "activeSince": null,
         "waitUntil": null,
-        "finishedAt": "2026-10-14T16:21:00.000Z",
+        "finishedAt": "2026-10-14T16:14:00.000Z",
         "finishedBy": null,
         "handoff": null,
         "reassigned": null,
@@ -2095,7 +2075,7 @@
         ],
         "activeSince": null,
         "waitUntil": null,
-        "finishedAt": "2026-10-14T16:21:00.000Z",
+        "finishedAt": "2026-10-14T16:14:00.000Z",
         "finishedBy": null,
         "handoff": null,
         "reassigned": null,
@@ -2134,7 +2114,7 @@
         ],
         "activeSince": null,
         "waitUntil": null,
-        "finishedAt": "2026-10-14T16:21:00.000Z",
+        "finishedAt": "2026-10-14T16:14:00.000Z",
         "finishedBy": null,
         "handoff": null,
         "reassigned": null,
@@ -2176,7 +2156,7 @@
         ],
         "activeSince": null,
         "waitUntil": null,
-        "finishedAt": "2026-10-14T16:21:00.000Z",
+        "finishedAt": "2026-10-14T16:14:00.000Z",
         "finishedBy": null,
         "handoff": null,
         "reassigned": null,
@@ -2215,9 +2195,9 @@
           "sendFollow",
           "bounced"
         ],
-        "activeSince": "2026-10-14T16:35:00.000Z",
+        "activeSince": "2026-10-14T16:28:00.000Z",
         "waitUntil": null,
-        "finishedAt": "2026-10-14T16:35:00.000Z",
+        "finishedAt": "2026-10-14T16:28:00.000Z",
         "finishedBy": {
           "type": "todd"
         },
@@ -2272,14 +2252,14 @@
     "startedAt": "2026-10-14T16:00:00.000Z",
     "resumeAt": null,
     "nextCheckAt": null,
-    "finishedAt": "2026-10-14T16:35:00.000Z",
+    "finishedAt": "2026-10-14T16:28:00.000Z",
     "report": {
       "missionId": "revive-cold-relationship",
       "title": "Revive a cold relationship",
       "outcomeType": "action",
       "headline": "Did it by hand: Send the response",
       "startedAt": "2026-10-14T16:00:00.000Z",
-      "finishedAt": "2026-10-14T16:35:00.000Z",
+      "finishedAt": "2026-10-14T16:28:00.000Z",
       "days": 0,
       "rows": [
         {
@@ -2378,16 +2358,16 @@
           "title": "Wait 5 business days for a reply",
           "kind": "wait",
           "by": {
-            "type": "person",
-            "id": "uid-owner"
+            "type": "todd",
+            "id": ""
           },
-          "finishedAt": "2026-10-14T16:21:00.000Z",
-          "result": "Did it by hand: Wait 5 business days for a reply",
+          "finishedAt": "2026-10-14T16:14:00.000Z",
+          "result": "They replied",
           "status": "done",
           "timedOut": false,
           "skipReason": "",
-          "handedOff": true,
-          "handoffReason": "TODD can't watch for this reply on its own yet. Tell TODD when they reply, or mark it 'no reply' after 5 business days.",
+          "handedOff": false,
+          "handoffReason": "",
           "artifacts": []
         },
         {
@@ -2398,7 +2378,7 @@
             "type": "maya",
             "id": ""
           },
-          "finishedAt": "2026-10-14T16:21:00.000Z",
+          "finishedAt": "2026-10-14T16:14:00.000Z",
           "result": "Re: Tuesday",
           "status": "done",
           "timedOut": false,
@@ -2421,7 +2401,7 @@
             "type": "person",
             "id": "uid-owner"
           },
-          "finishedAt": "2026-10-14T16:28:00.000Z",
+          "finishedAt": "2026-10-14T16:21:00.000Z",
           "result": "Approved",
           "status": "done",
           "timedOut": false,
@@ -2438,7 +2418,7 @@
             "type": "person",
             "id": "uid-owner"
           },
-          "finishedAt": "2026-10-14T16:35:00.000Z",
+          "finishedAt": "2026-10-14T16:28:00.000Z",
           "result": "Did it by hand: Send the response",
           "status": "done",
           "timedOut": false,
@@ -2449,9 +2429,9 @@
         }
       ],
       "split": {
-        "todd": 2,
+        "todd": 3,
         "maya": 2,
-        "owner": 5,
+        "owner": 4,
         "teammates": 0
       },
       "ownerMinutes": 6,
@@ -2471,7 +2451,7 @@
           "title": "Re: Tuesday"
         }
       ],
-      "line": "2 steps by TODD, 2 by Maya, 5 by you. About 6 minutes of your time."
+      "line": "3 steps by TODD, 2 by Maya, 4 by you. About 6 minutes of your time."
     },
     "phase": "done",
     "plan": {
@@ -2494,9 +2474,9 @@
       "todd"
     ],
     "split": {
-      "todd": 4,
+      "todd": 5,
       "maya": 2,
-      "you": 6,
+      "you": 5,
       "teammates": 0
     },
     "isOwner": true
@@ -3729,19 +3709,19 @@
         "owner": "todd",
         "assigneeId": "",
         "holder": {
-          "owner": "person",
-          "assigneeId": "uid-owner"
+          "owner": "todd",
+          "assigneeId": ""
         },
         "kind": "wait",
         "tool": "outreach.waitForReply",
         "product": "outreach",
         "effect": "wait",
-        "automated": false,
+        "automated": true,
         "status": "done",
         "skipReason": "",
         "when": "",
         "branch": null,
-        "why": "TODD can't watch for this reply on its own yet. Tell TODD when they reply, or mark it 'no reply' after 5 business days.",
+        "why": "",
         "doneWhen": "",
         "options": [],
         "minutes": 0,
@@ -3750,31 +3730,21 @@
         ],
         "activeSince": "2026-10-14T16:21:00.000Z",
         "waitUntil": "2026-10-21T16:21:00.000Z",
-        "finishedAt": "2026-10-14T16:28:00.000Z",
+        "finishedAt": "2026-10-14T16:21:00.000Z",
         "finishedBy": {
-          "type": "person",
-          "id": "uid-owner"
+          "type": "todd"
         },
-        "handoff": {
-          "from": "todd",
-          "code": "not_wired",
-          "reason": "TODD can't watch for this reply on its own yet. Tell TODD when they reply, or mark it 'no reply' after 5 business days.",
-          "at": "2026-10-14T16:21:00.000Z"
-        },
+        "handoff": null,
         "reassigned": null,
         "timedOut": false,
-        "resultSummary": "Did it by hand: Wait 5 business days for a reply",
+        "resultSummary": "They replied",
         "output": {
           "outcome": "replied",
           "replyText": "Sounds good, let's talk Tuesday.",
           "opens": 2,
-          "clicks": 0,
-          "note": "Did it by hand: Wait 5 business days for a reply"
+          "clicks": 0
         },
-        "error": {
-          "code": "not_wired",
-          "message": "TODD can't watch for this reply on its own yet. Tell TODD when they reply, or mark it 'no reply' after 5 business days."
-        },
+        "error": null,
         "revisions": 0
       },
       {
@@ -3807,9 +3777,9 @@
         "dependsOn": [
           "watch"
         ],
-        "activeSince": "2026-10-14T16:28:00.000Z",
+        "activeSince": "2026-10-14T16:21:00.000Z",
         "waitUntil": null,
-        "finishedAt": "2026-10-14T16:28:00.000Z",
+        "finishedAt": "2026-10-14T16:21:00.000Z",
         "finishedBy": {
           "type": "maya"
         },
@@ -3852,9 +3822,9 @@
         "dependsOn": [
           "reply"
         ],
-        "activeSince": "2026-10-14T16:28:00.000Z",
+        "activeSince": "2026-10-14T16:21:00.000Z",
         "waitUntil": null,
-        "finishedAt": "2026-10-14T16:35:00.000Z",
+        "finishedAt": "2026-10-14T16:28:00.000Z",
         "finishedBy": {
           "type": "person",
           "id": "uid-owner"
@@ -3897,9 +3867,9 @@
         "dependsOn": [
           "approveReply"
         ],
-        "activeSince": "2026-10-14T16:35:00.000Z",
+        "activeSince": "2026-10-14T16:28:00.000Z",
         "waitUntil": null,
-        "finishedAt": "2026-10-14T16:42:00.000Z",
+        "finishedAt": "2026-10-14T16:35:00.000Z",
         "finishedBy": {
           "type": "person",
           "id": "uid-owner"
@@ -3908,7 +3878,7 @@
           "from": "todd",
           "code": "not_wired",
           "reason": "Sending from a Mission isn't switched on yet. Send the approved email from Outreach and mark this done.",
-          "at": "2026-10-14T16:35:00.000Z"
+          "at": "2026-10-14T16:28:00.000Z"
         },
         "reassigned": null,
         "timedOut": false,
@@ -3957,7 +3927,7 @@
         ],
         "activeSince": null,
         "waitUntil": null,
-        "finishedAt": "2026-10-14T16:28:00.000Z",
+        "finishedAt": "2026-10-14T16:21:00.000Z",
         "finishedBy": null,
         "handoff": null,
         "reassigned": null,
@@ -3996,7 +3966,7 @@
         ],
         "activeSince": null,
         "waitUntil": null,
-        "finishedAt": "2026-10-14T16:28:00.000Z",
+        "finishedAt": "2026-10-14T16:21:00.000Z",
         "finishedBy": null,
         "handoff": null,
         "reassigned": null,
@@ -4035,7 +4005,7 @@
         ],
         "activeSince": null,
         "waitUntil": null,
-        "finishedAt": "2026-10-14T16:28:00.000Z",
+        "finishedAt": "2026-10-14T16:21:00.000Z",
         "finishedBy": null,
         "handoff": null,
         "reassigned": null,
@@ -4077,7 +4047,7 @@
         ],
         "activeSince": null,
         "waitUntil": null,
-        "finishedAt": "2026-10-14T16:28:00.000Z",
+        "finishedAt": "2026-10-14T16:21:00.000Z",
         "finishedBy": null,
         "handoff": null,
         "reassigned": null,
@@ -4117,9 +4087,9 @@
           "sendFollow",
           "bounced"
         ],
-        "activeSince": "2026-10-14T16:42:00.000Z",
+        "activeSince": "2026-10-14T16:35:00.000Z",
         "waitUntil": null,
-        "finishedAt": "2026-10-14T16:42:00.000Z",
+        "finishedAt": "2026-10-14T16:35:00.000Z",
         "finishedBy": {
           "type": "todd"
         },
@@ -4173,14 +4143,14 @@
     "startedAt": "2026-10-14T16:00:00.000Z",
     "resumeAt": null,
     "nextCheckAt": null,
-    "finishedAt": "2026-10-14T16:42:00.000Z",
+    "finishedAt": "2026-10-14T16:35:00.000Z",
     "report": {
       "missionId": "meeting-follow-up",
       "title": "Follow up after a meeting",
       "outcomeType": "action",
       "headline": "Did it by hand: Send the response",
       "startedAt": "2026-10-14T16:00:00.000Z",
-      "finishedAt": "2026-10-14T16:42:00.000Z",
+      "finishedAt": "2026-10-14T16:35:00.000Z",
       "days": 0,
       "rows": [
         {
@@ -4284,16 +4254,16 @@
           "title": "Wait 5 business days for a reply",
           "kind": "wait",
           "by": {
-            "type": "person",
-            "id": "uid-owner"
+            "type": "todd",
+            "id": ""
           },
-          "finishedAt": "2026-10-14T16:28:00.000Z",
-          "result": "Did it by hand: Wait 5 business days for a reply",
+          "finishedAt": "2026-10-14T16:21:00.000Z",
+          "result": "They replied",
           "status": "done",
           "timedOut": false,
           "skipReason": "",
-          "handedOff": true,
-          "handoffReason": "TODD can't watch for this reply on its own yet. Tell TODD when they reply, or mark it 'no reply' after 5 business days.",
+          "handedOff": false,
+          "handoffReason": "",
           "artifacts": []
         },
         {
@@ -4304,7 +4274,7 @@
             "type": "maya",
             "id": ""
           },
-          "finishedAt": "2026-10-14T16:28:00.000Z",
+          "finishedAt": "2026-10-14T16:21:00.000Z",
           "result": "Re: Tuesday",
           "status": "done",
           "timedOut": false,
@@ -4327,7 +4297,7 @@
             "type": "person",
             "id": "uid-owner"
           },
-          "finishedAt": "2026-10-14T16:35:00.000Z",
+          "finishedAt": "2026-10-14T16:28:00.000Z",
           "result": "Approved",
           "status": "done",
           "timedOut": false,
@@ -4344,7 +4314,7 @@
             "type": "person",
             "id": "uid-owner"
           },
-          "finishedAt": "2026-10-14T16:42:00.000Z",
+          "finishedAt": "2026-10-14T16:35:00.000Z",
           "result": "Did it by hand: Send the response",
           "status": "done",
           "timedOut": false,
@@ -4355,9 +4325,9 @@
         }
       ],
       "split": {
-        "todd": 1,
+        "todd": 2,
         "maya": 2,
-        "owner": 6,
+        "owner": 5,
         "teammates": 0
       },
       "ownerMinutes": 11,
@@ -4381,7 +4351,7 @@
           "title": "Re: Tuesday"
         }
       ],
-      "line": "1 step by TODD, 2 by Maya, 6 by you. About 11 minutes of your time."
+      "line": "2 steps by TODD, 2 by Maya, 5 by you. About 11 minutes of your time."
     },
     "phase": "done",
     "plan": {
@@ -4403,9 +4373,9 @@
       "todd"
     ],
     "split": {
-      "todd": 3,
+      "todd": 4,
       "maya": 2,
-      "you": 7,
+      "you": 6,
       "teammates": 0
     },
     "isOwner": true
@@ -5773,19 +5743,19 @@
         "owner": "todd",
         "assigneeId": "",
         "holder": {
-          "owner": "person",
-          "assigneeId": "uid-owner"
+          "owner": "todd",
+          "assigneeId": ""
         },
         "kind": "wait",
         "tool": "outreach.waitForReply",
         "product": "outreach",
         "effect": "wait",
-        "automated": false,
+        "automated": true,
         "status": "done",
         "skipReason": "",
         "when": "",
         "branch": null,
-        "why": "TODD can't watch for this reply on its own yet. Tell TODD when they reply, or mark it 'no reply' after 5 business days.",
+        "why": "",
         "doneWhen": "",
         "options": [],
         "minutes": 0,
@@ -5794,31 +5764,21 @@
         ],
         "activeSince": "2026-10-14T16:21:00.000Z",
         "waitUntil": "2026-10-21T16:21:00.000Z",
-        "finishedAt": "2026-10-14T16:28:00.000Z",
+        "finishedAt": "2026-10-14T16:21:00.000Z",
         "finishedBy": {
-          "type": "person",
-          "id": "uid-owner"
+          "type": "todd"
         },
-        "handoff": {
-          "from": "todd",
-          "code": "not_wired",
-          "reason": "TODD can't watch for this reply on its own yet. Tell TODD when they reply, or mark it 'no reply' after 5 business days.",
-          "at": "2026-10-14T16:21:00.000Z"
-        },
+        "handoff": null,
         "reassigned": null,
         "timedOut": false,
-        "resultSummary": "Did it by hand: Wait 5 business days for a reply",
+        "resultSummary": "They replied",
         "output": {
           "outcome": "replied",
           "replyText": "Sounds good, let's talk Tuesday.",
           "opens": 2,
-          "clicks": 0,
-          "note": "Did it by hand: Wait 5 business days for a reply"
+          "clicks": 0
         },
-        "error": {
-          "code": "not_wired",
-          "message": "TODD can't watch for this reply on its own yet. Tell TODD when they reply, or mark it 'no reply' after 5 business days."
-        },
+        "error": null,
         "revisions": 0
       },
       {
@@ -5851,9 +5811,9 @@
         "dependsOn": [
           "watch"
         ],
-        "activeSince": "2026-10-14T16:28:00.000Z",
+        "activeSince": "2026-10-14T16:21:00.000Z",
         "waitUntil": null,
-        "finishedAt": "2026-10-14T16:28:00.000Z",
+        "finishedAt": "2026-10-14T16:21:00.000Z",
         "finishedBy": {
           "type": "maya"
         },
@@ -5896,9 +5856,9 @@
         "dependsOn": [
           "reply"
         ],
-        "activeSince": "2026-10-14T16:28:00.000Z",
+        "activeSince": "2026-10-14T16:21:00.000Z",
         "waitUntil": null,
-        "finishedAt": "2026-10-14T16:35:00.000Z",
+        "finishedAt": "2026-10-14T16:28:00.000Z",
         "finishedBy": {
           "type": "person",
           "id": "uid-owner"
@@ -5941,9 +5901,9 @@
         "dependsOn": [
           "approveReply"
         ],
-        "activeSince": "2026-10-14T16:35:00.000Z",
+        "activeSince": "2026-10-14T16:28:00.000Z",
         "waitUntil": null,
-        "finishedAt": "2026-10-14T16:42:00.000Z",
+        "finishedAt": "2026-10-14T16:35:00.000Z",
         "finishedBy": {
           "type": "person",
           "id": "uid-owner"
@@ -5952,7 +5912,7 @@
           "from": "todd",
           "code": "not_wired",
           "reason": "Sending from a Mission isn't switched on yet. Send the approved email from Outreach and mark this done.",
-          "at": "2026-10-14T16:35:00.000Z"
+          "at": "2026-10-14T16:28:00.000Z"
         },
         "reassigned": null,
         "timedOut": false,
@@ -6001,7 +5961,7 @@
         ],
         "activeSince": null,
         "waitUntil": null,
-        "finishedAt": "2026-10-14T16:28:00.000Z",
+        "finishedAt": "2026-10-14T16:21:00.000Z",
         "finishedBy": null,
         "handoff": null,
         "reassigned": null,
@@ -6039,9 +5999,9 @@
           "sendReply",
           "bounced"
         ],
-        "activeSince": "2026-10-14T16:42:00.000Z",
+        "activeSince": "2026-10-14T16:35:00.000Z",
         "waitUntil": null,
-        "finishedAt": "2026-10-14T16:42:00.000Z",
+        "finishedAt": "2026-10-14T16:35:00.000Z",
         "finishedBy": {
           "type": "todd"
         },
@@ -6095,14 +6055,14 @@
     "startedAt": "2026-10-14T16:00:00.000Z",
     "resumeAt": null,
     "nextCheckAt": null,
-    "finishedAt": "2026-10-14T16:42:00.000Z",
+    "finishedAt": "2026-10-14T16:35:00.000Z",
     "report": {
       "missionId": "ask-for-intro",
       "title": "Ask for an introduction",
       "outcomeType": "action",
       "headline": "Did it by hand: Send the response",
       "startedAt": "2026-10-14T16:00:00.000Z",
-      "finishedAt": "2026-10-14T16:42:00.000Z",
+      "finishedAt": "2026-10-14T16:35:00.000Z",
       "days": 0,
       "rows": [
         {
@@ -6201,16 +6161,16 @@
           "title": "Wait 5 business days for a reply",
           "kind": "wait",
           "by": {
-            "type": "person",
-            "id": "uid-owner"
+            "type": "todd",
+            "id": ""
           },
-          "finishedAt": "2026-10-14T16:28:00.000Z",
-          "result": "Did it by hand: Wait 5 business days for a reply",
+          "finishedAt": "2026-10-14T16:21:00.000Z",
+          "result": "They replied",
           "status": "done",
           "timedOut": false,
           "skipReason": "",
-          "handedOff": true,
-          "handoffReason": "TODD can't watch for this reply on its own yet. Tell TODD when they reply, or mark it 'no reply' after 5 business days.",
+          "handedOff": false,
+          "handoffReason": "",
           "artifacts": []
         },
         {
@@ -6221,7 +6181,7 @@
             "type": "maya",
             "id": ""
           },
-          "finishedAt": "2026-10-14T16:28:00.000Z",
+          "finishedAt": "2026-10-14T16:21:00.000Z",
           "result": "Re: Tuesday",
           "status": "done",
           "timedOut": false,
@@ -6244,7 +6204,7 @@
             "type": "person",
             "id": "uid-owner"
           },
-          "finishedAt": "2026-10-14T16:35:00.000Z",
+          "finishedAt": "2026-10-14T16:28:00.000Z",
           "result": "Approved",
           "status": "done",
           "timedOut": false,
@@ -6261,7 +6221,7 @@
             "type": "person",
             "id": "uid-owner"
           },
-          "finishedAt": "2026-10-14T16:42:00.000Z",
+          "finishedAt": "2026-10-14T16:35:00.000Z",
           "result": "Did it by hand: Send the response",
           "status": "done",
           "timedOut": false,
@@ -6272,9 +6232,9 @@
         }
       ],
       "split": {
-        "todd": 1,
+        "todd": 2,
         "maya": 2,
-        "owner": 6,
+        "owner": 5,
         "teammates": 0
       },
       "ownerMinutes": 7,
@@ -6294,7 +6254,7 @@
           "title": "Re: Tuesday"
         }
       ],
-      "line": "1 step by TODD, 2 by Maya, 6 by you. About 7 minutes of your time."
+      "line": "2 steps by TODD, 2 by Maya, 5 by you. About 7 minutes of your time."
     },
     "phase": "done",
     "plan": {
@@ -6316,9 +6276,9 @@
       "todd"
     ],
     "split": {
-      "todd": 2,
+      "todd": 3,
       "maya": 2,
-      "you": 6,
+      "you": 5,
       "teammates": 0
     },
     "isOwner": true
@@ -6628,19 +6588,19 @@
         "owner": "todd",
         "assigneeId": "",
         "holder": {
-          "owner": "person",
-          "assigneeId": "uid-owner"
+          "owner": "todd",
+          "assigneeId": ""
         },
         "kind": "wait",
         "tool": "outreach.waitForReply",
         "product": "outreach",
         "effect": "wait",
-        "automated": false,
+        "automated": true,
         "status": "done",
         "skipReason": "",
         "when": "",
         "branch": null,
-        "why": "TODD can't watch for this reply on its own yet. Tell TODD when they reply, or mark it 'no reply' after 5 business days.",
+        "why": "",
         "doneWhen": "",
         "options": [],
         "minutes": 0,
@@ -6649,31 +6609,21 @@
         ],
         "activeSince": "2026-10-14T16:14:00.000Z",
         "waitUntil": "2026-10-21T16:14:00.000Z",
-        "finishedAt": "2026-10-14T16:21:00.000Z",
+        "finishedAt": "2026-10-14T16:14:00.000Z",
         "finishedBy": {
-          "type": "person",
-          "id": "uid-owner"
+          "type": "todd"
         },
-        "handoff": {
-          "from": "todd",
-          "code": "not_wired",
-          "reason": "TODD can't watch for this reply on its own yet. Tell TODD when they reply, or mark it 'no reply' after 5 business days.",
-          "at": "2026-10-14T16:14:00.000Z"
-        },
+        "handoff": null,
         "reassigned": null,
         "timedOut": false,
-        "resultSummary": "Did it by hand: Wait 5 business days for a reply",
+        "resultSummary": "They replied",
         "output": {
           "outcome": "replied",
           "replyText": "Sounds good, let's talk Tuesday.",
           "opens": 2,
-          "clicks": 0,
-          "note": "Did it by hand: Wait 5 business days for a reply"
+          "clicks": 0
         },
-        "error": {
-          "code": "not_wired",
-          "message": "TODD can't watch for this reply on its own yet. Tell TODD when they reply, or mark it 'no reply' after 5 business days."
-        },
+        "error": null,
         "revisions": 0
       },
       {
@@ -6706,9 +6656,9 @@
         "dependsOn": [
           "watch"
         ],
-        "activeSince": "2026-10-14T16:21:00.000Z",
+        "activeSince": "2026-10-14T16:14:00.000Z",
         "waitUntil": null,
-        "finishedAt": "2026-10-14T16:21:00.000Z",
+        "finishedAt": "2026-10-14T16:14:00.000Z",
         "finishedBy": {
           "type": "maya"
         },
@@ -6751,9 +6701,9 @@
         "dependsOn": [
           "reply"
         ],
-        "activeSince": "2026-10-14T16:21:00.000Z",
+        "activeSince": "2026-10-14T16:14:00.000Z",
         "waitUntil": null,
-        "finishedAt": "2026-10-14T16:28:00.000Z",
+        "finishedAt": "2026-10-14T16:21:00.000Z",
         "finishedBy": {
           "type": "person",
           "id": "uid-owner"
@@ -6796,9 +6746,9 @@
         "dependsOn": [
           "approveReply"
         ],
-        "activeSince": "2026-10-14T16:28:00.000Z",
+        "activeSince": "2026-10-14T16:21:00.000Z",
         "waitUntil": null,
-        "finishedAt": "2026-10-14T16:35:00.000Z",
+        "finishedAt": "2026-10-14T16:28:00.000Z",
         "finishedBy": {
           "type": "person",
           "id": "uid-owner"
@@ -6807,7 +6757,7 @@
           "from": "todd",
           "code": "not_wired",
           "reason": "Sending from a Mission isn't switched on yet. Send the approved email from Outreach and mark this done.",
-          "at": "2026-10-14T16:28:00.000Z"
+          "at": "2026-10-14T16:21:00.000Z"
         },
         "reassigned": null,
         "timedOut": false,
@@ -6856,7 +6806,7 @@
         ],
         "activeSince": null,
         "waitUntil": null,
-        "finishedAt": "2026-10-14T16:21:00.000Z",
+        "finishedAt": "2026-10-14T16:14:00.000Z",
         "finishedBy": null,
         "handoff": null,
         "reassigned": null,
@@ -6895,7 +6845,7 @@
         ],
         "activeSince": null,
         "waitUntil": null,
-        "finishedAt": "2026-10-14T16:21:00.000Z",
+        "finishedAt": "2026-10-14T16:14:00.000Z",
         "finishedBy": null,
         "handoff": null,
         "reassigned": null,
@@ -6934,7 +6884,7 @@
         ],
         "activeSince": null,
         "waitUntil": null,
-        "finishedAt": "2026-10-14T16:21:00.000Z",
+        "finishedAt": "2026-10-14T16:14:00.000Z",
         "finishedBy": null,
         "handoff": null,
         "reassigned": null,
@@ -6976,7 +6926,7 @@
         ],
         "activeSince": null,
         "waitUntil": null,
-        "finishedAt": "2026-10-14T16:21:00.000Z",
+        "finishedAt": "2026-10-14T16:14:00.000Z",
         "finishedBy": null,
         "handoff": null,
         "reassigned": null,
@@ -7015,9 +6965,9 @@
           "sendFollow",
           "bounced"
         ],
-        "activeSince": "2026-10-14T16:35:00.000Z",
+        "activeSince": "2026-10-14T16:28:00.000Z",
         "waitUntil": null,
-        "finishedAt": "2026-10-14T16:35:00.000Z",
+        "finishedAt": "2026-10-14T16:28:00.000Z",
         "finishedBy": {
           "type": "todd"
         },
@@ -7072,14 +7022,14 @@
     "startedAt": "2026-10-14T16:00:00.000Z",
     "resumeAt": null,
     "nextCheckAt": null,
-    "finishedAt": "2026-10-14T16:35:00.000Z",
+    "finishedAt": "2026-10-14T16:28:00.000Z",
     "report": {
       "missionId": "win-back",
       "title": "Win back a lost deal",
       "outcomeType": "action",
       "headline": "Did it by hand: Send the response",
       "startedAt": "2026-10-14T16:00:00.000Z",
-      "finishedAt": "2026-10-14T16:35:00.000Z",
+      "finishedAt": "2026-10-14T16:28:00.000Z",
       "days": 0,
       "rows": [
         {
@@ -7201,16 +7151,16 @@
           "title": "Wait 5 business days for a reply",
           "kind": "wait",
           "by": {
-            "type": "person",
-            "id": "uid-owner"
+            "type": "todd",
+            "id": ""
           },
-          "finishedAt": "2026-10-14T16:21:00.000Z",
-          "result": "Did it by hand: Wait 5 business days for a reply",
+          "finishedAt": "2026-10-14T16:14:00.000Z",
+          "result": "They replied",
           "status": "done",
           "timedOut": false,
           "skipReason": "",
-          "handedOff": true,
-          "handoffReason": "TODD can't watch for this reply on its own yet. Tell TODD when they reply, or mark it 'no reply' after 5 business days.",
+          "handedOff": false,
+          "handoffReason": "",
           "artifacts": []
         },
         {
@@ -7221,7 +7171,7 @@
             "type": "maya",
             "id": ""
           },
-          "finishedAt": "2026-10-14T16:21:00.000Z",
+          "finishedAt": "2026-10-14T16:14:00.000Z",
           "result": "Re: Tuesday",
           "status": "done",
           "timedOut": false,
@@ -7244,7 +7194,7 @@
             "type": "person",
             "id": "uid-owner"
           },
-          "finishedAt": "2026-10-14T16:28:00.000Z",
+          "finishedAt": "2026-10-14T16:21:00.000Z",
           "result": "Approved",
           "status": "done",
           "timedOut": false,
@@ -7261,7 +7211,7 @@
             "type": "person",
             "id": "uid-owner"
           },
-          "finishedAt": "2026-10-14T16:35:00.000Z",
+          "finishedAt": "2026-10-14T16:28:00.000Z",
           "result": "Did it by hand: Send the response",
           "status": "done",
           "timedOut": false,
@@ -7272,9 +7222,9 @@
         }
       ],
       "split": {
-        "todd": 2,
+        "todd": 3,
         "maya": 3,
-        "owner": 5,
+        "owner": 4,
         "teammates": 0
       },
       "ownerMinutes": 6,
@@ -7299,7 +7249,7 @@
           "title": "Re: Tuesday"
         }
       ],
-      "line": "2 steps by TODD, 3 by Maya, 5 by you. About 6 minutes of your time."
+      "line": "3 steps by TODD, 3 by Maya, 4 by you. About 6 minutes of your time."
     },
     "phase": "done",
     "plan": {
@@ -7322,9 +7272,9 @@
       "todd"
     ],
     "split": {
-      "todd": 4,
+      "todd": 5,
       "maya": 3,
-      "you": 6,
+      "you": 5,
       "teammates": 0
     },
     "isOwner": true
@@ -8263,19 +8213,19 @@
         "owner": "todd",
         "assigneeId": "",
         "holder": {
-          "owner": "person",
-          "assigneeId": "uid-owner"
+          "owner": "todd",
+          "assigneeId": ""
         },
         "kind": "wait",
         "tool": "outreach.waitForReply",
         "product": "outreach",
         "effect": "wait",
-        "automated": false,
+        "automated": true,
         "status": "done",
         "skipReason": "",
         "when": "",
         "branch": null,
-        "why": "TODD can't watch for this reply on its own yet. Tell TODD when they reply, or mark it 'no reply' after 5 business days.",
+        "why": "",
         "doneWhen": "",
         "options": [],
         "minutes": 0,
@@ -8284,31 +8234,21 @@
         ],
         "activeSince": "2026-10-14T16:21:00.000Z",
         "waitUntil": "2026-10-21T16:21:00.000Z",
-        "finishedAt": "2026-10-14T16:28:00.000Z",
+        "finishedAt": "2026-10-14T16:21:00.000Z",
         "finishedBy": {
-          "type": "person",
-          "id": "uid-owner"
+          "type": "todd"
         },
-        "handoff": {
-          "from": "todd",
-          "code": "not_wired",
-          "reason": "TODD can't watch for this reply on its own yet. Tell TODD when they reply, or mark it 'no reply' after 5 business days.",
-          "at": "2026-10-14T16:21:00.000Z"
-        },
+        "handoff": null,
         "reassigned": null,
         "timedOut": false,
-        "resultSummary": "Did it by hand: Wait 5 business days for a reply",
+        "resultSummary": "They replied",
         "output": {
           "outcome": "replied",
           "replyText": "Sounds good, let's talk Tuesday.",
           "opens": 2,
-          "clicks": 0,
-          "note": "Did it by hand: Wait 5 business days for a reply"
+          "clicks": 0
         },
-        "error": {
-          "code": "not_wired",
-          "message": "TODD can't watch for this reply on its own yet. Tell TODD when they reply, or mark it 'no reply' after 5 business days."
-        },
+        "error": null,
         "revisions": 0
       },
       {
@@ -8341,9 +8281,9 @@
         "dependsOn": [
           "watch"
         ],
-        "activeSince": "2026-10-14T16:28:00.000Z",
+        "activeSince": "2026-10-14T16:21:00.000Z",
         "waitUntil": null,
-        "finishedAt": "2026-10-14T16:28:00.000Z",
+        "finishedAt": "2026-10-14T16:21:00.000Z",
         "finishedBy": {
           "type": "maya"
         },
@@ -8386,9 +8326,9 @@
         "dependsOn": [
           "reply"
         ],
-        "activeSince": "2026-10-14T16:28:00.000Z",
+        "activeSince": "2026-10-14T16:21:00.000Z",
         "waitUntil": null,
-        "finishedAt": "2026-10-14T16:35:00.000Z",
+        "finishedAt": "2026-10-14T16:28:00.000Z",
         "finishedBy": {
           "type": "person",
           "id": "uid-owner"
@@ -8431,9 +8371,9 @@
         "dependsOn": [
           "approveReply"
         ],
-        "activeSince": "2026-10-14T16:35:00.000Z",
+        "activeSince": "2026-10-14T16:28:00.000Z",
         "waitUntil": null,
-        "finishedAt": "2026-10-14T16:42:00.000Z",
+        "finishedAt": "2026-10-14T16:35:00.000Z",
         "finishedBy": {
           "type": "person",
           "id": "uid-owner"
@@ -8442,7 +8382,7 @@
           "from": "todd",
           "code": "not_wired",
           "reason": "Sending from a Mission isn't switched on yet. Send the approved email from Outreach and mark this done.",
-          "at": "2026-10-14T16:35:00.000Z"
+          "at": "2026-10-14T16:28:00.000Z"
         },
         "reassigned": null,
         "timedOut": false,
@@ -8491,7 +8431,7 @@
         ],
         "activeSince": null,
         "waitUntil": null,
-        "finishedAt": "2026-10-14T16:28:00.000Z",
+        "finishedAt": "2026-10-14T16:21:00.000Z",
         "finishedBy": null,
         "handoff": null,
         "reassigned": null,
@@ -8530,7 +8470,7 @@
         ],
         "activeSince": null,
         "waitUntil": null,
-        "finishedAt": "2026-10-14T16:28:00.000Z",
+        "finishedAt": "2026-10-14T16:21:00.000Z",
         "finishedBy": null,
         "handoff": null,
         "reassigned": null,
@@ -8569,7 +8509,7 @@
         ],
         "activeSince": null,
         "waitUntil": null,
-        "finishedAt": "2026-10-14T16:28:00.000Z",
+        "finishedAt": "2026-10-14T16:21:00.000Z",
         "finishedBy": null,
         "handoff": null,
         "reassigned": null,
@@ -8611,7 +8551,7 @@
         ],
         "activeSince": null,
         "waitUntil": null,
-        "finishedAt": "2026-10-14T16:28:00.000Z",
+        "finishedAt": "2026-10-14T16:21:00.000Z",
         "finishedBy": null,
         "handoff": null,
         "reassigned": null,
@@ -8650,9 +8590,9 @@
           "sendFollow",
           "bounced"
         ],
-        "activeSince": "2026-10-14T16:42:00.000Z",
+        "activeSince": "2026-10-14T16:35:00.000Z",
         "waitUntil": null,
-        "finishedAt": "2026-10-14T16:42:00.000Z",
+        "finishedAt": "2026-10-14T16:35:00.000Z",
         "finishedBy": {
           "type": "todd"
         },
@@ -8706,14 +8646,14 @@
     "startedAt": "2026-10-14T16:00:00.000Z",
     "resumeAt": null,
     "nextCheckAt": null,
-    "finishedAt": "2026-10-14T16:42:00.000Z",
+    "finishedAt": "2026-10-14T16:35:00.000Z",
     "report": {
       "missionId": "proposal",
       "title": "Write a proposal",
       "outcomeType": "action",
       "headline": "Did it by hand: Send the response",
       "startedAt": "2026-10-14T16:00:00.000Z",
-      "finishedAt": "2026-10-14T16:42:00.000Z",
+      "finishedAt": "2026-10-14T16:35:00.000Z",
       "days": 0,
       "rows": [
         {
@@ -8812,16 +8752,16 @@
           "title": "Wait 5 business days for a reply",
           "kind": "wait",
           "by": {
-            "type": "person",
-            "id": "uid-owner"
+            "type": "todd",
+            "id": ""
           },
-          "finishedAt": "2026-10-14T16:28:00.000Z",
-          "result": "Did it by hand: Wait 5 business days for a reply",
+          "finishedAt": "2026-10-14T16:21:00.000Z",
+          "result": "They replied",
           "status": "done",
           "timedOut": false,
           "skipReason": "",
-          "handedOff": true,
-          "handoffReason": "TODD can't watch for this reply on its own yet. Tell TODD when they reply, or mark it 'no reply' after 5 business days.",
+          "handedOff": false,
+          "handoffReason": "",
           "artifacts": []
         },
         {
@@ -8832,7 +8772,7 @@
             "type": "maya",
             "id": ""
           },
-          "finishedAt": "2026-10-14T16:28:00.000Z",
+          "finishedAt": "2026-10-14T16:21:00.000Z",
           "result": "Re: Tuesday",
           "status": "done",
           "timedOut": false,
@@ -8855,7 +8795,7 @@
             "type": "person",
             "id": "uid-owner"
           },
-          "finishedAt": "2026-10-14T16:35:00.000Z",
+          "finishedAt": "2026-10-14T16:28:00.000Z",
           "result": "Approved",
           "status": "done",
           "timedOut": false,
@@ -8872,7 +8812,7 @@
             "type": "person",
             "id": "uid-owner"
           },
-          "finishedAt": "2026-10-14T16:42:00.000Z",
+          "finishedAt": "2026-10-14T16:35:00.000Z",
           "result": "Did it by hand: Send the response",
           "status": "done",
           "timedOut": false,
@@ -8883,9 +8823,9 @@
         }
       ],
       "split": {
-        "todd": 2,
+        "todd": 3,
         "maya": 1,
-        "owner": 6,
+        "owner": 5,
         "teammates": 0
       },
       "ownerMinutes": 26,
@@ -8905,7 +8845,7 @@
           "title": "Re: Tuesday"
         }
       ],
-      "line": "2 steps by TODD, 1 by Maya, 6 by you. About 26 minutes of your time."
+      "line": "3 steps by TODD, 1 by Maya, 5 by you. About 26 minutes of your time."
     },
     "phase": "done",
     "plan": {
@@ -8927,9 +8867,9 @@
       "todd"
     ],
     "split": {
-      "todd": 4,
+      "todd": 5,
       "maya": 1,
-      "you": 7,
+      "you": 6,
       "teammates": 0
     },
     "isOwner": true
@@ -11473,51 +11413,41 @@
         "owner": "todd",
         "assigneeId": "",
         "holder": {
-          "owner": "person",
-          "assigneeId": "uid-owner"
+          "owner": "todd",
+          "assigneeId": ""
         },
         "kind": "tool",
         "tool": "outreach.engagement",
         "product": "outreach",
         "effect": "read",
-        "automated": false,
+        "automated": true,
         "status": "done",
         "skipReason": "",
         "when": "",
         "branch": null,
-        "why": "TODD can't read Outreach engagement from a Mission yet. Check Outreach's numbers and note them here.",
+        "why": "",
         "doneWhen": "",
         "options": [],
         "minutes": 0,
         "dependsOn": [],
         "activeSince": "2026-10-14T16:00:00.000Z",
         "waitUntil": null,
-        "finishedAt": "2026-10-14T16:07:00.000Z",
+        "finishedAt": "2026-10-14T16:00:00.000Z",
         "finishedBy": {
-          "type": "person",
-          "id": "uid-owner"
+          "type": "todd"
         },
-        "handoff": {
-          "from": "todd",
-          "code": "not_wired",
-          "reason": "TODD can't read Outreach engagement from a Mission yet. Check Outreach's numbers and note them here.",
-          "at": "2026-10-14T16:00:00.000Z"
-        },
+        "handoff": null,
         "reassigned": null,
         "timedOut": false,
-        "resultSummary": "Did it by hand: Outreach numbers",
+        "resultSummary": "120 sent, 54 opened, 9 clicked, 4 replied in undefined days",
         "output": {
           "sent": 120,
           "opened": 54,
           "clicked": 9,
           "replied": 4,
-          "bounced": 1,
-          "note": "Did it by hand: Outreach numbers"
+          "bounced": 1
         },
-        "error": {
-          "code": "not_wired",
-          "message": "TODD can't read Outreach engagement from a Mission yet. Check Outreach's numbers and note them here."
-        },
+        "error": null,
         "revisions": 0
       },
       {
@@ -11825,16 +11755,16 @@
           "title": "Outreach numbers",
           "kind": "tool",
           "by": {
-            "type": "person",
-            "id": "uid-owner"
+            "type": "todd",
+            "id": ""
           },
-          "finishedAt": "2026-10-14T16:07:00.000Z",
-          "result": "Did it by hand: Outreach numbers",
+          "finishedAt": "2026-10-14T16:00:00.000Z",
+          "result": "120 sent, 54 opened, 9 clicked, 4 replied in undefined days",
           "status": "done",
           "timedOut": false,
           "skipReason": "",
-          "handedOff": true,
-          "handoffReason": "TODD can't read Outreach engagement from a Mission yet. Check Outreach's numbers and note them here.",
+          "handedOff": false,
+          "handoffReason": "",
           "artifacts": []
         },
         {
@@ -11913,9 +11843,9 @@
         }
       ],
       "split": {
-        "todd": 2,
+        "todd": 3,
         "maya": 0,
-        "owner": 4,
+        "owner": 3,
         "teammates": 0
       },
       "ownerMinutes": 5,
@@ -11930,7 +11860,7 @@
           "title": "weekly status report"
         }
       ],
-      "line": "2 steps by TODD, 4 by you. About 5 minutes of your time."
+      "line": "3 steps by TODD, 3 by you. About 5 minutes of your time."
     },
     "phase": "done",
     "plan": {
@@ -11951,9 +11881,9 @@
       "todd"
     ],
     "split": {
-      "todd": 3,
+      "todd": 4,
       "maya": 0,
-      "you": 4,
+      "you": 3,
       "teammates": 0
     },
     "isOwner": true
@@ -16689,19 +16619,19 @@
         "owner": "todd",
         "assigneeId": "",
         "holder": {
-          "owner": "person",
-          "assigneeId": "uid-owner"
+          "owner": "todd",
+          "assigneeId": ""
         },
         "kind": "wait",
         "tool": "outreach.waitForReply",
         "product": "outreach",
         "effect": "wait",
-        "automated": false,
+        "automated": true,
         "status": "done",
         "skipReason": "",
         "when": "",
         "branch": null,
-        "why": "TODD can't watch for this reply on its own yet. Tell TODD when they reply, or mark it 'no reply' after 5 business days.",
+        "why": "",
         "doneWhen": "",
         "options": [],
         "minutes": 0,
@@ -16710,31 +16640,21 @@
         ],
         "activeSince": "2026-10-14T16:21:00.000Z",
         "waitUntil": "2026-10-21T16:21:00.000Z",
-        "finishedAt": "2026-10-14T16:28:00.000Z",
+        "finishedAt": "2026-10-14T16:21:00.000Z",
         "finishedBy": {
-          "type": "person",
-          "id": "uid-owner"
+          "type": "todd"
         },
-        "handoff": {
-          "from": "todd",
-          "code": "not_wired",
-          "reason": "TODD can't watch for this reply on its own yet. Tell TODD when they reply, or mark it 'no reply' after 5 business days.",
-          "at": "2026-10-14T16:21:00.000Z"
-        },
+        "handoff": null,
         "reassigned": null,
         "timedOut": false,
-        "resultSummary": "Did it by hand: Wait 5 business days for a reply",
+        "resultSummary": "They replied",
         "output": {
           "outcome": "replied",
           "replyText": "Sounds good, let's talk Tuesday.",
           "opens": 2,
-          "clicks": 0,
-          "note": "Did it by hand: Wait 5 business days for a reply"
+          "clicks": 0
         },
-        "error": {
-          "code": "not_wired",
-          "message": "TODD can't watch for this reply on its own yet. Tell TODD when they reply, or mark it 'no reply' after 5 business days."
-        },
+        "error": null,
         "revisions": 0
       },
       {
@@ -16767,9 +16687,9 @@
         "dependsOn": [
           "watch"
         ],
-        "activeSince": "2026-10-14T16:28:00.000Z",
+        "activeSince": "2026-10-14T16:21:00.000Z",
         "waitUntil": null,
-        "finishedAt": "2026-10-14T16:28:00.000Z",
+        "finishedAt": "2026-10-14T16:21:00.000Z",
         "finishedBy": {
           "type": "maya"
         },
@@ -16812,9 +16732,9 @@
         "dependsOn": [
           "reply"
         ],
-        "activeSince": "2026-10-14T16:28:00.000Z",
+        "activeSince": "2026-10-14T16:21:00.000Z",
         "waitUntil": null,
-        "finishedAt": "2026-10-14T16:35:00.000Z",
+        "finishedAt": "2026-10-14T16:28:00.000Z",
         "finishedBy": {
           "type": "person",
           "id": "uid-owner"
@@ -16857,9 +16777,9 @@
         "dependsOn": [
           "approveReply"
         ],
-        "activeSince": "2026-10-14T16:35:00.000Z",
+        "activeSince": "2026-10-14T16:28:00.000Z",
         "waitUntil": null,
-        "finishedAt": "2026-10-14T16:42:00.000Z",
+        "finishedAt": "2026-10-14T16:35:00.000Z",
         "finishedBy": {
           "type": "person",
           "id": "uid-owner"
@@ -16868,7 +16788,7 @@
           "from": "todd",
           "code": "not_wired",
           "reason": "Sending from a Mission isn't switched on yet. Send the approved email from Outreach and mark this done.",
-          "at": "2026-10-14T16:35:00.000Z"
+          "at": "2026-10-14T16:28:00.000Z"
         },
         "reassigned": null,
         "timedOut": false,
@@ -16917,7 +16837,7 @@
         ],
         "activeSince": null,
         "waitUntil": null,
-        "finishedAt": "2026-10-14T16:28:00.000Z",
+        "finishedAt": "2026-10-14T16:21:00.000Z",
         "finishedBy": null,
         "handoff": null,
         "reassigned": null,
@@ -16956,7 +16876,7 @@
         ],
         "activeSince": null,
         "waitUntil": null,
-        "finishedAt": "2026-10-14T16:28:00.000Z",
+        "finishedAt": "2026-10-14T16:21:00.000Z",
         "finishedBy": null,
         "handoff": null,
         "reassigned": null,
@@ -16995,7 +16915,7 @@
         ],
         "activeSince": null,
         "waitUntil": null,
-        "finishedAt": "2026-10-14T16:28:00.000Z",
+        "finishedAt": "2026-10-14T16:21:00.000Z",
         "finishedBy": null,
         "handoff": null,
         "reassigned": null,
@@ -17037,7 +16957,7 @@
         ],
         "activeSince": null,
         "waitUntil": null,
-        "finishedAt": "2026-10-14T16:28:00.000Z",
+        "finishedAt": "2026-10-14T16:21:00.000Z",
         "finishedBy": null,
         "handoff": null,
         "reassigned": null,
@@ -17074,9 +16994,9 @@
         "dependsOn": [
           "reply"
         ],
-        "activeSince": "2026-10-14T16:28:00.000Z",
+        "activeSince": "2026-10-14T16:21:00.000Z",
         "waitUntil": null,
-        "finishedAt": "2026-10-14T16:28:00.000Z",
+        "finishedAt": "2026-10-14T16:21:00.000Z",
         "finishedBy": {
           "type": "todd"
         },
@@ -17122,9 +17042,9 @@
           "bounced",
           "meeting"
         ],
-        "activeSince": "2026-10-14T16:42:00.000Z",
+        "activeSince": "2026-10-14T16:35:00.000Z",
         "waitUntil": null,
-        "finishedAt": "2026-10-14T16:42:00.000Z",
+        "finishedAt": "2026-10-14T16:35:00.000Z",
         "finishedBy": {
           "type": "todd"
         },
@@ -17181,14 +17101,14 @@
     "startedAt": "2026-10-14T16:00:00.000Z",
     "resumeAt": null,
     "nextCheckAt": null,
-    "finishedAt": "2026-10-14T16:42:00.000Z",
+    "finishedAt": "2026-10-14T16:35:00.000Z",
     "report": {
       "missionId": "meeting-right-person",
       "title": "Get a meeting at a company",
       "outcomeType": "action",
       "headline": "8 fit, 3 strong",
       "startedAt": "2026-10-14T16:00:00.000Z",
-      "finishedAt": "2026-10-14T16:42:00.000Z",
+      "finishedAt": "2026-10-14T16:35:00.000Z",
       "days": 0,
       "rows": [
         {
@@ -17338,16 +17258,16 @@
           "title": "Wait 5 business days for a reply",
           "kind": "wait",
           "by": {
-            "type": "person",
-            "id": "uid-owner"
+            "type": "todd",
+            "id": ""
           },
-          "finishedAt": "2026-10-14T16:28:00.000Z",
-          "result": "Did it by hand: Wait 5 business days for a reply",
+          "finishedAt": "2026-10-14T16:21:00.000Z",
+          "result": "They replied",
           "status": "done",
           "timedOut": false,
           "skipReason": "",
-          "handedOff": true,
-          "handoffReason": "TODD can't watch for this reply on its own yet. Tell TODD when they reply, or mark it 'no reply' after 5 business days.",
+          "handedOff": false,
+          "handoffReason": "",
           "artifacts": []
         },
         {
@@ -17358,7 +17278,7 @@
             "type": "maya",
             "id": ""
           },
-          "finishedAt": "2026-10-14T16:28:00.000Z",
+          "finishedAt": "2026-10-14T16:21:00.000Z",
           "result": "Re: Tuesday",
           "status": "done",
           "timedOut": false,
@@ -17381,7 +17301,7 @@
             "type": "person",
             "id": "uid-owner"
           },
-          "finishedAt": "2026-10-14T16:35:00.000Z",
+          "finishedAt": "2026-10-14T16:28:00.000Z",
           "result": "Approved",
           "status": "done",
           "timedOut": false,
@@ -17398,7 +17318,7 @@
             "type": "person",
             "id": "uid-owner"
           },
-          "finishedAt": "2026-10-14T16:42:00.000Z",
+          "finishedAt": "2026-10-14T16:35:00.000Z",
           "result": "Did it by hand: Send the response",
           "status": "done",
           "timedOut": false,
@@ -17415,7 +17335,7 @@
             "type": "todd",
             "id": ""
           },
-          "finishedAt": "2026-10-14T16:28:00.000Z",
+          "finishedAt": "2026-10-14T16:21:00.000Z",
           "result": "1 moveIds",
           "status": "done",
           "timedOut": false,
@@ -17431,9 +17351,9 @@
         }
       ],
       "split": {
-        "todd": 5,
+        "todd": 6,
         "maya": 2,
-        "owner": 6,
+        "owner": 5,
         "teammates": 0
       },
       "ownerMinutes": 7,
@@ -17465,7 +17385,7 @@
           "id": "m9"
         }
       ],
-      "line": "5 steps by TODD, 2 by Maya, 6 by you. About 7 minutes of your time."
+      "line": "6 steps by TODD, 2 by Maya, 5 by you. About 7 minutes of your time."
     },
     "phase": "done",
     "plan": {
@@ -17490,9 +17410,9 @@
       "moves"
     ],
     "split": {
-      "todd": 7,
+      "todd": 8,
       "maya": 2,
-      "you": 7,
+      "you": 6,
       "teammates": 0
     },
     "isOwner": true
@@ -17899,19 +17819,19 @@
         "owner": "todd",
         "assigneeId": "",
         "holder": {
-          "owner": "person",
-          "assigneeId": "uid-owner"
+          "owner": "todd",
+          "assigneeId": ""
         },
         "kind": "tool",
         "tool": "outreach.engagement",
         "product": "outreach",
         "effect": "read",
-        "automated": false,
+        "automated": true,
         "status": "done",
         "skipReason": "",
         "when": "",
         "branch": null,
-        "why": "TODD can't read Outreach engagement from a Mission yet. Check Outreach's numbers and note them here.",
+        "why": "",
         "doneWhen": "",
         "options": [],
         "minutes": 0,
@@ -17920,32 +17840,22 @@
         ],
         "activeSince": "2026-10-14T16:21:00.000Z",
         "waitUntil": null,
-        "finishedAt": "2026-10-14T16:28:00.000Z",
+        "finishedAt": "2026-10-14T16:21:00.000Z",
         "finishedBy": {
-          "type": "person",
-          "id": "uid-owner"
+          "type": "todd"
         },
-        "handoff": {
-          "from": "todd",
-          "code": "not_wired",
-          "reason": "TODD can't read Outreach engagement from a Mission yet. Check Outreach's numbers and note them here.",
-          "at": "2026-10-14T16:21:00.000Z"
-        },
+        "handoff": null,
         "reassigned": null,
         "timedOut": false,
-        "resultSummary": "Did it by hand: Check results after a week",
+        "resultSummary": "120 sent, 54 opened, 9 clicked, 4 replied in undefined days",
         "output": {
           "sent": 120,
           "opened": 54,
           "clicked": 9,
           "replied": 4,
-          "bounced": 1,
-          "note": "Did it by hand: Check results after a week"
+          "bounced": 1
         },
-        "error": {
-          "code": "not_wired",
-          "message": "TODD can't read Outreach engagement from a Mission yet. Check Outreach's numbers and note them here."
-        },
+        "error": null,
         "revisions": 0
       },
       {
@@ -18275,16 +18185,16 @@
           "title": "Check results after a week",
           "kind": "tool",
           "by": {
-            "type": "person",
-            "id": "uid-owner"
+            "type": "todd",
+            "id": ""
           },
-          "finishedAt": "2026-10-14T16:28:00.000Z",
-          "result": "Did it by hand: Check results after a week",
+          "finishedAt": "2026-10-14T16:21:00.000Z",
+          "result": "120 sent, 54 opened, 9 clicked, 4 replied in undefined days",
           "status": "done",
           "timedOut": false,
           "skipReason": "",
-          "handedOff": true,
-          "handoffReason": "TODD can't read Outreach engagement from a Mission yet. Check Outreach's numbers and note them here.",
+          "handedOff": false,
+          "handoffReason": "",
           "artifacts": []
         },
         {
@@ -18306,9 +18216,9 @@
         }
       ],
       "split": {
-        "todd": 0,
+        "todd": 1,
         "maya": 5,
-        "owner": 5,
+        "owner": 4,
         "teammates": 0
       },
       "ownerMinutes": 3,
@@ -18345,7 +18255,7 @@
           "id": "post-1"
         }
       ],
-      "line": "5 by Maya, 5 by you. About 3 minutes of your time."
+      "line": "1 step by TODD, 5 by Maya, 4 by you. About 3 minutes of your time."
     },
     "phase": "done",
     "plan": {
@@ -18370,9 +18280,9 @@
       "todd"
     ],
     "split": {
-      "todd": 1,
+      "todd": 2,
       "maya": 5,
-      "you": 5,
+      "you": 4,
       "teammates": 0
     },
     "isOwner": true
@@ -18440,51 +18350,41 @@
         "owner": "todd",
         "assigneeId": "",
         "holder": {
-          "owner": "person",
-          "assigneeId": "uid-owner"
+          "owner": "todd",
+          "assigneeId": ""
         },
         "kind": "tool",
         "tool": "outreach.engagement",
         "product": "outreach",
         "effect": "read",
-        "automated": false,
+        "automated": true,
         "status": "done",
         "skipReason": "",
         "when": "",
         "branch": null,
-        "why": "TODD can't read Outreach engagement from a Mission yet. Check Outreach's numbers and note them here.",
+        "why": "",
         "doneWhen": "",
         "options": [],
         "minutes": 0,
         "dependsOn": [],
         "activeSince": "2026-10-14T16:00:00.000Z",
         "waitUntil": null,
-        "finishedAt": "2026-10-14T16:07:00.000Z",
+        "finishedAt": "2026-10-14T16:00:00.000Z",
         "finishedBy": {
-          "type": "person",
-          "id": "uid-owner"
+          "type": "todd"
         },
-        "handoff": {
-          "from": "todd",
-          "code": "not_wired",
-          "reason": "TODD can't read Outreach engagement from a Mission yet. Check Outreach's numbers and note them here.",
-          "at": "2026-10-14T16:00:00.000Z"
-        },
+        "handoff": null,
         "reassigned": null,
         "timedOut": false,
-        "resultSummary": "Did it by hand: Your own numbers",
+        "resultSummary": "120 sent, 54 opened, 9 clicked, 4 replied in undefined days",
         "output": {
           "sent": 120,
           "opened": 54,
           "clicked": 9,
           "replied": 4,
-          "bounced": 1,
-          "note": "Did it by hand: Your own numbers"
+          "bounced": 1
         },
-        "error": {
-          "code": "not_wired",
-          "message": "TODD can't read Outreach engagement from a Mission yet. Check Outreach's numbers and note them here."
-        },
+        "error": null,
         "revisions": 0
       },
       {
@@ -18767,16 +18667,16 @@
           "title": "Your own numbers",
           "kind": "tool",
           "by": {
-            "type": "person",
-            "id": "uid-owner"
+            "type": "todd",
+            "id": ""
           },
-          "finishedAt": "2026-10-14T16:07:00.000Z",
-          "result": "Did it by hand: Your own numbers",
+          "finishedAt": "2026-10-14T16:00:00.000Z",
+          "result": "120 sent, 54 opened, 9 clicked, 4 replied in undefined days",
           "status": "done",
           "timedOut": false,
           "skipReason": "",
-          "handedOff": true,
-          "handoffReason": "TODD can't read Outreach engagement from a Mission yet. Check Outreach's numbers and note them here.",
+          "handedOff": false,
+          "handoffReason": "",
           "artifacts": []
         },
         {
@@ -18855,9 +18755,9 @@
         }
       ],
       "split": {
-        "todd": 3,
+        "todd": 4,
         "maya": 1,
-        "owner": 2,
+        "owner": 1,
         "teammates": 0
       },
       "ownerMinutes": 0,
@@ -18886,7 +18786,7 @@
           "title": ""
         }
       ],
-      "line": "3 steps by TODD, 1 by Maya, 2 by you."
+      "line": "4 steps by TODD, 1 by Maya, 1 by you."
     },
     "phase": "done",
     "plan": {
@@ -18908,9 +18808,9 @@
       "maya"
     ],
     "split": {
-      "todd": 3,
+      "todd": 4,
       "maya": 1,
-      "you": 2,
+      "you": 1,
       "teammates": 0
     },
     "isOwner": true
@@ -23835,51 +23735,41 @@
         "owner": "todd",
         "assigneeId": "",
         "holder": {
-          "owner": "person",
-          "assigneeId": "uid-owner"
+          "owner": "todd",
+          "assigneeId": ""
         },
         "kind": "tool",
         "tool": "outreach.engagement",
         "product": "outreach",
         "effect": "read",
-        "automated": false,
+        "automated": true,
         "status": "done",
         "skipReason": "",
         "when": "",
         "branch": null,
-        "why": "TODD can't read Outreach engagement from a Mission yet. Check Outreach's numbers and note them here.",
+        "why": "",
         "doneWhen": "",
         "options": [],
         "minutes": 0,
         "dependsOn": [],
         "activeSince": "2026-10-14T16:00:00.000Z",
         "waitUntil": null,
-        "finishedAt": "2026-10-14T16:07:00.000Z",
+        "finishedAt": "2026-10-14T16:00:00.000Z",
         "finishedBy": {
-          "type": "person",
-          "id": "uid-owner"
+          "type": "todd"
         },
-        "handoff": {
-          "from": "todd",
-          "code": "not_wired",
-          "reason": "TODD can't read Outreach engagement from a Mission yet. Check Outreach's numbers and note them here.",
-          "at": "2026-10-14T16:00:00.000Z"
-        },
+        "handoff": null,
         "reassigned": null,
         "timedOut": false,
-        "resultSummary": "Did it by hand: What the numbers show",
+        "resultSummary": "120 sent, 54 opened, 9 clicked, 4 replied in undefined days",
         "output": {
           "sent": 120,
           "opened": 54,
           "clicked": 9,
           "replied": 4,
-          "bounced": 1,
-          "note": "Did it by hand: What the numbers show"
+          "bounced": 1
         },
-        "error": {
-          "code": "not_wired",
-          "message": "TODD can't read Outreach engagement from a Mission yet. Check Outreach's numbers and note them here."
-        },
+        "error": null,
         "revisions": 0
       },
       {
@@ -24372,16 +24262,16 @@
           "title": "What the numbers show",
           "kind": "tool",
           "by": {
-            "type": "person",
-            "id": "uid-owner"
+            "type": "todd",
+            "id": ""
           },
-          "finishedAt": "2026-10-14T16:07:00.000Z",
-          "result": "Did it by hand: What the numbers show",
+          "finishedAt": "2026-10-14T16:00:00.000Z",
+          "result": "120 sent, 54 opened, 9 clicked, 4 replied in undefined days",
           "status": "done",
           "timedOut": false,
           "skipReason": "",
-          "handedOff": true,
-          "handoffReason": "TODD can't read Outreach engagement from a Mission yet. Check Outreach's numbers and note them here.",
+          "handedOff": false,
+          "handoffReason": "",
           "artifacts": []
         },
         {
@@ -24544,9 +24434,9 @@
         }
       ],
       "split": {
-        "todd": 3,
+        "todd": 4,
         "maya": 3,
-        "owner": 3,
+        "owner": 2,
         "teammates": 0
       },
       "ownerMinutes": 3,
@@ -24582,7 +24472,7 @@
           "id": "m9"
         }
       ],
-      "line": "3 steps by TODD, 3 by Maya, 3 by you. About 3 minutes of your time."
+      "line": "4 steps by TODD, 3 by Maya, 2 by you. About 3 minutes of your time."
     },
     "phase": "done",
     "plan": {
@@ -24607,9 +24497,9 @@
       "moves"
     ],
     "split": {
-      "todd": 4,
+      "todd": 5,
       "maya": 3,
-      "you": 3,
+      "you": 2,
       "teammates": 0
     },
     "isOwner": true
@@ -27300,19 +27190,19 @@
         "owner": "todd",
         "assigneeId": "",
         "holder": {
-          "owner": "person",
-          "assigneeId": "uid-owner"
+          "owner": "todd",
+          "assigneeId": ""
         },
         "kind": "tool",
         "tool": "outreach.history",
         "product": "outreach",
         "effect": "read",
-        "automated": false,
+        "automated": true,
         "status": "done",
         "skipReason": "",
         "when": "",
         "branch": null,
-        "why": "TODD can't read Outreach history from a Mission yet. Check Outreach and note what you find.",
+        "why": "",
         "doneWhen": "",
         "options": [],
         "minutes": 0,
@@ -27321,20 +27211,14 @@
         ],
         "activeSince": "2026-10-14T16:00:00.000Z",
         "waitUntil": null,
-        "finishedAt": "2026-10-14T16:07:00.000Z",
+        "finishedAt": "2026-10-14T16:00:00.000Z",
         "finishedBy": {
-          "type": "person",
-          "id": "uid-owner"
+          "type": "todd"
         },
-        "handoff": {
-          "from": "todd",
-          "code": "not_wired",
-          "reason": "TODD can't read Outreach history from a Mission yet. Check Outreach and note what you find.",
-          "at": "2026-10-14T16:00:00.000Z"
-        },
+        "handoff": null,
         "reassigned": null,
         "timedOut": false,
-        "resultSummary": "Did it by hand: What you sent them before",
+        "resultSummary": "1 past emails",
         "output": {
           "interactions": [
             {
@@ -27343,13 +27227,9 @@
               "type": "email",
               "subject": "Hello"
             }
-          ],
-          "note": "Did it by hand: What you sent them before"
+          ]
         },
-        "error": {
-          "code": "not_wired",
-          "message": "TODD can't read Outreach history from a Mission yet. Check Outreach and note what you find."
-        },
+        "error": null,
         "revisions": 0
       },
       {
@@ -27380,9 +27260,9 @@
           "quiet",
           "history"
         ],
-        "activeSince": "2026-10-14T16:07:00.000Z",
+        "activeSince": "2026-10-14T16:00:00.000Z",
         "waitUntil": null,
-        "finishedAt": "2026-10-14T16:07:00.000Z",
+        "finishedAt": "2026-10-14T16:00:00.000Z",
         "finishedBy": {
           "type": "todd"
         },
@@ -27433,9 +27313,9 @@
         "dependsOn": [
           "segments"
         ],
-        "activeSince": "2026-10-14T16:07:00.000Z",
+        "activeSince": "2026-10-14T16:00:00.000Z",
         "waitUntil": null,
-        "finishedAt": "2026-10-14T16:07:00.000Z",
+        "finishedAt": "2026-10-14T16:00:00.000Z",
         "finishedBy": {
           "type": "maya"
         },
@@ -27478,9 +27358,9 @@
         "dependsOn": [
           "email"
         ],
-        "activeSince": "2026-10-14T16:07:00.000Z",
+        "activeSince": "2026-10-14T16:00:00.000Z",
         "waitUntil": null,
-        "finishedAt": "2026-10-14T16:14:00.000Z",
+        "finishedAt": "2026-10-14T16:07:00.000Z",
         "finishedBy": {
           "type": "person",
           "id": "uid-owner"
@@ -27524,9 +27404,9 @@
           "approve",
           "quiet"
         ],
-        "activeSince": "2026-10-14T16:14:00.000Z",
+        "activeSince": "2026-10-14T16:07:00.000Z",
         "waitUntil": null,
-        "finishedAt": "2026-10-14T16:21:00.000Z",
+        "finishedAt": "2026-10-14T16:14:00.000Z",
         "finishedBy": {
           "type": "person",
           "id": "uid-owner"
@@ -27535,7 +27415,7 @@
           "from": "todd",
           "code": "not_wired",
           "reason": "Batch sending from a Mission isn't switched on yet. Send it from Outreach and mark this done.",
-          "at": "2026-10-14T16:14:00.000Z"
+          "at": "2026-10-14T16:07:00.000Z"
         },
         "reassigned": null,
         "timedOut": false,
@@ -27581,9 +27461,9 @@
         "dependsOn": [
           "send"
         ],
-        "activeSince": "2026-10-14T16:21:00.000Z",
+        "activeSince": "2026-10-14T16:14:00.000Z",
         "waitUntil": null,
-        "finishedAt": "2026-10-14T16:21:00.000Z",
+        "finishedAt": "2026-10-14T16:14:00.000Z",
         "finishedBy": {
           "type": "todd"
         },
@@ -27626,9 +27506,9 @@
         "dependsOn": [
           "send"
         ],
-        "activeSince": "2026-10-14T16:21:00.000Z",
+        "activeSince": "2026-10-14T16:14:00.000Z",
         "waitUntil": null,
-        "finishedAt": "2026-10-14T16:28:00.000Z",
+        "finishedAt": "2026-10-14T16:21:00.000Z",
         "finishedBy": {
           "type": "person",
           "id": "uid-owner"
@@ -27637,7 +27517,7 @@
           "from": "todd",
           "code": "not_wired",
           "reason": "TODD can't draft a Pulse survey from a Mission yet. Create it in Pulse and mark this done.",
-          "at": "2026-10-14T16:21:00.000Z"
+          "at": "2026-10-14T16:14:00.000Z"
         },
         "reassigned": null,
         "timedOut": false,
@@ -27680,9 +27560,9 @@
           "tasks",
           "survey"
         ],
-        "activeSince": "2026-10-14T16:28:00.000Z",
+        "activeSince": "2026-10-14T16:21:00.000Z",
         "waitUntil": null,
-        "finishedAt": "2026-10-14T16:28:00.000Z",
+        "finishedAt": "2026-10-14T16:21:00.000Z",
         "finishedBy": {
           "type": "todd"
         },
@@ -27737,14 +27617,14 @@
     "startedAt": "2026-10-14T16:00:00.000Z",
     "resumeAt": null,
     "nextCheckAt": null,
-    "finishedAt": "2026-10-14T16:28:00.000Z",
+    "finishedAt": "2026-10-14T16:21:00.000Z",
     "report": {
       "missionId": "re-engagement",
       "title": "Re-engage people who haven't responded",
       "outcomeType": "action",
       "headline": "Three things matter this week.",
       "startedAt": "2026-10-14T16:00:00.000Z",
-      "finishedAt": "2026-10-14T16:28:00.000Z",
+      "finishedAt": "2026-10-14T16:21:00.000Z",
       "days": 0,
       "rows": [
         {
@@ -27769,16 +27649,16 @@
           "title": "What you sent them before",
           "kind": "tool",
           "by": {
-            "type": "person",
-            "id": "uid-owner"
+            "type": "todd",
+            "id": ""
           },
-          "finishedAt": "2026-10-14T16:07:00.000Z",
-          "result": "Did it by hand: What you sent them before",
+          "finishedAt": "2026-10-14T16:00:00.000Z",
+          "result": "1 past emails",
           "status": "done",
           "timedOut": false,
           "skipReason": "",
-          "handedOff": true,
-          "handoffReason": "TODD can't read Outreach history from a Mission yet. Check Outreach and note what you find.",
+          "handedOff": false,
+          "handoffReason": "",
           "artifacts": []
         },
         {
@@ -27789,7 +27669,7 @@
             "type": "todd",
             "id": ""
           },
-          "finishedAt": "2026-10-14T16:07:00.000Z",
+          "finishedAt": "2026-10-14T16:00:00.000Z",
           "result": "Three things matter this week.",
           "status": "done",
           "timedOut": false,
@@ -27806,7 +27686,7 @@
             "type": "maya",
             "id": ""
           },
-          "finishedAt": "2026-10-14T16:07:00.000Z",
+          "finishedAt": "2026-10-14T16:00:00.000Z",
           "result": "Calder's reporting backlog, and a 20-minute idea",
           "status": "done",
           "timedOut": false,
@@ -27829,7 +27709,7 @@
             "type": "person",
             "id": "uid-owner"
           },
-          "finishedAt": "2026-10-14T16:14:00.000Z",
+          "finishedAt": "2026-10-14T16:07:00.000Z",
           "result": "Approved",
           "status": "done",
           "timedOut": false,
@@ -27846,7 +27726,7 @@
             "type": "person",
             "id": "uid-owner"
           },
-          "finishedAt": "2026-10-14T16:21:00.000Z",
+          "finishedAt": "2026-10-14T16:14:00.000Z",
           "result": "Did it by hand: Send it",
           "status": "done",
           "timedOut": false,
@@ -27863,7 +27743,7 @@
             "type": "todd",
             "id": ""
           },
-          "finishedAt": "2026-10-14T16:21:00.000Z",
+          "finishedAt": "2026-10-14T16:14:00.000Z",
           "result": "1 moveIds",
           "status": "done",
           "timedOut": false,
@@ -27885,7 +27765,7 @@
             "type": "person",
             "id": "uid-owner"
           },
-          "finishedAt": "2026-10-14T16:28:00.000Z",
+          "finishedAt": "2026-10-14T16:21:00.000Z",
           "result": "Did it by hand: Ask the quiet ones why",
           "status": "done",
           "timedOut": false,
@@ -27896,9 +27776,9 @@
         }
       ],
       "split": {
-        "todd": 3,
+        "todd": 4,
         "maya": 1,
-        "owner": 4,
+        "owner": 3,
         "teammates": 0
       },
       "ownerMinutes": 3,
@@ -27925,7 +27805,7 @@
           "id": "m9"
         }
       ],
-      "line": "3 steps by TODD, 1 by Maya, 4 by you. About 3 minutes of your time."
+      "line": "4 steps by TODD, 1 by Maya, 3 by you. About 3 minutes of your time."
     },
     "phase": "done",
     "plan": {
@@ -27948,9 +27828,9 @@
       "pulse"
     ],
     "split": {
-      "todd": 4,
+      "todd": 5,
       "maya": 1,
-      "you": 4,
+      "you": 3,
       "teammates": 0
     },
     "isOwner": true
@@ -30214,19 +30094,19 @@
         "owner": "todd",
         "assigneeId": "",
         "holder": {
-          "owner": "person",
-          "assigneeId": "uid-owner"
+          "owner": "todd",
+          "assigneeId": ""
         },
         "kind": "tool",
         "tool": "outreach.engagement",
         "product": "outreach",
         "effect": "read",
-        "automated": false,
+        "automated": true,
         "status": "done",
         "skipReason": "",
         "when": "",
         "branch": null,
-        "why": "TODD can't read Outreach engagement from a Mission yet. Check Outreach's numbers and note them here.",
+        "why": "",
         "doneWhen": "",
         "options": [],
         "minutes": 0,
@@ -30235,32 +30115,22 @@
         ],
         "activeSince": "2026-10-14T16:14:00.000Z",
         "waitUntil": null,
-        "finishedAt": "2026-10-14T16:21:00.000Z",
+        "finishedAt": "2026-10-14T16:14:00.000Z",
         "finishedBy": {
-          "type": "person",
-          "id": "uid-owner"
+          "type": "todd"
         },
-        "handoff": {
-          "from": "todd",
-          "code": "not_wired",
-          "reason": "TODD can't read Outreach engagement from a Mission yet. Check Outreach's numbers and note them here.",
-          "at": "2026-10-14T16:14:00.000Z"
-        },
+        "handoff": null,
         "reassigned": null,
         "timedOut": false,
-        "resultSummary": "Did it by hand: Monitor results",
+        "resultSummary": "120 sent, 54 opened, 9 clicked, 4 replied in undefined days",
         "output": {
           "sent": 120,
           "opened": 54,
           "clicked": 9,
           "replied": 4,
-          "bounced": 1,
-          "note": "Did it by hand: Monitor results"
+          "bounced": 1
         },
-        "error": {
-          "code": "not_wired",
-          "message": "TODD can't read Outreach engagement from a Mission yet. Check Outreach's numbers and note them here."
-        },
+        "error": null,
         "revisions": 0
       },
       {
@@ -30290,9 +30160,9 @@
         "dependsOn": [
           "results"
         ],
-        "activeSince": "2026-10-14T16:21:00.000Z",
+        "activeSince": "2026-10-14T16:14:00.000Z",
         "waitUntil": null,
-        "finishedAt": "2026-10-14T16:28:00.000Z",
+        "finishedAt": "2026-10-14T16:21:00.000Z",
         "finishedBy": {
           "type": "person",
           "id": "uid-owner"
@@ -30301,7 +30171,7 @@
           "from": "todd",
           "code": "not_wired",
           "reason": "TODD can't draft a Pulse survey from a Mission yet. Create it in Pulse and mark this done.",
-          "at": "2026-10-14T16:21:00.000Z"
+          "at": "2026-10-14T16:14:00.000Z"
         },
         "reassigned": null,
         "timedOut": false,
@@ -30343,9 +30213,9 @@
         "dependsOn": [
           "pulse"
         ],
-        "activeSince": "2026-10-14T16:28:00.000Z",
+        "activeSince": "2026-10-14T16:21:00.000Z",
         "waitUntil": null,
-        "finishedAt": "2026-10-14T16:28:00.000Z",
+        "finishedAt": "2026-10-14T16:21:00.000Z",
         "finishedBy": {
           "type": "todd"
         },
@@ -30400,14 +30270,14 @@
     "startedAt": "2026-10-14T16:00:00.000Z",
     "resumeAt": null,
     "nextCheckAt": null,
-    "finishedAt": "2026-10-14T16:28:00.000Z",
+    "finishedAt": "2026-10-14T16:21:00.000Z",
     "report": {
       "missionId": "campaign-find-and-prepare",
       "title": "Find companies and prepare a campaign",
       "outcomeType": "action",
       "headline": "Did it by hand: Ask responders what mattered",
       "startedAt": "2026-10-14T16:00:00.000Z",
-      "finishedAt": "2026-10-14T16:28:00.000Z",
+      "finishedAt": "2026-10-14T16:21:00.000Z",
       "days": 0,
       "rows": [
         {
@@ -30506,16 +30376,16 @@
           "title": "Monitor results",
           "kind": "tool",
           "by": {
-            "type": "person",
-            "id": "uid-owner"
+            "type": "todd",
+            "id": ""
           },
-          "finishedAt": "2026-10-14T16:21:00.000Z",
-          "result": "Did it by hand: Monitor results",
+          "finishedAt": "2026-10-14T16:14:00.000Z",
+          "result": "120 sent, 54 opened, 9 clicked, 4 replied in undefined days",
           "status": "done",
           "timedOut": false,
           "skipReason": "",
-          "handedOff": true,
-          "handoffReason": "TODD can't read Outreach engagement from a Mission yet. Check Outreach's numbers and note them here.",
+          "handedOff": false,
+          "handoffReason": "",
           "artifacts": []
         },
         {
@@ -30526,7 +30396,7 @@
             "type": "person",
             "id": "uid-owner"
           },
-          "finishedAt": "2026-10-14T16:28:00.000Z",
+          "finishedAt": "2026-10-14T16:21:00.000Z",
           "result": "Did it by hand: Ask responders what mattered",
           "status": "done",
           "timedOut": false,
@@ -30537,9 +30407,9 @@
         }
       ],
       "split": {
-        "todd": 2,
+        "todd": 3,
         "maya": 1,
-        "owner": 4,
+        "owner": 3,
         "teammates": 0
       },
       "ownerMinutes": 3,
@@ -30554,7 +30424,7 @@
           "title": "Calder's reporting backlog, and a 20-minute idea"
         }
       ],
-      "line": "2 steps by TODD, 1 by Maya, 4 by you. About 3 minutes of your time."
+      "line": "3 steps by TODD, 1 by Maya, 3 by you. About 3 minutes of your time."
     },
     "phase": "done",
     "plan": {
@@ -30577,9 +30447,9 @@
       "todd"
     ],
     "split": {
-      "todd": 3,
+      "todd": 4,
       "maya": 1,
-      "you": 4,
+      "you": 3,
       "teammates": 0
     },
     "isOwner": true
@@ -30707,51 +30577,41 @@
         "owner": "todd",
         "assigneeId": "",
         "holder": {
-          "owner": "person",
-          "assigneeId": "uid-owner"
+          "owner": "todd",
+          "assigneeId": ""
         },
         "kind": "tool",
         "tool": "outreach.engagement",
         "product": "outreach",
         "effect": "read",
-        "automated": false,
+        "automated": true,
         "status": "done",
         "skipReason": "",
         "when": "",
         "branch": null,
-        "why": "TODD can't read Outreach engagement from a Mission yet. Check Outreach's numbers and note them here.",
+        "why": "",
         "doneWhen": "",
         "options": [],
         "minutes": 0,
         "dependsOn": [],
         "activeSince": "2026-10-14T16:00:00.000Z",
         "waitUntil": null,
-        "finishedAt": "2026-10-14T16:07:00.000Z",
+        "finishedAt": "2026-10-14T16:00:00.000Z",
         "finishedBy": {
-          "type": "person",
-          "id": "uid-owner"
+          "type": "todd"
         },
-        "handoff": {
-          "from": "todd",
-          "code": "not_wired",
-          "reason": "TODD can't read Outreach engagement from a Mission yet. Check Outreach's numbers and note them here.",
-          "at": "2026-10-14T16:00:00.000Z"
-        },
+        "handoff": null,
         "reassigned": null,
         "timedOut": false,
-        "resultSummary": "Did it by hand: Replies and drops",
+        "resultSummary": "120 sent, 54 opened, 9 clicked, 4 replied in undefined days",
         "output": {
           "sent": 120,
           "opened": 54,
           "clicked": 9,
           "replied": 4,
-          "bounced": 1,
-          "note": "Did it by hand: Replies and drops"
+          "bounced": 1
         },
-        "error": {
-          "code": "not_wired",
-          "message": "TODD can't read Outreach engagement from a Mission yet. Check Outreach's numbers and note them here."
-        },
+        "error": null,
         "revisions": 0
       },
       {
@@ -31003,16 +30863,16 @@
           "title": "Replies and drops",
           "kind": "tool",
           "by": {
-            "type": "person",
-            "id": "uid-owner"
+            "type": "todd",
+            "id": ""
           },
-          "finishedAt": "2026-10-14T16:07:00.000Z",
-          "result": "Did it by hand: Replies and drops",
+          "finishedAt": "2026-10-14T16:00:00.000Z",
+          "result": "120 sent, 54 opened, 9 clicked, 4 replied in undefined days",
           "status": "done",
           "timedOut": false,
           "skipReason": "",
-          "handedOff": true,
-          "handoffReason": "TODD can't read Outreach engagement from a Mission yet. Check Outreach's numbers and note them here.",
+          "handedOff": false,
+          "handoffReason": "",
           "artifacts": []
         },
         {
@@ -31068,9 +30928,9 @@
         }
       ],
       "split": {
-        "todd": 4,
+        "todd": 5,
         "maya": 0,
-        "owner": 2,
+        "owner": 1,
         "teammates": 0
       },
       "ownerMinutes": 0,
@@ -31093,7 +30953,7 @@
         }
       ],
       "artifacts": [],
-      "line": "4 steps by TODD, 2 by you."
+      "line": "5 steps by TODD, 1 by you."
     },
     "phase": "done",
     "plan": {
@@ -31115,9 +30975,9 @@
       "todd"
     ],
     "split": {
-      "todd": 4,
+      "todd": 5,
       "maya": 0,
-      "you": 2,
+      "you": 1,
       "teammates": 0
     },
     "isOwner": true
@@ -33170,6 +33030,859 @@
       "todd": 5,
       "maya": 1,
       "you": 3,
+      "teammates": 0
+    },
+    "isOwner": true
+  },
+  "schedule-social-queue": {
+    "id": "schedule-social-queue",
+    "tenantId": "tenant-1",
+    "ownerId": "uid-owner",
+    "origin": "ask",
+    "request": "Schedule the drafted social posts in the queue.",
+    "title": "Schedule the drafted social posts",
+    "steps": [
+      {
+        "number": 1,
+        "id": "plan",
+        "title": "Read the marketing plan and today's board",
+        "detail": "",
+        "owner": "todd",
+        "assigneeId": "",
+        "holder": {
+          "owner": "todd",
+          "assigneeId": ""
+        },
+        "kind": "tool",
+        "tool": "marketingPlan.read",
+        "product": "maya",
+        "effect": "read",
+        "automated": true,
+        "status": "done",
+        "skipReason": "",
+        "when": "",
+        "branch": null,
+        "why": "",
+        "doneWhen": "",
+        "options": [],
+        "minutes": 0,
+        "dependsOn": [],
+        "activeSince": "2026-10-14T16:00:00.000Z",
+        "waitUntil": null,
+        "finishedAt": "2026-10-14T16:00:00.000Z",
+        "finishedBy": {
+          "type": "todd"
+        },
+        "handoff": null,
+        "reassigned": null,
+        "timedOut": false,
+        "resultSummary": "Q4 plan",
+        "output": {
+          "found": true,
+          "plans": [
+            {
+              "planId": "p1",
+              "title": "Q4 plan",
+              "goal": "Pipeline from organic",
+              "steps": [],
+              "currentStep": null,
+              "actions": []
+            }
+          ]
+        },
+        "error": null,
+        "revisions": 0
+      },
+      {
+        "number": 2,
+        "id": "drafts",
+        "title": "List the drafts waiting in the queue",
+        "detail": "",
+        "owner": "todd",
+        "assigneeId": "",
+        "holder": {
+          "owner": "todd",
+          "assigneeId": ""
+        },
+        "kind": "tool",
+        "tool": "social.listDrafts",
+        "product": "social",
+        "effect": "read",
+        "automated": true,
+        "status": "done",
+        "skipReason": "",
+        "when": "",
+        "branch": null,
+        "why": "",
+        "doneWhen": "",
+        "options": [],
+        "minutes": 0,
+        "dependsOn": [],
+        "activeSince": "2026-10-14T16:00:00.000Z",
+        "waitUntil": null,
+        "finishedAt": "2026-10-14T16:00:00.000Z",
+        "finishedBy": {
+          "type": "todd"
+        },
+        "handoff": null,
+        "reassigned": null,
+        "timedOut": false,
+        "resultSummary": "1 posts in the queue",
+        "output": {
+          "posts": [
+            {
+              "postId": "post-7",
+              "platform": "linkedin",
+              "title": "",
+              "text": "Proof post",
+              "plannedForDate": "2026-10-20",
+              "status": "draft"
+            }
+          ]
+        },
+        "error": null,
+        "revisions": 0
+      },
+      {
+        "number": 3,
+        "id": "approve",
+        "title": "Approve the batch",
+        "detail": "",
+        "owner": "person",
+        "assigneeId": "uid-owner",
+        "holder": {
+          "owner": "person",
+          "assigneeId": "uid-owner"
+        },
+        "kind": "approval",
+        "tool": "",
+        "product": "",
+        "effect": "",
+        "automated": false,
+        "status": "done",
+        "skipReason": "",
+        "when": "",
+        "branch": null,
+        "why": "Nothing publishes without your yes; one approval covers the batch.",
+        "doneWhen": "",
+        "options": [],
+        "minutes": 3,
+        "dependsOn": [
+          "plan",
+          "drafts"
+        ],
+        "activeSince": "2026-10-14T16:00:00.000Z",
+        "waitUntil": null,
+        "finishedAt": "2026-10-14T16:07:00.000Z",
+        "finishedBy": {
+          "type": "person",
+          "id": "uid-owner"
+        },
+        "handoff": null,
+        "reassigned": null,
+        "timedOut": false,
+        "resultSummary": "Approved",
+        "output": {
+          "approved": true,
+          "note": ""
+        },
+        "error": null,
+        "revisions": 0
+      },
+      {
+        "number": 4,
+        "id": "schedule",
+        "title": "Schedule them on their planned days",
+        "detail": "",
+        "owner": "maya",
+        "assigneeId": "",
+        "holder": {
+          "owner": "maya",
+          "assigneeId": ""
+        },
+        "kind": "tool",
+        "tool": "social.scheduleDrafts",
+        "product": "social",
+        "effect": "send",
+        "automated": true,
+        "status": "done",
+        "skipReason": "",
+        "when": "",
+        "branch": null,
+        "why": "",
+        "doneWhen": "",
+        "options": [],
+        "minutes": 0,
+        "dependsOn": [
+          "approve"
+        ],
+        "activeSince": "2026-10-14T16:07:00.000Z",
+        "waitUntil": null,
+        "finishedAt": "2026-10-14T16:07:00.000Z",
+        "finishedBy": {
+          "type": "maya"
+        },
+        "handoff": null,
+        "reassigned": null,
+        "timedOut": false,
+        "resultSummary": "1 post scheduled",
+        "output": {
+          "scheduled": [
+            {
+              "postId": "post-7",
+              "status": "approved"
+            }
+          ],
+          "count": 1
+        },
+        "error": null,
+        "revisions": 0
+      },
+      {
+        "number": 5,
+        "id": "report",
+        "title": "Write the report",
+        "detail": "Every step, who did it, and the result.",
+        "owner": "todd",
+        "assigneeId": "",
+        "holder": {
+          "owner": "todd",
+          "assigneeId": ""
+        },
+        "kind": "tool",
+        "tool": "todd.report",
+        "product": "todd",
+        "effect": "create",
+        "automated": true,
+        "status": "done",
+        "skipReason": "",
+        "when": "",
+        "branch": null,
+        "why": "",
+        "doneWhen": "",
+        "options": [],
+        "minutes": 0,
+        "dependsOn": [
+          "schedule"
+        ],
+        "activeSince": "2026-10-14T16:07:00.000Z",
+        "waitUntil": null,
+        "finishedAt": "2026-10-14T16:07:00.000Z",
+        "finishedBy": {
+          "type": "todd"
+        },
+        "handoff": null,
+        "reassigned": null,
+        "timedOut": false,
+        "resultSummary": "Report written",
+        "output": {
+          "ready": true
+        },
+        "error": null,
+        "revisions": 0
+      }
+    ],
+    "status": "done",
+    "autoStart": false,
+    "answers": [],
+    "playbookId": "schedule-social-queue",
+    "createdAt": "2026-10-14T16:00:00.000Z",
+    "outcomeType": "action",
+    "summary": "",
+    "questions": [],
+    "estimate": {
+      "counts": {},
+      "yourMinutes": 3,
+      "approvals": 1,
+      "split": {
+        "todd": 3,
+        "maya": 1,
+        "person": 1
+      },
+      "waitBusinessDays": 0,
+      "products": [
+        "maya",
+        "social",
+        "todd"
+      ]
+    },
+    "planner": {
+      "provider": "test",
+      "model": "test"
+    },
+    "planFallback": false,
+    "planErrors": [],
+    "examplesUsed": [],
+    "statusDetail": "Every step finished.",
+    "startedAt": "2026-10-14T16:00:00.000Z",
+    "resumeAt": null,
+    "nextCheckAt": null,
+    "finishedAt": "2026-10-14T16:07:00.000Z",
+    "report": {
+      "missionId": "schedule-social-queue",
+      "title": "Schedule the drafted social posts",
+      "outcomeType": "action",
+      "headline": "1 post scheduled",
+      "startedAt": "2026-10-14T16:00:00.000Z",
+      "finishedAt": "2026-10-14T16:07:00.000Z",
+      "days": 0,
+      "rows": [
+        {
+          "stepId": "plan",
+          "title": "Read the marketing plan and today's board",
+          "kind": "tool",
+          "by": {
+            "type": "todd",
+            "id": ""
+          },
+          "finishedAt": "2026-10-14T16:00:00.000Z",
+          "result": "Q4 plan",
+          "status": "done",
+          "timedOut": false,
+          "skipReason": "",
+          "handedOff": false,
+          "handoffReason": "",
+          "artifacts": []
+        },
+        {
+          "stepId": "drafts",
+          "title": "List the drafts waiting in the queue",
+          "kind": "tool",
+          "by": {
+            "type": "todd",
+            "id": ""
+          },
+          "finishedAt": "2026-10-14T16:00:00.000Z",
+          "result": "1 posts in the queue",
+          "status": "done",
+          "timedOut": false,
+          "skipReason": "",
+          "handedOff": false,
+          "handoffReason": "",
+          "artifacts": []
+        },
+        {
+          "stepId": "approve",
+          "title": "Approve the batch",
+          "kind": "approval",
+          "by": {
+            "type": "person",
+            "id": "uid-owner"
+          },
+          "finishedAt": "2026-10-14T16:07:00.000Z",
+          "result": "Approved",
+          "status": "done",
+          "timedOut": false,
+          "skipReason": "",
+          "handedOff": false,
+          "handoffReason": "",
+          "artifacts": []
+        },
+        {
+          "stepId": "schedule",
+          "title": "Schedule them on their planned days",
+          "kind": "tool",
+          "by": {
+            "type": "maya",
+            "id": ""
+          },
+          "finishedAt": "2026-10-14T16:07:00.000Z",
+          "result": "1 post scheduled",
+          "status": "done",
+          "timedOut": false,
+          "skipReason": "",
+          "handedOff": false,
+          "handoffReason": "",
+          "artifacts": []
+        }
+      ],
+      "split": {
+        "todd": 2,
+        "maya": 1,
+        "owner": 1,
+        "teammates": 0
+      },
+      "ownerMinutes": 3,
+      "findings": [],
+      "recommendations": [],
+      "shortlist": [],
+      "proposals": [],
+      "artifacts": [],
+      "line": "2 steps by TODD, 1 by Maya, 1 by you. About 3 minutes of your time."
+    },
+    "phase": "done",
+    "plan": {
+      "missionId": "schedule-social-queue",
+      "status": "done",
+      "phase": "done",
+      "outcomeType": "action",
+      "stepsDone": 5,
+      "stepsTotal": 5,
+      "current": null,
+      "nextCheckAt": null,
+      "playbookId": "schedule-social-queue"
+    },
+    "products": [
+      "maya",
+      "social",
+      "todd"
+    ],
+    "split": {
+      "todd": 3,
+      "maya": 1,
+      "you": 1,
+      "teammates": 0
+    },
+    "isOwner": true
+  },
+  "review-plan-progress": {
+    "id": "review-plan-progress",
+    "tenantId": "tenant-1",
+    "ownerId": "uid-owner",
+    "origin": "ask",
+    "request": "Review today's progress against the marketing plan and adjust if needed.",
+    "title": "Review progress against the marketing plan",
+    "steps": [
+      {
+        "number": 1,
+        "id": "plan",
+        "title": "Read the plan, its current step and the board",
+        "detail": "",
+        "owner": "todd",
+        "assigneeId": "",
+        "holder": {
+          "owner": "todd",
+          "assigneeId": ""
+        },
+        "kind": "tool",
+        "tool": "marketingPlan.read",
+        "product": "maya",
+        "effect": "read",
+        "automated": true,
+        "status": "done",
+        "skipReason": "",
+        "when": "",
+        "branch": null,
+        "why": "",
+        "doneWhen": "",
+        "options": [],
+        "minutes": 0,
+        "dependsOn": [],
+        "activeSince": "2026-10-14T16:00:00.000Z",
+        "waitUntil": null,
+        "finishedAt": "2026-10-14T16:00:00.000Z",
+        "finishedBy": {
+          "type": "todd"
+        },
+        "handoff": null,
+        "reassigned": null,
+        "timedOut": false,
+        "resultSummary": "Q4 plan",
+        "output": {
+          "found": true,
+          "plans": [
+            {
+              "planId": "p1",
+              "title": "Q4 plan",
+              "goal": "Pipeline from organic",
+              "steps": [],
+              "currentStep": null,
+              "actions": []
+            }
+          ]
+        },
+        "error": null,
+        "revisions": 0
+      },
+      {
+        "number": 2,
+        "id": "numbers",
+        "title": "Real outreach numbers for the last 7 days",
+        "detail": "",
+        "owner": "todd",
+        "assigneeId": "",
+        "holder": {
+          "owner": "todd",
+          "assigneeId": ""
+        },
+        "kind": "tool",
+        "tool": "outreach.engagement",
+        "product": "outreach",
+        "effect": "read",
+        "automated": true,
+        "status": "done",
+        "skipReason": "",
+        "when": "",
+        "branch": null,
+        "why": "",
+        "doneWhen": "",
+        "options": [],
+        "minutes": 0,
+        "dependsOn": [],
+        "activeSince": "2026-10-14T16:00:00.000Z",
+        "waitUntil": null,
+        "finishedAt": "2026-10-14T16:00:00.000Z",
+        "finishedBy": {
+          "type": "todd"
+        },
+        "handoff": null,
+        "reassigned": null,
+        "timedOut": false,
+        "resultSummary": "120 sent, 54 opened, 9 clicked, 4 replied in undefined days",
+        "output": {
+          "sent": 120,
+          "opened": 54,
+          "clicked": 9,
+          "replied": 4,
+          "bounced": 1
+        },
+        "error": null,
+        "revisions": 0
+      },
+      {
+        "number": 3,
+        "id": "work",
+        "title": "What moved this week",
+        "detail": "",
+        "owner": "todd",
+        "assigneeId": "",
+        "holder": {
+          "owner": "todd",
+          "assigneeId": ""
+        },
+        "kind": "tool",
+        "tool": "moves.status",
+        "product": "moves",
+        "effect": "read",
+        "automated": true,
+        "status": "done",
+        "skipReason": "",
+        "when": "",
+        "branch": null,
+        "why": "",
+        "doneWhen": "",
+        "options": [],
+        "minutes": 0,
+        "dependsOn": [],
+        "activeSince": "2026-10-14T16:00:00.000Z",
+        "waitUntil": null,
+        "finishedAt": "2026-10-14T16:00:00.000Z",
+        "finishedBy": {
+          "type": "todd"
+        },
+        "handoff": null,
+        "reassigned": null,
+        "timedOut": false,
+        "resultSummary": "1 done, 1 at risk, 0 slipped",
+        "output": {
+          "done": [
+            {
+              "moveId": "m1",
+              "title": "Ship v2"
+            }
+          ],
+          "atRisk": [
+            {
+              "moveId": "m2",
+              "title": "Kindred proposal",
+              "assigneeId": "uid-dana"
+            }
+          ],
+          "slipped": [],
+          "owners": [
+            "uid-dana"
+          ]
+        },
+        "error": null,
+        "revisions": 0
+      },
+      {
+        "number": 4,
+        "id": "analyze",
+        "title": "Compare progress with the plan",
+        "detail": "",
+        "owner": "todd",
+        "assigneeId": "",
+        "holder": {
+          "owner": "todd",
+          "assigneeId": ""
+        },
+        "kind": "tool",
+        "tool": "todd.analyze",
+        "product": "todd",
+        "effect": "read",
+        "automated": true,
+        "status": "done",
+        "skipReason": "",
+        "when": "",
+        "branch": null,
+        "why": "",
+        "doneWhen": "",
+        "options": [],
+        "minutes": 0,
+        "dependsOn": [
+          "plan",
+          "numbers",
+          "work"
+        ],
+        "activeSince": "2026-10-14T16:00:00.000Z",
+        "waitUntil": null,
+        "finishedAt": "2026-10-14T16:00:00.000Z",
+        "finishedBy": {
+          "type": "todd"
+        },
+        "handoff": null,
+        "reassigned": null,
+        "timedOut": false,
+        "resultSummary": "Three things matter this week.",
+        "output": {
+          "summary": "Three things matter this week.",
+          "findings": [
+            {
+              "title": "Kindred is at risk",
+              "detail": "No update in 5 days",
+              "evidence": "moves.status"
+            }
+          ],
+          "recommendations": [
+            "Call Kindred"
+          ]
+        },
+        "error": null,
+        "revisions": 0
+      },
+      {
+        "number": 5,
+        "id": "next",
+        "title": "Propose the next Missions",
+        "detail": "",
+        "owner": "todd",
+        "assigneeId": "",
+        "holder": {
+          "owner": "todd",
+          "assigneeId": ""
+        },
+        "kind": "tool",
+        "tool": "todd.proposeMissions",
+        "product": "todd",
+        "effect": "read",
+        "automated": true,
+        "status": "done",
+        "skipReason": "",
+        "when": "",
+        "branch": null,
+        "why": "",
+        "doneWhen": "",
+        "options": [],
+        "minutes": 0,
+        "dependsOn": [
+          "analyze"
+        ],
+        "activeSince": "2026-10-14T16:00:00.000Z",
+        "waitUntil": null,
+        "finishedAt": "2026-10-14T16:00:00.000Z",
+        "finishedBy": {
+          "type": "todd"
+        },
+        "handoff": null,
+        "reassigned": null,
+        "timedOut": false,
+        "resultSummary": "1 next Missions proposed",
+        "output": {
+          "proposals": [
+            {
+              "title": "Email Tidepool Clinics",
+              "request": "Email Sam Patel at Tidepool Clinics about reporting",
+              "why": "Strong fit"
+            }
+          ]
+        },
+        "error": null,
+        "revisions": 0
+      }
+    ],
+    "status": "done",
+    "autoStart": false,
+    "answers": [],
+    "playbookId": "review-plan-progress",
+    "createdAt": "2026-10-14T16:00:00.000Z",
+    "outcomeType": "insight",
+    "summary": "",
+    "questions": [],
+    "estimate": {
+      "counts": {},
+      "yourMinutes": 0,
+      "approvals": 0,
+      "split": {
+        "todd": 5,
+        "maya": 0,
+        "person": 0
+      },
+      "waitBusinessDays": 0,
+      "products": [
+        "maya",
+        "outreach",
+        "moves",
+        "todd"
+      ]
+    },
+    "planner": {
+      "provider": "test",
+      "model": "test"
+    },
+    "planFallback": false,
+    "planErrors": [],
+    "examplesUsed": [],
+    "statusDetail": "Every step finished.",
+    "startedAt": "2026-10-14T16:00:00.000Z",
+    "resumeAt": null,
+    "finishedAt": "2026-10-14T16:00:00.000Z",
+    "report": {
+      "missionId": "review-plan-progress",
+      "title": "Review progress against the marketing plan",
+      "outcomeType": "insight",
+      "headline": "Three things matter this week.",
+      "startedAt": "2026-10-14T16:00:00.000Z",
+      "finishedAt": "2026-10-14T16:00:00.000Z",
+      "days": 0,
+      "rows": [
+        {
+          "stepId": "plan",
+          "title": "Read the plan, its current step and the board",
+          "kind": "tool",
+          "by": {
+            "type": "todd",
+            "id": ""
+          },
+          "finishedAt": "2026-10-14T16:00:00.000Z",
+          "result": "Q4 plan",
+          "status": "done",
+          "timedOut": false,
+          "skipReason": "",
+          "handedOff": false,
+          "handoffReason": "",
+          "artifacts": []
+        },
+        {
+          "stepId": "numbers",
+          "title": "Real outreach numbers for the last 7 days",
+          "kind": "tool",
+          "by": {
+            "type": "todd",
+            "id": ""
+          },
+          "finishedAt": "2026-10-14T16:00:00.000Z",
+          "result": "120 sent, 54 opened, 9 clicked, 4 replied in undefined days",
+          "status": "done",
+          "timedOut": false,
+          "skipReason": "",
+          "handedOff": false,
+          "handoffReason": "",
+          "artifacts": []
+        },
+        {
+          "stepId": "work",
+          "title": "What moved this week",
+          "kind": "tool",
+          "by": {
+            "type": "todd",
+            "id": ""
+          },
+          "finishedAt": "2026-10-14T16:00:00.000Z",
+          "result": "1 done, 1 at risk, 0 slipped",
+          "status": "done",
+          "timedOut": false,
+          "skipReason": "",
+          "handedOff": false,
+          "handoffReason": "",
+          "artifacts": []
+        },
+        {
+          "stepId": "analyze",
+          "title": "Compare progress with the plan",
+          "kind": "tool",
+          "by": {
+            "type": "todd",
+            "id": ""
+          },
+          "finishedAt": "2026-10-14T16:00:00.000Z",
+          "result": "Three things matter this week.",
+          "status": "done",
+          "timedOut": false,
+          "skipReason": "",
+          "handedOff": false,
+          "handoffReason": "",
+          "artifacts": []
+        },
+        {
+          "stepId": "next",
+          "title": "Propose the next Missions",
+          "kind": "tool",
+          "by": {
+            "type": "todd",
+            "id": ""
+          },
+          "finishedAt": "2026-10-14T16:00:00.000Z",
+          "result": "1 next Missions proposed",
+          "status": "done",
+          "timedOut": false,
+          "skipReason": "",
+          "handedOff": false,
+          "handoffReason": "",
+          "artifacts": []
+        }
+      ],
+      "split": {
+        "todd": 5,
+        "maya": 0,
+        "owner": 0,
+        "teammates": 0
+      },
+      "ownerMinutes": 0,
+      "findings": [
+        {
+          "title": "Kindred is at risk",
+          "detail": "No update in 5 days",
+          "evidence": "moves.status"
+        }
+      ],
+      "recommendations": [
+        "Call Kindred"
+      ],
+      "shortlist": [],
+      "proposals": [
+        {
+          "title": "Email Tidepool Clinics",
+          "request": "Email Sam Patel at Tidepool Clinics about reporting",
+          "why": "Strong fit"
+        }
+      ],
+      "artifacts": [],
+      "line": "5 steps by TODD."
+    },
+    "nextCheckAt": null,
+    "phase": "done",
+    "plan": {
+      "missionId": "review-plan-progress",
+      "status": "done",
+      "phase": "done",
+      "outcomeType": "insight",
+      "stepsDone": 5,
+      "stepsTotal": 5,
+      "current": null,
+      "nextCheckAt": null,
+      "playbookId": "review-plan-progress"
+    },
+    "products": [
+      "maya",
+      "outreach",
+      "moves",
+      "todd"
+    ],
+    "split": {
+      "todd": 5,
+      "maya": 0,
+      "you": 0,
       "teammates": 0
     },
     "isOwner": true

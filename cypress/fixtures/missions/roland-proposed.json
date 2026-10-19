@@ -381,7 +381,7 @@
       "tool": "outreach.waitForReply",
       "product": "outreach",
       "effect": "wait",
-      "automated": false,
+      "automated": true,
       "status": "pending",
       "skipReason": "",
       "when": "",

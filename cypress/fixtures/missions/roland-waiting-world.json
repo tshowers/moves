@@ -433,7 +433,7 @@
       "tool": "outreach.waitForReply",
       "product": "outreach",
       "effect": "wait",
-      "automated": false,
+      "automated": true,
       "status": "active",
       "skipReason": "",
       "when": "",
@@ -819,10 +819,10 @@
   "planFallback": false,
   "planErrors": [],
   "examplesUsed": [],
-  "statusDetail": "Next check at 2026-10-14T17:07:00.000Z.",
+  "statusDetail": "Next check at 2026-10-14T18:07:00.000Z.",
   "startedAt": "2026-10-14T16:00:00.000Z",
-  "resumeAt": "2026-10-14T17:07:00.000Z",
-  "nextCheckAt": "2026-10-14T17:07:00.000Z",
+  "resumeAt": "2026-10-14T18:07:00.000Z",
+  "nextCheckAt": "2026-10-14T18:07:00.000Z",
   "phase": "waiting_on_world",
   "plan": {
     "missionId": "reach-named-person",
@@ -839,7 +839,7 @@
       "assigneeId": "",
       "handedOff": false
     },
-    "nextCheckAt": "2026-10-14T17:07:00.000Z",
+    "nextCheckAt": "2026-10-14T18:07:00.000Z",
     "playbookId": "reach-named-person"
   },
   "products": [

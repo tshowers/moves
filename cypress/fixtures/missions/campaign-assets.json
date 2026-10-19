@@ -367,7 +367,7 @@
       "tool": "outreach.engagement",
       "product": "outreach",
       "effect": "read",
-      "automated": false,
+      "automated": true,
       "status": "pending",
       "skipReason": "",
       "when": "",
