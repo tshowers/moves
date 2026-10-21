@@ -16,7 +16,7 @@ export class MissionsApiService {
   private readonly base = `${environment.backendURL}/orchestration/missions`;
 
   /** A request: answered directly, or a Mission that starts planning. */
-  ask ( request: string, opts: { origin?: string; title?: string; playbookId?: string; force?: 'mission'; autoStart?: boolean; sourceRef?: { kind: string; id: string } } = {} ): Promise<DirectAnswer | { mode: 'mission'; mission: MissionView }> {
+  ask ( request: string, opts: { origin?: string; title?: string; playbookId?: string; force?: 'mission'; autoStart?: boolean; sourceRef?: { kind: string; id: string }; context?: Record<string, unknown> } = {} ): Promise<DirectAnswer | { mode: 'mission'; mission: MissionView }> {
     return firstValueFrom( this.http.post<any>( this.base, { request, ...opts } ) );
   }
 

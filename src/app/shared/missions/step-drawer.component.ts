@@ -149,8 +149,8 @@ import { paint } from './plan-strip.component';
     </aside>
   `,
   styles: [`
-    /* A modal: above every app's assistant launcher (z-index 10000). */
-    :host { position: fixed; inset: 0; z-index: 10001; display: block; }
+    /* A modal: above every app's sidebar (10002) and the assistant (10011). */
+    :host { position: fixed; inset: 0; z-index: 10020; display: block; }
     .scrim { position: absolute; inset: 0; background: rgba(15, 17, 21, .32); }
     .drawer { position: absolute; top: 0; right: 0; bottom: 0; width: 480px; max-width: 100%; background: var(--bg); color: var(--text); box-shadow: var(--shadow); overflow-y: auto; padding: 22px 24px 0; display: flex; flex-direction: column; gap: 18px; font-family: var(--font); }
     .grabber { display: none; }
