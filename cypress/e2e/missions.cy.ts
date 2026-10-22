@@ -70,7 +70,12 @@ describe( 'Mission detail (2a)', () => {
     cy.visitWithCypressAuth( '/missions/reach-named-person', ME );
     cy.get( '[data-cy="mission-banner"]' ).should( 'have.attr', 'data-state', 'run' ).and( 'contain.text', 'Maya is working: design the HTML email' );
 
-    mission( 'roland-waiting-world' );
+    // The fixture's wait ends on a fixed date; keep it in the future so "· N left" shows whatever day this runs.
+    cy.fixture( 'missions/roland-waiting-world.json' ).then( ( m ) => {
+      const waitUntil = new Date( Date.now() + 3 * 24 * 3600 * 1000 ).toISOString();
+      const steps = m.steps.map( ( s: any ) => ( s.id === 'watch' ? { ...s, waitUntil } : s ) );
+      cy.intercept( 'GET', `${API}/orchestration/missions/reach-named-person`, { success: true, mission: { ...m, id: 'reach-named-person', steps } } );
+    } );
     cy.visitWithCypressAuth( '/missions/reach-named-person', ME );
     cy.get( '[data-cy="mission-banner"]' ).should( 'have.attr', 'data-state', 'wait' ).and( 'contain.text', 'left' );
 
@@ -181,17 +186,48 @@ describe( 'Report (8a), insight (7a), shortlist (11a), asset set (13a)', () => {
     cy.get( '[data-cy="proposal-started"]' ).should( 'contain.text', 'Started · in Moves' );
   } );
 
-  it( 'a shortlist: keep, later, drop, then one approval starts the kept ones', () => {
-    mission( 'reconnect-keep', 'reconnect-lost-touch' );
-    cy.intercept( 'POST', `${API}/orchestration/missions/reconnect-lost-touch/steps/keep`, { statusCode: 202, body: { success: true } } ).as( 'answer' );
+  it( 'a shortlist the plan ends on: keep, later, drop, then each kept one becomes its own Mission', () => {
+    mission( 'map-pick', 'map-account' );
+    cy.intercept( 'POST', `${API}/orchestration/missions/map-account/steps/pick`, { statusCode: 202, body: { success: true } } ).as( 'answer' );
     cy.intercept( 'POST', `${API}/orchestration/missions`, { statusCode: 202, body: { success: true, mode: 'mission', mission: { id: 'kept-1', status: 'queued' } } } ).as( 'ask' );
-    cy.visitWithCypressAuth( '/missions/reconnect-lost-touch', ME );
+    cy.visitWithCypressAuth( '/missions/map-account', ME );
     cy.get( '[data-cy="shortlist-item"]' ).first().within( () => cy.get( '[data-cy="pick-keep"]' ).click() );
     cy.get( '[data-cy="shortlist-counter"]' ).should( 'contain.text', '1 kept' );
     cy.get( '[data-cy="start-kept"]' ).should( 'contain.text', 'Start 1 Mission' ).click();
     cy.wait( '@answer' ).its( 'request.body' ).should( 'deep.equal', { type: 'answer', value: 'Tidepool Clinics' } );
     cy.wait( '@ask' ).its( 'request.body' ).should( 'include', { origin: 'suggestion', autoStart: true } );
     cy.get( '[data-cy="batch-started"]' ).should( 'contain.text', '1 Mission started' );
+  } );
+
+  it( 'a shortlist the plan continues from: the kept ones go on in this Mission, no extra Missions', () => {
+    mission( 'reconnect-keep', 'reconnect-lost-touch' );
+    cy.intercept( 'POST', `${API}/orchestration/missions/reconnect-lost-touch/steps/keep`, { statusCode: 202, body: { success: true } } ).as( 'answer' );
+    cy.intercept( 'POST', `${API}/orchestration/missions`, cy.spy().as( 'ask' ) );
+    cy.visitWithCypressAuth( '/missions/reconnect-lost-touch', ME );
+    cy.get( '[data-cy="shortlist-item"]' ).first().within( () => cy.get( '[data-cy="pick-keep"]' ).click() );
+    cy.get( '[data-cy="start-kept"]' ).should( 'not.exist' );
+    cy.get( '[data-cy="continue-kept"]' ).should( 'contain.text', 'Continue with 1 kept' ).click();
+    cy.wait( '@answer' ).its( 'request.body' ).should( 'deep.equal', { type: 'answer', value: 'Tidepool Clinics' } );
+    cy.get( '[data-cy="batch-started"]' ).should( 'contain.text', '1 kept · the Mission carries on' );
+    cy.get( '@ask' ).should( 'not.have.been.called' );
+  } );
+
+  it( 'an industry segment: keep the right firms, and the batch email goes on from here', () => {
+    mission( 'segment-keep', 'pitch-segment' );
+    cy.intercept( 'POST', `${API}/orchestration/missions/pitch-segment/steps/keep`, { statusCode: 202, body: { success: true } } ).as( 'answer' );
+    cy.intercept( 'POST', `${API}/orchestration/missions`, cy.spy().as( 'ask' ) );
+    cy.visitWithCypressAuth( '/missions/pitch-segment', ME );
+    cy.get( '[data-cy="mission-title"]' ).should( 'contain.text', 'Email an industry segment' );
+    cy.get( '[data-cy="shortlist"]' ).should( 'contain.text', '3 firms invest at your stage' )
+      .and( 'contain.text', 'carries on with them: unlock emails for the Lead Vault people you kept' );
+    cy.get( '[data-cy="shortlist-item"]' ).should( 'have.length', 3 );
+    cy.get( '[data-cy="shortlist-item"]' ).eq( 0 ).should( 'contain.text', 'Northline Ventures' ).and( 'contain.text', 'Strong' ).within( () => cy.get( '[data-cy="pick-keep"]' ).click() );
+    cy.get( '[data-cy="shortlist-item"]' ).eq( 1 ).within( () => cy.get( '[data-cy="pick-keep"]' ).click() );
+    cy.get( '[data-cy="shortlist-item"]' ).eq( 2 ).within( () => cy.get( '[data-cy="pick-drop"]' ).click() );
+    cy.get( '[data-cy="shortlist-counter"]' ).should( 'contain.text', '2 kept' ).and( 'contain.text', '1 dropped' );
+    cy.get( '[data-cy="continue-kept"]' ).click();
+    cy.wait( '@answer' ).its( 'request.body' ).should( 'deep.equal', { type: 'answer', value: 'Northline Ventures, Grant & Co' } );
+    cy.get( '@ask' ).should( 'not.have.been.called' );
   } );
 
   it( 'an asset set is approved as one set', () => {
