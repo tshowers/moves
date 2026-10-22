@@ -1,0 +1,320 @@
+[
+  {
+    "id": "reach-named-person",
+    "title": "Reach a named person",
+    "source": "starter",
+    "actions": 4
+  },
+  {
+    "id": "import-contact-list",
+    "title": "Import a contact list",
+    "source": "starter",
+    "actions": 3
+  },
+  {
+    "id": "revive-cold-relationship",
+    "title": "Revive a cold relationship",
+    "source": "starter",
+    "actions": 4
+  },
+  {
+    "id": "meeting-prep",
+    "title": "Prep me for a meeting",
+    "source": "starter",
+    "actions": 1
+  },
+  {
+    "id": "map-account",
+    "title": "Map an account",
+    "source": "starter",
+    "actions": 1
+  },
+  {
+    "id": "meeting-follow-up",
+    "title": "Follow up after a meeting",
+    "source": "starter",
+    "actions": 5
+  },
+  {
+    "id": "answer-inbound",
+    "title": "Answer an inbound lead",
+    "source": "starter",
+    "actions": 2
+  },
+  {
+    "id": "event-follow-up",
+    "title": "Event follow-up",
+    "source": "starter",
+    "actions": 4
+  },
+  {
+    "id": "ask-for-intro",
+    "title": "Ask for an introduction",
+    "source": "starter",
+    "actions": 5
+  },
+  {
+    "id": "win-back",
+    "title": "Win back a lost deal",
+    "source": "starter",
+    "actions": 4
+  },
+  {
+    "id": "rfp-response",
+    "title": "Respond to an RFP",
+    "source": "starter",
+    "actions": 5
+  },
+  {
+    "id": "proposal",
+    "title": "Write a proposal",
+    "source": "starter",
+    "actions": 5
+  },
+  {
+    "id": "capability-statement",
+    "title": "Refresh the capability statement",
+    "source": "starter",
+    "actions": 2
+  },
+  {
+    "id": "contract-to-signature",
+    "title": "SOW to signature",
+    "source": "starter",
+    "actions": 3
+  },
+  {
+    "id": "offboarding-knowledge",
+    "title": "Capture a contractor's knowledge",
+    "source": "starter",
+    "actions": 2
+  },
+  {
+    "id": "kb-article",
+    "title": "Turn a solved problem into a KB article",
+    "source": "starter",
+    "actions": 1
+  },
+  {
+    "id": "project-kickoff",
+    "title": "Kick off a won project",
+    "source": "starter",
+    "actions": 3
+  },
+  {
+    "id": "weekly-status",
+    "title": "Weekly status report",
+    "source": "starter",
+    "actions": 3
+  },
+  {
+    "id": "unstick-move",
+    "title": "Unstick a Move",
+    "source": "starter",
+    "actions": 1
+  },
+  {
+    "id": "project-closeout",
+    "title": "Close out a project",
+    "source": "starter",
+    "actions": 2
+  },
+  {
+    "id": "satisfaction-survey",
+    "title": "Survey and follow through",
+    "source": "starter",
+    "actions": 4
+  },
+  {
+    "id": "detractor-recovery",
+    "title": "Recover an unhappy client",
+    "source": "starter",
+    "actions": 4
+  },
+  {
+    "id": "monthly-social-calendar",
+    "title": "Monthly social calendar",
+    "source": "starter",
+    "actions": 1
+  },
+  {
+    "id": "announce-launch",
+    "title": "Announce a launch",
+    "source": "starter",
+    "actions": 2
+  },
+  {
+    "id": "case-study",
+    "title": "Case study from a finished project",
+    "source": "starter",
+    "actions": 3
+  },
+  {
+    "id": "funded-companies",
+    "title": "Recently funded companies",
+    "source": "ty",
+    "actions": 0
+  },
+  {
+    "id": "meeting-right-person",
+    "title": "Get a meeting at a company",
+    "source": "ty",
+    "actions": 5
+  },
+  {
+    "id": "campaign-new-service",
+    "title": "Campaign for a new service",
+    "source": "ty",
+    "actions": 4
+  },
+  {
+    "id": "competitor-attention",
+    "title": "Why competitors get more attention",
+    "source": "ty",
+    "actions": 1
+  },
+  {
+    "id": "success-story-material",
+    "title": "Success story into marketing",
+    "source": "ty",
+    "actions": 2
+  },
+  {
+    "id": "important-meeting-prep",
+    "title": "Prepare for an important meeting",
+    "source": "ty",
+    "actions": 0
+  },
+  {
+    "id": "reconnect-lost-touch",
+    "title": "Reconnect with people you've lost touch with",
+    "source": "ty",
+    "actions": 3
+  },
+  {
+    "id": "brand-identity",
+    "title": "Brand identity for a new business",
+    "source": "ty",
+    "actions": 2
+  },
+  {
+    "id": "webinar-launch",
+    "title": "Launch a webinar",
+    "source": "ty",
+    "actions": 5
+  },
+  {
+    "id": "strategic-partners",
+    "title": "Find strategic partners",
+    "source": "ty",
+    "actions": 2
+  },
+  {
+    "id": "content-from-documents",
+    "title": "A month of content from documents",
+    "source": "ty",
+    "actions": 2
+  },
+  {
+    "id": "interest-drop",
+    "title": "Respond to a drop in interest",
+    "source": "ty",
+    "actions": 2
+  },
+  {
+    "id": "which-service-next",
+    "title": "Which service to promote next",
+    "source": "ty",
+    "actions": 1
+  },
+  {
+    "id": "consulting-opportunity",
+    "title": "Respond to a consulting opportunity",
+    "source": "ty",
+    "actions": 2
+  },
+  {
+    "id": "influential-people",
+    "title": "Build relationships with influential people",
+    "source": "ty",
+    "actions": 3
+  },
+  {
+    "id": "customer-requests",
+    "title": "What customers ask for that you don't offer",
+    "source": "ty",
+    "actions": 1
+  },
+  {
+    "id": "re-engagement",
+    "title": "Re-engage people who haven't responded",
+    "source": "ty",
+    "actions": 3
+  },
+  {
+    "id": "executive-presentation",
+    "title": "Research into an executive presentation",
+    "source": "ty",
+    "actions": 1
+  },
+  {
+    "id": "reduce-expenses",
+    "title": "Opportunities to reduce expenses",
+    "source": "ty",
+    "actions": 2
+  },
+  {
+    "id": "quarter-pipeline",
+    "title": "Build next quarter's pipeline",
+    "source": "ty",
+    "actions": 4
+  },
+  {
+    "id": "campaign-find-and-prepare",
+    "title": "Find companies and prepare a campaign",
+    "source": "ty",
+    "actions": 3
+  },
+  {
+    "id": "this-week",
+    "title": "What to address this week",
+    "source": "ty",
+    "actions": 1
+  },
+  {
+    "id": "idea-to-launch",
+    "title": "Turn an idea into a launch plan",
+    "source": "ty",
+    "actions": 2
+  },
+  {
+    "id": "promote-new-product",
+    "title": "Promote a new product",
+    "source": "ty",
+    "actions": 3
+  },
+  {
+    "id": "proposal-for-opportunity",
+    "title": "Proposal for an opportunity",
+    "source": "ty",
+    "actions": 3
+  },
+  {
+    "id": "pitch-segment",
+    "title": "Email an industry segment",
+    "source": "ty",
+    "actions": 4
+  },
+  {
+    "id": "schedule-social-queue",
+    "title": "Schedule the drafted social posts",
+    "source": "backlog",
+    "actions": 1
+  },
+  {
+    "id": "review-plan-progress",
+    "title": "Review progress against the marketing plan",
+    "source": "backlog",
+    "actions": 0
+  }
+]
