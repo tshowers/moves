@@ -26,7 +26,7 @@ const MAYA_URL = 'https://maya.taliferro.tech';
       </header>
 
       @for (m of store.mayaQueue(); track m.id) {
-        <article class="row" data-cy="maya-queue-row">
+        <article class="task" data-cy="maya-queue-row">
           <button type="button" class="txt" (click)="open(m.id)">
             <strong>{{ m.title }}</strong>
             @if (m.nextAction) { <span>{{ m.nextAction }}</span> }
@@ -41,7 +41,7 @@ const MAYA_URL = 'https://maya.taliferro.tech';
   `,
   styles: [`
     .head { display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; margin-bottom: 22px; }
-    .row { display: flex; align-items: center; gap: 14px; padding: 14px 16px 14px 20px; margin-top: 10px; border-radius: 24px; background: var(--surface); }
+    .task { display: flex; align-items: center; gap: 14px; padding: 14px 16px 14px 20px; margin-top: 10px; border-radius: 24px; background: var(--surface); }
     .txt { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 3px; text-align: left; border: 0; background: none; padding: 0; cursor: pointer; color: var(--text); }
     .txt strong { font-size: 16px; }
     .txt span { font-size: 14px; color: var(--text2); }

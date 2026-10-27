@@ -248,7 +248,9 @@ export class FlowStore {
       assigneeId: lane === 'person' ? ( t.assigneeId || t.ownerId || null ) : null,
       lane,
       due: apiDay( t.dueDate || t.plannedForDate ) || isoDay( new Date() ),
-      done: !!t.isCompleted || t.status === 'completed' || t.status === 'done',
+      // Cancelled and expired count as finished: Maya closes an outreach move when no contact exists
+      // anywhere, and expires daily-plan moves the planner didn't carry into today.
+      done: !!t.isCompleted || ['completed', 'done', 'cancelled', 'expired'].includes( String( t.status || '' ) ),
       dependsOn: t.dependsOn || [],
       lastActivityAt: t.lastActivityAt || t.updatedAt || t.createdAt || new Date().toISOString(),
       dateLockedBy: t.dateLockedBy || undefined,
