@@ -177,7 +177,7 @@ export class FlowStore {
       for ( const m of moves ) {
         if ( !m.projectId ) m.projectId = LOOSE_PROJECT;
         if ( !projects.some( p => p.id === m.projectId ) ) {
-          projects.push( { id: m.projectId, name: m.projectId === LOOSE_PROJECT ? 'Not in a project' : 'Untitled project', memberIds: [] } );
+          projects.push( { id: m.projectId, name: m.projectId === LOOSE_PROJECT ? 'Not in a project' : 'Untitled project', memberIds: [], orphan: true } );
         }
       }
       for ( const p of projects ) {
@@ -499,6 +499,13 @@ export class FlowStore {
     this.toastForAction.set( a.id, this.say( `Marked done.${next}`, () => this.undo( a.id ) ) );
   }
 
+  /** "I handled it" (TODD, Review): the note, if any, then done - Maya stops working it too. */
+  async resolve ( moveId: string, note = '' ): Promise<void> {
+    if ( !this.canWrite( 'mark this done' ) ) return;
+    if ( note.trim() ) await this.addNote( moveId, note );
+    this.markDone( moveId );
+  }
+
   /** "Can't do it" from the member's phone: TODD routes it again to whoever has the most room. */
   cantDo ( moveId: string, reason: 'someone-else' | 'blocked' | 'not-this-week' ): void {
     const s = this.state();
@@ -566,6 +573,78 @@ export class FlowStore {
       } );
   }
 
+  /** The drawer's edits: title, due date (a hand-set date TODD won't move) or project (Ty, 2026-10-27). */
+  editMove ( moveId: string, edit: { title?: string; due?: string; projectId?: string } ): void {
+    const m = moveById( this.state(), moveId );
+    if ( !m || !this.canWrite( 'edit this move' ) ) return;
+    const after: Partial<FlowMove> = {};
+    const task: Partial<Task> = {};
+    const title = edit.title?.trim();
+    if ( title && title !== m.title ) { after.title = title; task.title = title; }
+    if ( edit.due && edit.due !== m.due ) {
+      Object.assign( after, { due: edit.due, dateLockedBy: 'manual' } );
+      Object.assign( task, { dueDate: edit.due, dateLockedBy: 'manual' } );
+    }
+    if ( edit.projectId !== undefined && edit.projectId !== m.projectId ) {
+      const projectId = edit.projectId === LOOSE_PROJECT ? '' : edit.projectId;
+      after.projectId = edit.projectId || LOOSE_PROJECT;
+      task.projectId = projectId;
+    }
+    if ( !Object.keys( after ).length ) return;
+    const before = Object.fromEntries( Object.keys( after ).map( k => [k, m[k as keyof FlowMove]] ) ) as Partial<FlowMove>;
+    const change: MoveChange = { moveId, before, after };
+    this.patchMoves( [change], 'after' );
+    if ( after.projectId === LOOSE_PROJECT && !this.state().projects.some( p => p.id === LOOSE_PROJECT ) ) {
+      this.state.update( s => ( { ...s, projects: [...s.projects, { id: LOOSE_PROJECT, name: 'Not in a project', memberIds: [], orphan: true }] } ) );
+    }
+    const done = after.projectId ? `Moved to ${this.project( after.projectId )?.name || 'no project'}.` : 'Saved.';
+    if ( this.mode() !== 'live' ) {
+      this.say( done );
+      return;
+    }
+    this.tasks.updateTask( moveId, task, this.state().pmId )
+      .then( () => this.say( done ) )
+      .catch( err => {
+        this.patchMoves( [change], 'before' );
+        this.say( FlowApiService.message( err, 'That didn’t save. Try again.' ) );
+      } );
+  }
+
+  renameProject ( projectId: string, name: string ): void {
+    const p = this.project( projectId );
+    const clean = name.trim();
+    if ( !p || p.orphan || !clean || clean === p.name || !this.canWrite( 'rename this project' ) ) return;
+    const set = ( n: string ) => this.state.update( s => ( { ...s, projects: s.projects.map( x => x.id === projectId ? { ...x, name: n } : x ) } ) );
+    const before = p.name;
+    set( clean );
+    this.say( 'Renamed.' );
+    this.sync( this.api.updateProject( projectId, { name: clean } ), () => set( before ) );
+  }
+
+  /** Deletes the project; its moves stay, out of any project. */
+  async deleteProject ( projectId: string ): Promise<boolean> {
+    const p = this.project( projectId );
+    if ( !p || p.orphan || !this.canWrite( 'delete this project' ) ) return false;
+    if ( this.mode() === 'live' ) {
+      try {
+        await this.api.deleteProject( projectId );
+      } catch ( err ) {
+        this.say( FlowApiService.message( err, 'That didn’t delete. Try again.' ) );
+        return false;
+      }
+    }
+    this.state.update( s => {
+      const moves = s.moves.map( m => m.projectId === projectId ? { ...m, projectId: LOOSE_PROJECT } : m );
+      const projects = s.projects.filter( x => x.id !== projectId );
+      if ( moves.some( m => m.projectId === LOOSE_PROJECT ) && !projects.some( x => x.id === LOOSE_PROJECT ) ) {
+        projects.push( { id: LOOSE_PROJECT, name: 'Not in a project', memberIds: [], orphan: true } );
+      }
+      return { ...s, moves, projects };
+    } );
+    this.say( `Deleted ${p.name}.` );
+    return true;
+  }
+
   async addNote ( moveId: string, text: string ): Promise<void> {
     const m = moveById( this.state(), moveId );
     if ( !m || !text.trim() || !this.canWrite( 'leave a note' ) ) return;
@@ -630,6 +709,7 @@ export class FlowStore {
       case 'park': this.dismiss( r.issueId, 'park' ); this.say( 'Parked for standup.', () => this.undismiss( r.issueId ) ); break;
       case 'skip': this.dismiss( r.issueId, 'skip' ); this.say( 'TODD will ask again tomorrow.', () => this.undismiss( r.issueId ) ); break;
       case 'reschedule': this.reschedule( r.moveIds, r.days ); break;
+      case 'done': void this.resolve( r.moveId, r.note || '' ); break;
       case 'open': break;
     }
   }

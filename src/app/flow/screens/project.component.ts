@@ -1,4 +1,4 @@
-import { Component, computed, inject } from '@angular/core';
+import { Component, computed, inject, signal } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { map } from 'rxjs';
@@ -25,8 +25,31 @@ type Tab = 'flow' | 'sequence' | 'moves' | 'people' | 'log';
     @if (project(); as p) {
       <div class="layout" [class.wide]="tab() === 'sequence'">
         <div class="mv-page body">
-          <div class="mv-crumb"><a routerLink="/app">Projects</a> › {{ p.name }}</div>
-          <h1 class="mv-title">{{ p.name }}</h1>
+          <div class="mv-crumb"><a routerLink="/app">Projects</a> › {{ p.name }}
+            @if (!p.orphan && !renaming() && !deleting()) {
+              <!-- Rename / delete, out of the way (2026-10-27). -->
+              <span class="manage">
+                <button type="button" class="mv-link" (click)="startRename(p.name)" data-cy="project-rename">Rename</button>
+                <button type="button" class="mv-link" (click)="deleting.set(true)" data-cy="project-delete">Delete</button>
+              </span>
+            }
+          </div>
+          @if (renaming()) {
+            <form class="rename" (submit)="$event.preventDefault(); saveRename(p.id)">
+              <input class="mv-input" [value]="nameDraft()" (input)="nameDraft.set($any($event.target).value)" (keydown.escape)="renaming.set(false)" aria-label="Project name" data-cy="project-name-input">
+              <button type="submit" class="mv-btn mv-btn--primary mv-btn--sm">Save</button>
+              <button type="button" class="mv-btn mv-btn--sm" (click)="renaming.set(false)">Cancel</button>
+            </form>
+          } @else {
+            <h1 class="mv-title">{{ p.name }}</h1>
+          }
+          @if (deleting()) {
+            <div class="confirm-delete" role="alert" data-cy="project-delete-confirm">
+              <p>Delete <strong>{{ p.name }}</strong>?{{ openCount() ? ' Its ' + openCount() + ' open move' + (openCount() === 1 ? '' : 's') + ' stay, out of any project.' : ' It has no open moves.' }}</p>
+              <button type="button" class="mv-btn mv-btn--primary mv-btn--sm" (click)="remove(p.id)">Delete project</button>
+              <button type="button" class="mv-btn mv-btn--sm" (click)="deleting.set(false)">Cancel</button>
+            </div>
+          }
           @if (tab() !== 'sequence') {
             <div class="tags">
               @if (health().tone !== 'green') { <span class="mv-tag mv-tag--lg" [class.mv-tag--pink]="health().tone === 'pink'">{{ health().label.split(' · ')[0] }}</span> }
@@ -163,6 +186,12 @@ type Tab = 'flow' | 'sequence' | 'moves' | 'people' | 'log';
     .layout.wide { grid-template-columns: minmax(0, 1fr); }
     .body { padding-top: 30px; }
     .mv-title { margin-top: 8px; }
+    .manage { margin-left: 14px; display: inline-flex; gap: 12px; }
+    .manage .mv-link { font-size: 13px; }
+    .rename { display: flex; gap: 8px; align-items: center; margin-top: 8px; max-width: 640px; }
+    .rename .mv-input { font-size: 24px; font-weight: 700; }
+    .confirm-delete { margin-top: 12px; display: flex; flex-wrap: wrap; align-items: center; gap: 8px 12px; padding: 12px 16px; border-radius: 20px; background: var(--t-pink); color: var(--t-pink-fg); }
+    .confirm-delete p { flex: 1; font-size: 14px; }
     .tags { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin-top: 14px; }
     .tags .mv-tag--lg { padding: 5px 12px; }
     .client { font-size: 13px; color: var(--muted); padding-left: 2px; }
@@ -279,6 +308,26 @@ export class ProjectComponent {
       person, load: loadOf( s, person.id ).length, here: this.moves().filter( m => !m.done && ownerOf( s, m )?.id === person.id ).length,
     } ) );
   } );
+
+  readonly renaming = signal( false );
+  readonly deleting = signal( false );
+  readonly nameDraft = signal( '' );
+  readonly openCount = computed( () => this.moves().filter( m => !m.done ).length );
+
+  startRename ( name: string ): void {
+    this.nameDraft.set( name );
+    this.renaming.set( true );
+  }
+
+  saveRename ( id: string ): void {
+    this.renaming.set( false );
+    this.store.renameProject( id, this.nameDraft() );
+  }
+
+  async remove ( id: string ): Promise<void> {
+    this.deleting.set( false );
+    if ( await this.store.deleteProject( id ) ) void this.router.navigate( ['/app'] );
+  }
 
   readonly capacities = Array.from( { length: 15 }, ( _, i ) => i + 1 );
 

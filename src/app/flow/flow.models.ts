@@ -71,6 +71,8 @@ export interface FlowProject {
   memberIds: string[];
   /** The project lead: who gets "needs you" for this project. */
   leadId?: string;
+  /** Not a real project: moves with no project, or one that was deleted. */
+  orphan?: boolean;
 }
 
 export type ToddActionType = 'reassigned' | 'split' | 'nudged' | 'rescheduled' | 'assigned' | 'sequenced' | 'completed' | 'created';
@@ -139,7 +141,8 @@ export interface IssueChoice {
     | { kind: 'park'; issueId: string }
     | { kind: 'skip'; issueId: string }
     | { kind: 'reschedule'; moveIds: string[]; days: number }
-    | { kind: 'open'; moveId: string };
+    | { kind: 'open'; moveId: string }
+    | { kind: 'done'; moveId: string; note?: string };
 }
 
 export interface Issue {

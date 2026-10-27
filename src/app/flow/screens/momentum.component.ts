@@ -39,6 +39,21 @@ import { daysBetween } from '../flow-dates';
         <a class="mv-btn" routerLink="/app/todd">See the log</a>
       </section>
 
+      @if (unsorted().length) {
+        <!-- Moves with no real project: a warning, not "Untitled" rows (2026-10-27). -->
+        <section class="unsorted" data-cy="momentum-unsorted">
+          <p><strong>{{ unsorted().length }} move{{ unsorted().length === 1 ? ' isn’t' : 's aren’t' }} in a project.</strong> Open one to give it a project or close it.</p>
+          <button type="button" class="mv-btn" (click)="showUnsorted.set(!showUnsorted())">{{ showUnsorted() ? 'Hide' : 'Show them' }}</button>
+          @if (showUnsorted()) {
+            <ul>
+              @for (m of unsorted(); track m.id) {
+                <li><button type="button" class="mv-link" (click)="openMove(m.id)">{{ m.title }}</button></li>
+              }
+            </ul>
+          }
+        </section>
+      }
+
       @if (!rows().length) {
         <div class="mv-empty">No projects yet. <a routerLink="/app/new">Start one from a plan you already have</a>.</div>
       } @else {
@@ -110,6 +125,11 @@ import { daysBetween } from '../flow-dates';
     .banner { margin-top: 24px; display: flex; align-items: center; gap: 18px; background: var(--surface); border-radius: 28px; padding: 14px 18px 14px 18px; }
     .banner p { flex: 1; font-size: 16px; line-height: 1.4; color: var(--text); }
     .banner .mv-btn { text-decoration: none; color: var(--text); padding: 9px 16px; }
+    .unsorted { margin-top: 12px; display: flex; flex-wrap: wrap; align-items: center; gap: 10px 18px; border-radius: 28px; padding: 12px 18px; box-shadow: inset 0 0 0 1.5px var(--pink); }
+    .unsorted p { flex: 1; font-size: 15px; line-height: 1.4; color: var(--text); }
+    .unsorted .mv-btn { padding: 8px 16px; }
+    .unsorted ul { flex-basis: 100%; margin: 0; padding: 0 0 4px; list-style: none; display: flex; flex-direction: column; gap: 6px; }
+    .unsorted li .mv-link { font-size: 14px; text-align: left; }
     .grid { display: grid; grid-template-columns: 200px minmax(0, 1fr) 250px; column-gap: 24px; margin-top: 26px; align-items: center; }
     .axis { position: relative; height: 22px; font-size: 12px; color: var(--muted); }
     .axis span { position: absolute; transform: translateX(-50%); white-space: nowrap; }
@@ -157,6 +177,7 @@ export class MomentumComponent {
   private readonly router = inject( Router );
   readonly todd = TODD_ICON;
   readonly picking = signal( '' );
+  readonly showUnsorted = signal( false );
   readonly ranges: { key: RangeKey; label: string }[] = [{ key: '1w', label: '1 week' }, { key: '3w', label: '3 weeks' }, { key: 'q', label: 'Quarter' }];
 
   private readonly range = computed( () => rangeFor( this.store.range(), this.store.state().now ) );
@@ -172,18 +193,25 @@ export class MomentumComponent {
   readonly subtitle = computed( () => {
     const s = this.store.state();
     const people = s.people.filter( p => p.kind === 'person' ).length;
-    return `${fmtLong( s.now )} · ${s.projects.length} project${s.projects.length === 1 ? '' : 's'} · ${people} ${people === 1 ? 'person' : 'people'}`;
+    const projects = s.projects.filter( p => !p.orphan ).length;
+    return `${fmtLong( s.now )} · ${projects} project${projects === 1 ? '' : 's'} · ${people} ${people === 1 ? 'person' : 'people'}`;
   } );
 
   readonly rows = computed( () => {
     const s = this.store.state();
     const issues = this.store.issues();
-    return this.store.projects().map( project => ( {
+    return this.store.projects().filter( p => !p.orphan ).map( project => ( {
       project,
       health: projectHealth( s, project, issues ),
       track: trackFor( s, projectMoves( s, project.id ), issues, this.range() ),
       note: marginNote( s, project.id, issues ),
     } ) );
+  } );
+
+  /** Open moves with no real project. */
+  readonly unsorted = computed( () => {
+    const orphans = new Set( this.store.state().projects.filter( p => p.orphan ).map( p => p.id ) );
+    return this.store.state().moves.filter( m => !m.done && orphans.has( m.projectId ) );
   } );
 
   readonly banner = computed( () => {

@@ -225,6 +225,11 @@ function assignChoices ( s: FlowState, m: FlowMove, exclude: string[] = [] ): Is
   } ) );
 }
 
+/** "I handled it": the PM already resolved it - close the move (Ty, 2026-10-27). */
+function doneChoice ( m: FlowMove ): IssueChoice {
+  return { label: 'I handled it', hint: 'Mark it done', run: { kind: 'done', moveId: m.id } };
+}
+
 function talkSkip ( id: string ): IssueChoice[] {
   return [
     { label: 'Talk it through', hint: 'Park for standup', run: { kind: 'park', issueId: id } },
@@ -247,7 +252,7 @@ function gapOwnerIssue ( s: FlowState, m: FlowMove, project: FlowProject | undef
     consequence: slips
       ? `Launch slips from ${fmtDay( project!.shipsOn! )} to ${fmtDay( addDays( project!.shipsOn!, 7 ) )} if nobody owns this by ${fmtWeekday( m.due )}. ${m.laneNotes?.todd && m.laneNotes?.maya ? 'TODD and Maya can’t do it.' : ''}`.trim()
       : `It’s due ${fmtWeekdayDay( m.due )}. Nothing after it can start until someone owns it.`,
-    choices: [...assignChoices( s, m ), ...talkSkip( id )],
+    choices: [...assignChoices( s, m ), doneChoice( m ), ...talkSkip( id )],
   };
 }
 
@@ -261,7 +266,7 @@ function gapNextIssue ( s: FlowState, m: FlowMove ): Issue {
     explanation: `${firstName( owner )} owns it, but nobody wrote down what happens next. Without one I can’t tell if it’s moving.`,
     question: `${m.title} has no next action.`,
     consequence: `It’s due ${fmtWeekdayDay( m.due )}. What has to happen first?`,
-    choices: [{ label: 'Write it', hint: 'Open the move', run: { kind: 'open', moveId: m.id } }, ...talkSkip( id )],
+    choices: [{ label: 'Write it', hint: 'Open the move', run: { kind: 'open', moveId: m.id } }, doneChoice( m ), ...talkSkip( id )],
   };
 }
 
@@ -304,7 +309,7 @@ function stallIssue ( s: FlowState, m: FlowMove, still: number, nudgeDays: numbe
         : `No activity for ${still} days. ${firstName( next )} has the most room if it should move.`,
     question: `${m.title} hasn’t moved in ${still} days.`,
     consequence: `${firstName( owner )} owns it and it’s due ${fmtWeekdayDay( m.due )}. ${downstream( s, m.id ).filter( isOpen ).length} moves wait on it.`,
-    choices: [...choices, ...talkSkip( id )].slice( 0, 4 ),
+    choices: [...choices.slice( 0, 1 ), doneChoice( m ), ...choices.slice( 1 ), ...talkSkip( id )].slice( 0, 5 ),
   };
 }
 
@@ -321,7 +326,7 @@ function laneStallIssue ( s: FlowState, m: FlowMove ): Issue {
     explanation: `${cant ? cant + ' ' : ''}It will stall again unless a person takes it.${to ? ` ${firstName( to )} has the most room.` : ''}`,
     question: `${m.title} has sat with ${lane} for ${days} days.`,
     consequence: `${cant || `${lane} hasn’t moved it.`} It’s due ${fmtWeekdayDay( m.due )}.`,
-    choices: [...assignChoices( s, m ), ...talkSkip( id )],
+    choices: [...assignChoices( s, m ), doneChoice( m ), ...talkSkip( id )],
   };
 }
 

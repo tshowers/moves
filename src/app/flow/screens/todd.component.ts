@@ -32,7 +32,21 @@ type Filter = 'all' | 'practice' | ToddActionType;
             <article class="need">
               <span class="meta">{{ where(i) }} · {{ kind(i) }}</span>
               <h3>{{ i.title }}</h3>
-              <button type="button" class="mv-btn mv-btn--primary mv-btn--sm" (click)="act(i)">{{ actLabel(i) }}</button>
+              @if (resolving() === i.id) {
+                <!-- "I handled it": an optional note, then done (2026-10-27). -->
+                <textarea class="note" rows="2" [value]="resolveNote()" (input)="resolveNote.set($any($event.target).value)" placeholder="What happened? (optional)" aria-label="What happened? (optional)" data-cy="todd-resolve-note"></textarea>
+                <div class="need-actions">
+                  <button type="button" class="mv-btn mv-btn--primary mv-btn--sm" (click)="resolve(i)" data-cy="todd-resolve-done">Mark done</button>
+                  <button type="button" class="mv-btn mv-btn--sm" (click)="resolving.set(null)">Back</button>
+                </div>
+              } @else {
+                <div class="need-actions">
+                  <button type="button" class="mv-btn mv-btn--primary mv-btn--sm" (click)="act(i)">{{ actLabel(i) }}</button>
+                  @if (doneMove(i)) {
+                    <button type="button" class="mv-btn mv-btn--sm" (click)="startResolve(i)" data-cy="todd-handled">I handled it</button>
+                  }
+                </div>
+              }
             </article>
           } @empty {
             <p class="quiet">Nothing needs you. TODD will flag the next break here.</p>
@@ -101,6 +115,8 @@ type Filter = 'all' | 'practice' | ToddActionType;
     .need { background: var(--surface); border-radius: 24px; padding: 16px 16px 14px; display: flex; flex-direction: column; align-items: flex-start; gap: 6px; }
     .need .meta { font-size: 13px; color: var(--muted); }
     .need h3 { font-size: 16px; line-height: 1.3; margin-bottom: 6px !important; flex: 1; }
+    .need-actions { display: flex; flex-wrap: wrap; gap: 6px; }
+    .need .note { width: 100%; padding: 10px 12px; border: 1px solid var(--surface2); border-radius: 14px; background: var(--bg); color: var(--text); font: inherit; font-size: 14px; resize: vertical; }
     .quiet { font-size: 14px; color: var(--text2); grid-column: 1 / -1; }
     .did-head { display: flex; align-items: center; flex-wrap: wrap; gap: 8px; margin: 28px 0 10px; }
     .did-head .mv-label { margin-right: 8px; }
@@ -136,6 +152,9 @@ export class ToddComponent {
   readonly todd = TODD_ICON;
   readonly filter = signal<Filter>( 'all' );
   readonly showAll = signal( false );
+  /** The card whose "I handled it" note is open. */
+  readonly resolving = signal<string | null>( null );
+  readonly resolveNote = signal( '' );
 
   readonly enabledRules = computed( () => this.store.state().rules.filter( r => r.enabled ).length );
   readonly practiceEnds = computed( () => {
@@ -178,6 +197,24 @@ export class ToddComponent {
     if ( i.kind === 'order' ) return 'Review';
     if ( i.kind === 'pileup' ) return 'Decide';
     return i.choices[0] ? choiceLabel( i.choices[0] ) : 'Open';
+  }
+
+  /** The move "I handled it" closes, when the issue offers it. */
+  doneMove ( i: Issue ): string {
+    const c = i.choices.find( x => x.run.kind === 'done' );
+    return c?.run.kind === 'done' ? c.run.moveId : '';
+  }
+
+  startResolve ( i: Issue ): void {
+    this.resolveNote.set( '' );
+    this.resolving.set( i.id );
+  }
+
+  async resolve ( i: Issue ): Promise<void> {
+    const id = this.doneMove( i );
+    if ( !id ) return;
+    await this.store.resolve( id, this.resolveNote() );
+    this.resolving.set( null );
   }
 
   act ( i: Issue ): void {

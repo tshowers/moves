@@ -56,4 +56,13 @@ describe( 'flow engine on the shared team', () => {
     pricing.dependsOn = ['build'];
     expect( computeIssues( s ).some( i => i.id === 'stall:lane:pricing' ) ).toBeFalse();
   } );
+
+  it( 'offers "I handled it" on every stall and gap, closing that move', () => {
+    const issues = computeIssues( state() ).filter( i => i.kind === 'stall' || i.kind === 'gap' );
+    expect( issues.length ).toBeGreaterThan( 0 );
+    for ( const i of issues ) {
+      const c = i.choices.find( x => x.label === 'I handled it' );
+      expect( c?.run ).withContext( i.id ).toEqual( { kind: 'done', moveId: i.moveIds[0] } );
+    }
+  } );
 } );

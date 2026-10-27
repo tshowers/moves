@@ -74,8 +74,13 @@ export class FlowApiService {
     return firstValueFrom( this.http.put( `${this.base}/people/${encodeURIComponent( personId )}/capacity`, { capacity } ) );
   }
 
-  updateProject ( projectId: string, body: Partial<Omit<ServerProject, 'id' | 'name'>> ): Promise<unknown> {
+  updateProject ( projectId: string, body: Partial<Omit<ServerProject, 'id'>> ): Promise<unknown> {
     return firstValueFrom( this.http.put( `${this.base}/projects/${encodeURIComponent( projectId )}`, body ) );
+  }
+
+  /** Its moves stay, with no project (todd-backend flow.service deleteProject). */
+  deleteProject ( projectId: string ): Promise<unknown> {
+    return firstValueFrom( this.http.delete( `${this.base}/projects/${encodeURIComponent( projectId )}` ) );
   }
 
   async setAutonomy ( mode: Autonomy['mode'] ): Promise<Autonomy> {

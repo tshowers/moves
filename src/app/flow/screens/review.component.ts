@@ -64,13 +64,25 @@ import { KIND_LABEL } from '../ui/issue-card.component';
               @if (zoom(); as z) {
                 <div class="zoom"><mv-flow-track [model]="z" size="lg" [showToday]="false" [clickable]="true" (nodeClick)="openMove($event)" /></div>
               }
-              <div class="choices">
-                @for (c of i.choices; track c.label; let n = $index) {
-                  <button type="button" class="choice" data-cy="review-choice" [class.primary]="n === 0" (click)="choose(c)">
-                    <strong>{{ c.label }}</strong><span>{{ c.hint }}</span>
-                  </button>
-                }
-              </div>
+              @if (resolving() === i.id) {
+                <!-- "I handled it": what happened, then done (2026-10-27). -->
+                <div class="resolve" data-cy="review-resolve">
+                  <label for="resolve-note">What happened? <span>Optional - it’s kept on the move.</span></label>
+                  <textarea id="resolve-note" rows="3" [value]="resolveNote()" (input)="resolveNote.set($any($event.target).value)" placeholder="Sent it myself on Friday."></textarea>
+                  <div class="resolve-actions">
+                    <button type="button" class="mv-btn mv-btn--primary mv-btn--lg" (click)="finishResolve()" data-cy="review-resolve-done">Mark done</button>
+                    <button type="button" class="mv-btn mv-btn--lg" (click)="resolving.set(null)">Back</button>
+                  </div>
+                </div>
+              } @else {
+                <div class="choices">
+                  @for (c of i.choices; track c.label; let n = $index) {
+                    <button type="button" class="choice" data-cy="review-choice" [class.primary]="n === 0" (click)="choose(c)">
+                      <strong>{{ c.label }}</strong><span>{{ c.hint }}</span>
+                    </button>
+                  }
+                </div>
+              }
             }
             <footer class="foot">
               <button type="button" class="back" (click)="go(index() - 1)" [disabled]="index() === 0">← Back</button>
@@ -116,6 +128,11 @@ import { KIND_LABEL } from '../ui/issue-card.component';
     .cons { font-size: 18px; color: var(--text2); margin-top: 18px !important; max-width: 680px; line-height: 1.5; }
     .zoom { width: 100%; max-width: 780px; margin-top: 18px; }
     .choices { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 8px; }
+    .resolve { display: flex; flex-direction: column; gap: 10px; max-width: 640px; margin-top: 8px; }
+    .resolve label { font-size: 18px; font-weight: 700; }
+    .resolve label span { color: var(--text2); font-size: 13px; font-weight: 500; }
+    .resolve textarea { padding: 14px 16px; border: 1px solid var(--surface2); border-radius: 18px; background: var(--bg); color: var(--text); font: inherit; resize: vertical; }
+    .resolve-actions { display: flex; gap: 10px; }
     .choice { display: flex; flex-direction: column; align-items: flex-start; gap: 4px; padding: 18px 24px; border-radius: 28px; border: 1px solid var(--surface2); background: var(--bg); cursor: pointer; text-align: left; min-width: 150px; }
     .choice:hover { filter: brightness(.97); }
     .choice strong { font-size: 20px; letter-spacing: -0.02em; }
@@ -155,6 +172,9 @@ export class ReviewComponent implements OnInit {
   readonly items = signal<Issue[]>( [] );
   readonly index = signal( 0 );
   readonly decided = signal<Record<string, string>>( {} );
+  /** The issue whose "I handled it" note is open. */
+  readonly resolving = signal<string | null>( null );
+  readonly resolveNote = signal( '' );
   readonly confirm = computed( () => this.decided()[this.current()?.id || ''] || '' );
 
   readonly current = computed( () => this.items()[this.index()] );
@@ -219,11 +239,29 @@ export class ReviewComponent implements OnInit {
       this.openMove( c.run.moveId );
       return;
     }
+    if ( c.run.kind === 'done' ) {
+      this.resolveNote.set( '' );
+      this.resolving.set( i.id );
+      return;
+    }
     const before = this.store.state().actions.length;
     this.store.run( c, i );
     // The write prompt may have stopped it (live mode without write access).
     const ran = this.store.state().actions.length > before || ['keep', 'park', 'skip'].includes( c.run.kind );
     if ( !ran ) return;
+    const msg = this.store.toast()?.msg || 'Done.';
+    this.decided.update( d => ( { ...d, [i.id]: msg } ) );
+  }
+
+  /** Saves the note (if any) and closes the move. */
+  async finishResolve (): Promise<void> {
+    const i = this.current();
+    const c = i?.choices.find( x => x.run.kind === 'done' );
+    if ( !i || !c || c.run.kind !== 'done' ) return;
+    const before = this.store.state().actions.length;
+    await this.store.resolve( c.run.moveId, this.resolveNote() );
+    if ( this.store.state().actions.length <= before ) return;
+    this.resolving.set( null );
     const msg = this.store.toast()?.msg || 'Done.';
     this.decided.update( d => ( { ...d, [i.id]: msg } ) );
   }
@@ -246,7 +284,7 @@ export class ReviewComponent implements OnInit {
   @HostListener( 'document:keydown', ['$event'] )
   onKey ( e: KeyboardEvent ): void {
     const t = e.target as HTMLElement;
-    if ( t?.closest( 'input, textarea, [role="dialog"]' ) || this.confirm() ) return;
+    if ( t?.closest( 'input, textarea, [role="dialog"]' ) || this.confirm() || this.resolving() ) return;
     const n = Number( e.key );
     const c = this.current()?.choices[n - 1];
     if ( c ) {

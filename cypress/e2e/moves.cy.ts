@@ -37,9 +37,53 @@ describe( 'Moves flow map - sample team', () => {
   it( 'runs the weekly review from the keyboard', () => {
     cy.visit( '/app/review' );
     cy.get( '[data-cy="review"]' ).should( 'contain.text', 'QA sign-off has no owner' );
-    cy.get( '[data-cy="review-choice"]' ).should( 'have.length', 4 );
+    cy.get( '[data-cy="review-choice"]' ).should( 'have.length', 5 );
     cy.get( 'body' ).type( '1' );
     cy.get( '[data-cy="review-confirm"]' ).should( 'contain.text', 'Priya' );
+  } );
+
+  it( 'closes a move you already handled, with a note, from the review', () => {
+    cy.visit( '/app/review' );
+    cy.get( '[data-cy="review-choice"]' ).contains( 'I handled it' ).click();
+    cy.get( '[data-cy="review-resolve"] textarea' ).type( 'Priya signed off on Friday.' );
+    cy.get( '[data-cy="review-resolve-done"]' ).click();
+    cy.get( '[data-cy="flow-toast"]' ).should( 'contain.text', 'Marked done.' );
+    cy.get( '[data-cy="review-confirm"]' ).should( 'exist' );
+  } );
+
+  it( 'closes a TODD card you already handled', () => {
+    cy.visit( '/app/todd' );
+    cy.get( '[data-cy="todd-handled"]' ).first().click();
+    cy.get( '[data-cy="todd-resolve-note"]' ).type( 'Done by hand.' );
+    cy.get( '[data-cy="todd-resolve-done"]' ).click();
+    cy.get( '[data-cy="flow-toast"]' ).should( 'contain.text', 'Marked done.' );
+  } );
+
+  it( 'edits a move’s title, due date and project in the drawer', () => {
+    cy.visit( '/app/projects/acme?move=a2' );
+    cy.get( '[data-cy="drawer-title"]' ).click();
+    cy.get( '[data-cy="drawer-title-input"]' ).clear().type( 'Price the add-ons{enter}' );
+    cy.get( '[data-cy="drawer-title"]' ).should( 'have.text', 'Price the add-ons' );
+    cy.get( '[data-cy="drawer-due"]' ).click();
+    cy.get( '[data-cy="drawer-due-input"]' ).invoke( 'val', '2030-01-15' ).trigger( 'change' );
+    cy.get( '[data-cy="drawer-due"]' ).should( 'contain.text', '15' );
+    cy.get( '[data-cy="move-drawer"]' ).should( 'contain.text', 'Date set by hand' );
+    cy.get( '[data-cy="drawer-project"]' ).select( 'Not in a project' );
+    cy.get( '[data-cy="flow-toast"]' ).should( 'contain.text', 'Moved to Not in a project' );
+    cy.get( '[data-cy="drawer-project"] option:selected' ).should( 'have.text', 'Not in a project' );
+  } );
+
+  it( 'renames and deletes a project; its moves show up in the warning', () => {
+    cy.visit( '/app/projects/brand' );
+    cy.get( '[data-cy="project-rename"]' ).click();
+    cy.get( '[data-cy="project-name-input"]' ).clear().type( 'Brand refresh 2{enter}' );
+    cy.get( 'h1' ).should( 'have.text', 'Brand refresh 2' );
+    cy.get( '[data-cy="project-delete"]' ).click();
+    cy.get( '[data-cy="project-delete-confirm"]' ).contains( 'Delete project' ).click();
+    cy.location( 'pathname' ).should( 'eq', '/app' );
+    cy.get( '[data-cy="momentum-name"]' ).should( 'have.length', 4 ).and( 'not.contain.text', 'Brand refresh 2' );
+    cy.get( '[data-cy="momentum-unsorted"]' ).should( 'contain.text', 'in a project' ).contains( 'Show them' ).click();
+    cy.get( '[data-cy="momentum-unsorted"] li' ).should( 'have.length.greaterThan', 0 );
   } );
 
   it( 'opens a move in the drawer and undoes what TODD did', () => {
@@ -105,7 +149,8 @@ describe( 'Moves flow map - signed in', () => {
     stub( true );
     cy.visitWithCypressAuth( '/app', signedInUser );
     cy.wait( ['@flowState', '@loadMoves'] );
-    cy.get( '[data-cy="momentum"]' ).should( 'contain.text', 'Not in a project' );
+    cy.get( '[data-cy="momentum-unsorted"]' ).should( 'contain.text', '2 moves aren’t in a project.' );
+    cy.get( '[data-cy="momentum-name"]' ).should( 'not.exist' );
     cy.contains( 'Sample team' ).should( 'not.exist' );
   } );
 

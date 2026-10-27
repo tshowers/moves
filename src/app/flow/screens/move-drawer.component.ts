@@ -4,7 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { fmtTime, fmtWeekdayDay, fmtWhen, toDate } from '../flow-dates';
 import { byRoom, daysStill, downstream, firstName, isOpen, loadOf, moveById, ownerOf, personById, projectById } from '../flow-engine';
 import { Lane, MoveEvent } from '../flow.models';
-import { FlowStore } from '../flow.store';
+import { FlowStore, LOOSE_PROJECT } from '../flow.store';
 import { AvatarComponent, PersonPickerComponent } from '../ui/flow-ui.components';
 
 interface LaneCard { lane: Lane; name: string; text: string; state: 'cant' | 'now' | 'can' | 'suggest'; personId?: string }
@@ -19,14 +19,27 @@ interface LaneCard { lane: Lane; name: string; text: string; state: 'cant' | 'no
     @if (move(); as m) {
       <aside class="drawer" data-cy="move-drawer" role="dialog" aria-modal="true" [attr.aria-label]="m.title">
         <div class="top">
-          <div class="mv-crumb">{{ project()?.name || 'Not in a project' }}{{ m.phase ? ' › ' + m.phase : '' }}</div>
+          <!-- The crumb, title and due tag are editable in place (2026-10-27). -->
+          <div class="mv-crumb">
+            <select class="crumb-pick" [ngModel]="m.projectId" (ngModelChange)="store.editMove(m.id, { projectId: $event })" aria-label="Project" data-cy="drawer-project">
+              @for (p of projectChoices(); track p.id) { <option [value]="p.id">{{ p.name }}</option> }
+            </select>{{ m.phase ? ' › ' + m.phase : '' }}
+          </div>
           <button type="button" class="close" (click)="closed.emit()" aria-label="Close">&times;</button>
         </div>
-        <h2>{{ m.title }}</h2>
+        @if (editingTitle()) {
+          <input class="mv-input title-input" [(ngModel)]="titleDraft" (keydown.enter)="saveTitle()" (keydown.escape)="editingTitle.set(false)" (blur)="saveTitle()" aria-label="Title" data-cy="drawer-title-input">
+        } @else {
+          <h2><button type="button" class="title-text" (click)="editTitle()" title="Edit the title" data-cy="drawer-title">{{ m.title }}</button></h2>
+        }
         <div class="tags">
           @if (m.done) { <span class="mv-tag mv-tag--green mv-tag--lg">Done</span> }
           @else if (stalled()) { <span class="mv-tag mv-tag--blue mv-tag--lg">Stalled · {{ stalled() }} days</span> }
-          <span class="mv-tag mv-tag--outline">Due {{ due() }}</span>
+          @if (editingDue()) {
+            <input type="date" class="mv-tag mv-tag--outline due-input" [value]="m.due" (change)="saveDue($any($event.target).value)" (blur)="editingDue.set(false)" aria-label="Due date" data-cy="drawer-due-input">
+          } @else {
+            <button type="button" class="mv-tag mv-tag--outline due-btn" (click)="editingDue.set(true)" title="Change the due date" data-cy="drawer-due">Due {{ due() }}</button>
+          }
           @if (blocks()) { <span class="mv-tag mv-tag--outline">Blocks: {{ blocks() }}</span> }
           @if (m.dateLockedBy) { <span class="mv-tag mv-tag--outline">{{ m.dateLockedBy === 'client' ? 'Client date' : 'Date set by hand' }}</span> }
           @if (project()?.client) { <span class="client">{{ project()!.client!.replace(' Inc.', '') }} · {{ project()!.value }}</span> }
@@ -96,6 +109,11 @@ interface LaneCard { lane: Lane; name: string; text: string; state: 'cant' | 'no
     .top { display: flex; justify-content: space-between; align-items: center; }
     .close { width: 32px; height: 32px; border-radius: 50%; border: 1px solid var(--surface2); background: var(--bg); cursor: pointer; font-size: 20px; line-height: 1; color: var(--text); }
     h2 { font-size: 30px; line-height: 1.1; margin-top: 12px !important; }
+    .crumb-pick { border: 0; background: none; padding: 0; font: inherit; color: inherit; cursor: pointer; max-width: 100%; }
+    .title-text { all: unset; cursor: text; }
+    .title-input { margin-top: 12px; font-size: 26px; font-weight: 700; }
+    .due-btn { cursor: pointer; font: inherit; }
+    .due-input { font: inherit; color: var(--text); }
     .tags { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin-top: 14px; }
     .client { font-size: 13px; color: var(--muted); padding: 4px 12px; }
     .next { margin-top: 18px; background: var(--surface); border-radius: 20px; padding: 14px 16px; }
@@ -136,12 +154,21 @@ export class MoveDrawerComponent {
   readonly moveId = input.required<string>();
   readonly closed = output<void>();
   readonly editing = signal( false );
+  readonly editingTitle = signal( false );
+  readonly editingDue = signal( false );
+  titleDraft = '';
   readonly picking = signal( false );
   draft = '';
   note = '';
 
   readonly move = computed( () => moveById( this.store.state(), this.moveId() ) );
   readonly project = computed( () => projectById( this.store.state(), this.move()?.projectId || '' ) );
+  /** Real projects, then "Not in a project". */
+  readonly projectChoices = computed( () => [
+    ...this.store.projects().filter( p => !p.orphan ),
+    { id: LOOSE_PROJECT, name: 'Not in a project' },
+    ...( this.project()?.orphan && this.project()!.id !== LOOSE_PROJECT ? [{ id: this.project()!.id, name: 'Untitled project' }] : [] ),
+  ] );
   readonly isOpenMove = computed( () => !!this.move() && isOpen( this.move()! ) );
   readonly stalled = computed( () => {
     const m = this.move();
@@ -223,6 +250,24 @@ export class MoveDrawerComponent {
     this.editing.set( false );
     const m = this.move();
     if ( m && this.draft.trim() !== m.nextAction ) this.store.updateNextAction( m.id, this.draft.trim() );
+  }
+
+  editTitle (): void {
+    this.titleDraft = this.move()?.title || '';
+    this.editingTitle.set( true );
+  }
+
+  saveTitle (): void {
+    if ( !this.editingTitle() ) return;
+    this.editingTitle.set( false );
+    const m = this.move();
+    if ( m && this.titleDraft.trim() ) this.store.editMove( m.id, { title: this.titleDraft } );
+  }
+
+  saveDue ( day: string ): void {
+    this.editingDue.set( false );
+    const m = this.move();
+    if ( m && /^\d{4}-\d{2}-\d{2}$/.test( day ) ) this.store.editMove( m.id, { due: day } );
   }
 
   give ( personId: string ): void {
