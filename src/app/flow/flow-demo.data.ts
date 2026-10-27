@@ -105,10 +105,10 @@ export function demoState ( now = new Date() ): FlowState {
     mv( { id: 'sm4', projectId: 'migration', title: 'Redirect audit', assigneeId: 'omar', due: d( 11 ), nextAction: 'Check the top 200 URLs' } ),
 
     // Not in a project: Maya's daily plans, TODD's admin, Sam's content queue.
-    mv( { id: 'm1', projectId: '', title: 'Harbor teaser post', lane: 'maya', due: d( -2 ), nextAction: 'Needs a client-approved date', createdBy: 'maya', lastActivityAt: at( 0, 8, 0 ) } ),
-    mv( { id: 'm2', projectId: '', title: 'Acme welcome email', lane: 'maya', due: d( -1 ), nextAction: 'Needs a client-approved date', createdBy: 'maya', lastActivityAt: at( 0, 8, 0 ) } ),
-    mv( { id: 'm3', projectId: '', title: 'Q4 job post images', lane: 'maya', due: d( 0 ), nextAction: 'Six sizes for the job boards', createdBy: 'maya', lastActivityAt: at( 0, 8, 0 ) } ),
-    mv( { id: 'm4', projectId: '', title: 'October newsletter', lane: 'maya', due: d( 0 ), nextAction: 'Draft from this month’s wins', createdBy: 'maya', lastActivityAt: at( 0, 8, 0 ) } ),
+    mv( { id: 'm1', projectId: '', mayaReview: true, title: 'Harbor teaser post', lane: 'maya', due: d( -2 ), nextAction: 'Needs a client-approved date', createdBy: 'maya', lastActivityAt: at( 0, 8, 0 ) } ),
+    mv( { id: 'm2', projectId: '', mayaReview: true, title: 'Acme welcome email', lane: 'maya', due: d( -1 ), nextAction: 'Needs a client-approved date', createdBy: 'maya', lastActivityAt: at( 0, 8, 0 ) } ),
+    mv( { id: 'm3', projectId: '', mayaReview: true, title: 'Q4 job post images', lane: 'maya', due: d( 0 ), nextAction: 'Six sizes for the job boards', createdBy: 'maya', lastActivityAt: at( 0, 8, 0 ) } ),
+    mv( { id: 'm4', projectId: '', mayaReview: true, title: 'October newsletter', lane: 'maya', due: d( 0 ), nextAction: 'Draft from this month’s wins', createdBy: 'maya', lastActivityAt: at( 0, 8, 0 ) } ),
     mv( { id: 'm5', projectId: '', title: 'Brand preview post', lane: 'maya', due: d( 0 ), nextAction: 'Teaser for the new look', createdBy: 'maya', lastActivityAt: at( 0, 8, 0 ) } ),
     mv( { id: 'm6', projectId: '', title: 'Case study draft', lane: 'maya', due: d( 5 ), nextAction: 'Draft the Harbor case study', createdBy: 'maya', lastActivityAt: at( 0, 8, 0 ) } ),
     mv( { id: 'm7', projectId: '', title: 'Migration notice email', lane: 'maya', due: d( 10 ), nextAction: 'Tell customers about the new site', createdBy: 'maya', lastActivityAt: at( 0, 8, 0 ) } ),

@@ -5,15 +5,17 @@ import { daysBetween, fmtDue } from '../flow-dates';
 import { firstName, isOpen, liveActions, moveById, ownerOf, personById } from '../flow-engine';
 import { FlowMove } from '../flow.models';
 import { FlowStore } from '../flow.store';
+import { DemoNoticeComponent } from '../ui/demo-notice.component';
 import { AvatarComponent, MOVES_ICON } from '../ui/flow-ui.components';
 
 /** 09 Mobile, team member - "Luis, 3 next moves": the hand-off on top, Done / Can't do it. */
 @Component( {
   selector: 'mv-my-moves',
   standalone: true,
-  imports: [AvatarComponent],
+  imports: [AvatarComponent, DemoNoticeComponent],
   template: `
     <div class="phone">
+      <mv-demo-notice />
       <header class="top">
         <img [src]="logo" alt="Moves" class="logo">
         <mv-avatar [person]="me()" [size]="44" />

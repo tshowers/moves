@@ -56,6 +56,8 @@ export interface FlowMove {
   laneNotes?: Partial<Record<Lane, string>>;
   /** Why this order matters ("Aisha marked kickoff as ..."). */
   orderNote?: string;
+  /** Maya made it and it waits on you: while enough of these are open she stops making new work. */
+  mayaReview?: boolean;
   history: MoveEvent[];
 }
 

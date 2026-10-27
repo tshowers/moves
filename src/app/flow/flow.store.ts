@@ -14,7 +14,7 @@ import { FlowApiService, ServerFlowState } from './flow-api.service';
 import { addDays, fmtDay, fmtWeekday, isoDay } from './flow-dates';
 import { demoState } from './flow-demo.data';
 import {
-  byRoom, computeIssues, defaultRules, Dismissal, firstName, FlowState, MAYA_ID, moveById, needsYou, ownerOf, personById,
+  byRoom, computeIssues, defaultRules, Dismissal, firstName, FlowState, isOpen, MAYA_ID, moveById, needsYou, ownerOf, personById,
   projectById, sequenceProposal, TODD_ID,
 } from './flow-engine';
 import { Autonomy, FlowMove, FlowProject, Issue, IssueChoice, Lane, MoveChange, Person, RangeKey, ToddAction, ToddActionType } from './flow.models';
@@ -56,6 +56,11 @@ function flowPatch ( after: Partial<FlowMove> ): Partial<FlowMove> {
 
 const LOOSE_PROJECT = '__loose';
 
+// Same test as todd-backend mayaCreationGuard.service.js isOpenMayaReviewTask,
+// so the queue here is the one that holds Maya's new work.
+const MAYA_REVIEW_SOURCES = new Set( ['maya-daily-plan', 'employee-planning-task', 'employee-execution-task'] );
+const CLOSED_STATUSES = new Set( ['completed', 'cancelled', 'canceled', 'archived', 'rejected', 'expired'] );
+
 /** Resolves to the fallback if the promise fails or takes longer than 6s. */
 function within<T> ( p: Promise<T>, fallback: T, ms = 6000 ): Promise<T> {
   return Promise.race( [p.catch( () => fallback ), new Promise<T>( resolve => setTimeout( () => resolve( fallback ), ms ) )] );
@@ -93,6 +98,8 @@ export class FlowStore {
   readonly needsYou = computed( () => needsYou( this.issues() ) );
   readonly pm = computed( () => personById( this.state(), this.state().pmId ) );
   readonly isDemo = computed( () => this.mode() === 'demo' );
+  /** Maya's tasks waiting on you, oldest first. */
+  readonly mayaQueue = computed( () => this.state().moves.filter( m => m.mayaReview && isOpen( m ) ).sort( ( a, b ) => a.lastActivityAt.localeCompare( b.lastActivityAt ) ) );
   /** Projects in rail order, with the loose bucket last. */
   readonly projects = computed( () => [...this.state().projects].sort( ( a, b ) => Number( a.id === LOOSE_PROJECT ) - Number( b.id === LOOSE_PROJECT ) ) );
 
@@ -250,6 +257,7 @@ export class FlowStore {
       laneEnteredAt: t.laneEnteredAt || ( lane !== 'person' ? t.createdAt : '' ) || undefined,
       laneNotes: t.laneNotes && Object.keys( t.laneNotes ).length ? t.laneNotes : undefined,
       createdBy: t.createdByTodd ? 'todd' : t.employeeType === 'maya' ? 'maya' : 'person',
+      mayaReview: MAYA_REVIEW_SOURCES.has( String( t.source || '' ).trim() ) && !CLOSED_STATUSES.has( String( t.status || '' ).trim().toLowerCase() ) || undefined,
       history: [
         ...( t.createdAt ? [{ at: t.createdAt, text: `Created${t.createdByTodd ? ' by TODD' : ''}`, by: 'system' as const }] : [] ),
         ...( t.notesLog || [] ).map( n => ( { at: n.at, text: `${n.author === 'maya' ? 'Maya' : n.authorLabel || 'Note'}: “${n.text}”`, by: n.author === 'maya' ? 'maya' as const : 'person' as const } ) ),

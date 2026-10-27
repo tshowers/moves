@@ -9,6 +9,7 @@ import { ThemeService } from '../../services/theme.service';
 import { PlatformMenuComponent } from '../../shared/platform-menu/platform-menu.component';
 import { projectHealth } from '../flow-engine';
 import { FlowStore } from '../flow.store';
+import { DemoNoticeComponent } from '../ui/demo-notice.component';
 import { AvatarComponent, MOVES_ICON } from '../ui/flow-ui.components';
 
 /**
@@ -19,7 +20,7 @@ import { AvatarComponent, MOVES_ICON } from '../ui/flow-ui.components';
 @Component( {
   selector: 'mv-flow-shell',
   standalone: true,
-  imports: [RouterOutlet, RouterLink, RouterLinkActive, AvatarComponent, PlatformMenuComponent, AsyncPipe],
+  imports: [RouterOutlet, RouterLink, RouterLinkActive, AvatarComponent, PlatformMenuComponent, AsyncPipe, DemoNoticeComponent],
   template: `
     <div class="shell" data-cy="flow-shell">
       <aside class="rail">
@@ -28,6 +29,9 @@ import { AvatarComponent, MOVES_ICON } from '../ui/flow-ui.components';
           <a routerLink="/app" routerLinkActive="on" [routerLinkActiveOptions]="{ exact: true }">Momentum</a>
           <a routerLink="/app/team" routerLinkActive="on">Team</a>
           <a routerLink="/app/review">Review</a>
+          <a routerLink="/app/maya" routerLinkActive="on">Maya
+            @if (store.mayaQueue().length) { <span class="count">{{ store.mayaQueue().length }}</span> }
+          </a>
           <a routerLink="/app/todd" routerLinkActive="on">TODD
             @if (store.needsYou().length) { <span class="count">{{ store.needsYou().length }}</span> }
           </a>
@@ -64,6 +68,7 @@ import { AvatarComponent, MOVES_ICON } from '../ui/flow-ui.components';
       </header>
 
       <main class="main">
+        <mv-demo-notice class="notice" />
         @if (store.error()) { <div class="error">{{ store.error() }}</div> }
         <router-outlet />
       </main>
@@ -105,6 +110,7 @@ import { AvatarComponent, MOVES_ICON } from '../ui/flow-ui.components';
     .tools { display: flex; align-items: center; justify-content: space-between; padding: 0 10px; }
     .theme { border: 0; background: none; color: var(--muted); cursor: pointer; font-size: 16px; padding: 4px; }
     .main { flex: 1; min-width: 0; }
+    .notice { margin: 16px 36px 0; }
     .error { margin: 16px 36px 0; padding: 12px 16px; border-radius: 14px; background: var(--t-pink); color: var(--t-pink-fg); font-weight: 700; font-size: 14px; }
     .topbar, .tabbar { display: none; }
     @media (max-width: 900px) {
@@ -118,6 +124,7 @@ import { AvatarComponent, MOVES_ICON } from '../ui/flow-ui.components';
       .tabbar a { flex: 1; text-align: center; font-size: 15px; font-weight: 700; color: var(--text); text-decoration: none; }
       .tabbar a.on { color: var(--t-pink-fg); }
       .main { padding-bottom: 72px; }
+      .notice { margin: 12px 16px 0; }
     }
   `],
 } )
@@ -140,7 +147,7 @@ export class FlowShellComponent {
   } );
 
   signIn (): void {
-    void this.router.navigate( ['/login'], { queryParams: { returnUrl: '/app' } } );
+    void this.router.navigate( ['/login'], { queryParams: { returnUrl: this.router.url.split( '?' )[0] || '/app' } } );
   }
 
   async signOut (): Promise<void> {

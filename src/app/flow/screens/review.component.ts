@@ -5,6 +5,7 @@ import { addDays, daysBetween, fmtDay } from '../flow-dates';
 import { isParked, liveActions, moveById, projectMoves, trackFor } from '../flow-engine';
 import { FlowMove, Issue, IssueChoice } from '../flow.models';
 import { FlowStore } from '../flow.store';
+import { DemoNoticeComponent } from '../ui/demo-notice.component';
 import { FlowTrackComponent } from '../ui/flow-track.component';
 import { MOVES_ICON } from '../ui/flow-ui.components';
 import { KIND_LABEL } from '../ui/issue-card.component';
@@ -13,9 +14,10 @@ import { KIND_LABEL } from '../ui/issue-card.component';
 @Component( {
   selector: 'mv-review',
   standalone: true,
-  imports: [RouterLink, FlowTrackComponent],
+  imports: [RouterLink, FlowTrackComponent, DemoNoticeComponent],
   template: `
     <div class="frame" data-cy="review">
+      <mv-demo-notice class="notice" />
       <header class="top">
         <img [src]="logo" alt="" class="logo">
         <h1>Weekly review</h1>
@@ -91,6 +93,7 @@ import { KIND_LABEL } from '../ui/issue-card.component';
     </div>
   `,
   styles: [`
+    .notice { margin: 16px 36px 0; }
     .frame { min-height: 100vh; min-height: 100dvh; display: flex; flex-direction: column; background: var(--bg); }
     .top { display: flex; align-items: center; gap: 14px; padding: 18px 32px; border-bottom: 1px solid var(--surface2); flex-wrap: wrap; }
     .logo { width: 30px; height: 30px; border-radius: 8px; background: #fff; }

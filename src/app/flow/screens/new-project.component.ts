@@ -7,6 +7,7 @@ import { byRoom, firstName, MAYA_ID } from '../flow-engine';
 import { Lane, Person, TrackModel } from '../flow.models';
 import { MovesSignupDraftService } from '../../services/moves-signup-draft.service';
 import { FlowStore, PlanDraft } from '../flow.store';
+import { DemoNoticeComponent } from '../ui/demo-notice.component';
 import { FlowTrackComponent } from '../ui/flow-track.component';
 import { MOVES_ICON, TODD_ICON } from '../ui/flow-ui.components';
 
@@ -30,9 +31,10 @@ const PUBLIC = /press|announce|publish/i;
 @Component( {
   selector: 'mv-new-project',
   standalone: true,
-  imports: [FormsModule, RouterLink, FlowTrackComponent],
+  imports: [FormsModule, RouterLink, FlowTrackComponent, DemoNoticeComponent],
   template: `
     <div class="frame" data-cy="new-project">
+      <mv-demo-notice class="notice" />
       <header class="top">
         <a routerLink="/app" class="brand"><img [src]="logo" alt="" class="logo"><span>New project</span></a>
         <ol class="steps">
@@ -128,6 +130,7 @@ const PUBLIC = /press|announce|publish/i;
     </div>
   `,
   styles: [`
+    .notice { padding-top: 16px; }
     .frame { min-height: 100vh; min-height: 100dvh; background: var(--bg); padding: 0 32px 32px; }
     .top { display: flex; align-items: center; justify-content: space-between; padding: 22px 0; gap: 12px; flex-wrap: wrap; }
     .brand { display: flex; align-items: center; gap: 12px; text-decoration: none; color: var(--text); font-size: 20px; font-weight: 700; letter-spacing: -0.02em; }
