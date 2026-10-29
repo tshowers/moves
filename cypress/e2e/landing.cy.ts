@@ -37,7 +37,7 @@ describe( 'Moves home page', () => {
 
   it( 'credits TODD, suggests another product, and ends with the footer', () => {
     cy.visit( '/' );
-    cy.get( '.moves-made-by' ).should( 'contain.text', 'Powered by TODD' );
+    cy.get( '.moves-made-by' ).should( 'contain.text', 'Powered by 16Ahead' );
     cy.get( 'a[appAlsoFromUs]' ).should( 'contain.text', 'Also from us' ).and( 'have.attr', 'href' ).and( 'not.include', 'moves.taliferro.tech' );
     cy.get( '.tt-foot' ).should( 'contain.text', 'Taliferro Tech' ).and( 'contain.text', 'Help' );
   } );

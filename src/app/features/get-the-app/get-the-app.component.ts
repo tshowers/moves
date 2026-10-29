@@ -58,7 +58,7 @@ export class GetTheAppComponent implements OnInit {
     this.faqs = getTheAppFaqs( this.product );
     this.state$ = this.writeAccess.state( key );
     this.seo.page( {
-      title: `Pricing — ${this.product.shortName} | Taliferro Tech`,
+      title: `Pricing — ${this.product.shortName} | 16Ahead`,
       description: `Browse ${this.product.shortName} free in any browser. Subscribe for ${this.product.monthlyPrice} a month to create and edit, here or in the ${this.product.appName} app. One subscription works in both.`,
     } );
     this.isLive = await isLiveOnAppStore( this.product );

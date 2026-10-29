@@ -55,7 +55,7 @@ type Tab = 'flow' | 'sequence' | 'moves' | 'people' | 'log';
               @if (health().tone !== 'green') { <span class="mv-tag mv-tag--lg" [class.mv-tag--pink]="health().tone === 'pink'">{{ health().label.split(' · ')[0] }}</span> }
               @else { <span class="mv-tag mv-tag--lg mv-tag--green">Moving</span> }
               @if (p.shipsOn) { <span class="mv-tag mv-tag--outline">Ships {{ fmtDay(p.shipsOn) }}</span> }
-              <span class="mv-tag mv-tag--outline">{{ p.memberIds.length }} {{ p.memberIds.length === 1 ? 'person' : 'people' }}{{ hasMaya() ? ' · Maya' : '' }}</span>
+              <span class="mv-tag mv-tag--outline">{{ p.memberIds.length }} {{ p.memberIds.length === 1 ? 'person' : 'people' }}{{ hasMaya() ? ' · the Marketing Assistant' : '' }}</span>
               @if (p.client) { <span class="client">{{ p.client }} · {{ p.value }}</span> }
             </div>
           }

@@ -34,7 +34,7 @@ import { daysBetween } from '../flow-dates';
       </header>
 
       <section class="banner">
-        <img [src]="todd" alt="TODD" class="mv-icon mv-plate">
+        <img [src]="todd" alt="16Ahead" class="mv-icon mv-plate">
         <p><strong>{{ banner().lead }}</strong> {{ banner().rest }}</p>
         <a class="mv-btn" routerLink="/app/todd">See the log</a>
       </section>
@@ -63,7 +63,7 @@ import { daysBetween } from '../flow-dates';
             @for (t of ticks(); track t.label) { <span [style.left.%]="t.x * 100">{{ t.label }}</span> }
             @if (todayX() !== null) { <span class="today" [style.left.%]="todayX()! * 100">Today</span> }
           </div>
-          <div class="mv-label axis-note">TODD</div>
+          <div class="mv-label axis-note">16Ahead</div>
 
           @for (row of rows(); track row.project.id) {
             <div class="name" data-cy="momentum-name">
@@ -114,7 +114,7 @@ import { daysBetween } from '../flow-dates';
         <span><i class="lg stall"></i>Stalled (days still)</span>
         <span><i class="lg gap"></i>No owner</span>
         <span><i class="g violet">&#8644;</i>Out of order</span>
-        <span><i class="g green">&#10003;</i>Fixed by TODD</span>
+        <span><i class="g green">&#10003;</i>Fixed by 16Ahead</span>
       </footer>
     </div>
   `,
@@ -230,7 +230,7 @@ export class MomentumComponent {
     const parts = [
       n( 'nudged' ) ? 'nudges' : '',
       n( 'rescheduled' ) ? `${n( 'rescheduled' ) === 1 ? 'one reschedule' : `${words[n( 'rescheduled' )]?.toLowerCase() || n( 'rescheduled' )} reschedules`}` : '',
-      n( 'reassigned' ) ? `${n( 'reassigned' ) === 1 ? 'one hand-off' : n( 'reassigned' ) + ' hand-offs'} from Maya` : '',
+      n( 'reassigned' ) ? `${n( 'reassigned' ) === 1 ? 'one hand-off' : n( 'reassigned' ) + ' hand-offs'} from the Marketing Assistant` : '',
     ].filter( Boolean );
     return { lead, rest: `I fixed ${fixed.length} smaller thing${fixed.length === 1 ? '' : 's'}${broke ? ' on the others' : ''}${parts.length ? ': ' + parts.join( ', ' ) : ''}.` };
   } );

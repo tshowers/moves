@@ -99,7 +99,7 @@ describe( 'Moves flow map - sample team', () => {
     cy.visit( '/app/new' );
     cy.get( '[data-cy="new-project"]' ).should( 'contain.text', 'Fall campaign, as a line' );
     cy.contains( 'Press release comes before messaging is approved.' ).should( 'be.visible' );
-    cy.contains( 'button', 'Give to Maya' ).click();
+    cy.contains( 'button', 'Give to the Marketing Assistant' ).click();
     cy.contains( 'have no owner' ).should( 'not.exist' );
   } );
 
@@ -231,7 +231,7 @@ describe( 'Moves flow map - signed in', () => {
     cy.wait( '@loadMoves' );
     cy.contains( 'button', 'Done' ).click();
     cy.wait( '@record' );
-    cy.get( '[data-cy="flow-toast"]' ).should( 'contain.text', 'Marked done. TODD told flow by push.' );
+    cy.get( '[data-cy="flow-toast"]' ).should( 'contain.text', 'Marked done. 16Ahead told flow by push.' );
   } );
 
   it( 'starts New project from the move planned in /get-started', () => {

@@ -11,7 +11,7 @@ export const routes: Routes = [
   },
   {
     path: 'ios',
-    title: 'Moves for iPhone | Taliferro Tech',
+    title: 'Moves for iPhone | 16Ahead',
     loadComponent: () =>
       import( './features/app-showcase/app-showcase.component' ).then( ( m ) => m.AppShowcaseComponent ),
   },
@@ -25,7 +25,7 @@ export const routes: Routes = [
   },
   {
     path: 'help',
-    title: 'Moves Help: how to use Moves | Taliferro Tech',
+    title: 'Moves Help: how to use Moves | 16Ahead',
     loadComponent: () =>
       import( './features/help/help.component' ).then( ( m ) => m.HelpComponent ),
   },

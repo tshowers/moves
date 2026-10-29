@@ -11,6 +11,9 @@ import { DemoNoticeComponent } from '../ui/demo-notice.component';
 import { FlowTrackComponent } from '../ui/flow-track.component';
 import { MOVES_ICON, TODD_ICON } from '../ui/flow-ui.components';
 
+/** Who content steps go to; the "Give to …" fix and its handler both use it. */
+const MARKETING_ASSISTANT = 'the Marketing Assistant';
+
 interface Item { title: string; short: string; ownerName: string; ownerId: string | null; lane: Lane; nextAction: string }
 interface Check { kind: 'order' | 'owner' | 'next'; glyph: string; lead: string; rest: string; fix: string; index: number[] }
 
@@ -59,7 +62,7 @@ const PUBLIC = /press|announce|publish/i;
           <div class="cols">
             <section class="left">
               <h1 class="big">Paste the plan you already have</h1>
-              <p class="lede">A list, a doc or meeting notes. TODD turns it into moves and checks the order, the owners and the next actions before anyone starts.</p>
+              <p class="lede">A list, a doc or meeting notes. 16Ahead turns it into moves and checks the order, the owners and the next actions before anyone starts.</p>
               <textarea class="paste" [ngModel]="text()" (ngModelChange)="text.set($event)" aria-label="Your plan" [placeholder]="sample"></textarea>
               <div class="row-actions">
                 <label class="mv-btn upload">Upload a file<input type="file" accept=".txt,.md,.csv" (change)="upload($event)" hidden></label>
@@ -102,7 +105,7 @@ const PUBLIC = /press|announce|publish/i;
         @case (3) {
           <section class="team">
             <h1 class="big">Who does what</h1>
-            <p class="lede">TODD hands Maya the content moves and nudges everyone else within its rules.</p>
+            <p class="lede">16Ahead hands the Marketing Assistant the content moves and nudges everyone else within its rules.</p>
             <div class="owners">
               @for (it of items(); track $index; let n = $index) {
                 <div class="owner-row">
@@ -114,7 +117,7 @@ const PUBLIC = /press|announce|publish/i;
                 </div>
               }
             </div>
-            <div class="mv-label rules-label">TODD’s rules for this project</div>
+            <div class="mv-label rules-label">16Ahead’s rules for this project</div>
             <ul class="rules">
               @for (r of store.state().rules; track r.id) {
                 <li [class.off]="!r.enabled"><strong>{{ r.lead }}</strong> {{ r.text }}</li>
@@ -231,11 +234,11 @@ export class NewProjectComponent implements OnInit {
     if ( noOwner.length ) {
       const content = noOwner.every( ( { it } ) => CONTENT.test( it.title ) );
       const names = noOwner.map( ( { it }, k ) => k ? it.short.toLowerCase() : it.short );
-      const who = content ? 'Maya' : firstName( this.suggest() );
+      const who = content ? MARKETING_ASSISTANT : firstName( this.suggest() );
       const approver = items.find( i => /approv/i.test( i.title ) && i.ownerId );
       out.push( {
         kind: 'owner', glyph: '?', lead: `${names.join( ' and ' )} ${noOwner.length === 1 ? 'has' : 'have'} no owner.`,
-        rest: content ? `Maya can do ${noOwner.length === 1 ? 'it' : noOwner.length === 2 ? 'both' : 'all of them'}.${approver ? ` ${firstName( this.person( approver.ownerId ) )} approves.` : ''}` : `${who} has the most room.`,
+        rest: content ? `The Marketing Assistant can do ${noOwner.length === 1 ? 'it' : noOwner.length === 2 ? 'both' : 'all of them'}.${approver ? ` ${firstName( this.person( approver.ownerId ) )} approves.` : ''}` : `${who} has the most room.`,
         fix: `Give to ${who}`, index: noOwner.map( x => x.n ),
       } );
     }
@@ -294,7 +297,7 @@ export class NewProjectComponent implements OnInit {
       // Overrides are keyed by parsed index, so fixes stay with a moved item.
       this.moved.update( m => [...m, c.index[0]] );
     } else if ( c.kind === 'owner' ) {
-      const content = c.fix === 'Give to Maya';
+      const content = c.fix === `Give to ${ MARKETING_ASSISTANT }`;
       const who = this.suggest();
       this.overrides.update( o => {
         const next = { ...o };

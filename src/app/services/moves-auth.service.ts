@@ -9,6 +9,7 @@ import {
 } from 'firebase/auth';
 import { doc, getDoc, getFirestore } from 'firebase/firestore';
 import { Observable, shareReplay, switchMap, of, tap } from 'rxjs';
+import { hostedLoginUrl } from '@taliferro/ui/platform/hosted-login.model';
 
 /**
  * Auth service for the standalone Moves app - line-for-line pattern from
@@ -223,14 +224,14 @@ export class MovesAuthService {
    * again in AuthCallbackComponent when the page sends the user back - a
    * CSRF guard against a forged callback. The backend already has
    * `moves-web` registered in authClients.js with redirectUri
-   * `https://moves.taliferro.tech/auth/callback` - no backend change
+   * `https://moves.16ahead.com/auth/callback` - no backend change
    * needed here.
    */
   signIn ( returnUrl?: string ): void {
     const state = crypto.randomUUID();
     sessionStorage.setItem( this.pendingLoginStorageKey, JSON.stringify( { state, returnUrl } ) );
     const client = this.isLocalDevelopmentHost() ? 'moves-web-local' : 'moves-web';
-    this.navigateToHostedLogin( `https://todd.taliferro.tech/login?client=${client}&state=${state}` );
+    this.navigateToHostedLogin( hostedLoginUrl(client, state) );
   }
 
   /**

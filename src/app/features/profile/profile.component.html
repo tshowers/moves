@@ -3,7 +3,7 @@
     <header class="pf-header">
       <div>
         <h1>Profile</h1>
-        <p>Moves, Maya, and TODD use this to personalize everything they do for you.</p>
+        <p>Moves, the Marketing Assistant, and 16Ahead use this to personalize everything they do for you.</p>
       </div>
       <button *ngIf="profile && !isEditing" type="button" class="pf-button" (click)="startEditing()" data-cy="profile-edit">
         {{ justSaved ? 'Saved' : 'Edit' }}</button>
@@ -51,7 +51,7 @@
 
     <section *ngIf="isSignedIn === false" class="pf-card" data-cy="profile-signed-out">
       <h2>Sign in to manage your profile</h2>
-      <p class="pf-note">Your profile is shared across Moves, Maya, and TODD.</p>
+      <p class="pf-note">Your profile is shared across Moves, the Marketing Assistant, and 16Ahead.</p>
       <button type="button" class="pf-button" (click)="signIn()" data-cy="profile-sign-in">Sign in</button>
     </section>
 
@@ -128,8 +128,8 @@
       <section class="pf-card">
         <h2>Account</h2>
         <p class="pf-meta"><span>Email</span>{{ profile.email || '—' }}</p>
-        <p class="pf-note">Products, email signature, and billing are managed in TODD.
-          <a [href]="toddProfileUrl" target="_blank" rel="noopener noreferrer">More settings in TODD <span aria-hidden="true">&#8599;</span></a></p>
+        <p class="pf-note">Products, email signature, and billing are managed in 16Ahead.
+          <a [href]="toddProfileUrl" target="_blank" rel="noopener noreferrer">More settings in 16Ahead <span aria-hidden="true">&#8599;</span></a></p>
       </section>
 
       <section class="pf-card pf-card--danger">

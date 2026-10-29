@@ -21,35 +21,35 @@ type Page = 'momentum' | 'team' | 'todd' | 'digest' | 'project' | 'review' | 'ne
 const PAGES: Record<Page, { title: string; description: string }> = {
   'momentum': {
     title: 'Momentum',
-    description: 'The project lead\'s home: every project drawn as a line of moves against today. Breaks in a line are problems - a gap (no owner or no next action), a stall (no activity, shown in days), a move set before something it waits on, or something TODD fixed. TODD\'s note for each project sits in the margin; notes that need the lead have a button, notes about what TODD did have Undo.',
+    description: 'The project lead\'s home: every project drawn as a line of moves against today. Breaks in a line are problems - a gap (no owner or no next action), a stall (no activity, shown in days), a move set before something it waits on, or something 16Ahead fixed. 16Ahead\'s note for each project sits in the margin; notes that need the lead have a button, notes about what 16Ahead did have Undo.',
   },
   'project': {
     title: 'Project',
-    description: 'One project: its line by phase with each move\'s owner, a forecast, the critical path, how many next actions are set, and TODD\'s Diagnosis (each break explained, with a fix). Tabs: Flow, Sequence (current order and TODD\'s proposed reorder), Moves, People (load and capacity), Log.',
+    description: 'One project: its line by phase with each move\'s owner, a forecast, the critical path, how many next actions are set, and 16Ahead\'s Diagnosis (each break explained, with a fix). Tabs: Flow, Sequence (current order and 16Ahead\'s proposed reorder), Moves, People (load and capacity), Log.',
   },
   'team': {
     title: 'Team',
-    description: 'Each person\'s open moves across every project for the next two weeks, with their load against capacity. Maya (content assistant) and TODD (admin assistant) come first; the last row is moves with no owner.',
+    description: 'Each person\'s open moves across every project for the next two weeks, with their load against capacity. Marketing Assistant (content assistant) and 16Ahead (admin assistant) come first; the last row is moves with no owner.',
   },
   'todd': {
-    title: 'TODD',
-    description: 'What needs the lead, everything TODD did (every entry has Undo, practice entries say "Would have"), and the rules TODD acts within. TODD can be on, practising (logs only) or paused.',
+    title: '16Ahead',
+    description: 'What needs the lead, everything 16Ahead did (every entry has Undo, practice entries say "Would have"), and the rules 16Ahead acts within. 16Ahead can be on, practising (logs only) or paused.',
   },
   'digest': {
     title: 'Morning digest',
-    description: 'Which lines broke overnight with a one-tap fix for each, and what TODD fixed on its own. The same content goes out as the 6am email.',
+    description: 'Which lines broke overnight with a one-tap fix for each, and what 16Ahead fixed on its own. The same content goes out as the 6am email.',
   },
   'review': {
     title: 'Weekly review',
-    description: 'One decision at a time, only what needs the lead, with TODD\'s suggestion first. Keys 1-4 choose; "Talk it through" parks an item for standup.',
+    description: 'One decision at a time, only what needs the lead, with 16Ahead\'s suggestion first. Keys 1-4 choose; "Talk it through" parks an item for standup.',
   },
   'new-project': {
     title: 'New project',
-    description: 'Paste a plan (a list, doc or notes). TODD turns it into a line of moves and checks it before anyone starts: wrong order, no owner (Maya can take content work), no next action - each with a one-tap fix. Then team and rules, then create.',
+    description: 'Paste a plan (a list, doc or notes). 16Ahead turns it into a line of moves and checks it before anyone starts: wrong order, no owner (The Marketing Assistant can take content work), no next action - each with a one-tap fix. Then team and rules, then create.',
   },
   'my-moves': {
     title: 'My next moves',
-    description: 'A teammate\'s own open moves, newest hand-off from TODD first, with Done and Can\'t do it. Can\'t do it sends the move back to TODD to route again; the lead hears only if a date moves.',
+    description: 'A teammate\'s own open moves, newest hand-off from 16Ahead first, with Done and Can\'t do it. Can\'t do it sends the move back to 16Ahead to route again; the lead hears only if a date moves.',
   },
 };
 

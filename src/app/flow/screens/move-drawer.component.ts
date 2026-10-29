@@ -94,7 +94,7 @@ interface LaneCard { lane: Lane; name: string; text: string; state: 'cant' | 'no
         </ol>
 
         <form class="ask" (ngSubmit)="send()">
-          <input [(ngModel)]="note" name="note" [placeholder]="'Ask TODD or leave a note for ' + ownerFirst() + '…'" aria-label="Note">
+          <input [(ngModel)]="note" name="note" [placeholder]="'General Assistant or leave a note for ' + ownerFirst() + '…'" aria-label="Note">
           <button type="submit" class="mv-btn mv-btn--dark" [disabled]="!note.trim()">Send</button>
         </form>
       </aside>
@@ -199,7 +199,7 @@ export class MoveDrawerComponent {
       const note = notes[lane];
       const cant = !now && ( !!note?.startsWith( 'Can’t' ) || !note );
       return {
-        lane, name: lane === 'todd' ? 'TODD' : 'Maya', state: now ? 'now' : cant ? 'cant' : 'can',
+        lane, name: lane === 'todd' ? 'General Assistant' : 'Marketing Assistant', state: now ? 'now' : cant ? 'cant' : 'can',
         text: note || ( now ? 'Has it now.' : lane === 'todd' ? 'Admin only: nudges, dates, follow-ups.' : 'Content only: emails, posts, images.' ),
       };
     };
@@ -224,7 +224,7 @@ export class MoveDrawerComponent {
     const rows: Row[] = m.history.map( e => ( { ...e, when: e.label || fmtWhen( e.at, s.now ) } ) );
     for ( const a of s.actions ) {
       if ( a.moveId !== m.id && !a.changes.some( c => c.moveId === m.id ) ) continue;
-      const who = a.auto ? 'TODD' : `${firstName( personById( s, s.pmId ) )} via TODD`;
+      const who = a.auto ? '16Ahead' : `${firstName( personById( s, s.pmId ) )} via 16Ahead`;
       const text = a.type === 'split' ? a.reason : a.type === 'completed' ? `${a.subject} ${a.text}` : `${who} ${verb( a.type )} ${a.subject} ${a.text}`;
       rows.push( { at: a.createdAt, when: fmtWhen( a.createdAt, s.now ), text, by: 'todd', actionId: a.id, undone: !!a.undoneAt } );
     }

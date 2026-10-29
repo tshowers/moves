@@ -63,7 +63,7 @@ export class LandingComponent implements OnDestroy {
   ];
 
   readonly faqs: Faq[] = [
-    { question: 'What makes a move different from a task?', answer: 'A move is tied to the work it serves and watched for momentum, so TODD can surface when a next action is aging or at risk.' },
+    { question: 'What makes a move different from a task?', answer: 'A move is tied to the work it serves and watched for momentum, so 16Ahead can surface when a next action is aging or at risk.' },
     { question: 'Can Moves connect to contacts and campaigns?', answer: 'Yes. Moves keeps the contact, deal, or campaign behind the work attached to the next action.' },
     { question: 'Who is Moves for?', answer: 'Anyone managing follow-up, deliverables, or shared work who wants to know what needs action next.' }
     ,{ question: 'How does Moves work with projects?', answer: 'Projects stay connected to their individual moves, so teams can see the next action, the owner, the blocker, and the momentum behind the bigger outcome.' }
@@ -73,7 +73,7 @@ export class LandingComponent implements OnDestroy {
   constructor() {
     // What Moves is and the demo video, for search engines (prerendered).
     // The home title and description stay in index.html.
-    const description = 'Moves draws every project as a line of moves against today. Gaps, stalls and wrong order show up as breaks, and TODD fixes the small ones within rules you set, with Undo.';
+    const description = 'Moves draws every project as a line of moves against today. Gaps, stalls and wrong order show up as breaks, and 16Ahead fixes the small ones within rules you set, with Undo.';
     this.seo.structuredData('moves-app', {
       '@context': 'https://schema.org',
       '@type': 'SoftwareApplication',
@@ -93,8 +93,8 @@ export class LandingComponent implements OnDestroy {
     this.seo.structuredData('moves-demo-video', {
       '@context': 'https://schema.org',
       '@type': 'VideoObject',
-      name: 'TODD keeps work moving in Moves',
-      description: 'TODD spots a stalled task and reassigns it, a project lead gives an unowned task to Priya from a push notification, and TODD reorders two tasks so a deadline holds.',
+      name: '16Ahead keeps work moving in Moves',
+      description: '16Ahead spots a stalled task and reassigns it, a project lead gives an unowned task to Priya from a push notification, and 16Ahead reorders two tasks so a deadline holds.',
       thumbnailUrl: [`${SITE_URL}/assets/video/moves-todd-demo-light.jpg`, `${SITE_URL}/assets/video/moves-todd-demo-dark.jpg`],
       contentUrl: `${SITE_URL}/assets/video/moves-todd-demo-light.mp4`,
       uploadDate: '2026-10-13',

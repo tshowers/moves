@@ -39,7 +39,7 @@ import { KIND_LABEL } from '../ui/issue-card.component';
               </li>
             }
           </ol>
-          <p class="fine">TODD only lists what needs a decision. The {{ fixedCount() }} thing{{ fixedCount() === 1 ? '' : 's' }} it fixed {{ fixedCount() === 1 ? 'is' : 'are' }} in the log.</p>
+          <p class="fine">16Ahead only lists what needs a decision. The {{ fixedCount() }} thing{{ fixedCount() === 1 ? '' : 's' }} it fixed {{ fixedCount() === 1 ? 'is' : 'are' }} in the log.</p>
         </aside>
 
         <main class="stage">
@@ -96,7 +96,7 @@ import { KIND_LABEL } from '../ui/issue-card.component';
           } @else {
             <div class="confirm">
               <h2>Nothing needs a decision.</h2>
-              <p class="cons">TODD will bring the next break here. Everything it fixed on its own is in the log.</p>
+              <p class="cons">16Ahead will bring the next break here. Everything it fixed on its own is in the log.</p>
               <div class="confirm-actions"><a class="mv-btn mv-btn--primary mv-btn--lg" routerLink="/app">Back to Momentum</a><a class="mv-btn mv-btn--lg" routerLink="/app/todd">See the log</a></div>
             </div>
           }
@@ -224,7 +224,7 @@ export class ReviewComponent implements OnInit {
   }
 
   where ( i: Issue ): string {
-    if ( i.kind === 'pileup' ) return 'Maya';
+    if ( i.kind === 'pileup' ) return 'Marketing Assistant';
     return this.store.project( i.projectId )?.name || 'Team';
   }
 

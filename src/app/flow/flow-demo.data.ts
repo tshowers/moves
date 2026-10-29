@@ -20,8 +20,8 @@ export function demoState ( now = new Date() ): FlowState {
   } );
 
   const people: Person[] = [
-    person( MAYA_ID, 'Maya', 'Assistant · content', 6, 'maya' ),
-    person( TODD_ID, 'TODD', 'Assistant · admin', 10, 'todd' ),
+    person( MAYA_ID, 'Marketing Assistant', 'Assistant · content', 6, 'maya' ),
+    person( TODD_ID, 'General Assistant', 'Assistant · admin', 10, 'todd' ),
     person( 'dana', 'Dana Reyes', 'Project lead', 8 ),
     person( 'sam', 'Sam Kim', 'Content', 5 ),
     person( 'luis', 'Luis Mora', 'Accounts', 6 ),
@@ -71,8 +71,8 @@ export function demoState ( now = new Date() ): FlowState {
       nextAction: 'Price the 3 add-ons in the renewal sheet and mark them approved', createdBy: 'maya', laneEnteredAt: at( -8, 10, 0 ),
       laneNotes: { todd: 'Can’t. Pricing needs a person’s judgment.', maya: 'Can’t price. Will write the cover email after.', person: 'Owns the Acme account.' },
       history: [
-        { at: at( -8, 9, 0 ), text: 'Maya created “Send renewal proposal” from her daily plan', by: 'maya' },
-        { at: at( -7, 9, 0 ), label: `${fmtDay( addDays( now, -7 ) )}–${addDays( now, -1 ).getDate()}`, text: 'No progress. Maya noted “needs pricing before I can draft”', by: 'maya' },
+        { at: at( -8, 9, 0 ), text: 'The Marketing Assistant created “Send renewal proposal” from its daily plan', by: 'maya' },
+        { at: at( -7, 9, 0 ), label: `${fmtDay( addDays( now, -7 ) )}–${addDays( now, -1 ).getDate()}`, text: 'No progress. The Marketing Assistant noted “needs pricing before I can draft”', by: 'maya' },
         { at: at( 0, 9, 3 ), text: 'Luis notified by push', by: 'system' },
       ],
     } ),
@@ -126,15 +126,15 @@ export function demoState ( now = new Date() ): FlowState {
   const actions: ToddAction[] = [
     act( {
       id: 'act-acme-reassign', type: 'reassigned', moveId: 'a2', projectId: 'acme', ruleId: 'handoff', createdAt: at( 0, 9, 2 ),
-      subject: 'Acme pricing', text: 'from Maya to Luis. Maya can’t price add-ons.',
-      note: 'Moved Acme pricing from Maya to Luis. Maya can’t price.', title: 'Acme pricing moved to Luis',
-      reason: 'Rule: hand off what Maya can’t do.',
+      subject: 'Acme pricing', text: 'from the Marketing Assistant to Luis. The Marketing Assistant can’t price add-ons.',
+      note: 'Moved Acme pricing from the Marketing Assistant to Luis. The Marketing Assistant can’t price.', title: 'Acme pricing moved to Luis',
+      reason: 'Rule: hand off what the Marketing Assistant can’t do.',
       changes: [{ moveId: 'a2', before: { assigneeId: null, lane: 'maya' }, after: { assigneeId: 'luis', lane: 'person' } }],
     } ),
     act( {
       id: 'act-acme-split', type: 'split', moveId: 'a2', projectId: 'acme', ruleId: 'split', createdAt: at( 0, 9, 1 ),
-      subject: 'Renewal proposal', text: 'into pricing (Luis) and cover email (Maya, waits on Luis).',
-      title: 'Renewal proposal split', reason: 'TODD split it: pricing to Luis, cover email stays with Maya and waits. Rule: hand off what Maya can’t do.',
+      subject: 'Renewal proposal', text: 'into pricing (Luis) and cover email (Marketing Assistant, waits on Luis).',
+      title: 'Renewal proposal split', reason: '16Ahead split it: pricing to Luis, cover email stays with the Marketing Assistant and waits. Rule: hand off what the Marketing Assistant can’t do.',
       changes: [
         { moveId: 'a2', before: { title: 'Send renewal proposal', nextAction: 'Price the add-ons and send the renewal proposal' }, after: { title: 'Price the Acme add-ons', nextAction: 'Price the 3 add-ons in the renewal sheet and mark them approved' } },
         { moveId: 'a3', before: null, after: {} },
@@ -146,7 +146,7 @@ export function demoState ( now = new Date() ): FlowState {
     } ),
     act( {
       id: 'act-recap', type: 'reassigned', moveId: 'q4', projectId: 'hiring', ruleId: 'handoff', createdAt: at( -1, 17, 2 ),
-      subject: 'Send recap', text: 'from Maya to Ken. It needs a signed approval.', reason: 'Rule: hand off what Maya can’t do.',
+      subject: 'Send recap', text: 'from the Marketing Assistant to Ken. It needs a signed approval.', reason: 'Rule: hand off what the Marketing Assistant can’t do.',
       changes: [{ moveId: 'q4', before: { assigneeId: null, lane: 'maya' }, after: { assigneeId: 'ken', lane: 'person' } }],
     } ),
     act( {

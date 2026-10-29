@@ -188,15 +188,15 @@ export class TeamComponent {
     if ( person.id === MAYA_ID ) {
       const pile = issues.find( i => i.kind === 'pileup' && i.status === 'needs_you' );
       const moved = liveActions( s ).filter( a => daysBetween( a.createdAt, s.now ) <= 1 && a.changes.some( c => c.before?.lane === 'maya' ) ).length;
-      if ( pile ) return { tone: 'card', text: `Pile-up from her daily plans. ${moved} moved to people, ${pile.moveIds.length} need you.`, link: `/app/review?item=${encodeURIComponent( pile.id )}` };
-      return { text: moves.length ? `${moves.length} moves from her daily plans.` : '' };
+      if ( pile ) return { tone: 'card', text: `Pile-up from its daily plans. ${moved} moved to people, ${pile.moveIds.length} need you.`, link: `/app/review?item=${encodeURIComponent( pile.id )}` };
+      return { text: moves.length ? `${moves.length} moves from its daily plans.` : '' };
     }
     if ( person.id === TODD_ID ) return { text: moves.slice( 0, 2 ).map( m => m.title ).join( ', ' ) };
     const ids = moves.map( m => m.id );
     const fresh = liveActions( s ).find( a => daysBetween( a.createdAt, s.now ) === 0 && a.changes.some( c => c.after?.assigneeId === person.id ) );
     if ( fresh ) {
       const m = moveById( s, fresh.moveId );
-      const from = fresh.changes.find( c => c.after?.assigneeId === person.id )?.before?.lane === 'maya' ? ', from Maya' : '';
+      const from = fresh.changes.find( c => c.after?.assigneeId === person.id )?.before?.lane === 'maya' ? ', from the Marketing Assistant' : '';
       return { tone: 'green', text: `New: ${m?.short ? ( this.store.project( m.projectId )?.name.split( ' ' )[0] + ' ' + m.short.toLowerCase() ) : m?.title}${from}` };
     }
     const stall = issues.find( i => i.kind === 'stall' && ids.includes( i.moveIds[0] ) );

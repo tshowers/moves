@@ -62,15 +62,13 @@
     color: var(--ink);
     text-decoration: none;
     font-weight: 700;
-    letter-spacing: -.03em;
-    font-size: 1.05rem
+    letter-spacing: -.02em;
+    font-size: 20px
 }
 
 .moves-brand img {
-    width: 38px;
-    height: 38px;
-    border-radius: 11px;
-    box-shadow: var(--shadow-md)
+    width: 34px;
+    height: 34px
 }
 
 .moves-nav__right {
@@ -1301,15 +1299,12 @@
     display: grid;
     place-items: center;
     width: 28px;
-    height: 28px;
-    border-radius: 50%;
-    background: #fff;
-    box-shadow: 0 0 0 1px var(--line)
+    height: 28px
 }
 
 .moves-made-by .tt-made-by__todd img {
-    width: 20px;
-    height: 20px;
+    width: 28px;
+    height: 28px;
     object-fit: contain
 }
 

@@ -18,8 +18,8 @@ import { environment } from '../../../environments/environment';
 export class AppShowcaseComponent {
   /** Prerendered for search engines (app.routes.server.ts). Same title as the route's. */
   private readonly seo = inject( SeoService ).page( {
-    title: 'Moves for iPhone | Taliferro Tech',
-    description: 'Moves for iPhone: your next moves, hand-offs from TODD with Done and Can’t do it right on the notification, and the same account as the web.',
+    title: 'Moves for iPhone | 16Ahead',
+    description: 'Moves for iPhone: your next moves, hand-offs from 16Ahead with Done and Can’t do it right on the notification, and the same account as the web.',
   } );
   readonly theme = inject(ThemeService);
   private readonly router = inject( Router );
@@ -39,6 +39,6 @@ export class AppShowcaseComponent {
   readonly highlights = [
     { heading: 'See what needs attention before it stalls', copy: 'Open Moves and get a clear read on the work that is aging, blocked, or ready for the next action.' },
     { heading: 'Create the next move in the moment', copy: 'Capture a follow-up while the conversation is fresh and connect it to the contact, deal, or campaign it serves.' },
-    { heading: 'Keep momentum visible wherever you work', copy: 'Your move list stays connected to the same momentum signals TODD watches on the web.' }
+    { heading: 'Keep momentum visible wherever you work', copy: 'Your move list stays connected to the same momentum signals 16Ahead watches on the web.' }
   ];
 }

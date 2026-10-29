@@ -109,7 +109,7 @@ export class FlowTrackComponent {
   readonly named = computed( () => this.model().nodes.some( n => !!n.sublabel ) );
 
   aria ( n: TrackNode ): string {
-    const kinds: Record<string, string> = { done: 'done', upcoming: 'upcoming', stalled: `stalled ${n.text}`, gap: 'no owner', order: 'out of order', fixed: 'fixed by TODD', pileup: `${n.text} piled up` };
+    const kinds: Record<string, string> = { done: 'done', upcoming: 'upcoming', stalled: `stalled ${n.text}`, gap: 'no owner', order: 'out of order', fixed: 'fixed by 16Ahead', pileup: `${n.text} piled up` };
     return `${n.label || 'Move'}, ${kinds[n.kind]}`;
   }
 }

@@ -2,7 +2,7 @@ import { DOCUMENT } from '@angular/common';
 import { Injectable, inject } from '@angular/core';
 import { Meta, Title } from '@angular/platform-browser';
 
-export const SITE_URL = 'https://moves.taliferro.tech';
+export const SITE_URL = 'https://moves.16ahead.com';
 
 /**
  * Search and link-preview tags for the prerendered public pages (/, /help,

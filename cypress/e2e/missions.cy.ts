@@ -48,7 +48,7 @@ describe( 'Mission detail (2a)', () => {
     cy.get( '[data-cy="banner-cta"]' ).click();
     cy.get( '[data-cy="drawer-reject"]' ).click();
     cy.get( '[data-cy="drawer-send-back"]' ).should( 'be.disabled' );
-    cy.get( '[data-cy="step-drawer"]' ).should( 'contain.text', 'Maya revises once and sends it back to you.' );
+    cy.get( '[data-cy="step-drawer"]' ).should( 'contain.text', 'The Marketing Assistant revises once and sends it back to you.' );
     cy.get( '[data-cy="drawer-note"]' ).type( 'Shorter, and lead with the Denver office' );
     cy.get( '[data-cy="drawer-send-back"]' ).click();
     cy.wait( '@act' ).its( 'request.body' ).should( 'deep.equal', { type: 'reject', note: 'Shorter, and lead with the Denver office' } );
@@ -62,13 +62,13 @@ describe( 'Mission detail (2a)', () => {
     cy.get( '[data-cy="strip-col-send"]' ).should( 'have.attr', 'data-look', 'next' );
     cy.get( '[data-cy="strip-col-branch:afterWait"]' ).should( 'contain.text', 'After the wait' )
       .and( 'contain.text', 'They reply:' ).and( 'contain.text', 'No reply:' ).and( 'contain.text', 'It bounces:' );
-    cy.get( '[data-cy="who-does-it"]' ).should( 'contain.text', 'TODD' ).and( 'contain.text', 'Maya' ).and( 'contain.text', 'You' );
+    cy.get( '[data-cy="who-does-it"]' ).should( 'contain.text', '16Ahead' ).and( 'contain.text', 'Marketing Assistant' ).and( 'contain.text', 'You' );
   } );
 
   it( 'Maya working, waiting on the world, and a failure that came to you', () => {
     mission( 'roland-maya-working' );
     cy.visitWithCypressAuth( '/missions/reach-named-person', ME );
-    cy.get( '[data-cy="mission-banner"]' ).should( 'have.attr', 'data-state', 'run' ).and( 'contain.text', 'Maya is working: design the HTML email' );
+    cy.get( '[data-cy="mission-banner"]' ).should( 'have.attr', 'data-state', 'run' ).and( 'contain.text', 'Marketing Assistant is working: design the HTML email' );
 
     // The fixture's wait ends on a fixed date; keep it in the future so "· N left" shows whatever day this runs.
     cy.fixture( 'missions/roland-waiting-world.json' ).then( ( m ) => {
@@ -84,7 +84,7 @@ describe( 'Mission detail (2a)', () => {
     cy.visitWithCypressAuth( '/missions/reach-named-person', ME );
     cy.get( '[data-cy="mission-banner"]' ).should( 'have.attr', 'data-state', 'fail' ).and( 'contain.text', 'A step failed and came to you: make a header image' );
     cy.get( '[data-cy="banner-cta"]' ).click();
-    cy.get( '[data-cy="drawer-why"]' ).should( 'contain.text', 'Maya tried 2 times' ).and( 'contain.text', 'brand colors file' );
+    cy.get( '[data-cy="drawer-why"]' ).should( 'contain.text', 'The Marketing Assistant tried 2 times' ).and( 'contain.text', 'brand colors file' );
     cy.get( '[data-cy="drawer-kicker"]' ).should( 'contain.text', 'Task, was tool' );
     cy.get( '[data-cy="drawer-without"]' ).should( 'have.text', 'Design without it' ).click();
     cy.wait( '@act' ).its( 'request.body.type' ).should( 'eq', 'without' );
@@ -162,7 +162,7 @@ describe( 'Report (8a), insight (7a), shortlist (11a), asset set (13a)', () => {
     cy.get( '[data-cy="mission-report"]' ).should( 'be.visible' );
     cy.get( '[data-cy="report-row"][data-step="approve"]' ).should( 'contain.text', 'You' );
     cy.get( '[data-cy="report-row"][data-step="follow"]' ).should( 'not.exist' );
-    cy.get( '[data-cy="report-split"]' ).should( 'contain.text', 'by TODD' ).and( 'contain.text', '2 by you' ).and( 'contain.text', 'About 6 minutes of your time.' );
+    cy.get( '[data-cy="report-split"]' ).should( 'contain.text', 'by 16Ahead' ).and( 'contain.text', '2 by you' ).and( 'contain.text', 'About 6 minutes of your time.' );
     cy.get( '[data-cy="mission-banner"]' ).should( 'not.exist' );
   } );
 

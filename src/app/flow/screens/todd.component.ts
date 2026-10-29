@@ -21,7 +21,7 @@ type Filter = 'all' | 'practice' | ToddActionType;
         <header class="head">
           <img [src]="todd" alt="" class="mv-plate">
           <div>
-            <h1 class="mv-title">TODD</h1>
+            <h1 class="mv-title">16Ahead</h1>
             <p class="mv-sub">Your project assistant · {{ modeLine() }}</p>
           </div>
         </header>
@@ -49,7 +49,7 @@ type Filter = 'all' | 'practice' | ToddActionType;
               }
             </article>
           } @empty {
-            <p class="quiet">Nothing needs you. TODD will flag the next break here.</p>
+            <p class="quiet">Nothing needs you. 16Ahead will flag the next break here.</p>
           }
         </div>
 
@@ -184,7 +184,7 @@ export class ToddComponent {
   readonly visible = computed( () => this.showAll() ? this.filtered() : this.filtered().slice( 0, 6 ) );
 
   where ( i: Issue ): string {
-    if ( i.kind === 'pileup' ) return 'Maya';
+    if ( i.kind === 'pileup' ) return 'Marketing Assistant';
     if ( i.kind === 'capacity' ) return 'Team';
     return ( this.store.project( i.projectId )?.name || 'Moves' ).split( ' ' )[0];
   }

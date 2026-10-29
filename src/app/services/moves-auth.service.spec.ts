@@ -40,7 +40,7 @@ describe( 'MovesAuthService', () => {
 
       const pending = JSON.parse( sessionStorage.getItem( PENDING_LOGIN_KEY ) as string );
       expect( navigateSpy ).toHaveBeenCalledWith(
-        `https://todd.taliferro.tech/login?client=moves-web-local&state=${pending.state}`
+        `https://todd.taliferro.tech/login?client=moves-web-local&state=${pending.state}&redirectUri=${encodeURIComponent( `${location.origin}/auth/callback` )}`
       );
     } );
   } );

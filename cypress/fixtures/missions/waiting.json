@@ -2106,7 +2106,7 @@
         "skipReason": "",
         "when": "",
         "branch": null,
-        "why": "Maya tried 2 times and it didn't work: Image Creator failed both times. Your brand colors file isn't in Docs, so it can't match your style.",
+        "why": "The Marketing Assistant tried 2 times and it didn't work: Image Creator failed both times. Your brand colors file isn't in Docs, so it can't match your style.",
         "doneWhen": "",
         "options": [],
         "minutes": 0,
@@ -2120,7 +2120,7 @@
         "handoff": {
           "from": "maya",
           "code": "tool_error",
-          "reason": "Maya tried 2 times and it didn't work: Image Creator failed both times. Your brand colors file isn't in Docs, so it can't match your style.",
+          "reason": "The Marketing Assistant tried 2 times and it didn't work: Image Creator failed both times. Your brand colors file isn't in Docs, so it can't match your style.",
           "at": "2026-10-14T16:00:00.000Z"
         },
         "reassigned": null,
@@ -2384,7 +2384,7 @@
           "skipReason": "",
           "when": "",
           "branch": null,
-          "why": "Maya tried 2 times and it didn't work: Image Creator failed both times. Your brand colors file isn't in Docs, so it can't match your style.",
+          "why": "The Marketing Assistant tried 2 times and it didn't work: Image Creator failed both times. Your brand colors file isn't in Docs, so it can't match your style.",
           "doneWhen": "",
           "options": [],
           "minutes": 0,
@@ -2398,7 +2398,7 @@
           "handoff": {
             "from": "maya",
             "code": "tool_error",
-            "reason": "Maya tried 2 times and it didn't work: Image Creator failed both times. Your brand colors file isn't in Docs, so it can't match your style.",
+            "reason": "The Marketing Assistant tried 2 times and it didn't work: Image Creator failed both times. Your brand colors file isn't in Docs, so it can't match your style.",
             "at": "2026-10-14T16:00:00.000Z"
           },
           "reassigned": null,

@@ -179,12 +179,12 @@ export class MovesAssistantLauncherComponent implements OnInit, OnDestroy {
       tone: 'neutral',
       icon: 'fa-solid fa-compass',
       title: 'Every project as a line against today',
-      message: 'Moves shows a project lead where work is about to stall - no owner, no next action, gone quiet, or out of order - and TODD fixes the small things within rules you set.',
+      message: 'Moves shows a project lead where work is about to stall - no owner, no next action, gone quiet, or out of order - and 16Ahead fixes the small things within rules you set.',
       whyItMatters: 'Work rarely fails because nobody wrote it down. It fails because it goes still and nobody notices.',
       bullets: [
         'Open the app to look around a sample team.',
-        'Paste a plan you already have and TODD checks it before anyone starts.',
-        'Ask this chat how Moves works, or what TODD does on its own.',
+        'Paste a plan you already have and 16Ahead checks it before anyone starts.',
+        'Ask this chat how Moves works, or what 16Ahead does on its own.',
       ],
     };
   }
@@ -198,26 +198,26 @@ export class MovesAssistantLauncherComponent implements OnInit, OnDestroy {
     const needs = Number( summary['needsYouCount'] || 0 );
     const first = ( summary['needsYou'] as { title: string; project: string }[] | undefined )?.[0];
     const todd = String( summary['todd'] || 'on' );
-    const toddLine = todd === 'dry_run' ? 'TODD is practising: it logs what it would do and changes nothing.' : todd === 'off' ? 'TODD is paused: it flags breaks but won’t act.' : '';
+    const toddLine = todd === 'dry_run' ? '16Ahead is practising: it logs what it would do and changes nothing.' : todd === 'off' ? '16Ahead is paused: it flags breaks but won’t act.' : '';
     const fixed = Number( summary['toddFixedToday'] || 0 );
 
     switch ( String( ctx.page || '' ) ) {
       case 'momentum':
       case 'digest':
         if ( Number( summary['projectCount'] || 0 ) === 0 ) {
-          return { eyebrow: 'MOMENTUM', stageLabel: 'No projects yet', tone: 'attention', icon: 'fa-solid fa-triangle-exclamation', title: 'Start your first project', message: 'Paste a plan you already have. TODD turns it into a line and checks the order, owners and next actions.', whyItMatters: 'TODD can only watch work that’s on a line.', bullets: [] };
+          return { eyebrow: 'MOMENTUM', stageLabel: 'No projects yet', tone: 'attention', icon: 'fa-solid fa-triangle-exclamation', title: 'Start your first project', message: 'Paste a plan you already have. 16Ahead turns it into a line and checks the order, owners and next actions.', whyItMatters: '16Ahead can only watch work that’s on a line.', bullets: [] };
         }
         return needs ? {
           eyebrow: 'MOMENTUM', stageLabel: 'Needs you', tone: 'attention', icon: 'fa-solid fa-triangle-exclamation',
           title: `${needs} thing${needs === 1 ? '' : 's'} need${needs === 1 ? 's' : ''} you`,
           message: first ? `Start with ${first.project ? first.project + ': ' : ''}${first.title}. Or run the review to decide them one at a time.` : 'Run the review to decide them one at a time.',
-          whyItMatters: 'These are the breaks TODD can’t fix inside its rules.',
-          bullets: [fixed ? `TODD fixed ${fixed} smaller thing${fixed === 1 ? '' : 's'} today - each has Undo.` : '', toddLine].filter( Boolean ),
+          whyItMatters: 'These are the breaks 16Ahead can’t fix inside its rules.',
+          bullets: [fixed ? `16Ahead fixed ${fixed} smaller thing${fixed === 1 ? '' : 's'} today - each has Undo.` : '', toddLine].filter( Boolean ),
         } : {
           eyebrow: 'MOMENTUM', stageLabel: 'Moving', tone: 'ready', icon: 'fa-solid fa-circle-check',
-          title: 'Every line is moving', message: 'Nothing needs you right now. TODD will flag the next break in the margin.',
+          title: 'Every line is moving', message: 'Nothing needs you right now. 16Ahead will flag the next break in the margin.',
           whyItMatters: 'A clean board stays clean when every move keeps an owner and a next action.',
-          bullets: [fixed ? `TODD fixed ${fixed} smaller thing${fixed === 1 ? '' : 's'} today.` : '', toddLine].filter( Boolean ),
+          bullets: [fixed ? `16Ahead fixed ${fixed} smaller thing${fixed === 1 ? '' : 's'} today.` : '', toddLine].filter( Boolean ),
         };
       case 'project': {
         const diagnosis = ( preview['diagnosis'] as { status: string; title: string }[] | undefined ) || [];
@@ -230,7 +230,7 @@ export class MovesAssistantLauncherComponent implements OnInit, OnDestroy {
         } : {
           eyebrow: String( summary['project'] || 'PROJECT' ).toUpperCase(), stageLabel: 'Moving', tone: 'ready', icon: 'fa-solid fa-circle-check',
           title: `${summary['forecast'] || 'On track'}`, message: 'Nothing here needs you. Sequence shows the order; People shows who has room.',
-          whyItMatters: 'Every move with an owner and a next action is one TODD can keep moving.', bullets: [],
+          whyItMatters: 'Every move with an owner and a next action is one 16Ahead can keep moving.', bullets: [],
         };
       }
       case 'team': {
@@ -239,25 +239,25 @@ export class MovesAssistantLauncherComponent implements OnInit, OnDestroy {
         return over.length || noOwner ? {
           eyebrow: 'TEAM', stageLabel: 'Uneven load', tone: 'attention', icon: 'fa-solid fa-triangle-exclamation',
           title: over.length ? `${over[0]}${over.length > 1 ? ` and ${over.length - 1} more` : ''} over capacity` : `${noOwner} move${noOwner === 1 ? '' : 's'} with no owner`,
-          message: 'TODD hands work to whoever on the project has the most room. Set each person’s capacity on a project’s People tab.',
+          message: '16Ahead hands work to whoever on the project has the most room. Set each person’s capacity on a project’s People tab.',
           whyItMatters: 'An overloaded owner is the most common reason a move goes still.', bullets: [],
-        } : { eyebrow: 'TEAM', stageLabel: 'Balanced', tone: 'ready', icon: 'fa-solid fa-circle-check', title: 'Everyone has room', message: 'Nobody is over capacity for the next two weeks.', whyItMatters: 'Room on the team is what lets TODD hand off without asking.', bullets: [] };
+        } : { eyebrow: 'TEAM', stageLabel: 'Balanced', tone: 'ready', icon: 'fa-solid fa-circle-check', title: 'Everyone has room', message: 'Nobody is over capacity for the next two weeks.', whyItMatters: 'Room on the team is what lets 16Ahead hand off without asking.', bullets: [] };
       }
       case 'todd':
         return {
           eyebrow: 'TODD', stageLabel: todd === 'dry_run' ? 'Practising' : todd === 'off' ? 'Paused' : 'On', tone: todd === 'on' ? 'ready' : 'progress', icon: 'fa-solid fa-robot',
-          title: todd === 'dry_run' ? 'TODD is practising' : todd === 'off' ? 'TODD is paused' : 'TODD is acting within its rules',
+          title: todd === 'dry_run' ? '16Ahead is practising' : todd === 'off' ? '16Ahead is paused' : '16Ahead is acting within its rules',
           message: todd === 'dry_run' ? '“Would have” entries in the log show what it would do. Turn it on when they look right.' : 'Everything it did is in the log with Undo. Turn a rule off to keep that decision for yourself.',
           whyItMatters: 'Two rules are locked: never move a client-facing or hand-set date, never message anyone outside the team.',
           bullets: needs ? [`${needs} thing${needs === 1 ? '' : 's'} need${needs === 1 ? 's' : ''} you at the top of this page.`] : [],
         };
       case 'review':
-        return { eyebrow: 'WEEKLY REVIEW', stageLabel: `${needs} left`, tone: needs ? 'progress' : 'ready', icon: 'fa-solid fa-list-check', title: needs ? `${needs} decision${needs === 1 ? '' : 's'} to make` : 'Nothing to decide', message: 'Press 1–4 to choose. TODD’s suggestion is always first.', whyItMatters: 'Only what TODD can’t fix lands here, so this list stays short.', bullets: ['Share to standup copies the list for your team channel.'] };
+        return { eyebrow: 'WEEKLY REVIEW', stageLabel: `${needs} left`, tone: needs ? 'progress' : 'ready', icon: 'fa-solid fa-list-check', title: needs ? `${needs} decision${needs === 1 ? '' : 's'} to make` : 'Nothing to decide', message: 'Press 1–4 to choose. 16Ahead’s suggestion is always first.', whyItMatters: 'Only what 16Ahead can’t fix lands here, so this list stays short.', bullets: ['Share to standup copies the list for your team channel.'] };
       case 'new-project':
-        return { eyebrow: 'NEW PROJECT', stageLabel: 'Plan', tone: 'neutral', icon: 'fa-solid fa-compass', title: 'Paste the plan you already have', message: 'A list, a doc or meeting notes. TODD draws it as a line and checks the order, owners and next actions.', whyItMatters: 'Fixing a wrong order or a missing owner now is free; fixing it mid-project costs a date.', bullets: ['Content work (emails, posts, images) can go to Maya.'] };
+        return { eyebrow: 'NEW PROJECT', stageLabel: 'Plan', tone: 'neutral', icon: 'fa-solid fa-compass', title: 'Paste the plan you already have', message: 'A list, a doc or meeting notes. 16Ahead draws it as a line and checks the order, owners and next actions.', whyItMatters: 'Fixing a wrong order or a missing owner now is free; fixing it mid-project costs a date.', bullets: ['Content work (emails, posts, images) can go to the Marketing Assistant.'] };
       case 'my-moves': {
         const mine = Number( summary['myOpenMoves'] || 0 );
-        return { eyebrow: 'MY MOVES', stageLabel: `${mine} open`, tone: 'neutral', icon: 'fa-solid fa-list-check', title: mine ? `${mine} next move${mine === 1 ? '' : 's'}` : 'Nothing on your plate', message: 'Done when it’s done. Can’t do it sends it back to TODD, which finds someone else.', whyItMatters: 'Saying “can’t” early is what keeps a line from stalling.', bullets: [] };
+        return { eyebrow: 'MY MOVES', stageLabel: `${mine} open`, tone: 'neutral', icon: 'fa-solid fa-list-check', title: mine ? `${mine} next move${mine === 1 ? '' : 's'}` : 'Nothing on your plate', message: 'Done when it’s done. Can’t do it sends it back to 16Ahead, which finds someone else.', whyItMatters: 'Saying “can’t” early is what keeps a line from stalling.', bullets: [] };
       }
       default:
         return null;
@@ -270,14 +270,14 @@ export class MovesAssistantLauncherComponent implements OnInit, OnDestroy {
       return {
         eyebrow: 'MOVE', stageLabel: 'Needs a look', tone: 'attention', icon: 'fa-solid fa-triangle-exclamation',
         title: issues[0].title, message: issues[0].explanation,
-        whyItMatters: m['blocks']?.length ? `${m['blocks'].length} move${m['blocks'].length === 1 ? ' waits' : 's wait'} on this one.` : 'A move with an owner and a next action is one TODD can keep moving.',
+        whyItMatters: m['blocks']?.length ? `${m['blocks'].length} move${m['blocks'].length === 1 ? ' waits' : 's wait'} on this one.` : 'A move with an owner and a next action is one 16Ahead can keep moving.',
         bullets: [`Owner: ${m['owner']}`, `Due ${m['due']}`],
       };
     }
     return {
       eyebrow: 'MOVE', stageLabel: m['done'] ? 'Done' : 'Moving', tone: m['done'] ? 'ready' : 'neutral', icon: 'fa-solid fa-circle-check',
       title: String( m['title'] || 'This move' ), message: `Next: ${m['nextAction']}`,
-      whyItMatters: 'Ask TODD to draft a note for the owner, or what to do if this slips.',
+      whyItMatters: 'Ask the General Assistant to draft a note for the owner, or what to do if this slips.',
       bullets: [`Owner: ${m['owner']}`, `Due ${m['due']}`],
     };
   }

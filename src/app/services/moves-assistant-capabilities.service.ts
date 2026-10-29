@@ -83,7 +83,7 @@ export class MovesAssistantCapabilitiesService {
       message: [
         '<p><strong>Start from the plan you already have.</strong></p>',
         '<p>Open <strong>/app/new</strong> and paste a list, a doc or meeting notes - one move per line, owners in brackets like “(Sam)”.</p>',
-        '<p>TODD draws it as a line and checks it first: anything in the wrong order, without an owner (Maya can take content work), or without a next action. Fix what you like, then create it.</p>',
+        '<p>16Ahead draws it as a line and checks it first: anything in the wrong order, without an owner (The Marketing Assistant can take content work), or without a next action. Fix what you like, then create it.</p>',
       ].join( '' )
     },
     {
@@ -94,7 +94,7 @@ export class MovesAssistantCapabilitiesService {
       ],
       message: [
         '<p><strong>Everything that needs you is in one place.</strong></p>',
-        '<p>Run the weekly review at <strong>/app/review</strong>: one decision at a time, TODD’s suggestion first, keys 1–4 to choose.</p>',
+        '<p>Run the weekly review at <strong>/app/review</strong>: one decision at a time, 16Ahead’s suggestion first, keys 1–4 to choose.</p>',
         '<p>Or fix it where you see it - the note in Momentum’s margin, or Diagnosis on the project.</p>',
       ].join( '' )
     },
@@ -106,7 +106,7 @@ export class MovesAssistantCapabilitiesService {
         /\bpractic(e|ing)\b/i,
       ],
       message: [
-        '<p><strong>TODD acts within rules you set</strong> - hand off what Maya and it can’t do, nudge after four quiet days, reschedule within slack, split Maya’s part off a move.</p>',
+        '<p><strong>16Ahead acts within rules you set</strong> - hand off what the Marketing Assistant and it can’t do, nudge after four quiet days, reschedule within slack, split the Marketing Assistant’s part off a move.</p>',
         '<p>Its first week is practice: it logs what it would do and changes nothing. Turn it on, pause it, or switch rules off at <strong>/app/todd</strong>. Everything it does has Undo.</p>',
       ].join( '' )
     },
@@ -211,7 +211,7 @@ export class MovesAssistantCapabilitiesService {
       {
         id: 'new-project',
         label: 'New project',
-        hint: 'Paste a plan; TODD checks it',
+        hint: 'Paste a plan; 16Ahead checks it',
         patterns: ['new project', 'create project', 'paste a plan', 'new move'],
         guard: () => true
       },

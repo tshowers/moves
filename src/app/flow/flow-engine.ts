@@ -26,10 +26,10 @@ export const MAYA_ID = 'maya';
 
 export function defaultRules (): ToddRule[] {
   return [
-    { id: 'handoff', lead: 'Hand off what Maya and I can’t do.', text: 'Or anything that sits 48h in our lane. It goes to the person on the project with the most room.', enabled: true, locked: false, params: { hours: 48 } },
+    { id: 'handoff', lead: 'Hand off what the Marketing Assistant and I can’t do.', text: 'Or anything that sits 48h in our lane. It goes to the person on the project with the most room.', enabled: true, locked: false, params: { hours: 48 } },
     { id: 'nudge', lead: 'Nudge the owner', text: 'after 4 days of no activity.', enabled: true, locked: false, params: { days: 4 } },
     { id: 'reschedule', lead: 'Reschedule', text: 'internal dates within slack.', enabled: true, locked: false },
-    { id: 'split', lead: 'Split a move', text: 'when part of it is Maya’s work.', enabled: true, locked: false },
+    { id: 'split', lead: 'Split a move', text: 'when part of it is the Marketing Assistant’s work.', enabled: true, locked: false },
     { id: 'lock-dates', lead: 'Never', text: 'move a client-facing date or a date someone set by hand.', enabled: true, locked: true },
     { id: 'no-outside', lead: 'Never', text: 'message anyone outside the team.', enabled: true, locked: true },
   ];
@@ -241,7 +241,7 @@ function gapOwnerIssue ( s: FlowState, m: FlowMove, project: FlowProject | undef
   const id = `gap:owner:${m.id}`;
   const waiting = downstream( s, m.id ).filter( isOpen ).length;
   const best = byRoom( s, m.projectId )[0];
-  const lanes = m.laneNotes?.todd && m.laneNotes?.maya ? `I can’t do this and neither can Maya.` : 'This needs a person.';
+  const lanes = m.laneNotes?.todd && m.laneNotes?.maya ? `I can’t do this and neither can the Marketing Assistant.` : 'This needs a person.';
   const slips = project?.shipsOn && waiting > 0;
   return {
     id, kind: 'gap', status: 'needs_you', projectId: m.projectId, moveIds: [m.id],
@@ -250,7 +250,7 @@ function gapOwnerIssue ( s: FlowState, m: FlowMove, project: FlowProject | undef
     explanation: best ? `${lanes} ${firstName( best )} has the most room on this project this week.` : lanes,
     question: waiting ? `${m.title} has no owner, and ${waiting} move${waiting === 1 ? ' is' : 's are'} waiting on it.` : `${m.title} has no owner.`,
     consequence: slips
-      ? `Launch slips from ${fmtDay( project!.shipsOn! )} to ${fmtDay( addDays( project!.shipsOn!, 7 ) )} if nobody owns this by ${fmtWeekday( m.due )}. ${m.laneNotes?.todd && m.laneNotes?.maya ? 'TODD and Maya can’t do it.' : ''}`.trim()
+      ? `Launch slips from ${fmtDay( project!.shipsOn! )} to ${fmtDay( addDays( project!.shipsOn!, 7 ) )} if nobody owns this by ${fmtWeekday( m.due )}. ${m.laneNotes?.todd && m.laneNotes?.maya ? '16Ahead and the Marketing Assistant can’t do it.' : ''}`.trim()
       : `It’s due ${fmtWeekdayDay( m.due )}. Nothing after it can start until someone owns it.`,
     choices: [...assignChoices( s, m ), doneChoice( m ), ...talkSkip( id )],
   };
@@ -315,7 +315,7 @@ function stallIssue ( s: FlowState, m: FlowMove, still: number, nudgeDays: numbe
 
 function laneStallIssue ( s: FlowState, m: FlowMove ): Issue {
   const id = `stall:lane:${m.id}`;
-  const lane = m.lane === 'maya' ? 'Maya' : 'TODD';
+  const lane = m.lane === 'maya' ? 'Marketing Assistant' : 'General Assistant';
   const days = Math.max( 1, daysBetween( m.laneEnteredAt!, s.now ) );
   const cant = m.laneNotes?.[m.lane];
   const to = byRoom( s, m.projectId )[0];
@@ -335,11 +335,11 @@ function pileupIssue ( s: FlowState, late: FlowMove[] ): Issue {
   const id = `pileup:maya:${ids.slice().sort().join( ',' )}`;
   return {
     id, kind: 'pileup', status: 'needs_you', projectId: late[0].projectId, moveIds: ids,
-    label: `Maya: ${late.length} need a date`,
-    title: `${late.length} of Maya’s moves need a new date`,
+    label: `Marketing Assistant: ${late.length} need a date`,
+    title: `${late.length} of the Marketing Assistant’s moves need a new date`,
     explanation: `They came from her daily plans and are past due. I can’t pick a client-facing date.`,
-    question: `${late.length} of Maya’s moves are past due.`,
-    consequence: `${late.map( m => m.title ).join( ', ' )}. Maya can’t send them until someone sets a date.`,
+    question: `${late.length} of the Marketing Assistant’s moves are past due.`,
+    consequence: `${late.map( m => m.title ).join( ', ' )}. The Marketing Assistant can’t send them until someone sets a date.`,
     choices: [
       { label: 'Push a week', hint: `All ${late.length} to ${fmtDay( addDays( s.now, 7 ) )}`, run: { kind: 'reschedule', moveIds: ids, days: daysBetween( late[0].due, addDays( s.now, 7 ) ) } },
       { label: 'Look at them', hint: 'Open the first one', run: { kind: 'open', moveId: ids[0] } },

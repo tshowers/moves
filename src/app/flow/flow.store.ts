@@ -158,8 +158,8 @@ export class FlowStore {
 
       const capacity = flowState?.capacity || {};
       const people = new Map<string, Person>();
-      people.set( MAYA_ID, { id: MAYA_ID, name: 'Maya', initials: 'MA', role: 'Assistant · content', kind: 'maya', capacity: 6 } );
-      people.set( TODD_ID, { id: TODD_ID, name: 'TODD', initials: 'TO', role: 'Assistant · admin', kind: 'todd', capacity: 10 } );
+      people.set( MAYA_ID, { id: MAYA_ID, name: 'Marketing Assistant', initials: 'MA', role: 'Assistant · content', kind: 'maya', capacity: 6 } );
+      people.set( TODD_ID, { id: TODD_ID, name: '16Ahead', initials: 'TO', role: 'Assistant · admin', kind: 'todd', capacity: 10 } );
       const addPerson = ( id: string, name: string, role: string ) => {
         if ( !id || people.has( id ) ) return;
         const clean = ( name || 'Teammate' ).split( '@' )[0];
@@ -199,7 +199,7 @@ export class FlowStore {
         now: new Date(), pmId: user!.uid,
       } );
       this.autonomy.set( flowState?.autonomy || { mode: 'dry_run' } );
-      if ( !flowState ) this.error.set( 'TODD’s log and rules didn’t load. Changes you make now still save to your moves.' );
+      if ( !flowState ) this.error.set( '16Ahead’s log and rules didn’t load. Changes you make now still save to your moves.' );
       this.mode.set( 'live' );
     } catch ( err ) {
       console.warn( '[FlowStore] live load failed', err );
@@ -261,8 +261,8 @@ export class FlowStore {
       createdBy: t.createdByTodd ? 'todd' : t.employeeType === 'maya' ? 'maya' : 'person',
       mayaReview: MAYA_REVIEW_SOURCES.has( String( t.source || '' ).trim() ) && !CLOSED_STATUSES.has( String( t.status || '' ).trim().toLowerCase() ) || undefined,
       history: [
-        ...( t.createdAt ? [{ at: t.createdAt, text: `Created${t.createdByTodd ? ' by TODD' : ''}`, by: 'system' as const }] : [] ),
-        ...( t.notesLog || [] ).map( n => ( { at: n.at, text: `${n.author === 'maya' ? 'Maya' : n.authorLabel || 'Note'}: “${n.text}”`, by: n.author === 'maya' ? 'maya' as const : 'person' as const } ) ),
+        ...( t.createdAt ? [{ at: t.createdAt, text: `Created${t.createdByTodd ? ' by 16Ahead' : ''}`, by: 'system' as const }] : [] ),
+        ...( t.notesLog || [] ).map( n => ( { at: n.at, text: `${n.author === 'maya' ? 'Marketing Assistant' : n.authorLabel || 'Note'}: “${n.text}”`, by: n.author === 'maya' ? 'maya' as const : 'person' as const } ) ),
       ],
     };
   }
@@ -311,7 +311,7 @@ export class FlowStore {
     const t = this.toast();
     if ( !sent.length || !t || t.id !== toastId ) return;
     const told = sent.map( n => `${firstName( personById( this.state(), n.uid ) )} by ${n.channel}` ).join( ' and ' );
-    this.say( `${t.msg} TODD told ${told}.`, t.undo );
+    this.say( `${t.msg} 16Ahead told ${told}.`, t.undo );
   }
 
   dismissToast (): void {
@@ -402,7 +402,7 @@ export class FlowStore {
 
   private sayUndone ( a: ToddAction ): void {
     const m = moveById( this.state(), a.moveId );
-    const back = a.type === 'reassigned' && m ? ` ${m.title} is back with ${firstName( ownerOf( this.state(), m ) )}.` : ' TODD put it back the way it was.';
+    const back = a.type === 'reassigned' && m ? ` ${m.title} is back with ${firstName( ownerOf( this.state(), m ) )}.` : ' 16Ahead put it back the way it was.';
     this.say( `Undone.${back}` );
   }
 
@@ -422,7 +422,7 @@ export class FlowStore {
       note: `Gave ${m.title} to ${firstName( p )}.`, title: `${m.title} is ${firstName( p )}’s`,
       reason: why || 'You decided.',
     } );
-    const told = this.isDemo() ? ` TODD told ${firstName( p )} by push.` : '';
+    const told = this.isDemo() ? ` 16Ahead told ${firstName( p )} by push.` : '';
     this.toastForAction.set( a.id, this.say( `${m.title} is now ${firstName( p )}’s.${told}`, () => this.undo( a.id ) ) );
   }
 
@@ -451,7 +451,7 @@ export class FlowStore {
       note: `Swapped ${b.title.toLowerCase()} and ${a.title.toLowerCase()}.`, reason: p.why,
     } );
     const names = p.notify.map( firstName ).join( ' and ' );
-    this.toastForAction.set( action.id, this.say( `Order swapped.${this.isDemo() && names ? ` TODD told ${names}.` : ''}`, () => this.undo( action.id ) ) );
+    this.toastForAction.set( action.id, this.say( `Order swapped.${this.isDemo() && names ? ` 16Ahead told ${names}.` : ''}`, () => this.undo( action.id ) ) );
   }
 
   dismiss ( issueId: string, reason: Dismissal['reason'] ): void {
@@ -522,19 +522,19 @@ export class FlowStore {
       const a = this.act( 'rescheduled', m, [{ moveId, before: { due: m.due }, after: { due } }], {
         subject: m.title, text: `a week later. ${firstName( from )} can’t get to it this week.`, reason: 'Owner said not this week.',
       } );
-      this.say( `Moved to ${fmtDay( due )}. TODD will tell ${firstName( this.pm() )} because the date moved.`, () => this.undo( a.id ) );
+      this.say( `Moved to ${fmtDay( due )}. 16Ahead will tell ${firstName( this.pm() )} because the date moved.`, () => this.undo( a.id ) );
       return;
     }
     const to = byRoom( s, m.projectId, [from?.id || ''] )[0];
     if ( !to ) {
-      this.say( 'Sent back to TODD. Nobody else on the project has room yet.' );
+      this.say( 'Sent back to 16Ahead. Nobody else on the project has room yet.' );
       return;
     }
     const why = reason === 'blocked' ? `${firstName( from )} is blocked.` : `${firstName( from )} said someone else should.`;
     const a = this.act( 'reassigned', m, [{ moveId, before: { assigneeId: m.assigneeId, lane: m.lane }, after: { assigneeId: to.id, lane: 'person' } }], {
       subject: m.title, text: `from ${firstName( from )} to ${firstName( to )}. ${why}`, reason: why,
     } );
-    this.say( 'Sent back to TODD. It will find another owner.', () => this.undo( a.id ) );
+    this.say( 'Sent back to 16Ahead. It will find another owner.', () => this.undo( a.id ) );
   }
 
   private async cantDoOnServer ( m: FlowMove, reason: 'someone-else' | 'blocked' | 'not-this-week' ): Promise<void> {
@@ -544,12 +544,12 @@ export class FlowStore {
       this.applyServerTasks( tasks );
       const undo = () => this.undo( action.id );
       if ( outcome === 'rescheduled' ) {
-        this.say( `Moved to ${fmtDay( moveById( this.state(), m.id )?.due || m.due )}. TODD told your project lead because the date moved.`, undo );
+        this.say( `Moved to ${fmtDay( moveById( this.state(), m.id )?.due || m.due )}. 16Ahead told your project lead because the date moved.`, undo );
       } else if ( outcome === 'back-to-todd' ) {
-        this.say( 'Sent back to TODD. Nobody else has room, so your project lead will decide.', undo );
+        this.say( 'Sent back to 16Ahead. Nobody else has room, so your project lead will decide.', undo );
       } else {
         const to = moveById( this.state(), m.id );
-        this.say( `Sent back to TODD. ${to ? firstName( ownerOf( this.state(), to ) ) + ' has it now.' : 'It found another owner.'}`, undo );
+        this.say( `Sent back to 16Ahead. ${to ? firstName( ownerOf( this.state(), to ) ) + ' has it now.' : 'It found another owner.'}`, undo );
       }
     } catch ( err ) {
       this.say( FlowApiService.message( err, 'That didn’t go through. Try again.' ) );
@@ -662,7 +662,7 @@ export class FlowStore {
   }
 
   setRule ( ruleId: string, enabled: boolean ): void {
-    if ( !this.canWrite( 'change TODD’s rules' ) ) return;
+    if ( !this.canWrite( 'change 16Ahead’s rules' ) ) return;
     const flip = ( on: boolean ) => this.state.update( s => ( { ...s, rules: s.rules.map( r => r.id === ruleId && !r.locked ? { ...r, enabled: on } : r ) } ) );
     flip( enabled );
     this.sync( this.api.setRule( ruleId, enabled ), () => flip( !enabled ) );
@@ -670,10 +670,10 @@ export class FlowStore {
 
   /** Turn TODD on, pause it, or send it back to practising. */
   setAutonomy ( mode: Autonomy['mode'] ): void {
-    if ( !this.canWrite( 'change what TODD does on its own' ) ) return;
+    if ( !this.canWrite( 'change what 16Ahead does on its own' ) ) return;
     const before = this.autonomy();
     this.autonomy.set( { ...before, mode, chosenBy: this.state().pmId } );
-    const said = { on: 'TODD is on. It acts within its rules and logs everything with Undo.', off: 'TODD is paused. It still flags breaks; it just won’t act.', dry_run: 'TODD is practising. It logs what it would do and changes nothing.' }[mode];
+    const said = { on: '16Ahead is on. It acts within its rules and logs everything with Undo.', off: '16Ahead is paused. It still flags breaks; it just won’t act.', dry_run: '16Ahead is practising. It logs what it would do and changes nothing.' }[mode];
     if ( this.mode() !== 'live' ) {
       this.say( said );
       return;
@@ -705,9 +705,9 @@ export class FlowStore {
     switch ( r.kind ) {
       case 'assign': this.assign( r.moveId, r.personId ); break;
       case 'sequence': this.applySequence( r.issueId ); break;
-      case 'keep': this.dismiss( r.issueId, 'keep' ); this.say( issue?.kind === 'order' ? 'Kept the current order. TODD won’t flag it again.' : 'Kept. TODD won’t flag it again.', () => this.undismiss( r.issueId ) ); break;
+      case 'keep': this.dismiss( r.issueId, 'keep' ); this.say( issue?.kind === 'order' ? 'Kept the current order. 16Ahead won’t flag it again.' : 'Kept. 16Ahead won’t flag it again.', () => this.undismiss( r.issueId ) ); break;
       case 'park': this.dismiss( r.issueId, 'park' ); this.say( 'Parked for standup.', () => this.undismiss( r.issueId ) ); break;
-      case 'skip': this.dismiss( r.issueId, 'skip' ); this.say( 'TODD will ask again tomorrow.', () => this.undismiss( r.issueId ) ); break;
+      case 'skip': this.dismiss( r.issueId, 'skip' ); this.say( '16Ahead will ask again tomorrow.', () => this.undismiss( r.issueId ) ); break;
       case 'reschedule': this.reschedule( r.moveIds, r.days ); break;
       case 'done': void this.resolve( r.moveId, r.note || '' ); break;
       case 'open': break;
@@ -763,7 +763,7 @@ export class FlowStore {
       this.say( `${draft.name} is on the board, but ${failed} move${failed === 1 ? '' : 's'} didn’t save. Add ${failed === 1 ? 'it' : 'them'} from the project.` );
       return projectId;
     }
-    this.say( `${draft.name} is on the board. TODD is watching it.` );
+    this.say( `${draft.name} is on the board. 16Ahead is watching it.` );
     return projectId;
   }
 

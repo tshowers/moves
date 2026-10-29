@@ -29,10 +29,10 @@ import { AvatarComponent, MOVES_ICON } from '../ui/flow-ui.components';
           <a routerLink="/app" routerLinkActive="on" [routerLinkActiveOptions]="{ exact: true }">Momentum</a>
           <a routerLink="/app/team" routerLinkActive="on">Team</a>
           <a routerLink="/app/review">Review</a>
-          <a routerLink="/app/maya" routerLinkActive="on">Maya
+          <a routerLink="/app/maya" routerLinkActive="on">Marketing Assistant
             @if (store.mayaQueue().length) { <span class="count">{{ store.mayaQueue().length }}</span> }
           </a>
-          <a routerLink="/app/todd" routerLinkActive="on">TODD
+          <a routerLink="/app/todd" routerLinkActive="on">16Ahead
             @if (store.needsYou().length) { <span class="count">{{ store.needsYou().length }}</span> }
           </a>
         </nav>

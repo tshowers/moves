@@ -40,6 +40,10 @@
   width: 180px;
   height: 180px;
   z-index: 998;
+  /* The reveal reads the pointer from document mousemove
+     (isInBottomRightHotzone), so this box never needs a click: it must not
+     sit over a page's own links in the corner (the move drawer's Undo). */
+  pointer-events: none;
   background: transparent;
 }
 

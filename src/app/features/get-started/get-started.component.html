@@ -74,7 +74,7 @@
 
       <ng-container *ngSwitchCase="'firstName'">
         <h1 class="gs-question" data-cy="get-started-question">What's your first name?</h1>
-        <p class="gs-hint">So TODD knows who's making the moves.</p>
+        <p class="gs-hint">So 16Ahead knows who's making the moves.</p>
         <form (ngSubmit)="next()"><input #textInput class="gs-input" name="firstName" autocomplete="given-name" aria-label="First name"
                [(ngModel)]="draft.firstName" (ngModelChange)="persist()" data-cy="get-started-input" /></form>
       </ng-container>
@@ -87,10 +87,10 @@
 
       <ng-container *ngSwitchCase="'signUp'">
         <h1 class="gs-question" data-cy="get-started-question">Last step: create your account</h1>
-        <p class="gs-hint">"{{ draft.title }}" &middot; your Move is ready. Sign in with TODD to save it.</p>
+        <p class="gs-hint">"{{ draft.title }}" &middot; your Move is ready. Sign in with 16Ahead to save it.</p>
         <div class="gs-actions">
           <button type="button" class="gs-button" [disabled]="isSigningIn" (click)="signIn()" data-cy="get-started-sign-in">
-            {{ isSigningIn ? 'Redirecting...' : 'Sign in with TODD' }}</button>
+            {{ isSigningIn ? 'Redirecting...' : 'Sign in with 16Ahead' }}</button>
         </div>
       </ng-container>
     </ng-container>

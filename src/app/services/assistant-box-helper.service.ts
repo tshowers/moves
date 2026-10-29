@@ -13,7 +13,7 @@ export class AssistantBoxHelperService {
     '/app': 'Momentum',
     '/app/team': 'Team',
     '/app/review': 'Weekly review',
-    '/app/todd': 'TODD',
+    '/app/todd': '16Ahead',
     '/app/new': 'New project',
     '/app/digest': 'Morning digest',
     '/app/me': 'My next moves',

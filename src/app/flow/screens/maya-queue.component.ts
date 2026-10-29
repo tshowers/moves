@@ -5,7 +5,7 @@ import { fmtDue } from '../flow-dates';
 import { FlowMove } from '../flow.models';
 import { FlowStore } from '../flow.store';
 
-const MAYA_URL = 'https://maya.taliferro.tech';
+const MAYA_URL = 'https://marketing.16ahead.com';
 
 /**
  * Maya's review queue - the tasks she made that wait on you. Maya's Status
@@ -19,10 +19,10 @@ const MAYA_URL = 'https://maya.taliferro.tech';
     <div class="mv-page" data-cy="maya-queue">
       <header class="head">
         <div>
-          <h1 class="mv-title">Maya’s tasks</h1>
+          <h1 class="mv-title">The Marketing Assistant’s tasks</h1>
           <p class="mv-sub">{{ subtitle() }}</p>
         </div>
-        <a class="mv-btn" [href]="mayaUrl" target="_blank" rel="noopener">Maya’s status</a>
+        <a class="mv-btn" [href]="mayaUrl" target="_blank" rel="noopener">The Marketing Assistant’s status</a>
       </header>
 
       @for (m of store.mayaQueue(); track m.id) {
@@ -35,7 +35,7 @@ const MAYA_URL = 'https://maya.taliferro.tech';
           <button type="button" class="mv-btn mv-btn--primary mv-btn--sm" data-cy="maya-queue-done" (click)="store.markDone(m.id)">Done</button>
         </article>
       } @empty {
-        <div class="mv-empty">Nothing waiting on you. Maya can keep going.</div>
+        <div class="mv-empty">Nothing waiting on you. The Marketing Assistant can keep going.</div>
       }
     </div>
   `,
@@ -55,8 +55,8 @@ export class MayaQueueComponent {
 
   subtitle (): string {
     const n = this.store.mayaQueue().length;
-    if ( !n ) return 'She made these for you to review.';
-    return `${n} task${n === 1 ? '' : 's'} she made for you. Mark each one done when you’ve handled it; when enough are cleared she starts new work again.`;
+    if ( !n ) return 'It made these for you to review.';
+    return `${n} task${n === 1 ? '' : 's'} it made for you. Mark each one done when you’ve handled it; when enough are cleared it starts new work again.`;
   }
 
   due ( m: FlowMove ): string {

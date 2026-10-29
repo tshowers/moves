@@ -25,7 +25,7 @@ import { AvatarComponent, MOVES_ICON } from '../ui/flow-ui.components';
       @if (lead(); as m) {
         <article class="lead">
           <div class="tags">
-            @if (isNew()) { <span class="mv-tag mv-tag--blue mv-tag--lg">New from TODD</span> }
+            @if (isNew()) { <span class="mv-tag mv-tag--blue mv-tag--lg">New from 16Ahead</span> }
             <span class="mv-tag mv-tag--outline">Due {{ due(m) }}</span>
           </div>
           <h2>{{ m.title }}</h2>
@@ -43,7 +43,7 @@ import { AvatarComponent, MOVES_ICON } from '../ui/flow-ui.components';
           <span class="txt"><strong>{{ m.title }}</strong><span>{{ meta(m) }}</span></span>
         </button>
       } @empty {
-        @if (!lead()) { <p class="none">Nothing on your plate. TODD will push the next one here.</p> }
+        @if (!lead()) { <p class="none">Nothing on your plate. 16Ahead will push the next one here.</p> }
       }
 
       @if (sheet() && lead(); as m) {
@@ -55,7 +55,7 @@ import { AvatarComponent, MOVES_ICON } from '../ui/flow-ui.components';
             <button type="button" (click)="cant(m.id, 'blocked')">I’m blocked</button>
             <button type="button" (click)="cant(m.id, 'not-this-week')">Not this week</button>
           </div>
-          <p>TODD routes it again and tells {{ pmFirst() }} only if the date moves.</p>
+          <p>16Ahead routes it again and tells {{ pmFirst() }} only if the date moves.</p>
         </div>
       }
     </div>
@@ -127,7 +127,7 @@ export class MyMovesComponent {
   after ( m: FlowMove ): string {
     const s = this.store.state();
     const next = s.moves.find( x => isOpen( x ) && x.dependsOn.includes( m.id ) && x.lane === 'maya' );
-    return next ? ` Maya ${next.title.toLowerCase().includes( 'email' ) ? 'writes the email' : 'picks it up'} after.` : '';
+    return next ? ` Marketing Assistant ${next.title.toLowerCase().includes( 'email' ) ? 'writes the email' : 'picks it up'} after.` : '';
   }
 
   meta ( m: FlowMove ): string {

@@ -103,7 +103,7 @@ export class IssueCardComponent {
         @else { <span class="undo"></span> }
       </div>
     } @empty {
-      <p class="mv-empty">Nothing yet. TODD logs every change here, with Undo.</p>
+      <p class="mv-empty">Nothing yet. 16Ahead logs every change here, with Undo.</p>
     }
   `,
   styles: [`
