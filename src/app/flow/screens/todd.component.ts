@@ -5,7 +5,7 @@ import { fmtLong } from '../flow-dates';
 import { choiceLabel } from '../flow-engine';
 import { Issue, ToddActionType } from '../flow.models';
 import { FlowStore } from '../flow.store';
-import { TODD_ICON } from '../ui/flow-ui.components';
+import { BrandMarkComponent } from '../ui/flow-ui.components';
 import { KIND_LABEL, LogRowsComponent } from '../ui/issue-card.component';
 
 type Filter = 'all' | 'practice' | ToddActionType;
@@ -14,12 +14,12 @@ type Filter = 'all' | 'practice' | ToddActionType;
 @Component( {
   selector: 'mv-todd',
   standalone: true,
-  imports: [LogRowsComponent],
+  imports: [BrandMarkComponent, LogRowsComponent],
   template: `
     <div class="layout" data-cy="todd">
       <div class="mv-page main">
         <header class="head">
-          <img [src]="todd" alt="" class="mv-plate">
+          <mv-mark name="16ahead" class="dial" />
           <div>
             <h1 class="mv-title">16Ahead</h1>
             <p class="mv-sub">Your project assistant · {{ modeLine() }}</p>
@@ -109,7 +109,7 @@ type Filter = 'all' | 'practice' | ToddActionType;
     .layout { display: grid; grid-template-columns: minmax(0, 1fr) 330px; gap: 28px; padding-right: 36px; }
     .main { padding-right: 0; }
     .head { display: flex; align-items: center; gap: 14px; }
-    .head img { width: 48px; height: 48px; border-radius: 50%; }
+    .head .dial { width: 48px; height: 48px; }
     .sec { margin: 26px 0 12px; }
     .needs { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
     .need { background: var(--surface); border-radius: 24px; padding: 16px 16px 14px; display: flex; flex-direction: column; align-items: flex-start; gap: 6px; }
@@ -149,7 +149,6 @@ type Filter = 'all' | 'practice' | ToddActionType;
 export class ToddComponent {
   readonly store = inject( FlowStore );
   private readonly router = inject( Router );
-  readonly todd = TODD_ICON;
   readonly filter = signal<Filter>( 'all' );
   readonly showAll = signal( false );
   /** The card whose "I handled it" note is open. */

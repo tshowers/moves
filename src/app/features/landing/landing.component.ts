@@ -1,14 +1,10 @@
 import { CommonModule } from '@angular/common';
 import { Component, ElementRef, OnDestroy, afterNextRender, effect, inject, signal, untracked, viewChild } from '@angular/core';
-import { Router, RouterModule } from '@angular/router';
-import { map } from 'rxjs';
-import { environment } from '../../../environments/environment';
-import { MovesAuthService } from '../../services/moves-auth.service';
+import { RouterModule } from '@angular/router';
 import { GET_THE_APP_PRODUCTS } from '@taliferro/ui/platform/get-the-app.model';
 import { SITE_URL, SeoService } from '../../services/seo.service';
 import { ThemeService } from '../../services/theme.service';
 import { AlsoFromUsComponent } from '../../shared/also-from-us/also-from-us.component';
-import { PlatformMenuComponent } from '../../shared/platform-menu/platform-menu.component';
 import { SiteFooterComponent } from '../../shared/site-footer/site-footer.component';
 
 interface Faq { question: string; answer: string; }
@@ -18,14 +14,14 @@ interface Testimonial { quote: string; name: string; role: string; result: strin
   selector: 'app-landing',
   host: { class: 'tt-page' },
   standalone: true,
-  imports: [SiteFooterComponent, PlatformMenuComponent, AlsoFromUsComponent, CommonModule, RouterModule],
+  imports: [SiteFooterComponent, AlsoFromUsComponent, CommonModule, RouterModule],
   templateUrl: './landing.component.html',
   styleUrl: './landing.component.css'
 })
 export class LandingComponent implements OnDestroy {
   readonly theme = inject(ThemeService);
 
-  /** TODD demo video beside the quote (handoff_landing_video): light/dark MP4s in assets/video/. */
+  /** 16Ahead demo video beside the quote (handoff_landing_video): light/dark MP4s in assets/video/. */
   private readonly demoVideo = viewChild<ElementRef<HTMLVideoElement>>('demoVideo');
   /** The MP4s aren't in assets yet (or failed to load): hide the empty frame rather than show it. */
   readonly demoVideoMissing = signal(false);
@@ -33,14 +29,6 @@ export class LandingComponent implements OnDestroy {
   private demoInView = false;
   private demoObserver?: IntersectionObserver;
   private readonly seo = inject(SeoService);
-  private readonly auth = inject(MovesAuthService);
-  private readonly router = inject(Router);
-  // The universal menu (and its ⌘K search) sits inline in this page's nav;
-  // app.component leaves its floating copy off on '/'.
-  readonly isLoggedIn$ = this.auth.isLoggedIn();
-  readonly isAdmin$ = this.auth.getUser().pipe(map(user => user?.uid === environment.taliferroTenantId));
-  readonly userName$ = this.auth.getUser().pipe(map(user => user?.displayName || ''));
-  readonly userEmail$ = this.auth.getUser().pipe(map(user => user?.email || ''));
   readonly openFaq = signal<number | null>(0);
 
   readonly features = [
@@ -149,9 +137,5 @@ export class LandingComponent implements OnDestroy {
     this.seo.removeStructuredData('moves-demo-video');
   }
 
-  async signOut(): Promise<void> {
-    await this.auth.signOut();
-    await this.router.navigateByUrl('/');
-  }
   toggleFaq(index: number): void { this.openFaq.set(this.openFaq() === index ? null : index); }
 }

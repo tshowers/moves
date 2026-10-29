@@ -13,17 +13,37 @@
 .sign-in-card {
   width: 100%;
   max-width: 380px;
-  background: #fff;
-  /* Explicit, not inherited: this card is always white regardless of
-     system color scheme, so its text needs to be always-dark too rather
-     than inheriting the theme-aware global body color, which would put
-     light dark-mode text on this light card. */
-  color: #0d1117;
-  border: 1px solid rgba(15, 15, 15, 0.08);
-  border-radius: 1rem;
+  background: var(--surface);
+  color: var(--text);
+  border-radius: 20px;
   padding: 2rem;
-  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.06);
   text-align: center;
+}
+
+.sign-in-card .text-muted {
+  color: var(--muted) !important;
+}
+
+/* The /app pill (.mv-btn--primary). */
+.sign-in-button {
+  width: 100%;
+  border: 0;
+  border-radius: 999px;
+  background: var(--blue);
+  color: #fff;
+  padding: 12px 24px;
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.sign-in-button:hover:not(:disabled) {
+  opacity: .88;
+}
+
+.sign-in-button:disabled {
+  opacity: .5;
+  cursor: default;
 }
 
 .sign-in-logo {

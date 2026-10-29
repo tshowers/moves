@@ -1,6 +1,6 @@
 /**
  * The home page carries the shared chrome (PRODUCT-STANDARD.md): the
- * universal menu inline in its nav, ⌘K search, "Powered by TODD · Also
+ * universal menu in the site header, ⌘K search, "Powered by 16Ahead · Also
  * from us", and the site footer.
  */
 describe( 'Moves home page', () => {
@@ -27,6 +27,13 @@ describe( 'Moves home page', () => {
     cy.get( '.moves-quote__media' ).should( 'not.exist' );
   } );
 
+  it( 'goes home from the 16Ahead lockup in the /app rail', () => {
+    cy.visit( '/app?demo=1' );
+    cy.get( '.rail a[aria-label="16Ahead Moves home"]' ).click();
+    cy.location( 'pathname' ).should( 'eq', '/' );
+    cy.get( '[data-cy=site-header]' ).should( 'be.visible' );
+  } );
+
   it( 'opens the search with ⌘K and finds a Moves page', () => {
     cy.visit( '/' );
     cy.get( '.um-trigger' ).should( 'be.visible' );
@@ -35,7 +42,7 @@ describe( 'Moves home page', () => {
     cy.contains( 'Weekly review' ).should( 'be.visible' );
   } );
 
-  it( 'credits TODD, suggests another product, and ends with the footer', () => {
+  it( 'credits 16Ahead, suggests another product, and ends with the footer', () => {
     cy.visit( '/' );
     cy.get( '.moves-made-by' ).should( 'contain.text', 'Powered by 16Ahead' );
     cy.get( 'a[appAlsoFromUs]' ).should( 'contain.text', 'Also from us' ).and( 'have.attr', 'href' ).and( 'not.include', 'moves.taliferro.tech' );

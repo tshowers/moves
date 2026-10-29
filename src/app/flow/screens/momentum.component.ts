@@ -8,14 +8,14 @@ import {
 import { Issue, IssueChoice, RangeKey } from '../flow.models';
 import { FlowStore } from '../flow.store';
 import { FlowTrackComponent } from '../ui/flow-track.component';
-import { PersonPickerComponent, TODD_ICON } from '../ui/flow-ui.components';
+import { PersonPickerComponent, BrandMarkComponent } from '../ui/flow-ui.components';
 import { daysBetween } from '../flow-dates';
 
 /** 01 Momentum - the PM's home: every project as a line against today, TODD's notes in the margin. */
 @Component( {
   selector: 'mv-momentum',
   standalone: true,
-  imports: [RouterLink, FlowTrackComponent, PersonPickerComponent],
+  imports: [BrandMarkComponent, RouterLink, FlowTrackComponent, PersonPickerComponent],
   template: `
     <div class="mv-page" data-cy="momentum">
       <header class="head">
@@ -34,7 +34,7 @@ import { daysBetween } from '../flow-dates';
       </header>
 
       <section class="banner">
-        <img [src]="todd" alt="16Ahead" class="mv-icon mv-plate">
+        <mv-mark name="16ahead" alt="16Ahead" class="mv-icon" />
         <p><strong>{{ banner().lead }}</strong> {{ banner().rest }}</p>
         <a class="mv-btn" routerLink="/app/todd">See the log</a>
       </section>
@@ -175,7 +175,6 @@ import { daysBetween } from '../flow-dates';
 export class MomentumComponent {
   readonly store = inject( FlowStore );
   private readonly router = inject( Router );
-  readonly todd = TODD_ICON;
   readonly picking = signal( '' );
   readonly showUnsorted = signal( false );
   readonly ranges: { key: RangeKey; label: string }[] = [{ key: '1w', label: '1 week' }, { key: '3w', label: '3 weeks' }, { key: 'q', label: 'Quarter' }];

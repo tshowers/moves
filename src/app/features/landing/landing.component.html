@@ -1,8 +1,4 @@
 <main class="moves-page">
-  <nav class="moves-nav">
-    <a class="moves-brand" routerLink="/"><img class="brand-mark--light" src="/assets/brand/products/svg/light/06-moves.svg" alt="Moves"><img class="brand-mark--dark" src="/assets/brand/products/svg/dark/06-moves.svg" alt=""><span>16Ahead <span class="brand-product">Moves</span></span></a>
-    <div class="moves-nav__right"><a href="#signal">The signal</a><a href="#system">The system</a><button type="button" class="moves-theme" (click)="theme.toggle()" [attr.aria-label]="theme.isDark() ? 'Use light mode' : 'Use dark mode'"><span>{{ theme.isDark() ? '☼' : '◐' }}</span><small>{{ theme.isDark() ? 'Light' : 'Dark' }}</small></button><a class="moves-nav__launch" routerLink="/app">Open app <span>↗</span></a><app-platform-menu [isLoggedIn]="(isLoggedIn$ | async) ?? false" [isAdmin]="(isAdmin$ | async) ?? false" [userName]="(userName$ | async) ?? ''" [userEmail]="(userEmail$ | async) ?? ''" (signOut)="signOut()" /></div>
-  </nav>
 
   <section class="moves-hero">
     <div class="moves-hero__noise"></div>

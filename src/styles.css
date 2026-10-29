@@ -4,21 +4,13 @@
 @import "@taliferro/ui/styles/site-footer.css";
 @import "@taliferro/ui/styles/product-pages.css";
 
-/* The page behind every route (the 4.5rem strip under the floating menu shows
-   it): Find theme white, and dark when the site is dark. */
+/* The page behind every route: the same tokens as /app (tokens.css), so
+   every page is white, or #0c0e13 when the site is dark. */
 html,
 body {
-  background: #ffffff;
-}
-
-html[data-theme='dark'],
-html[data-theme='dark'] body {
-  background: #0c0e13;
-}
-
-app-root>router-outlet+*:not(app-landing):not(app-moves-ios-showcase):not(mv-flow-root) {
-  padding-top: 4.5rem;
-  box-sizing: border-box;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font);
 }
 
 /* Shared explicit dark-mode corrections for pages reached from the landing page. */
@@ -56,11 +48,11 @@ app-root>router-outlet+*:not(app-landing):not(app-moves-ios-showcase):not(mv-flo
 
 /* Keep the signal markers crisp and atmospheric instead of neon-heavy. */
 .moves-signal__node--hot span {
-  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, .12), 0 0 16px rgba(7, 89, 220, .28) !important;
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, .12), 0 0 16px rgba(47, 107, 255, .28) !important;
 }
 
 .moves-signal__node--warn span {
-  box-shadow: inset 0 0 0 1px rgba(255, 116, 77, .08), 0 0 0 1px rgba(255, 116, 77, .07) !important;
+  box-shadow: inset 0 0 0 1px rgba(255, 79, 168, .08), 0 0 0 1px rgba(255, 79, 168, .07) !important;
 }
 
 .moves-hero::after {
@@ -82,47 +74,13 @@ app-root>router-outlet+*:not(app-landing):not(app-moves-ios-showcase):not(mv-flo
 
 [data-theme='light'] .moves-hero__art,
 :root:not([data-theme='dark']) .moves-hero__art {
-  background: radial-gradient(circle at 52% 50%, rgba(225, 244, 255, .62) 0, rgba(226, 245, 255, .2) 34%, transparent 68%);
+  background: radial-gradient(circle at 52% 50%, rgba(227, 236, 255, .62) 0, rgba(227, 236, 255, .2) 34%, transparent 68%);
 }
 
 [data-theme='dark'] .moves-hero__art {
   right: -4%;
   width: 68%;
-  background: radial-gradient(circle at 58% 50%, rgba(94, 126, 153, .24) 0, rgba(44, 73, 102, .14) 30%, rgba(10, 18, 32, 0) 66%);
-}
-
-
-/* The iOS dark theme keeps its editorial dark sections dark; the page ink token
-   is intentionally light there for readable hero copy. */
-[data-theme='dark'] .ios-statement {
-  background: #07101f;
-  color: #fff;
-}
-
-[data-theme='dark'] .ios-statement h2 {
-  color: #fff;
-}
-
-[data-theme='dark'] .ios-button {
-  color: #08162e;
-}
-
-.ios-page.is-dark .ios-statement {
-  background: #07101f !important;
-  color: #fff !important;
-}
-
-.ios-page.is-dark .ios-statement h2,
-.ios-page.is-dark .ios-statement h2 span {
-  color: #fff !important;
-}
-
-.ios-page.is-dark .ios-statement__copy {
-  color: #c7d5e8 !important;
-}
-
-.ios-page.is-dark .ios-button {
-  color: #08162e !important;
+  background: radial-gradient(circle at 58% 50%, rgba(61, 123, 255, .18) 0, rgba(21, 37, 74, .14) 30%, rgba(12, 14, 19, 0) 66%);
 }
 
 [data-theme='dark'] .task-edit-shell {
@@ -386,8 +344,6 @@ body {
   width: 100%;
   max-width: 100%;
   overflow-x: hidden;
-  background: #f6f8fa;
-  color: #0d1117;
 }
 
 *,
@@ -437,13 +393,6 @@ app-ai-mission-detail {
   width: 100%;
   max-width: 100%;
   min-width: 0;
-}
-
-@media (prefers-color-scheme: dark) {
-  body {
-    background: #141a1e;
-    color: #e8edf2;
-  }
 }
 
 /* Moves landing -> Pricing "magic move": the clicked CTA and the pricing

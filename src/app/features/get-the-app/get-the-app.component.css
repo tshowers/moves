@@ -4,43 +4,17 @@
  * system setting where there isn't one. */
 :host {
   display: block;
-  --gta-bg: #ffffff;
-  --gta-card: #f2f3f6;
-  --gta-ink: #0f1115;
-  --gta-muted: #5a6170;
-  --gta-line: #e4e7ed;
-  --gta-accent: #2f6bff;
+  --gta-bg: var(--bg);
+  --gta-card: var(--surface);
+  --gta-ink: var(--text);
+  --gta-muted: var(--muted);
+  --gta-line: var(--surface2);
+  --gta-accent: var(--blue);
   --gta-accent-ink: #ffffff;
-  --gta-ok: #17703a;
-  --blue: #2f6bff;
-  --font: "Helvetica Neue", Helvetica, Arial, sans-serif;
-}
-@media (prefers-color-scheme: dark) {
-  :host-context(html:not([data-theme='light'])) {
-    --gta-bg: #0c0e13;
-    --gta-card: #171a22;
-    --gta-ink: #f2f4f8;
-    --gta-muted: #9aa2b2;
-    --gta-line: #242936;
-    --gta-accent: #3d7bff;
-    --gta-accent-ink: #ffffff;
-    --gta-ok: #80e2a4;
-    --blue: #3d7bff;
-  }
-}
-:host-context(html[data-theme='dark']) {
-  --gta-bg: #0c0e13;
-  --gta-card: #171a22;
-  --gta-ink: #f2f4f8;
-  --gta-muted: #9aa2b2;
-  --gta-line: #242936;
-  --gta-accent: #3d7bff;
-  --gta-accent-ink: #ffffff;
-  --gta-ok: #80e2a4;
-  --blue: #3d7bff;
+  --gta-ok: var(--t-green-fg);
 }
 
-.gta { min-height: 100vh; background: var(--gta-bg); color: var(--gta-ink); padding: 96px 16px 120px; font-family: var(--font); -webkit-font-smoothing: antialiased; }
+.gta { min-height: 100vh; background: var(--gta-bg); color: var(--gta-ink); padding: 48px 16px 120px; font-family: var(--font); -webkit-font-smoothing: antialiased; }
 .gta > section { max-width: 880px; margin: 0 auto 48px; }
 .gta-eyebrow { margin: 0 0 10px; color: var(--gta-muted); font-size: .75rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; }
 .gta h1 { margin: 0; font-size: clamp(2rem, 5vw, 2.6rem); line-height: 1.05; letter-spacing: -.03em; font-weight: 700; }

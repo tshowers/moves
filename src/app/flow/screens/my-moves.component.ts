@@ -6,18 +6,18 @@ import { firstName, isOpen, liveActions, moveById, ownerOf, personById } from '.
 import { FlowMove } from '../flow.models';
 import { FlowStore } from '../flow.store';
 import { DemoNoticeComponent } from '../ui/demo-notice.component';
-import { AvatarComponent, MOVES_ICON } from '../ui/flow-ui.components';
+import { AvatarComponent, BrandMarkComponent } from '../ui/flow-ui.components';
 
 /** 09 Mobile, team member - "Luis, 3 next moves": the hand-off on top, Done / Can't do it. */
 @Component( {
   selector: 'mv-my-moves',
   standalone: true,
-  imports: [AvatarComponent, DemoNoticeComponent],
+  imports: [BrandMarkComponent, AvatarComponent, DemoNoticeComponent],
   template: `
     <div class="phone">
       <mv-demo-notice />
       <header class="top">
-        <img [src]="logo" alt="Moves" class="logo">
+        <mv-mark name="moves" alt="Moves" class="logo" />
         <mv-avatar [person]="me()" [size]="44" />
       </header>
       <h1>{{ first() }}, {{ moves().length }} next move{{ moves().length === 1 ? '' : 's' }}</h1>
@@ -63,7 +63,7 @@ import { AvatarComponent, MOVES_ICON } from '../ui/flow-ui.components';
   styles: [`
     .phone { max-width: 440px; margin: 0 auto; padding: 24px 20px 40px; min-height: 100vh; min-height: 100dvh; background: var(--bg); }
     .top { display: flex; justify-content: space-between; align-items: center; padding-top: 16px; }
-    .logo { width: 30px; height: 30px; border-radius: 8px; background: #fff; }
+    .logo { width: 30px; height: 30px; }
     h1 { font-size: 34px; line-height: 1.05; margin: 22px 0 18px !important; }
     .lead { background: var(--surface); border-radius: 32px; padding: 18px 18px 18px; }
     .tags { display: flex; gap: 8px; }
@@ -91,7 +91,6 @@ export class MyMovesComponent {
   readonly store = inject( FlowStore );
   private readonly route = inject( ActivatedRoute );
   private readonly router = inject( Router );
-  readonly logo = MOVES_ICON;
   readonly sheet = signal( false );
 
   /** Demo shows Luis; ?as=<id> previews anyone; signed in it's you. */

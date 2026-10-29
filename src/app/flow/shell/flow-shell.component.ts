@@ -10,7 +10,7 @@ import { PlatformMenuComponent } from '../../shared/platform-menu/platform-menu.
 import { projectHealth } from '../flow-engine';
 import { FlowStore } from '../flow.store';
 import { DemoNoticeComponent } from '../ui/demo-notice.component';
-import { AvatarComponent, MOVES_ICON } from '../ui/flow-ui.components';
+import { AvatarComponent, LockupComponent } from '../ui/flow-ui.components';
 
 /**
  * Desktop: the 224px left rail (Momentum / Team / Review / TODD, projects
@@ -20,11 +20,11 @@ import { AvatarComponent, MOVES_ICON } from '../ui/flow-ui.components';
 @Component( {
   selector: 'mv-flow-shell',
   standalone: true,
-  imports: [RouterOutlet, RouterLink, RouterLinkActive, AvatarComponent, PlatformMenuComponent, AsyncPipe, DemoNoticeComponent],
+  imports: [RouterOutlet, RouterLink, RouterLinkActive, AvatarComponent, LockupComponent, PlatformMenuComponent, AsyncPipe, DemoNoticeComponent],
   template: `
     <div class="shell" data-cy="flow-shell">
       <aside class="rail">
-        <a class="brand" routerLink="/app"><img [src]="logo" alt="" class="logo"><span>Moves</span></a>
+        <a class="brand" routerLink="/" aria-label="16Ahead Moves home"><mv-lockup /></a>
         <nav class="rnav" aria-label="Main">
           <a routerLink="/app" routerLinkActive="on" [routerLinkActiveOptions]="{ exact: true }">Momentum</a>
           <a routerLink="/app/team" routerLinkActive="on">Team</a>
@@ -62,7 +62,7 @@ import { AvatarComponent, MOVES_ICON } from '../ui/flow-ui.components';
       </aside>
 
       <header class="topbar">
-        <a routerLink="/app" class="brand"><img [src]="logo" alt="" class="logo"><span>Moves</span></a>
+        <a routerLink="/" class="brand" aria-label="16Ahead Moves home"><mv-lockup /></a>
         <button type="button" class="theme" (click)="theme.toggle()" [attr.aria-label]="theme.isDark() ? 'Light mode' : 'Dark mode'">{{ theme.isDark() ? '☀' : '☾' }}</button>
         <app-platform-menu [isAdmin]="(isAdmin$ | async) ?? false" [isLoggedIn]="(isLoggedIn$ | async) ?? false" [userName]="(userName$ | async) ?? ''" [userEmail]="(userEmail$ | async) ?? ''" (signOut)="signOut()" />
       </header>
@@ -85,8 +85,6 @@ import { AvatarComponent, MOVES_ICON } from '../ui/flow-ui.components';
     .shell { display: flex; min-height: 100vh; min-height: 100dvh; background: var(--bg); }
     .rail { width: 224px; flex: none; background: var(--surface); padding: 22px 14px; display: flex; flex-direction: column; gap: 4px; position: sticky; top: 0; height: 100vh; height: 100dvh; overflow-y: auto; }
     .brand { display: flex; align-items: center; gap: 10px; padding: 0 10px 20px; text-decoration: none !important; color: var(--text) !important; }
-    .brand span { font-weight: 700; letter-spacing: -0.03em; font-size: 23px; }
-    .logo { width: 30px; height: 30px; border-radius: 9px; background: #fff; }
     .rnav { display: flex; flex-direction: column; gap: 4px; }
     .rnav a { display: flex; justify-content: space-between; align-items: center; padding: 9px 14px; border-radius: 999px; font-size: 15px; color: var(--text); text-decoration: none; }
     .rnav a:hover { background: var(--surface2); color: var(--text); }
@@ -118,8 +116,6 @@ import { AvatarComponent, MOVES_ICON } from '../ui/flow-ui.components';
       .shell { flex-direction: column; }
       .topbar { display: flex; align-items: center; gap: 8px; padding: 12px 16px; position: sticky; top: 0; z-index: 20; background: var(--bg); border-bottom: 1px solid var(--surface2); }
       .topbar .brand { padding: 0; margin-right: auto; }
-      .topbar .brand span { font-size: 19px; }
-      .topbar .logo { width: 26px; height: 26px; }
       .tabbar { display: flex; position: fixed; left: 0; right: 0; bottom: 0; z-index: 20; background: var(--bg); border-top: 1px solid var(--surface2); padding: 10px 8px calc(10px + env(safe-area-inset-bottom)); }
       .tabbar a { flex: 1; text-align: center; font-size: 15px; font-weight: 700; color: var(--text); text-decoration: none; }
       .tabbar a.on { color: var(--t-pink-fg); }
@@ -133,7 +129,6 @@ export class FlowShellComponent {
   readonly theme = inject( ThemeService );
   private readonly auth = inject( MovesAuthService );
   private readonly router = inject( Router );
-  readonly logo = MOVES_ICON;
 
   readonly isAdmin$ = this.auth.getUser().pipe( map( u => u?.uid === environment.taliferroTenantId ) );
   readonly isLoggedIn$ = this.auth.isLoggedIn();

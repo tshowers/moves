@@ -11,7 +11,7 @@ import {
 import { FlowMove } from '../flow.models';
 import { FlowStore } from '../flow.store';
 import { FlowTrackComponent } from '../ui/flow-track.component';
-import { AvatarComponent, TODD_ICON } from '../ui/flow-ui.components';
+import { AvatarComponent, BrandMarkComponent } from '../ui/flow-ui.components';
 import { IssueCardComponent, LogRowsComponent } from '../ui/issue-card.component';
 
 type Tab = 'flow' | 'sequence' | 'moves' | 'people' | 'log';
@@ -20,7 +20,7 @@ type Tab = 'flow' | 'sequence' | 'moves' | 'people' | 'log';
 @Component( {
   selector: 'mv-project',
   standalone: true,
-  imports: [RouterLink, FlowTrackComponent, IssueCardComponent, LogRowsComponent, AvatarComponent],
+  imports: [BrandMarkComponent, RouterLink, FlowTrackComponent, IssueCardComponent, LogRowsComponent, AvatarComponent],
   template: `
     @if (project(); as p) {
       <div class="layout" [class.wide]="tab() === 'sequence'">
@@ -98,7 +98,7 @@ type Tab = 'flow' | 'sequence' | 'moves' | 'people' | 'log';
                 <p class="why">↰ {{ pr.issue.consequence.split('.')[0] }}</p>
                 <section class="proposal">
                   <header>
-                    <img [src]="todd" alt="" class="mv-icon mv-plate">
+                    <mv-mark name="16ahead" class="mv-icon" />
                     <h2>Proposed order</h2>
                     @if (pr.waitingOn) { <span class="mv-tag mv-tag--pink">{{ pr.waitingOn }}</span> }
                   </header>
@@ -168,7 +168,7 @@ type Tab = 'flow' | 'sequence' | 'moves' | 'people' | 'log';
 
         @if (tab() !== 'sequence') {
           <aside class="diag">
-            <h2><img [src]="todd" alt="" class="mv-plate"> Diagnosis</h2>
+            <h2><mv-mark name="16ahead" class="dial" /> Diagnosis</h2>
             @for (i of diagnosis(); track i.id) {
               <mv-issue-card [issue]="i" />
             } @empty {
@@ -208,7 +208,7 @@ type Tab = 'flow' | 'sequence' | 'moves' | 'people' | 'log';
     .sum p { font-size: 13px; color: var(--text2); margin-top: 6px; }
     .diag { background: var(--surface); padding: 30px 24px; display: flex; flex-direction: column; gap: 14px; }
     .diag h2 { display: flex; align-items: center; gap: 10px; font-size: 22px; margin-bottom: 4px; }
-    .diag h2 img { width: 34px; height: 34px; }
+    .diag h2 .dial { width: 34px; height: 34px; }
     .quiet { font-size: 14px; color: var(--text2); }
     .seq-label { margin-top: 26px; margin-bottom: 14px; }
     .order { display: flex; align-items: center; gap: 12px; overflow-x: auto; padding: 4px 2px 6px; }
@@ -266,7 +266,6 @@ export class ProjectComponent {
   readonly store = inject( FlowStore );
   private readonly route = inject( ActivatedRoute );
   private readonly router = inject( Router );
-  readonly todd = TODD_ICON;
   readonly fmtDay = fmtDay;
   readonly tabs: { key: Tab; label: string }[] = [
     { key: 'flow', label: 'Flow' }, { key: 'sequence', label: 'Sequence' }, { key: 'moves', label: 'Moves' }, { key: 'people', label: 'People' }, { key: 'log', label: 'Log' },

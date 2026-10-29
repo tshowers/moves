@@ -44,73 +44,13 @@
     margin: 0 auto
 }
 
-.moves-nav {
-    position: absolute;
-    z-index: 10;
-    inset: 0 0 auto;
-    height: 92px;
-    padding: 22px max(32px, calc((100% - 1280px)/2));
-    display: flex;
-    justify-content: space-between;
-    align-items: center
-}
-
-.moves-brand {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    color: var(--ink);
-    text-decoration: none;
-    font-weight: 700;
-    letter-spacing: -.02em;
-    font-size: 20px
-}
-
-.moves-brand img {
-    width: 34px;
-    height: 34px
-}
-
-.moves-nav__right {
-    display: flex;
-    align-items: center;
-    gap: 28px
-}
-
-.moves-nav__right>a {
-    color: var(--ink);
-    text-decoration: none;
-    font-size: .73rem;
-    font-weight: 700
-}
-
-.moves-nav__right>a:hover {
-    color: var(--blue-ink)
-}
-
-.moves-nav__launch {
-    border: 1px solid var(--line);
-    border-radius: 999px;
-    padding: 11px 16px;
-    transition: background .2s
-}
-
-.moves-nav__launch:hover {
-    background: var(--paper)
-}
-
-.moves-nav__launch span {
-    color: var(--blue);
-    margin-left: 7px
-}
-
 .moves-hero {
-    height: 100svh;
-    min-height: 700px;
+    height: calc(100svh - 68px);
+    min-height: 640px;
     position: relative;
     display: flex;
     align-items: center;
-    padding: 90px max(32px, calc((100% - 1280px)/2)) 45px;
+    padding: 40px max(32px, calc((100% - 1280px)/2)) 45px;
     background: var(--bg)
 }
 
@@ -784,19 +724,10 @@
         width: min(100% - 32px, 620px)
     }
 
-    .moves-nav {
-        height: 74px;
-        padding: 16px
-    }
-
-    .moves-nav__right>a {
-        display: none
-    }
-
     .moves-hero {
         min-height: 760px;
         height: auto;
-        padding: 115px 16px 55px;
+        padding: 40px 16px 55px;
         display: block
     }
 
@@ -1145,24 +1076,12 @@
     color: var(--ink)
 }
 
-:host-context([data-theme="dark"]) .moves-nav {
-    background: rgba(12, 14, 19, .82);
-    border-color: var(--line)
-}
-
-:host-context([data-theme="dark"]) .moves-brand,
-:host-context([data-theme="dark"]) .moves-nav__right>a,
 :host-context([data-theme="dark"]) .moves-text-link {
     color: var(--ink)
 }
 
 :host-context([data-theme="dark"]) .moves-text-link {
     border-color: var(--ink)
-}
-
-:host-context([data-theme="dark"]) .moves-nav__launch,
-:host-context([data-theme="dark"]) .moves-theme {
-    border-color: #3a4050
 }
 
 :host-context([data-theme="dark"]) .moves-hero {
@@ -1209,53 +1128,6 @@
 
 :host-context([data-theme="dark"]) .moves-faq__item button {
     color: var(--ink)
-}
-
-.moves-theme {
-    display: flex;
-    align-items: center;
-    gap: 7px;
-    border: 1px solid var(--line);
-    border-radius: 999px;
-    padding: 8px 12px;
-    background: transparent;
-    color: var(--ink);
-    font-family: inherit;
-    cursor: pointer;
-    transition: background .2s
-}
-
-.moves-theme:hover {
-    background: var(--paper)
-}
-
-.moves-theme span {
-    color: var(--blue);
-    font-size: 1rem
-}
-
-.moves-theme small {
-    font-size: .7rem;
-    font-weight: 700
-}
-
-@media(max-width:850px) {
-
-    .moves-nav__right {
-        gap: 10px
-    }
-
-    .moves-theme small {
-        display: none
-    }
-
-    .moves-theme {
-        padding: 7px 9px
-    }
-
-    .moves-nav__launch {
-        display: none
-    }
 }
 
 /* "Powered by TODD · Also from us" (PRODUCT-STANDARD.md), under the hero's

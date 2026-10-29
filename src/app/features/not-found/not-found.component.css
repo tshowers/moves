@@ -2,35 +2,33 @@
   display: block;
 }
 
+/* The /app tokens (tokens.css), so it follows the site's theme. */
 .not-found-shell {
-  /* Explicitly light: the paragraph below has a hardcoded dark-gray
-     color with no dark-mode variant, so it needs a light backdrop to
-     stay legible regardless of the system color scheme. */
-  background: #f6f8fa;
-  color: #0d1117;
-  min-height: 100%;
   max-width: 480px;
   margin: 0 auto;
   padding: 5rem 1.5rem;
   text-align: center;
+  color: var(--text);
 }
 
 .not-found-eyebrow {
-  font-size: 0.8rem;
-  font-weight: 800;
-  letter-spacing: 0.14em;
-  color: #0095cc;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: .1em;
+  color: var(--muted);
   margin-bottom: 0.75rem;
 }
 
 .not-found-shell h1 {
-  font-size: 1.8rem;
-  font-weight: 800;
+  font-size: 40px;
+  line-height: 1.05;
+  letter-spacing: -0.03em;
+  font-weight: 700;
   margin: 0 0 0.75rem;
 }
 
 .not-found-shell p {
-  color: rgba(15, 15, 15, 0.6);
+  color: var(--muted);
   margin: 0 0 1.75rem;
 }
 
@@ -41,28 +39,30 @@
   flex-wrap: wrap;
 }
 
-.btn-todd {
-  padding: 0.5rem 1.1rem;
+/* The /app pill (.mv-btn--primary). */
+.nf-btn {
+  padding: 12px 24px;
   border-radius: 999px;
-  border: 1px solid rgba(0, 149, 204, 0.3);
-  background: #fff;
-  color: #0095cc;
-  font-weight: 600;
-  font-size: 0.9rem;
+  border: 1px solid var(--surface2);
+  background: var(--bg);
+  color: var(--text);
+  font-weight: 700;
+  font-size: 15px;
   text-decoration: none;
   display: inline-flex;
 }
 
-.btn-todd:hover {
-  background: rgba(0, 149, 204, 0.08);
-}
-
-.btn-todd--primary {
-  background: #0095cc;
+.nf-btn--primary {
+  background: var(--blue);
+  border-color: var(--blue);
   color: #fff;
-  border-color: #0095cc;
 }
 
-.btn-todd--primary:hover {
-  background: #0080b3;
+.nf-btn:hover {
+  opacity: .88;
+  color: inherit;
+}
+
+.nf-btn--primary:hover {
+  color: #fff;
 }

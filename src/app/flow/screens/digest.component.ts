@@ -6,16 +6,16 @@ import { byRoom, choiceLabel, liveActions, marginNote, moveById, projectHealth, 
 import { Issue, IssueChoice } from '../flow.models';
 import { FlowStore } from '../flow.store';
 import { FlowTrackComponent } from '../ui/flow-track.component';
-import { PersonPickerComponent, TODD_ICON } from '../ui/flow-ui.components';
+import { PersonPickerComponent, BrandMarkComponent } from '../ui/flow-ui.components';
 
 /** 10 Mobile, PM digest - the morning email as a screen: what broke, one tap to fix, what TODD fixed. */
 @Component( {
   selector: 'mv-digest',
   standalone: true,
-  imports: [RouterLink, FlowTrackComponent, PersonPickerComponent],
+  imports: [BrandMarkComponent, RouterLink, FlowTrackComponent, PersonPickerComponent],
   template: `
     <div class="col">
-      <div class="kicker"><img [src]="todd" alt="" class="mv-plate"> Morning digest · {{ weekday }}</div>
+      <div class="kicker"><mv-mark name="16ahead" class="dial" /> Morning digest · {{ weekday }}</div>
       <h1>{{ headline() }}</h1>
       <p class="sub">I fixed {{ fixed().length }} smaller thing{{ fixed().length === 1 ? '' : 's' }}. <a routerLink="/app/todd">See the log</a></p>
 
@@ -58,7 +58,7 @@ import { PersonPickerComponent, TODD_ICON } from '../ui/flow-ui.components';
   styles: [`
     .col { max-width: 440px; margin: 0 auto; padding: 32px 20px 40px; }
     .kicker { display: flex; align-items: center; gap: 12px; font-size: 14px; color: var(--muted); }
-    .kicker img { width: 30px; height: 30px; border-radius: 50%; }
+    .kicker .dial { width: 30px; height: 30px; }
     h1 { font-size: 34px; line-height: 1.05; margin-top: 16px !important; }
     .sub { font-size: 15px; color: var(--text); margin-top: 10px !important; }
     .dc { background: var(--surface); border-radius: 32px; padding: 18px 18px 16px; margin-top: 18px; }
@@ -79,7 +79,6 @@ import { PersonPickerComponent, TODD_ICON } from '../ui/flow-ui.components';
 export class DigestComponent {
   readonly store = inject( FlowStore );
   private readonly router = inject( Router );
-  readonly todd = TODD_ICON;
   readonly weekday = fmtWeekday( new Date() );
   readonly picking = signal( '' );
 

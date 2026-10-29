@@ -11,10 +11,11 @@ import { ToastComponent } from './shared/toast/toast.component';
 import { PlatformMenuComponent } from './shared/platform-menu/platform-menu.component';
 import { MovesAssistantLauncherComponent } from './shared/page/assistant-box/moves-assistant-launcher.component';
 import { WriteAccessPromptComponent } from './shared/write-access/write-access-prompt.component';
+import { SiteHeaderComponent } from './shared/site-header/site-header.component';
 
 @Component({
   selector: 'app-root',
-  imports: [WriteAccessPromptComponent, RouterOutlet, ToastComponent, PlatformMenuComponent, MovesAssistantLauncherComponent, AsyncPipe, NgIf],
+  imports: [WriteAccessPromptComponent, SiteHeaderComponent, RouterOutlet, ToastComponent, PlatformMenuComponent, MovesAssistantLauncherComponent, AsyncPipe, NgIf],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })
@@ -41,13 +42,12 @@ export class AppComponent implements OnInit {
   readonly isLoggedIn$ = this.authService.isLoggedIn();
   readonly userName$ = this.authService.getUser().pipe( map( user => user?.displayName || '' ) );
   readonly userEmail$ = this.authService.getUser().pipe( map( user => user?.email || '' ) );
-  // Routes with their own local nav bar (landing, the iOS showcase) render
-  // app-platform-menu inline as part of that bar instead of the global
-  // fixed corner button, so the global one - and its clearance padding in
-  // styles.css - must stay off for those routes to avoid a duplicate menu
-  // and a stacked-header gap.
-  private static readonly routesWithOwnNav = ['/', '/ios'];
-  readonly hasOwnNav = signal( AppComponent.matchesOwnNavRoute( this.router.url ) );
+  // Every page outside /app gets the site header (lockup, links, Menu).
+  // /about draws the shared Help/About header instead, with the corner
+  // Menu floating beside it (product-pages.config ownMenu: false).
+  private static readonly routesWithOwnHeader = ['/about'];
+  readonly hasOwnHeader = signal( AppComponent.matchesOwnHeaderRoute( this.router.url ) );
+  readonly isLanding = signal( AppComponent.pathOf( this.router.url ) === '/' );
   // The flow-map app under /app has its own rail (and phone top bar) with
   // the menu built in, so the corner menu stays off there. The assistant
   // stays on everywhere; the flow screens publish their own page context.
@@ -57,18 +57,24 @@ export class AppComponent implements OnInit {
 
   constructor () {
     this.router.events.pipe( filter( event => event instanceof NavigationEnd ) ).subscribe( event => {
-      this.hasOwnNav.set( AppComponent.matchesOwnNavRoute( ( event as NavigationEnd ).urlAfterRedirects ) );
-      this.isFlowRoute.set( AppComponent.matchesFlowRoute( ( event as NavigationEnd ).urlAfterRedirects ) );
+      const url = ( event as NavigationEnd ).urlAfterRedirects;
+      this.hasOwnHeader.set( AppComponent.matchesOwnHeaderRoute( url ) );
+      this.isLanding.set( AppComponent.pathOf( url ) === '/' );
+      this.isFlowRoute.set( AppComponent.matchesFlowRoute( url ) );
     } );
   }
 
-  private static matchesOwnNavRoute ( url: string ): boolean {
-    // Path only: in-page anchors ("/#signal") must not count as another page.
-    return AppComponent.routesWithOwnNav.includes( url.split( /[?#]/ )[0] );
+  /** Path only: in-page anchors ("/#signal") must not count as another page. */
+  private static pathOf ( url: string ): string {
+    return url.split( /[?#]/ )[0];
+  }
+
+  private static matchesOwnHeaderRoute ( url: string ): boolean {
+    return AppComponent.routesWithOwnHeader.includes( AppComponent.pathOf( url ) );
   }
 
   private static matchesFlowRoute ( url: string ): boolean {
-    const path = url.split( /[?#]/ )[0];
+    const path = AppComponent.pathOf( url );
     return path === '/app' || path.startsWith( '/app/' );
   }
 

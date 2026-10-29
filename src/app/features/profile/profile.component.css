@@ -3,50 +3,24 @@
  * light/dark values as Pulse's src/styles.css. */
 :host {
   display: block;
-  --tl-blue-deep: #006a99;
-  --todd-bg: #f6f8fa;
-  --todd-text: #222;
-  --todd-subtext: #555;
-  --todd-border: rgba(0, 0, 0, .08);
-  --todd-card-bg: rgba(255, 255, 255, 0.92);
+  /* The /app tokens (tokens.css), which switch with the site's theme. */
+  --todd-bg: var(--bg);
+  --todd-text: var(--text);
+  --todd-subtext: var(--muted);
+  --todd-border: var(--surface2);
+  --todd-card-bg: var(--bg);
 }
-
-/* Dark mode: follows the site's Light/Dark toggle (data-theme on <html>)
- * where there is one, and the system setting where there isn't. */
-@media (prefers-color-scheme: dark) {
-  :host-context(html:not([data-theme='light'])) {
-    --tl-blue-deep: #4fc3f7;
-    --todd-bg: #0d1117;
-    --todd-text: #f0f6ff;
-    --todd-subtext: #8ba4bd;
-    --todd-border: rgba(0, 191, 255, 0.12);
-    --todd-card-bg: #1a2535;
-  }
-}
-:host-context(html[data-theme='dark']) {
-    --tl-blue-deep: #4fc3f7;
-    --todd-bg: #0d1117;
-    --todd-text: #f0f6ff;
-    --todd-subtext: #8ba4bd;
-    --todd-border: rgba(0, 191, 255, 0.12);
-    --todd-card-bg: #1a2535;
-  }
-
 
 .pf-shell {
-  --pf-accent: var(--tl-blue-deep);
+  --pf-accent: var(--blue);
   --pf-accent-ink: #ffffff;
-  --pf-danger: #b42318;
+  --pf-danger: var(--danger);
   min-height: 100vh;
   background: var(--todd-bg);
   color: var(--todd-text);
-  font-family: 'Manrope', sans-serif;
-  padding: 88px 16px 120px;
+  font-family: var(--font);
+  padding: 48px 16px 120px;
 }
-@media (prefers-color-scheme: dark) {
-  :host-context(html:not([data-theme='light'])) .pf-shell { --pf-accent: var(--tl-blue); --pf-accent-ink: #04121f; --pf-danger: #ff8a80; }
-}
-:host-context(html[data-theme='dark']) .pf-shell { --pf-accent: var(--tl-blue); --pf-accent-ink: #04121f; --pf-danger: #ff8a80; }
 
 .pf-shell * { box-sizing: border-box; }
 
@@ -104,6 +78,6 @@ textarea.pf-input { resize: vertical; }
 .pf-completion__head span { font-weight: 800; color: var(--pf-accent); }
 .pf-completion__meter { height: 8px; border-radius: 999px; background: var(--todd-border); overflow: hidden; margin-bottom: 12px; }
 .pf-completion__meter span { display: block; height: 100%; border-radius: inherit; background: var(--pf-accent); transition: width .35s ease; }
-.pf-completion__meter span.is-complete { background: #1f9d55; }
+.pf-completion__meter span.is-complete { background: var(--green); }
 .pf-completion .pf-note { margin-bottom: 0; }
 .pf-link { border: 0; background: none; padding: 0; color: var(--pf-accent); font: inherit; font-weight: 700; cursor: pointer; }

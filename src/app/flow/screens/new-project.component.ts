@@ -9,7 +9,7 @@ import { MovesSignupDraftService } from '../../services/moves-signup-draft.servi
 import { FlowStore, PlanDraft } from '../flow.store';
 import { DemoNoticeComponent } from '../ui/demo-notice.component';
 import { FlowTrackComponent } from '../ui/flow-track.component';
-import { MOVES_ICON, TODD_ICON } from '../ui/flow-ui.components';
+import { BrandMarkComponent } from '../ui/flow-ui.components';
 
 /** Who content steps go to; the "Give to …" fix and its handler both use it. */
 const MARKETING_ASSISTANT = 'the Marketing Assistant';
@@ -34,12 +34,12 @@ const PUBLIC = /press|announce|publish/i;
 @Component( {
   selector: 'mv-new-project',
   standalone: true,
-  imports: [FormsModule, RouterLink, FlowTrackComponent, DemoNoticeComponent],
+  imports: [BrandMarkComponent, FormsModule, RouterLink, FlowTrackComponent, DemoNoticeComponent],
   template: `
     <div class="frame" data-cy="new-project">
       <mv-demo-notice class="notice" />
       <header class="top">
-        <a routerLink="/app" class="brand"><img [src]="logo" alt="" class="logo"><span>New project</span></a>
+        <a routerLink="/app" class="brand"><mv-mark name="moves" alt="16Ahead Moves" class="logo" /><span>New project</span></a>
         <ol class="steps">
           <li class="mv-tag" [class.mv-tag--green]="step() > 1" [class.mv-tag--blue]="step() === 1">1 Goal{{ step() > 1 ? ' ✓' : '' }}</li>
           <li class="mv-tag" [class.mv-tag--green]="step() > 2" [class.mv-tag--blue]="step() === 2" [class.mv-tag--outline]="step() < 2">2 Plan{{ step() > 2 ? ' ✓' : '' }}</li>
@@ -71,7 +71,7 @@ const PUBLIC = /press|announce|publish/i;
             </section>
             <section class="right">
               <header class="rh">
-                <img [src]="todd" alt="" class="mv-plate">
+                <mv-mark name="16ahead" class="dial" />
                 <h2>{{ title() }}, as a line</h2>
                 <span class="mv-muted">{{ items().length }} moves · {{ weeks() }} week{{ weeks() === 1 ? '' : 's' }}</span>
               </header>
@@ -137,7 +137,7 @@ const PUBLIC = /press|announce|publish/i;
     .frame { min-height: 100vh; min-height: 100dvh; background: var(--bg); padding: 0 32px 32px; }
     .top { display: flex; align-items: center; justify-content: space-between; padding: 22px 0; gap: 12px; flex-wrap: wrap; }
     .brand { display: flex; align-items: center; gap: 12px; text-decoration: none; color: var(--text); font-size: 20px; font-weight: 700; letter-spacing: -0.02em; }
-    .logo { width: 30px; height: 30px; border-radius: 8px; background: #fff; }
+    .logo { width: 30px; height: 30px; }
     .steps { display: flex; gap: 8px; list-style: none; margin: 0; padding: 0; }
     .steps .mv-tag { font-size: 13px; padding: 5px 12px; }
     .big { font-size: 34px; line-height: 1.1; }
@@ -152,7 +152,7 @@ const PUBLIC = /press|announce|publish/i;
     .upload { cursor: pointer; }
     .right { background: var(--surface); border-radius: 32px; padding: 22px 26px 26px; display: flex; flex-direction: column; gap: 12px; min-height: 560px; }
     .rh { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
-    .rh img { width: 40px; height: 40px; border-radius: 50%; }
+    .rh .dial { width: 40px; height: 40px; }
     .rh h2 { font-size: 24px; margin-right: auto !important; }
     .rh span { font-size: 13px; }
     .line { background: var(--bg); border-radius: 24px; padding: 16px 30px 4px; margin-bottom: 8px; }
@@ -187,8 +187,6 @@ export class NewProjectComponent implements OnInit {
   private readonly signupDraft = inject( MovesSignupDraftService );
   /** Started from the /get-started wizard's drafted Move: clear it once the project exists. */
   private fromSignup = false;
-  readonly logo = MOVES_ICON;
-  readonly todd = TODD_ICON;
   readonly sample = SAMPLE;
   readonly maya = MAYA_ID;
 

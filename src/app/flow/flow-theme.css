@@ -87,7 +87,7 @@
 /* Avatars. */
 .mv-avatar { width: 34px; height: 34px; flex: none; border-radius: 50%; background: var(--t-blue); color: var(--t-blue-fg); display: inline-flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 700; overflow: hidden; }
 .mv-avatar img { width: 100%; height: 100%; object-fit: cover; }
-.mv-avatar--plate { background: #fff; }
+.mv-avatar--plate { background: transparent; }
 .mv-avatar--none { background: transparent; border: 2px dashed var(--t-pink-fg); color: var(--t-pink-fg); }
 
 /* Cards. */
@@ -97,7 +97,6 @@
 .mv-card--dashed { border: 1.5px dashed var(--n500); background: transparent; }
 
 .mv-icon { width: 40px; height: 40px; border-radius: 50%; flex: none; }
-[data-theme='dark'] .mv-plate { background: #fff; border-radius: 50%; }
 
 /* Toggle. */
 .mv-toggle { position: relative; width: 38px; height: 22px; border-radius: 999px; background: var(--n400); border: 0; cursor: pointer; flex: none; transition: background .15s; }

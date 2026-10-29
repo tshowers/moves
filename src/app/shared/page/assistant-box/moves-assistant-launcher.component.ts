@@ -245,7 +245,7 @@ export class MovesAssistantLauncherComponent implements OnInit, OnDestroy {
       }
       case 'todd':
         return {
-          eyebrow: 'TODD', stageLabel: todd === 'dry_run' ? 'Practising' : todd === 'off' ? 'Paused' : 'On', tone: todd === 'on' ? 'ready' : 'progress', icon: 'fa-solid fa-robot',
+          eyebrow: '16AHEAD', stageLabel: todd === 'dry_run' ? 'Practising' : todd === 'off' ? 'Paused' : 'On', tone: todd === 'on' ? 'ready' : 'progress', icon: 'fa-solid fa-robot',
           title: todd === 'dry_run' ? '16Ahead is practising' : todd === 'off' ? '16Ahead is paused' : '16Ahead is acting within its rules',
           message: todd === 'dry_run' ? '“Would have” entries in the log show what it would do. Turn it on when they look right.' : 'Everything it did is in the log with Undo. Turn a rule off to keep that decision for yourself.',
           whyItMatters: 'Two rules are locked: never move a client-facing or hand-set date, never message anyone outside the team.',

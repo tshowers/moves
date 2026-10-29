@@ -7,19 +7,19 @@ import { FlowMove, Issue, IssueChoice } from '../flow.models';
 import { FlowStore } from '../flow.store';
 import { DemoNoticeComponent } from '../ui/demo-notice.component';
 import { FlowTrackComponent } from '../ui/flow-track.component';
-import { MOVES_ICON } from '../ui/flow-ui.components';
+import { BrandMarkComponent } from '../ui/flow-ui.components';
 import { KIND_LABEL } from '../ui/issue-card.component';
 
 /** 07 Weekly review / standup - one decision at a time, only what needs the PM. */
 @Component( {
   selector: 'mv-review',
   standalone: true,
-  imports: [RouterLink, FlowTrackComponent, DemoNoticeComponent],
+  imports: [BrandMarkComponent, RouterLink, FlowTrackComponent, DemoNoticeComponent],
   template: `
     <div class="frame" data-cy="review">
       <mv-demo-notice class="notice" />
       <header class="top">
-        <img [src]="logo" alt="" class="logo">
+        <mv-mark name="moves" alt="16Ahead Moves" class="logo" />
         <h1>Weekly review</h1>
         <span class="meta">{{ today }} · {{ items().length }} break{{ items().length === 1 ? '' : 's' }} across {{ projectCount() }} project{{ projectCount() === 1 ? '' : 's' }}</span>
         <button type="button" class="mv-btn share" (click)="share()">Share to standup</button>
@@ -108,7 +108,7 @@ import { KIND_LABEL } from '../ui/issue-card.component';
     .notice { margin: 16px 36px 0; }
     .frame { min-height: 100vh; min-height: 100dvh; display: flex; flex-direction: column; background: var(--bg); }
     .top { display: flex; align-items: center; gap: 14px; padding: 18px 32px; border-bottom: 1px solid var(--surface2); flex-wrap: wrap; }
-    .logo { width: 30px; height: 30px; border-radius: 8px; background: #fff; }
+    .logo { width: 30px; height: 30px; }
     .top h1 { font-size: 20px; }
     .meta { font-size: 14px; color: var(--muted); margin-right: auto; }
     .top .mv-btn { padding: 9px 16px; }
@@ -165,7 +165,6 @@ export class ReviewComponent implements OnInit {
   readonly store = inject( FlowStore );
   private readonly route = inject( ActivatedRoute );
   private readonly router = inject( Router );
-  readonly logo = MOVES_ICON;
   readonly today = fmtDay( new Date() );
 
   /** Snapshot when the review opens, so decided items stay in the list with a tick. */

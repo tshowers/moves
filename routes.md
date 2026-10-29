@@ -6,7 +6,7 @@ From [`src/app/app.routes.ts`](src/app/app.routes.ts) and [`src/app/flow/flow.ro
 
 | Route | Component | Notes |
 |---|---|---|
-| `/` | `LandingComponent` | Signed-in visitors are sent to `/app` (`landingRedirectGuard`). |
+| `/` | `LandingComponent` | Signed-in visitors who open the site here are sent to `/app` (`landingRedirectGuard`); the 16Ahead lockup in `/app` and the site header still shows the home page. |
 | `/help` | `HelpComponent` | How to use Moves, plus the Getting Started checklist when signed in. |
 | `/about` | `ProductPagesComponent` (shared) | Copy in `taliferro-ui/platform/product-pages.model.ts` (`moves`). |
 | `/pricing` | `GetTheAppComponent` | Browse free, subscribe to create (web via Stripe, or the iPhone app). |

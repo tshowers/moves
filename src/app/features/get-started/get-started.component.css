@@ -1,33 +1,23 @@
 /* Moves' twin of Docs' /get-started page styles. */
 :host {
   display: block;
-  --gs-brand: #0759dc;
-  --todd-bg: #f6f8fa;
-  --todd-text: #0b1220;
-  --todd-subtext: #4a5a70;
-  --todd-border: rgba(11, 18, 32, .1);
-  --todd-card-bg: rgba(255, 255, 255, 0.94);
-}
-
-/* Moves switches themes with [data-theme] on <html> (ThemeService). */
-:host-context([data-theme='dark']) {
-  --gs-brand: #5b9bff;
-  --todd-bg: #0b1220;
-  --todd-text: #f8fafc;
-  --todd-subtext: #aebbd0;
-  --todd-border: rgba(174, 187, 208, 0.16);
-  --todd-card-bg: #111c2c;
+  /* The /app tokens (tokens.css), which switch with the site's theme. */
+  --gs-brand: var(--blue);
+  --todd-bg: var(--bg);
+  --todd-text: var(--text);
+  --todd-subtext: var(--muted);
+  --todd-border: var(--surface2);
+  --todd-card-bg: var(--bg);
 }
 
 .gs-shell {
   --gs-accent: var(--gs-brand);
   --gs-accent-ink: #ffffff;
   min-height: 100vh;
-  padding: 88px 16px 48px;
+  padding: 48px 16px;
   background: var(--todd-bg);
   color: var(--todd-text);
 }
-:host-context([data-theme='dark']) .gs-shell { --gs-accent-ink: #04121f; }
 .gs-shell * { box-sizing: border-box; }
 
 .gs-card { max-width: 640px; margin: 0 auto; padding: 28px clamp(20px, 5vw, 40px) 32px; border: 1px solid var(--todd-border); border-radius: 24px; background: var(--todd-card-bg); }
