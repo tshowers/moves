@@ -29,6 +29,7 @@ import { AvatarComponent, LockupComponent } from '../ui/flow-ui.components';
           <a routerLink="/app" routerLinkActive="on" [routerLinkActiveOptions]="{ exact: true }">Momentum</a>
           <a routerLink="/app/team" routerLinkActive="on">Team</a>
           <a routerLink="/app/review">Review</a>
+          <a routerLink="/missions">Missions</a>
           <a routerLink="/app/maya" routerLinkActive="on">Marketing Assistant
             @if (store.mayaQueue().length) { <span class="count">{{ store.mayaQueue().length }}</span> }
           </a>

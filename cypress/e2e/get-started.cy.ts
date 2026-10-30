@@ -1,6 +1,6 @@
 /**
  * Moves' pre-sign-in wizard at /get-started: plan a first Move (what,
- * when, how important), then name, then hand off to TODD's hosted login.
+ * when, how important), then name, then hand off to 16Ahead's hosted login.
  * The draft is kept in localStorage so it survives that redirect (it's
  * saved after sign-in by MovesSignupDraftService.submitIfPending).
  */
@@ -46,7 +46,7 @@ describe( 'Moves get started wizard', () => {
     } );
 
     cy.get( '[data-cy="get-started-sign-in"]' ).click();
-    cy.location( 'href', { timeout: 10000 } ).should( 'include', 'todd.taliferro.tech/login' );
+    cy.location( 'href', { timeout: 10000 } ).should( 'include', 'app.16ahead.com/login' );
   } );
 
   it( '"Other" asks for the Move', () => {

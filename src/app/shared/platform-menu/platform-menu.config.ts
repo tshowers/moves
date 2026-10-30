@@ -9,6 +9,7 @@ export const PLATFORM_MENU_CONFIG: MenuAppConfig = {
     { label: 'Momentum', icon: 'grid', route: '/app', keywords: 'projects lines today' },
     { label: 'Team', icon: 'list', route: '/app/team', keywords: 'people capacity load' },
     { label: 'Weekly review', icon: 'target', route: '/app/review', keywords: 'standup decide' },
+    { label: 'Missions', icon: 'bolt', route: '/missions', keywords: 'mission plan run overnight assistant' },
     { label: 'New project', icon: 'plus', route: '/app/new', keywords: 'create add plan paste' },
   ],
   secondaryItems: [

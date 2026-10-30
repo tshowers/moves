@@ -22,6 +22,8 @@ abstract class MissionsPage implements OnInit {
   protected readonly store = inject( FlowStore );
   readonly signedIn = signal<boolean | null>( null );
   readonly viewerId = signal( '' );
+  /** Signing in comes back to this page (this Mission), not Moves' home. */
+  readonly signInParams = { returnUrl: inject( Router ).url };
 
   /** Teammates by id, from the flow map's team (not the sample team). */
   readonly people = computed<Record<string, Person>>( () => {
@@ -55,7 +57,7 @@ const SHELL_STYLES = `
 const SIGN_IN = `
   <div class="signin" data-cy="missions-signin">
     <b>Sign in to see your Missions.</b>
-    <a class="btn" routerLink="/login">Sign in</a>
+    <a class="btn" routerLink="/login" [queryParams]="signInParams">Sign in</a>
   </div>
 `;
 
