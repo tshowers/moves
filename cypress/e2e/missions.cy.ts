@@ -116,6 +116,37 @@ describe( 'Mission detail (2a)', () => {
     cy.wait( '@act' ).its( 'request.body' ).should( 'deep.equal', { type: 'complete', note: 'Kapor Capital', attachment: { name: 'funds.csv', text: 'Fund,Website\nKapor Capital,kaporcapital.com' } } );
   } );
 
+  it( 'a keep/drop pick is the firms you tick, never typed text (Ty, 2026-11-03)', () => {
+    cy.fixture( 'missions/roland-approval.json' ).then( ( m ) => {
+      const steps = m.steps.map( ( step: any ) => {
+        if ( step.id === 'who' ) return { ...step, tool: 'todd.shortlist', output: { items: [ { id: 'kapor', name: 'Kapor Capital', why: 'Seed B2B', fit: 'strong' }, { id: 'base', name: 'Base Ventures', why: 'Fintech', fit: 'weak' } ] } };
+        if ( step.id === 'pick' ) return { ...step, status: 'active', options: [], dependsOn: [ 'who' ], holder: { kind: 'you', assigneeId: 'uid-owner' } };
+        if ( step.id === 'approve' ) return { ...step, status: 'pending' };
+        return step;
+      } );
+      cy.intercept( 'GET', `${API}/orchestration/missions/reach-named-person`, { success: true, mission: { ...m, id: 'reach-named-person', steps } } ).as( 'mission' );
+    } );
+    cy.intercept( 'POST', `${API}/orchestration/missions/reach-named-person/steps/pick`, { statusCode: 202, body: { success: true } } ).as( 'act' );
+    cy.visitWithCypressAuth( '/missions/reach-named-person', ME );
+    cy.get( '[data-cy="banner-cta"]' ).click();
+    cy.get( '[data-cy="drawer-shortlist"]' ).should( 'contain.text', 'Kapor Capital' );
+    cy.get( '[data-cy="drawer-note"]' ).should( 'not.exist' );
+    cy.get( '[data-cy="drawer-continue-kept"]' ).should( 'be.disabled' );
+    cy.get( '[data-cy="drawer-keep-kapor"]' ).check();
+    cy.get( '[data-cy="drawer-continue-kept"]' ).should( 'contain.text', 'Continue with 1 kept' ).click();
+    cy.wait( '@act' ).its( 'request.body' ).should( 'deep.equal', { type: 'answer', value: 'Kapor Capital' } );
+  } );
+
+  it( 'an approval shows exactly who the send goes to', () => {
+    cy.fixture( 'missions/roland-approval.json' ).then( ( m ) => {
+      const steps = m.steps.map( ( step: any ) => ( step.id === 'approve' ? { ...step, recipients: [ { stepId: 'send', title: 'Send the email', count: 2, pending: false, people: [ { email: 'mitch@kaporcapital.com', name: 'Mitch Kapor', company: 'Kapor Capital' }, { email: 'henri@harlem.capital', name: '', company: '' } ] } ] } : step ) );
+      cy.intercept( 'GET', `${API}/orchestration/missions/reach-named-person`, { success: true, mission: { ...m, id: 'reach-named-person', steps } } ).as( 'mission' );
+    } );
+    cy.visitWithCypressAuth( '/missions/reach-named-person', ME );
+    cy.get( '[data-cy="banner-cta"]' ).click();
+    cy.get( '[data-cy="drawer-recipients"]' ).should( 'contain.text', 'Send the email: 2 people' ).and( 'contain.text', 'Mitch Kapor' ).and( 'contain.text', 'henri@harlem.capital' );
+  } );
+
   it( 'the owner can cancel a Mission that hasn’t finished, after a confirm', () => {
     mission( 'roland-approval' );
     cy.intercept( 'POST', `${API}/orchestration/missions/reach-named-person/cancel`, { statusCode: 200, body: { success: true, mission: { id: 'reach-named-person', status: 'cancelled', steps: [], phase: 'cancelled', plan: {}, products: [], split: {}, isOwner: true, outcomeType: 'action', origin: 'ask', title: 'Reach a named person' } } } ).as( 'cancel' );
