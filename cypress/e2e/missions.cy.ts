@@ -101,6 +101,31 @@ describe( 'Mission detail (2a)', () => {
     cy.wait( '@act' ).its( 'request.body' ).should( 'deep.equal', { type: 'answer', value: 'Roland Martin · VP Operations, Calder Systems' } );
   } );
 
+  it( 'a task takes a pasted list or an attached file (Ty, 2026-11-03)', () => {
+    cy.fixture( 'missions/roland-approval.json' ).then( ( m ) => {
+      const steps = m.steps.map( ( step: any ) => ( step.id === 'approve' ? { ...step, kind: 'task', title: 'Extract the firm names', why: '16Ahead can’t open that link.' } : step ) );
+      cy.intercept( 'GET', `${API}/orchestration/missions/reach-named-person`, { success: true, mission: { ...m, id: 'reach-named-person', steps } } ).as( 'mission' );
+    } );
+    cy.intercept( 'POST', `${API}/orchestration/missions/reach-named-person/steps/approve`, { statusCode: 202, body: { success: true } } ).as( 'act' );
+    cy.visitWithCypressAuth( '/missions/reach-named-person', ME );
+    cy.get( '[data-cy="banner-cta"]' ).click();
+    cy.get( '[data-cy="drawer-note"]' ).should( 'be.visible' ).type( 'Kapor Capital' );
+    cy.get( '[data-cy="drawer-attach"] input[type=file]' ).selectFile( { contents: Cypress.Buffer.from( 'Fund,Website\nKapor Capital,kaporcapital.com' ), fileName: 'funds.csv' }, { force: true } );
+    cy.get( '[data-cy="drawer-attachment"]' ).should( 'have.text', 'funds.csv' );
+    cy.get( '[data-cy="drawer-done"]' ).click();
+    cy.wait( '@act' ).its( 'request.body' ).should( 'deep.equal', { type: 'complete', note: 'Kapor Capital', attachment: { name: 'funds.csv', text: 'Fund,Website\nKapor Capital,kaporcapital.com' } } );
+  } );
+
+  it( 'the owner can cancel a Mission that hasn’t finished, after a confirm', () => {
+    mission( 'roland-approval' );
+    cy.intercept( 'POST', `${API}/orchestration/missions/reach-named-person/cancel`, { statusCode: 200, body: { success: true, mission: { id: 'reach-named-person', status: 'cancelled', steps: [], phase: 'cancelled', plan: {}, products: [], split: {}, isOwner: true, outcomeType: 'action', origin: 'ask', title: 'Reach a named person' } } } ).as( 'cancel' );
+    cy.visitWithCypressAuth( '/missions/reach-named-person', ME );
+    cy.get( '[data-cy="cancel"]' ).click();
+    cy.get( '[data-cy="cancel-confirm"]' ).should( 'contain.text', 'Nothing else will run.' );
+    cy.get( '[data-cy="cancel-yes"]' ).click();
+    cy.wait( '@cancel' );
+  } );
+
   it( 'a proposed Mission starts from here', () => {
     mission( 'roland-proposed' );
     cy.intercept( 'POST', `${API}/orchestration/missions/reach-named-person/start`, ( req ) => {
