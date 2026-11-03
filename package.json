@@ -1,6 +1,6 @@
 {
   "name": "moves",
-  "version": "2026.10.30-build.2",
+  "version": "2026.11.3-build.1",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
