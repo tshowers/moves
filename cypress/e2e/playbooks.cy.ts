@@ -66,8 +66,16 @@ describe( 'Every playbook, start to finish', () => {
             case 'approve': cy.get( '[data-cy="drawer-approve"]' ).click(); break;
             case 'option': cy.get( '[data-cy="drawer-option"]' ).first().click(); break;
             case 'answer':
-              cy.get( '[data-cy="drawer-note"]' ).type( frame.act.value );
-              cy.get( '[data-cy="drawer-answer"]' ).click();
+              // A pick from a shortlist is the firms you tick, never typed text (Ty, 2026-11-03).
+              cy.get( '[data-cy="step-drawer"]' ).then( ( $d ) => {
+                if ( $d.find( '[data-cy="drawer-shortlist"]' ).length ) {
+                  cy.get( '[data-cy="drawer-shortlist"] input[type="checkbox"]' ).first().check();
+                  cy.get( '[data-cy="drawer-continue-kept"]' ).click();
+                } else {
+                  cy.get( '[data-cy="drawer-note"]' ).type( frame.act.value );
+                  cy.get( '[data-cy="drawer-answer"]' ).click();
+                }
+              } );
               break;
             case 'replied': cy.get( '[data-cy="drawer-replied"]' ).click(); break;
             default: cy.get( '[data-cy="drawer-done"]' ).click();
