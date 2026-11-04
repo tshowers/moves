@@ -60,7 +60,10 @@ describe( 'Every playbook, start to finish', () => {
           // Wait for this stage to arrive: the banner names the step that's waiting on you.
           const title = frame.act.title.replace( /[.*+?^${}()|[\]\\]/g, '\\$&' );
           cy.contains( '[data-cy="mission-banner"]', new RegExp( `on you: ${title}`, 'i' ), { timeout: 10000 } );
-          cy.get( '[data-cy="banner-cta"]' ).click();
+          // When the step you just did leads to this one, the drawer is already open on it.
+          cy.get( 'body' ).then( ( $b ) => {
+            if ( !$b.find( '[data-cy="step-drawer"]' ).length ) cy.get( '[data-cy="banner-cta"]' ).click();
+          } );
           cy.get( '[data-cy="step-drawer"]' ).should( 'be.visible' ).and( 'contain.text', frame.act.title );
           switch ( frame.act.ui ) {
             case 'approve': cy.get( '[data-cy="drawer-approve"]' ).click(); break;

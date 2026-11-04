@@ -4,7 +4,7 @@ import { EditPlanComponent } from './edit-plan.component';
 import { MissionOutcomeComponent } from './mission-outcome.component';
 import { MissionReportComponent } from './mission-report.component';
 import { MissionsApiService } from './missions-api.service';
-import { ColumnView, MissionView, Person, PRODUCT_LABEL, Who, currentColumn, leftUntil, nameOf, stripColumns } from './missions.model';
+import { ColumnView, MissionView, Person, PRODUCT_LABEL, StepView, Who, currentColumn, leftUntil, nameOf, stripColumns, whoOf } from './missions.model';
 import { OwnerTokenComponent } from './owner-token.component';
 import { PlanStripComponent, paint } from './plan-strip.component';
 import { StepDrawerComponent } from './step-drawer.component';
@@ -117,7 +117,7 @@ const OUTCOME: Record<string, string> = { action: 'Action', insight: 'Insight', 
       }
 
       @if (drawer(); as column) {
-        <tm-step-drawer [mission]="m" [column]="column" [viewerId]="viewerId()" [people]="people()" (closed)="drawer.set(null)" (acted)="refreshSoon()" />
+        <tm-step-drawer [mission]="m" [column]="column" [viewerId]="viewerId()" [people]="people()" (closed)="drawer.set(null)" (acted)="onActed($event)" />
       }
     } @else if (error()) {
       <p class="error" data-cy="mission-error">{{ error() }}</p>
@@ -286,6 +286,39 @@ export class MissionDetailComponent implements OnDestroy {
     this.drawer.set( column );
   }
 
+  /**
+   * After you act on a step, the step it leads to may be yours too ("My own
+   * list" -> attach the list). Open it for you instead of leaving you to find
+   * it (Ty, 2026-11-03: picked My own list, nothing asked for the list).
+   */
+  private follow: { stepId: string; until: number; before: Set<string> } | null = null;
+
+  onActed ( event: { stepId: string } ): void {
+    const m = this.mission();
+    this.follow = { stepId: event.stepId, until: Date.now() + 20000, before: new Set( ( m ? m.steps : [] ).filter( ( s ) => this.isMineNow( s ) ).map( ( s ) => s.id ) ) };
+    this.refreshSoon();
+  }
+
+  private isMineNow ( step: StepView ): boolean {
+    return step.status === 'active' && ( step.owner === 'person' || Boolean( step.handoff ) ) && whoOf( step.holder, this.viewerId() ) === 'you';
+  }
+
+  private followUp ( mission: MissionView ): void {
+    const f = this.follow;
+    if ( !f ) return;
+    if ( Date.now() > f.until ) { this.follow = null; return; }
+    if ( this.drawer() ) return;
+    const cols = this.columns();
+    const from = cols.find( ( c ) => c.stepIds.includes( f.stepId ) );
+    const next = mission.steps.find( ( s ) => s.id !== f.stepId && !f.before.has( s.id ) && this.isMineNow( s )
+      && ( s.dependsOn.includes( f.stepId ) || String( s.when || '' ).includes( `$step:${f.stepId}.` ) || Boolean( from && from.stepIds.includes( s.id ) ) ) );
+    if ( !next ) return;
+    const column = cols.find( ( c ) => c.stepIds.includes( next.id ) );
+    if ( !column ) return;
+    this.follow = null;
+    this.drawer.set( column );
+  }
+
   onSaved ( mission: MissionView ): void {
     this.mission.set( mission );
     this.editing.set( false );
@@ -327,6 +360,7 @@ export class MissionDetailComponent implements OnDestroy {
       const mission = await this.api.get( id );
       this.mission.set( mission );
       this.error.set( '' );
+      this.followUp( mission );
       // Keep it live while TODD and Maya are working; slow down when it's waiting on people.
       if ( ['queued', 'running'].includes( mission.status ) || mission.phase === 'working' ) this.refreshSoon( 4000 );
       else if ( mission.status === 'active' ) this.refreshSoon( 30000 );

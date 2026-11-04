@@ -151,6 +151,65 @@ describe( 'Mission detail (2a)', () => {
     cy.get( '[data-cy="drawer-recipients"]' ).should( 'contain.text', 'Send the email: 2 people' ).and( 'contain.text', 'Mitch Kapor' ).and( 'contain.text', 'henri@harlem.capital' );
   } );
 
+  it( 'an approval shows the email it sends, not the list it was handed (Ty, 2026-11-03)', () => {
+    cy.fixture( 'missions/roland-approval.json' ).then( ( m ) => {
+      const email = m.steps.find( ( s: any ) => s.id === 'email' );
+      // An attached list that finished after the email: it used to be the only thing shown.
+      const list = { ...m.steps.find( ( s: any ) => s.id === 'address' ), id: 'list', title: 'Attach your list', status: 'done', branch: null, when: '', dependsOn: [], output: { documentId: 'doc-list', title: 'BlackVCCompanies.csv' } };
+      const steps = [ ...m.steps.filter( ( s: any ) => s.id !== 'approve' ), list, { ...m.steps.find( ( s: any ) => s.id === 'approve' ), dependsOn: [ 'email', 'list' ] } ];
+      cy.intercept( 'GET', `${API}/orchestration/missions/reach-named-person`, { success: true, mission: { ...m, id: 'reach-named-person', steps } } ).as( 'mission' );
+      cy.intercept( 'GET', `${API}/docs/${email.output.documentId}`, { success: true, document: { id: email.output.documentId, htmlContent: '<p>Hello Roland, a quick intro.</p>' } } ).as( 'doc' );
+      cy.visitWithCypressAuth( '/missions/reach-named-person', ME );
+      cy.get( '[data-cy="banner-cta"]' ).click();
+      cy.wait( '@doc' );
+      cy.get( '[data-cy="drawer-email-subject"]' ).should( 'have.text', email.output.subject );
+      cy.get( '[data-cy="drawer-email-body"]' ).should( 'have.attr', 'srcdoc' ).and( 'contain', 'Hello Roland, a quick intro.' );
+      cy.get( '[data-cy="drawer-email-body"]' ).should( 'have.attr', 'sandbox', '' );
+      cy.get( '[data-cy="step-drawer"]' ).should( 'not.contain.text', 'BlackVCCompanies.csv' );
+    } );
+  } );
+
+  it( 'a working step spins on the timeline in place of its owner, and gets its icon back when done', () => {
+    cy.fixture( 'missions/roland-approval.json' ).then( ( m ) => {
+      let working = true;
+      cy.intercept( 'GET', `${API}/orchestration/missions/reach-named-person`, ( req ) => {
+        const steps = m.steps.map( ( s: any ) => ( working && s.id === 'img' ? { ...s, status: 'active', output: null } : s ) );
+        req.reply( { success: true, mission: { ...m, id: 'reach-named-person', steps, phase: working ? 'working' : m.phase } } );
+      } ).as( 'mission' );
+      cy.visitWithCypressAuth( '/missions/reach-named-person', ME );
+      cy.get( '[data-cy="plan-strip-list"] [data-cy="rail-spinner"]' ).should( 'have.length', 1 ).and( 'have.attr', 'aria-label', 'Marketing Assistant is working' );
+      cy.get( '[data-cy="plan-strip-list"] [data-cy="step-img"]' ).should( 'have.attr', 'data-look', 'run' );
+      cy.then( () => { working = false; } );
+      cy.get( '[data-cy="plan-strip-list"] [data-cy="rail-spinner"]', { timeout: 10000 } ).should( 'not.exist' );
+      cy.get( '[data-cy="plan-strip-list"] [data-cy="step-img"]' ).should( 'have.attr', 'data-look', 'done' );
+    } );
+  } );
+
+  it( 'when your answer leads to another step for you, the drawer opens it (Ty, 2026-11-03)', () => {
+    cy.fixture( 'missions/roland-approval.json' ).then( ( m ) => {
+      let answered = false;
+      cy.intercept( 'GET', `${API}/orchestration/missions/reach-named-person`, ( req ) => {
+        const steps = m.steps.map( ( s: any ) => {
+          if ( s.id === 'route' ) return answered ? { ...s, kind: 'decision', owner: 'person', holder: { owner: 'person', assigneeId: 'uid-owner' }, status: 'done' } : { ...s, kind: 'decision', owner: 'person', holder: { owner: 'person', assigneeId: 'uid-owner' }, status: 'active', options: [ 'My own list', 'Hunter' ], output: null };
+          if ( s.id === 'address' ) return { ...s, title: 'Attach your list', status: answered ? 'active' : 'pending' };
+          if ( s.id === 'approve' ) return { ...s, status: 'pending' };
+          return s;
+        } );
+        req.reply( { success: true, mission: { ...m, id: 'reach-named-person', steps } } );
+      } ).as( 'mission' );
+      cy.intercept( 'POST', `${API}/orchestration/missions/reach-named-person/steps/route`, ( req ) => {
+        answered = true;
+        req.reply( { statusCode: 202, body: { success: true } } );
+      } ).as( 'act' );
+      cy.visitWithCypressAuth( '/missions/reach-named-person', ME );
+      cy.get( '[data-cy="banner-cta"]' ).click();
+      cy.contains( '[data-cy="drawer-option"]', 'My own list' ).click();
+      cy.wait( '@act' );
+      cy.get( '[data-cy="step-drawer"]', { timeout: 10000 } ).should( 'be.visible' ).and( 'contain.text', 'Attach your list' );
+      cy.get( '[data-cy="drawer-attach"]' ).should( 'exist' );
+    } );
+  } );
+
   it( 'the owner can cancel a Mission that hasn’t finished, after a confirm', () => {
     mission( 'roland-approval' );
     cy.intercept( 'POST', `${API}/orchestration/missions/reach-named-person/cancel`, { statusCode: 200, body: { success: true, mission: { id: 'reach-named-person', status: 'cancelled', steps: [], phase: 'cancelled', plan: {}, products: [], split: {}, isOwner: true, outcomeType: 'action', origin: 'ask', title: 'Reach a named person' } } } ).as( 'cancel' );
