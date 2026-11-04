@@ -425,7 +425,8 @@ export function stripColumns ( steps: StepView[], viewerId: string, people: Reco
 
 /** The column a person should look at: the first active one, else the first failed. */
 export type StateTone = 'you' | 'working' | 'waiting' | 'done' | 'stopped';
-export interface MissionState { tone: StateTone; label: string }
+/** teammate: it's a teammate's turn (the list's "Waiting on others"). */
+export interface MissionState { tone: StateTone; label: string; teammate?: boolean }
 
 function plural ( count: number, word: string ): string {
   return `${count} ${word}${count === 1 ? '' : 's'}`;
@@ -460,7 +461,7 @@ export function missionState ( m: MissionView, columns: ColumnView[], viewerId: 
   }
   if ( column.who === 'you' ) return { tone: 'you', label: 'Needs you' };
   if ( column.who === 'todd' || column.who === 'maya' ) return { tone: 'working', label: 'Working' };
-  return { tone: 'waiting', label: `Waiting on ${nameOf( column.who, people )}` };
+  return { tone: 'waiting', label: `Waiting on ${nameOf( column.who, people )}`, teammate: true };
 }
 
 export function currentColumn ( columns: ColumnView[] ): ColumnView | null {

@@ -482,6 +482,18 @@ describe( 'Missions rows (5a) and the cockpit (9a)', () => {
     cy.get( '[data-cy="mission-row"]' ).each( ( row ) => cy.wrap( row ).find( '[data-cy="strip-now"]' ).should( 'contain.text', 'Waiting on you' ) );
   } );
 
+  it( 'a row says what a Mission needs, and one finished with follow-ups for you is waiting on you (Ty, 2026-11-03)', () => {
+    cy.fixture( 'missions/list.json' ).then( ( list ) => {
+      const missions = list.missions.map( ( m: any ) => m.id === 'funded' ? { ...m, followUps: [ { id: 't1', title: 'Call Lindsey', assigneeId: ME.uid, dueDate: '', done: false } ] } : m );
+      cy.intercept( 'GET', `${API}/orchestration/missions?*`, { ...list, missions } );
+    } );
+    cy.visitWithCypressAuth( '/missions', ME );
+    cy.get( '[data-cy="mission-row"]' ).first().should( 'contain.text', 'Needs you' ).and( 'have.attr', 'data-tone', 'you' );
+    cy.contains( '[data-cy="mission-row"]', 'Done · 1 follow-up for you' ).should( 'have.attr', 'data-tone', 'you' );
+    cy.get( '[data-cy="filter-mine"]' ).click();
+    cy.contains( '[data-cy="mission-row"]', 'Done · 1 follow-up for you' ).should( 'exist' );
+  } );
+
   it( 'the cockpit is four dials; Stuck is green at zero', () => {
     cy.fixture( 'missions/cockpit.json' ).then( ( c ) => cy.intercept( 'GET', `${API}/orchestration/missions/cockpit`, c ) );
     cy.visitWithCypressAuth( '/missions/cockpit', ME );
