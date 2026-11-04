@@ -116,7 +116,7 @@ describe( 'Mission detail (2a)', () => {
     cy.wait( '@act' ).its( 'request.body' ).should( 'deep.equal', { type: 'complete', note: 'Kapor Capital', attachment: { name: 'funds.csv', text: 'Fund,Website\nKapor Capital,kaporcapital.com' } } );
   } );
 
-  it( 'a keep/drop pick is the firms you tick, never typed text (Ty, 2026-11-03)', () => {
+  it( 'a keep/drop pick is what you kept in the list on the page, never typed text (Ty, 2026-11-03)', () => {
     cy.fixture( 'missions/roland-approval.json' ).then( ( m ) => {
       const steps = m.steps.map( ( step: any ) => {
         if ( step.id === 'who' ) return { ...step, tool: 'todd.shortlist', output: { items: [ { id: 'kapor', name: 'Kapor Capital', why: 'Seed B2B', fit: 'strong' }, { id: 'base', name: 'Base Ventures', why: 'Fintech', fit: 'weak' } ] } };
@@ -129,10 +129,14 @@ describe( 'Mission detail (2a)', () => {
     cy.intercept( 'POST', `${API}/orchestration/missions/reach-named-person/steps/pick`, { statusCode: 202, body: { success: true } } ).as( 'act' );
     cy.visitWithCypressAuth( '/missions/reach-named-person', ME );
     cy.get( '[data-cy="banner-cta"]' ).click();
-    cy.get( '[data-cy="drawer-shortlist"]' ).should( 'contain.text', 'Kapor Capital' );
+    cy.get( '[data-cy="drawer-shortlist"]' ).should( 'contain.text', 'None kept yet' );
     cy.get( '[data-cy="drawer-note"]' ).should( 'not.exist' );
     cy.get( '[data-cy="drawer-continue-kept"]' ).should( 'be.disabled' );
-    cy.get( '[data-cy="drawer-keep-kapor"]' ).check();
+    // One place to choose: the list on the page; the drawer uses it.
+    cy.get( '[data-cy="drawer-back-to-list"]' ).click();
+    cy.contains( '[data-cy="shortlist-item"]', 'Kapor Capital' ).within( () => cy.get( '[data-cy="pick-keep"]' ).click() );
+    cy.get( '[data-cy="banner-cta"]' ).click();
+    cy.get( '[data-cy="drawer-kept-names"]' ).should( 'contain.text', 'Kapor Capital' );
     cy.get( '[data-cy="drawer-continue-kept"]' ).should( 'contain.text', 'Continue with 1 kept' ).click();
     cy.wait( '@act' ).its( 'request.body' ).should( 'deep.equal', { type: 'answer', value: 'Kapor Capital' } );
   } );

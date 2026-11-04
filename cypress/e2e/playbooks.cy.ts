@@ -69,7 +69,10 @@ describe( 'Every playbook, start to finish', () => {
               // A pick from a shortlist is the firms you tick, never typed text (Ty, 2026-11-03).
               cy.get( '[data-cy="step-drawer"]' ).then( ( $d ) => {
                 if ( $d.find( '[data-cy="drawer-shortlist"]' ).length ) {
-                  cy.get( '[data-cy="drawer-shortlist"] input[type="checkbox"]' ).first().check();
+                  // You keep or drop in the list on the page; the drawer continues with those.
+                  cy.get( '[data-cy="drawer-back-to-list"]' ).click();
+                  cy.get( '[data-cy="shortlist-item"]' ).first().within( () => cy.get( '[data-cy="pick-keep"]' ).click() );
+                  cy.get( '[data-cy="banner-cta"]' ).click();
                   cy.get( '[data-cy="drawer-continue-kept"]' ).click();
                 } else {
                   cy.get( '[data-cy="drawer-note"]' ).type( frame.act.value );
