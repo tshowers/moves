@@ -169,6 +169,18 @@ describe( 'Mission detail (2a)', () => {
     cy.get( '[data-cy="drawer-approve"]' ).should( 'be.disabled' );
   } );
 
+  it( 'a ready email still offers to open it, and Approve is on', () => {
+    cy.fixture( 'missions/roland-approval.json' ).then( ( m ) => {
+      const steps = m.steps.map( ( step: any ) => ( step.id === 'approve' ? { ...step, emailCheck: { ok: true, documentId: 'email-1', subject: 'Brief intro', recipients: 32, broken: false, blanks: [], skipped: [] } } : step ) );
+      cy.intercept( 'GET', `${API}/orchestration/missions/reach-named-person`, { success: true, mission: { ...m, id: 'reach-named-person', steps } } ).as( 'mission' );
+    } );
+    cy.visitWithCypressAuth( '/missions/reach-named-person', ME );
+    cy.get( '[data-cy="banner-cta"]' ).click();
+    cy.get( '[data-cy="drawer-email-check"]' ).should( 'contain.text', 'Ready to send to 32 people' );
+    cy.get( '[data-cy="drawer-open-docs"]' ).should( 'contain.text', 'Edit the email in Docs' );
+    cy.get( '[data-cy="drawer-approve"]' ).should( 'not.be.disabled' );
+  } );
+
   it( 'an approval shows the email it sends, not the list it was handed (Ty, 2026-11-03)', () => {
     cy.fixture( 'missions/roland-approval.json' ).then( ( m ) => {
       const email = m.steps.find( ( s: any ) => s.id === 'email' );

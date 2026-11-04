@@ -87,7 +87,8 @@ import { ShortlistPicksStore } from './shortlist-picks.store';
                   @for (s of c.skipped; track s.token) {
                     <span class="muted" data-cy="drawer-email-skipped">{{ s.count }} of {{ c.recipients }} have no {{ s.label.toLowerCase() }}, so they’ll be skipped (like {{ s.examples.join(', ') }}).</span>
                   }
-                  @if (!c.ok || c.skipped.length) { <a class="btn small" [href]="docsEditUrl(c.documentId)" target="_blank" rel="noopener" data-cy="drawer-open-docs">Open the email in Docs ↗</a><span class="muted">Save it there, then come back; this updates when you return.</span> }
+                  <!-- Always there, so you can tweak an email that's ready too (Ty, 2026-11-03). -->
+                  <a class="btn small" [href]="docsEditUrl(c.documentId)" target="_blank" rel="noopener" data-cy="drawer-open-docs">{{ c.ok ? 'Edit the email in Docs ↗' : 'Open the email in Docs ↗' }}</a><span class="muted">Save it there, then come back; this updates when you return.</span>
                 </div>
               } @else if (p.fillIns.length) { <span class="muted pad" data-cy="drawer-email-fillins">Still needs: {{ p.fillIns.join(', ') }}</span> }
             </div>
