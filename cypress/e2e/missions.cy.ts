@@ -309,7 +309,7 @@ describe( 'Report (8a), insight (7a), shortlist (11a), asset set (13a)', () => {
     mission( 'roland-done' );
     cy.visitWithCypressAuth( '/missions/reach-named-person', ME );
     // The report opens in a slide-out from the header (design_handoff_mission_insights_report).
-    cy.get( '[data-cy="mission-state"]' ).should( 'contain.text', 'Done ·' );
+    cy.get( '[data-cy="mission-state"]' ).should( 'contain.text', 'Done' ).and( 'not.contain.text', 'follow-up' ).and( 'have.attr', 'data-tone', 'done' );
     cy.get( '[data-cy="open-report"]' ).should( 'not.be.disabled' ).click();
     cy.get( '[data-cy="results-report"]' ).should( 'be.visible' );
     cy.location( 'search' ).should( 'contain', 'panel=report' );
@@ -349,10 +349,28 @@ describe( 'Report (8a), insight (7a), shortlist (11a), asset set (13a)', () => {
   it( 'while it runs, Insights and Report wait for the finish', () => {
     mission( 'roland-waiting-world' );
     cy.visitWithCypressAuth( '/missions/reach-named-person', ME );
-    cy.get( '[data-cy="mission-state"]' ).should( 'contain.text', 'Running ·' );
+    cy.get( '[data-cy="mission-state"]' ).should( 'contain.text', 'Waiting' ).and( 'have.attr', 'data-tone', 'waiting' );
     cy.get( '[data-cy="open-insights"]' ).should( 'be.disabled' );
     cy.get( '[data-cy="open-report"]' ).should( 'be.disabled' );
     cy.get( '[data-cy="results-row"]' ).should( 'contain.text', 'Available when the mission finishes' );
+  } );
+
+  it( 'the header says what a Mission needs: you, or the follow-ups it handed you once done (Ty, 2026-11-03)', () => {
+    mission( 'roland-approval' );
+    cy.visitWithCypressAuth( '/missions/reach-named-person', ME );
+    cy.get( '[data-cy="mission-state"]' ).should( 'contain.text', 'Needs you' ).and( 'have.attr', 'data-tone', 'you' );
+    cy.fixture( 'missions/roland-done.json' ).then( ( m ) => {
+      const followUps = [
+        { id: 't2', title: 'Prep for Kapor', assigneeId: 'uid-owner', dueDate: '2026-11-10', done: false },
+        { id: 't1', title: 'Call Lindsey', assigneeId: 'uid-owner', dueDate: '', done: true },
+      ];
+      cy.intercept( 'GET', `${API}/orchestration/missions/reach-named-person`, { success: true, mission: { ...m, followUps } } ).as( 'mission' );
+    } );
+    cy.visitWithCypressAuth( '/missions/reach-named-person', ME );
+    cy.get( '[data-cy="mission-state"]' ).should( 'contain.text', 'Done · 1 follow-up for you' ).and( 'have.attr', 'data-tone', 'you' );
+    cy.get( '[data-cy="follow-up"]' ).should( 'have.length', 2 );
+    cy.get( '[data-cy="follow-up"]' ).first().should( 'contain.text', 'Prep for Kapor' ).and( 'contain.text', 'due Nov' ).and( 'have.attr', 'href', 'https://moves.16ahead.com/app?move=t2' );
+    cy.get( '[data-cy="follow-up"]' ).last().should( 'have.class', 'done' ).and( 'contain.text', 'You · done' );
   } );
 
   it( 'a teammate’s silence is counted as a result', () => {

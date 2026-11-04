@@ -142,7 +142,11 @@ export interface MissionView {
   split: { todd: number; maya: number; you: number; teammates: number };
   isOwner: boolean;
   assessment?: { signals?: string[]; reason?: string } | null;
+  /** Moves the Mission handed to people, read live; open ones first. */
+  followUps?: FollowUp[];
 }
+
+export interface FollowUp { id: string; title: string; assigneeId: string; dueDate: string; done: boolean }
 
 export interface DirectAnswer {
   mode: 'direct';
@@ -406,6 +410,43 @@ export function stripColumns ( steps: StepView[], viewerId: string, people: Reco
 }
 
 /** The column a person should look at: the first active one, else the first failed. */
+export type StateTone = 'you' | 'working' | 'waiting' | 'done' | 'stopped';
+export interface MissionState { tone: StateTone; label: string }
+
+function plural ( count: number, word: string ): string {
+  return `${count} ${word}${count === 1 ? '' : 's'}`;
+}
+
+/**
+ * What a Mission is doing, in a few words, as the person sees it (Ty,
+ * 2026-11-03): "Done" never hides work that's still theirs, and waiting says
+ * on whom or on what, until when.
+ */
+export function missionState ( m: MissionView, columns: ColumnView[], viewerId: string, people: Record<string, Person> = {} ): MissionState {
+  if ( m.status === 'failed' ) return { tone: 'stopped', label: 'Stopped' };
+  if ( m.status === 'cancelled' ) return { tone: 'stopped', label: 'Cancelled' };
+  if ( m.status === 'proposed' ) return { tone: 'you', label: m.isOwner ? 'Needs you · press Start' : 'Waiting to start' };
+  if ( m.status === 'done' ) {
+    const open = ( m.followUps || [] ).filter( ( f ) => !f.done );
+    const mine = open.filter( ( f ) => f.assigneeId === viewerId );
+    if ( mine.length ) return { tone: 'you', label: `Done · ${plural( mine.length, 'follow-up' )} for you` };
+    if ( open.length ) return { tone: 'waiting', label: `Done · ${plural( open.length, 'follow-up' )} with your team` };
+    return { tone: 'done', label: 'Done' };
+  }
+  const column = currentColumn( columns );
+  if ( !column ) return { tone: 'working', label: m.steps.length ? 'Working' : 'Planning' };
+  if ( column.look === 'run' ) return { tone: 'working', label: 'Working' };
+  if ( column.look === 'wait' ) {
+    const step = m.steps.find( ( s ) => column.stepIds.includes( s.id ) && s.status === 'active' ) || column.step;
+    const what = step && step.tool === 'outreach.waitForEngagement' ? 'Waiting on replies' : 'Waiting';
+    const until = step && step.waitUntil ? new Date( step.waitUntil ).toLocaleDateString( 'en-US', { month: 'short', day: 'numeric' } ) : '';
+    return { tone: 'waiting', label: until ? `${what} · until ${until}` : what };
+  }
+  if ( column.who === 'you' ) return { tone: 'you', label: 'Needs you' };
+  if ( column.who === 'todd' || column.who === 'maya' ) return { tone: 'working', label: 'Working' };
+  return { tone: 'waiting', label: `Waiting on ${nameOf( column.who, people )}` };
+}
+
 export function currentColumn ( columns: ColumnView[] ): ColumnView | null {
   return columns.find( ( column ) => column.active ) || null;
 }

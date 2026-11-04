@@ -5,7 +5,7 @@ import { EditPlanComponent } from './edit-plan.component';
 import { MissionOutcomeComponent } from './mission-outcome.component';
 import { MissionResultsPanelComponent, ResultsTab } from './mission-results-panel.component';
 import { MissionsApiService } from './missions-api.service';
-import { ColumnView, MissionView, Person, PRODUCT_LABEL, StepView, Who, currentColumn, leftUntil, nameOf, stripColumns, whoOf } from './missions.model';
+import { ColumnView, MissionView, Person, PRODUCT_LABEL, StepView, Who, currentColumn, leftUntil, missionState, nameOf, stripColumns, whoOf } from './missions.model';
 import { OwnerTokenComponent } from './owner-token.component';
 import { PlanStripComponent, paint } from './plan-strip.component';
 import { StepDrawerComponent } from './step-drawer.component';
@@ -53,7 +53,7 @@ const OUTCOME: Record<string, string> = { action: 'Action', insight: 'Insight', 
           @if (m.status !== 'proposed' && m.steps.length) {
             <!-- Insights and Report open in a slide-out once it's finished (design_handoff_mission_insights_report). -->
             <div class="results-row" data-cy="results-row">
-              <span class="state-pill" data-cy="mission-state"><span class="dot" [class.done]="m.status === 'done'" [class.stopped]="m.status === 'failed' || m.status === 'cancelled'"></span>{{ stateLabel() }}</span>
+              <span class="state-pill" data-cy="mission-state" [attr.data-tone]="state().tone"><span class="dot"></span>{{ state().label }}<span class="count">· {{ stepCount() }}</span></span>
               <button type="button" class="rbtn" [disabled]="!resultsReady() || !m.report?.insights" (click)="openPanel('insights', $event)" data-cy="open-insights">Insights@if (resultsReady() && m.report?.insights?.findings?.length) { <span class="badge">{{ m.report!.insights!.findings.length }}</span> }</button>
               <button type="button" class="rbtn" [disabled]="!resultsReady()" (click)="openPanel('report', $event)" data-cy="open-report">Report</button>
               @if (!resultsReady()) { <span class="muted helper">Available when the mission finishes</span> }
@@ -95,6 +95,21 @@ const OUTCOME: Record<string, string> = { action: 'Action', insight: 'Insight', 
                   <div class="tile" data-cy="asset-tile"><span class="preview" [class.violet]="a.kind !== 'doc'">{{ a.channel }}</span><b>{{ a.title }}</b><span class="ready">Ready</span></div>
                 }
               </div>
+            </section>
+          }
+
+          @if (followUps().length) {
+            <!-- The work the Mission handed out: "Done" isn't over while these are open (Ty, 2026-11-03). -->
+            <section class="follow-ups" data-cy="follow-ups">
+              <h2>Follow-ups</h2>
+              @for (f of followUps(); track f.id) {
+                <a class="follow-up" [class.done]="f.done" [href]="f.url" target="_blank" rel="noopener" data-cy="follow-up">
+                  <span class="check">{{ f.done ? '✓' : '' }}</span>
+                  <span class="fu-title">{{ f.title }}</span>
+                  <span class="muted">{{ f.meta }}</span>
+                  <span class="open">Open in Moves ↗</span>
+                </a>
+              }
             </section>
           }
 
@@ -144,9 +159,21 @@ const OUTCOME: Record<string, string> = { action: 'Action', insight: 'Insight', 
     .kicker { font-size: 12px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
     .results-row { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; }
     .state-pill { height: 40px; padding: 0 16px; border-radius: 999px; background: var(--surface); font-size: 14px; font-weight: 600; display: inline-flex; align-items: center; gap: 8px; }
-    .state-pill .dot { width: 8px; height: 8px; border-radius: 50%; background: #f2b84b; }
-    .state-pill .dot.done { background: #3ccf8e; }
-    .state-pill .dot.stopped { background: var(--muted); }
+    .state-pill .dot { width: 8px; height: 8px; border-radius: 50%; background: #86aeff; }
+    .state-pill[data-tone="you"] .dot { background: #f2b84b; }
+    .state-pill[data-tone="waiting"] .dot { background: #8a91a0; }
+    .state-pill[data-tone="done"] .dot { background: #3ccf8e; }
+    .state-pill[data-tone="stopped"] .dot { background: #e5484d; }
+    .state-pill .count { color: var(--muted); font-weight: 500; }
+    .follow-ups { display: flex; flex-direction: column; gap: 8px; }
+    .follow-ups h2 { font-size: 20px; font-weight: 800; margin: 0 0 4px; }
+    .follow-up { display: flex; align-items: center; gap: 12px; padding: 14px 18px; border-radius: 14px; background: var(--surface); color: inherit; text-decoration: none; flex-wrap: wrap; }
+    .follow-up:hover { filter: brightness(1.12); }
+    .follow-up .check { width: 22px; height: 22px; border-radius: 50%; border: 2px solid var(--muted); display: inline-flex; align-items: center; justify-content: center; font-size: 12px; flex: none; }
+    .follow-up.done .check { border-color: #3ccf8e; color: #3ccf8e; }
+    .follow-up.done .fu-title { text-decoration: line-through; color: var(--muted); }
+    .follow-up .fu-title { font-weight: 700; flex: 1; min-width: 160px; }
+    .follow-up .open { font-size: 13px; color: var(--muted); }
     .rbtn { height: 40px; padding: 0 18px; border: 0; border-radius: 999px; background: var(--blue); color: #fff; font: inherit; font-size: 14px; font-weight: 700; cursor: pointer; display: inline-flex; align-items: center; gap: 8px; }
     .rbtn:hover:not(:disabled) { filter: brightness(1.12); }
     .rbtn:disabled { background: var(--surface); color: var(--muted); cursor: not-allowed; opacity: .7; }
@@ -222,15 +249,18 @@ export class MissionDetailComponent implements OnDestroy {
     const m = this.mission();
     return !!m && !!m.report && ( m.status === 'done' || m.status === 'failed' );
   } );
-  readonly stateLabel = computed( () => {
+  readonly state = computed( () => missionState( this.mission()!, this.columns(), this.viewerId(), this.people() ) );
+  readonly stepCount = computed( () => {
     const m = this.mission()!;
     const finished = m.steps.filter( ( s ) => s.status === 'done' || s.status === 'skipped' || s.status === 'failed' ).length;
-    const of = `${finished} of ${m.steps.length} steps`;
-    if ( m.status === 'done' ) return `Done · ${of}`;
-    if ( m.status === 'failed' ) return `Stopped · ${of}`;
-    if ( m.status === 'cancelled' ) return `Cancelled · ${of}`;
-    return `Running · ${of}`;
+    return `${finished} of ${m.steps.length} steps`;
   } );
+
+  readonly followUps = computed( () => ( this.mission()?.followUps || [] ).map( ( f ) => {
+    const who = f.assigneeId === this.viewerId() ? 'You' : nameOf( f.assigneeId || 'you', this.people() );
+    const due = f.dueDate && !Number.isNaN( Date.parse( f.dueDate ) ) ? ` · due ${new Date( f.dueDate ).toLocaleDateString( 'en-US', { month: 'short', day: 'numeric' } )}` : '';
+    return { id: f.id, title: f.title, done: f.done, meta: f.done ? `${who} · done` : `${who}${due}`, url: `https://moves.16ahead.com/app?move=${encodeURIComponent( f.id )}` };
+  } ) );
 
   openPanel ( tab: ResultsTab, event?: Event ): void {
     this.panelTrigger = ( event?.currentTarget as HTMLElement ) || null;
