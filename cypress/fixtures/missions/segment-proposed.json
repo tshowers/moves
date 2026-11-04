@@ -242,7 +242,7 @@
     {
       "number": 7,
       "id": "strategy",
-      "title": "Shape the pitch from what you told TODD",
+      "title": "Shape the pitch from what you told 16Ahead",
       "detail": "",
       "owner": "maya",
       "assigneeId": "",
@@ -373,7 +373,7 @@
       "tool": "outreach.sendBatch",
       "product": "outreach",
       "effect": "send",
-      "automated": false,
+      "automated": true,
       "status": "pending",
       "skipReason": "",
       "when": "",
@@ -400,7 +400,7 @@
     {
       "number": 11,
       "id": "results",
-      "title": "Check opens, clicks and replies",
+      "title": "Wait a week, then see who opened, clicked and replied",
       "detail": "",
       "owner": "todd",
       "assigneeId": "",
@@ -408,10 +408,10 @@
         "owner": "todd",
         "assigneeId": ""
       },
-      "kind": "tool",
-      "tool": "outreach.engagement",
+      "kind": "wait",
+      "tool": "outreach.waitForEngagement",
       "product": "outreach",
-      "effect": "read",
+      "effect": "wait",
       "automated": true,
       "status": "pending",
       "skipReason": "",
@@ -534,7 +534,7 @@
       "maya": 2,
       "person": 3
     },
-    "waitBusinessDays": 0,
+    "waitBusinessDays": 5,
     "products": [
       "network",
       "lead-vault",
@@ -553,7 +553,10 @@
   "planFallback": false,
   "planErrors": [],
   "examplesUsed": [],
+  "missingProducts": [],
   "statusDetail": "Ready to start.",
+  "waitingSince": "2026-10-14T16:00:00.000Z",
+  "nextCheckAt": "2026-10-15T16:00:00.000Z",
   "phase": "proposed",
   "plan": {
     "missionId": "pitch-segment",
@@ -563,7 +566,7 @@
     "stepsDone": 0,
     "stepsTotal": 13,
     "current": null,
-    "nextCheckAt": null,
+    "nextCheckAt": "2026-10-15T16:00:00.000Z",
     "playbookId": "pitch-segment"
   },
   "products": [

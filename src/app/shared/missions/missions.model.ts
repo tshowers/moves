@@ -13,7 +13,7 @@ export type Owner = 'todd' | 'maya' | 'person';
 export type StepKind = 'tool' | 'task' | 'approval' | 'wait' | 'decision';
 export type StepStatus = 'pending' | 'active' | 'done' | 'skipped' | 'failed';
 export type OutcomeType = 'action' | 'insight' | 'shortlist' | 'program' | 'assetSet';
-export type MissionStatus = 'queued' | 'running' | 'proposed' | 'awaiting_user' | 'active' | 'done' | 'cancelled';
+export type MissionStatus = 'queued' | 'running' | 'proposed' | 'awaiting_user' | 'active' | 'done' | 'cancelled' | 'failed';
 export type Phase = 'planning' | 'proposed' | 'working' | 'waiting_on_people' | 'waiting_on_world' | 'done' | 'cancelled';
 
 export interface StepView {
@@ -104,7 +104,17 @@ export interface MissionReport {
   shortlist: ShortlistItem[];
   proposals: Proposal[];
   line: string;
+  // The Insights and Report panels (design_handoff_mission_insights_report, 2026-11-03).
+  insights?: { headline: string; summary: string; findings: InsightFinding[] } | null;
+  outcome?: string;
+  stats?: { value: number; label: string; tone?: 'accent' | 'muted' }[];
+  next?: string[];
+  kept?: string[];
+  dropped?: string[];
+  candidateCount?: number;
 }
+
+export interface InsightFinding { id: string; title: string; body: string; contacts: { name: string; firm: string; email: string }[]; nextAction: string; evidence: string }
 
 export interface MissionView {
   id: string;

@@ -19,7 +19,7 @@
           "assigneeId": "uid-owner",
           "handedOff": false
         },
-        "nextCheckAt": null,
+        "nextCheckAt": "2026-10-15T16:00:00.000Z",
         "playbookId": "reach-named-person"
       },
       "step": {
@@ -223,7 +223,7 @@
             "group": "route",
             "if": "None found"
           },
-          "why": "TODD couldn't find a deliverable address or a warm intro.",
+          "why": "16Ahead couldn't find a deliverable address or a warm intro.",
           "doneWhen": "",
           "options": [],
           "minutes": null,
@@ -437,7 +437,7 @@
           "tool": "outreach.send",
           "product": "outreach",
           "effect": "send",
-          "automated": false,
+          "automated": true,
           "status": "pending",
           "skipReason": "",
           "when": "",
@@ -597,7 +597,7 @@
           "tool": "outreach.send",
           "product": "outreach",
           "effect": "send",
-          "automated": false,
+          "automated": true,
           "status": "pending",
           "skipReason": "",
           "when": "",
@@ -717,7 +717,7 @@
           "tool": "outreach.send",
           "product": "outreach",
           "effect": "send",
-          "automated": false,
+          "automated": true,
           "status": "pending",
           "skipReason": "",
           "when": "",
@@ -764,7 +764,7 @@
             "group": "afterWait",
             "if": "It bounces"
           },
-          "why": "TODD has no other verified address.",
+          "why": "16Ahead has no other verified address.",
           "doneWhen": "",
           "options": [],
           "minutes": null,
@@ -859,7 +859,7 @@
           "assigneeId": "uid-owner",
           "handedOff": false
         },
-        "nextCheckAt": null,
+        "nextCheckAt": "2026-10-15T16:07:00.000Z",
         "playbookId": "weekly-status"
       },
       "step": {
@@ -1149,7 +1149,7 @@
           "tool": "outreach.sendBatch",
           "product": "outreach",
           "effect": "send",
-          "automated": false,
+          "automated": true,
           "status": "pending",
           "skipReason": "",
           "when": "",
@@ -1246,7 +1246,7 @@
           "assigneeId": "uid-owner",
           "handedOff": false
         },
-        "nextCheckAt": null,
+        "nextCheckAt": "2026-10-15T16:00:00.000Z",
         "playbookId": "reach-named-person"
       },
       "step": {
@@ -1454,7 +1454,7 @@
             "group": "route",
             "if": "None found"
           },
-          "why": "TODD couldn't find a deliverable address or a warm intro.",
+          "why": "16Ahead couldn't find a deliverable address or a warm intro.",
           "doneWhen": "",
           "options": [],
           "minutes": null,
@@ -1647,7 +1647,7 @@
           "tool": "outreach.send",
           "product": "outreach",
           "effect": "send",
-          "automated": false,
+          "automated": true,
           "status": "pending",
           "skipReason": "",
           "when": "",
@@ -1807,7 +1807,7 @@
           "tool": "outreach.send",
           "product": "outreach",
           "effect": "send",
-          "automated": false,
+          "automated": true,
           "status": "pending",
           "skipReason": "",
           "when": "",
@@ -1927,7 +1927,7 @@
           "tool": "outreach.send",
           "product": "outreach",
           "effect": "send",
-          "automated": false,
+          "automated": true,
           "status": "pending",
           "skipReason": "",
           "when": "",
@@ -1974,7 +1974,7 @@
             "group": "afterWait",
             "if": "It bounces"
           },
-          "why": "TODD has no other verified address.",
+          "why": "16Ahead has no other verified address.",
           "doneWhen": "",
           "options": [],
           "minutes": null,
@@ -2083,7 +2083,7 @@
           "assigneeId": "uid-owner",
           "handedOff": true
         },
-        "nextCheckAt": null,
+        "nextCheckAt": "2026-10-15T16:00:00.000Z",
         "playbookId": "reach-named-person"
       },
       "step": {
@@ -2295,7 +2295,7 @@
             "group": "route",
             "if": "None found"
           },
-          "why": "TODD couldn't find a deliverable address or a warm intro.",
+          "why": "16Ahead couldn't find a deliverable address or a warm intro.",
           "doneWhen": "",
           "options": [],
           "minutes": null,
@@ -2505,7 +2505,7 @@
           "tool": "outreach.send",
           "product": "outreach",
           "effect": "send",
-          "automated": false,
+          "automated": true,
           "status": "pending",
           "skipReason": "",
           "when": "",
@@ -2665,7 +2665,7 @@
           "tool": "outreach.send",
           "product": "outreach",
           "effect": "send",
-          "automated": false,
+          "automated": true,
           "status": "pending",
           "skipReason": "",
           "when": "",
@@ -2785,7 +2785,7 @@
           "tool": "outreach.send",
           "product": "outreach",
           "effect": "send",
-          "automated": false,
+          "automated": true,
           "status": "pending",
           "skipReason": "",
           "when": "",
@@ -2832,7 +2832,7 @@
             "group": "afterWait",
             "if": "It bounces"
           },
-          "why": "TODD has no other verified address.",
+          "why": "16Ahead has no other verified address.",
           "doneWhen": "",
           "options": [],
           "minutes": null,

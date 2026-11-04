@@ -170,7 +170,7 @@
             "group": "route",
             "if": "None found"
           },
-          "why": "TODD couldn't find a deliverable address or a warm intro.",
+          "why": "16Ahead couldn't find a deliverable address or a warm intro.",
           "doneWhen": "",
           "options": [],
           "minutes": null,
@@ -384,7 +384,7 @@
           "tool": "outreach.send",
           "product": "outreach",
           "effect": "send",
-          "automated": false,
+          "automated": true,
           "status": "pending",
           "skipReason": "",
           "when": "",
@@ -544,7 +544,7 @@
           "tool": "outreach.send",
           "product": "outreach",
           "effect": "send",
-          "automated": false,
+          "automated": true,
           "status": "pending",
           "skipReason": "",
           "when": "",
@@ -664,7 +664,7 @@
           "tool": "outreach.send",
           "product": "outreach",
           "effect": "send",
-          "automated": false,
+          "automated": true,
           "status": "pending",
           "skipReason": "",
           "when": "",
@@ -711,7 +711,7 @@
             "group": "afterWait",
             "if": "It bounces"
           },
-          "why": "TODD has no other verified address.",
+          "why": "16Ahead has no other verified address.",
           "doneWhen": "",
           "options": [],
           "minutes": null,
@@ -810,10 +810,15 @@
       "planFallback": false,
       "planErrors": [],
       "examplesUsed": [],
+      "missingProducts": [],
       "statusDetail": "1 step waiting on a person.",
+      "waitingSince": "2026-10-14T16:00:00.000Z",
+      "nextCheckAt": "2026-10-15T16:00:00.000Z",
       "startedAt": "2026-10-14T16:00:00.000Z",
       "resumeAt": null,
-      "nextCheckAt": null,
+      "runnerErrors": 0,
+      "leaseExpiries": 0,
+      "staleRequeues": 0,
       "phase": "waiting_on_people",
       "plan": {
         "missionId": "reach-named-person",
@@ -830,7 +835,7 @@
           "assigneeId": "uid-owner",
           "handedOff": false
         },
-        "nextCheckAt": null,
+        "nextCheckAt": "2026-10-15T16:00:00.000Z",
         "playbookId": "reach-named-person"
       },
       "products": [
@@ -1104,7 +1109,7 @@
           "tool": "outreach.sendBatch",
           "product": "outreach",
           "effect": "send",
-          "automated": false,
+          "automated": true,
           "status": "pending",
           "skipReason": "",
           "when": "",
@@ -1200,10 +1205,15 @@
       "planFallback": false,
       "planErrors": [],
       "examplesUsed": [],
+      "missingProducts": [],
       "statusDetail": "1 step waiting on a person.",
+      "waitingSince": "2026-10-14T16:00:00.000Z",
+      "nextCheckAt": "2026-10-15T16:07:00.000Z",
       "startedAt": "2026-10-14T16:00:00.000Z",
       "resumeAt": null,
-      "nextCheckAt": null,
+      "runnerErrors": 0,
+      "leaseExpiries": 0,
+      "staleRequeues": 0,
       "phase": "waiting_on_people",
       "plan": {
         "missionId": "weekly-status",
@@ -1220,7 +1230,7 @@
           "assigneeId": "uid-owner",
           "handedOff": false
         },
-        "nextCheckAt": null,
+        "nextCheckAt": "2026-10-15T16:07:00.000Z",
         "playbookId": "weekly-status"
       },
       "products": [
@@ -1406,7 +1416,7 @@
             "group": "route",
             "if": "None found"
           },
-          "why": "TODD couldn't find a deliverable address or a warm intro.",
+          "why": "16Ahead couldn't find a deliverable address or a warm intro.",
           "doneWhen": "",
           "options": [],
           "minutes": null,
@@ -1626,7 +1636,7 @@
           "tool": "outreach.send",
           "product": "outreach",
           "effect": "send",
-          "automated": false,
+          "automated": true,
           "status": "done",
           "skipReason": "",
           "when": "",
@@ -1648,11 +1658,12 @@
           "handoff": null,
           "reassigned": null,
           "timedOut": false,
-          "resultSummary": "",
+          "resultSummary": "Queued for roland.martin@caldersystems.com",
           "output": {
-            "messageId": "msg-1",
             "to": "roland.martin@caldersystems.com",
-            "sentAt": "2026-10-17T12:00:00.000Z"
+            "contactId": null,
+            "subject": "Email",
+            "scheduledAt": "2026-10-17T12:00:00.000Z"
           },
           "error": null,
           "revisions": 0
@@ -1792,7 +1803,7 @@
           "tool": "outreach.send",
           "product": "outreach",
           "effect": "send",
-          "automated": false,
+          "automated": true,
           "status": "pending",
           "skipReason": "",
           "when": "",
@@ -1912,7 +1923,7 @@
           "tool": "outreach.send",
           "product": "outreach",
           "effect": "send",
-          "automated": false,
+          "automated": true,
           "status": "pending",
           "skipReason": "",
           "when": "",
@@ -1959,7 +1970,7 @@
             "group": "afterWait",
             "if": "It bounces"
           },
-          "why": "TODD has no other verified address.",
+          "why": "16Ahead has no other verified address.",
           "doneWhen": "",
           "options": [],
           "minutes": null,
@@ -2058,10 +2069,15 @@
       "planFallback": false,
       "planErrors": [],
       "examplesUsed": [],
+      "missingProducts": [],
       "statusDetail": "Next check at 2026-10-14T18:07:00.000Z.",
+      "waitingSince": "2026-10-14T16:00:00.000Z",
+      "nextCheckAt": "2026-10-14T18:07:00.000Z",
       "startedAt": "2026-10-14T16:00:00.000Z",
       "resumeAt": "2026-10-14T18:07:00.000Z",
-      "nextCheckAt": "2026-10-14T18:07:00.000Z",
+      "runnerErrors": 0,
+      "leaseExpiries": 0,
+      "staleRequeues": 0,
       "phase": "waiting_on_world",
       "plan": {
         "missionId": "reach-named-person",
@@ -2340,14 +2356,22 @@
       "planFallback": false,
       "planErrors": [],
       "examplesUsed": [],
+      "missingProducts": [],
       "statusDetail": "Every step finished.",
+      "waitingSince": "2026-10-14T16:00:00.000Z",
+      "nextCheckAt": null,
       "startedAt": "2026-10-14T16:00:00.000Z",
       "resumeAt": null,
       "finishedAt": "2026-10-14T16:00:00.000Z",
+      "runnerErrors": 0,
+      "leaseExpiries": 0,
+      "staleRequeues": 0,
       "report": {
         "missionId": "funded-companies",
         "title": "Recently funded companies",
         "outcomeType": "insight",
+        "status": "done",
+        "reason": "",
         "headline": "8 fit, 3 strong",
         "startedAt": "2026-10-14T16:00:00.000Z",
         "finishedAt": "2026-10-14T16:00:00.000Z",
@@ -2448,9 +2472,20 @@
           }
         ],
         "artifacts": [],
-        "line": "4 steps by TODD."
+        "insights": null,
+        "outcome": "8 fit, 3 strong",
+        "stats": [
+          {
+            "value": 1,
+            "label": "Strong fits"
+          }
+        ],
+        "next": [],
+        "kept": [],
+        "dropped": [],
+        "candidateCount": 1,
+        "line": "4 steps by 16Ahead."
       },
-      "nextCheckAt": null,
       "phase": "done",
       "plan": {
         "missionId": "funded-companies",
@@ -2918,10 +2953,15 @@
       "planFallback": false,
       "planErrors": [],
       "examplesUsed": [],
+      "missingProducts": [],
       "statusDetail": "1 step waiting on a person.",
+      "waitingSince": "2026-10-14T16:00:00.000Z",
+      "nextCheckAt": "2026-10-15T16:00:00.000Z",
       "startedAt": "2026-10-14T16:00:00.000Z",
       "resumeAt": null,
-      "nextCheckAt": null,
+      "runnerErrors": 0,
+      "leaseExpiries": 0,
+      "staleRequeues": 0,
       "phase": "waiting_on_people",
       "plan": {
         "missionId": "idea-to-launch",
@@ -2938,7 +2978,7 @@
           "assigneeId": "uid-owner",
           "handedOff": false
         },
-        "nextCheckAt": null,
+        "nextCheckAt": "2026-10-15T16:00:00.000Z",
         "playbookId": "idea-to-launch"
       },
       "products": [

@@ -167,7 +167,7 @@
         "group": "route",
         "if": "None found"
       },
-      "why": "TODD couldn't find a deliverable address or a warm intro.",
+      "why": "16Ahead couldn't find a deliverable address or a warm intro.",
       "doneWhen": "",
       "options": [],
       "minutes": null,
@@ -387,7 +387,7 @@
       "tool": "outreach.send",
       "product": "outreach",
       "effect": "send",
-      "automated": false,
+      "automated": true,
       "status": "done",
       "skipReason": "",
       "when": "",
@@ -409,11 +409,12 @@
       "handoff": null,
       "reassigned": null,
       "timedOut": false,
-      "resultSummary": "",
+      "resultSummary": "Queued for roland.martin@caldersystems.com",
       "output": {
-        "messageId": "msg-1",
         "to": "roland.martin@caldersystems.com",
-        "sentAt": "2026-10-17T12:00:00.000Z"
+        "contactId": null,
+        "subject": "Email",
+        "scheduledAt": "2026-10-17T12:00:00.000Z"
       },
       "error": null,
       "revisions": 0
@@ -572,7 +573,7 @@
       "tool": "outreach.send",
       "product": "outreach",
       "effect": "send",
-      "automated": false,
+      "automated": true,
       "status": "done",
       "skipReason": "",
       "when": "",
@@ -593,11 +594,12 @@
       "handoff": null,
       "reassigned": null,
       "timedOut": false,
-      "resultSummary": "",
+      "resultSummary": "Queued for roland.martin@caldersystems.com",
       "output": {
-        "messageId": "msg-1",
-        "to": "",
-        "sentAt": "2026-10-17T12:00:00.000Z"
+        "to": "roland.martin@caldersystems.com",
+        "contactId": null,
+        "subject": "Email",
+        "scheduledAt": "2026-10-17T12:00:00.000Z"
       },
       "error": null,
       "revisions": 0
@@ -698,7 +700,7 @@
       "tool": "outreach.send",
       "product": "outreach",
       "effect": "send",
-      "automated": false,
+      "automated": true,
       "status": "skipped",
       "skipReason": "branch_not_taken",
       "when": "",
@@ -745,7 +747,7 @@
         "group": "afterWait",
         "if": "It bounces"
       },
-      "why": "TODD has no other verified address.",
+      "why": "16Ahead has no other verified address.",
       "doneWhen": "",
       "options": [],
       "minutes": null,
@@ -848,16 +850,23 @@
   "planFallback": false,
   "planErrors": [],
   "examplesUsed": [],
+  "missingProducts": [],
   "statusDetail": "Every step finished.",
+  "waitingSince": "2026-10-14T16:00:00.000Z",
+  "nextCheckAt": null,
   "startedAt": "2026-10-14T16:00:00.000Z",
   "resumeAt": null,
-  "nextCheckAt": null,
+  "runnerErrors": 0,
+  "leaseExpiries": 0,
+  "staleRequeues": 0,
   "finishedAt": "2026-10-14T16:14:00.000Z",
   "report": {
     "missionId": "reach-named-person",
     "title": "Reach a named person",
     "outcomeType": "action",
-    "headline": "Done",
+    "status": "done",
+    "reason": "",
+    "headline": "2 emails sent.",
     "startedAt": "2026-10-14T16:00:00.000Z",
     "finishedAt": "2026-10-14T16:14:00.000Z",
     "days": 0,
@@ -991,7 +1000,7 @@
           "id": ""
         },
         "finishedAt": "2026-10-14T16:07:00.000Z",
-        "result": "Done",
+        "result": "Queued for roland.martin@caldersystems.com",
         "status": "done",
         "timedOut": false,
         "skipReason": "",
@@ -1065,7 +1074,7 @@
           "id": ""
         },
         "finishedAt": "2026-10-14T16:14:00.000Z",
-        "result": "Done",
+        "result": "Queued for roland.martin@caldersystems.com",
         "status": "done",
         "timedOut": false,
         "skipReason": "",
@@ -1107,7 +1116,19 @@
         "title": "Re: Tuesday"
       }
     ],
-    "line": "5 steps by TODD, 4 by Maya, 2 by you. About 6 minutes of your time."
+    "insights": null,
+    "outcome": "2 emails sent.",
+    "stats": [
+      {
+        "value": 2,
+        "label": "Emails sent"
+      }
+    ],
+    "next": [],
+    "kept": [],
+    "dropped": [],
+    "candidateCount": 0,
+    "line": "5 steps by 16Ahead, 4 by the Marketing Assistant, 2 by you. About 6 minutes of your time."
   },
   "phase": "done",
   "plan": {

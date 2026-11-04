@@ -91,9 +91,12 @@ describe( 'Every playbook, start to finish', () => {
         } );
 
         // The report, with every step accounted for.
-        cy.get( '[data-cy="mission-report"]', { timeout: 10000 } ).should( 'be.visible' );
+        // It opens from the header once the Mission is done (design_handoff_mission_insights_report).
+        cy.get( '[data-cy="open-report"]', { timeout: 10000 } ).should( 'not.be.disabled' ).click();
+        cy.get( '[data-cy="report-steps-toggle"]' ).click();
         cy.get( '[data-cy="report-row"]' ).should( 'have.length.greaterThan', 0 );
         cy.get( '[data-cy="report-split"]' ).should( 'contain.text', 'by' );
+        cy.get( '[data-cy="results-close"]' ).click();
         cy.get( '[data-cy="plan-strip-list"] [data-look="fail"]' ).should( 'not.exist' );
         cy.get( '[data-cy="plan-strip-list"] [data-look="person"]' ).should( 'not.exist' );
         cy.get( '[data-cy="mission-banner"]' ).should( 'not.exist' );

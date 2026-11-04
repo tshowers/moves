@@ -1,8 +1,9 @@
 import { ChangeDetectionStrategy, Component, OnDestroy, computed, effect, inject, input, signal } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
 
 import { EditPlanComponent } from './edit-plan.component';
 import { MissionOutcomeComponent } from './mission-outcome.component';
-import { MissionReportComponent } from './mission-report.component';
+import { MissionResultsPanelComponent, ResultsTab } from './mission-results-panel.component';
 import { MissionsApiService } from './missions-api.service';
 import { ColumnView, MissionView, Person, PRODUCT_LABEL, StepView, Who, currentColumn, leftUntil, nameOf, stripColumns, whoOf } from './missions.model';
 import { OwnerTokenComponent } from './owner-token.component';
@@ -21,7 +22,7 @@ const OUTCOME: Record<string, string> = { action: 'Action', insight: 'Insight', 
 @Component( {
   selector: 'tm-mission-detail',
   standalone: true,
-  imports: [OwnerTokenComponent, PlanStripComponent, StepDrawerComponent, EditPlanComponent, MissionReportComponent, MissionOutcomeComponent],
+  imports: [OwnerTokenComponent, PlanStripComponent, StepDrawerComponent, EditPlanComponent, MissionResultsPanelComponent, MissionOutcomeComponent],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     @if (mission(); as m) {
@@ -48,6 +49,16 @@ const OUTCOME: Record<string, string> = { action: 'Action', insight: 'Insight', 
               }
             </div>
           </header>
+
+          @if (m.status !== 'proposed' && m.steps.length) {
+            <!-- Insights and Report open in a slide-out once it's finished (design_handoff_mission_insights_report). -->
+            <div class="results-row" data-cy="results-row">
+              <span class="state-pill" data-cy="mission-state"><span class="dot" [class.done]="m.status === 'done'" [class.stopped]="m.status === 'failed' || m.status === 'cancelled'"></span>{{ stateLabel() }}</span>
+              <button type="button" class="rbtn" [disabled]="!resultsReady() || !m.report?.insights" (click)="openPanel('insights', $event)" data-cy="open-insights">Insights@if (resultsReady() && m.report?.insights?.findings?.length) { <span class="badge">{{ m.report!.insights!.findings.length }}</span> }</button>
+              <button type="button" class="rbtn" [disabled]="!resultsReady()" (click)="openPanel('report', $event)" data-cy="open-report">Report</button>
+              @if (!resultsReady()) { <span class="muted helper">Available when the mission finishes</span> }
+            </div>
+          }
 
           @if (banner(); as b) {
             <div class="banner" [style.background]="b.bg" data-cy="mission-banner" [attr.data-state]="b.state">
@@ -89,8 +100,8 @@ const OUTCOME: Record<string, string> = { action: 'Action', insight: 'Insight', 
 
           <tm-mission-outcome [mission]="m" [viewerId]="viewerId()" [people]="people()" />
 
-          @if (m.status === 'done' && m.report) {
-            <tm-mission-report [mission]="m" [viewerId]="viewerId()" [people]="people()" />
+          @if (panel(); as tab) {
+            <tm-mission-results-panel [mission]="m" [tab]="tab" [viewerId]="viewerId()" [people]="people()" (tabChange)="setPanel($event)" (closed)="closePanel()" />
           }
 
           @if (m.steps.length) {
@@ -131,6 +142,16 @@ const OUTCOME: Record<string, string> = { action: 'Action', insight: 'Insight', 
     header { display: flex; align-items: flex-end; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
     .titles { display: flex; flex-direction: column; gap: 6px; min-width: 0; }
     .kicker { font-size: 12px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+    .results-row { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; }
+    .state-pill { height: 40px; padding: 0 16px; border-radius: 999px; background: var(--surface); font-size: 14px; font-weight: 600; display: inline-flex; align-items: center; gap: 8px; }
+    .state-pill .dot { width: 8px; height: 8px; border-radius: 50%; background: #f2b84b; }
+    .state-pill .dot.done { background: #3ccf8e; }
+    .state-pill .dot.stopped { background: var(--muted); }
+    .rbtn { height: 40px; padding: 0 18px; border: 0; border-radius: 999px; background: var(--blue); color: #fff; font: inherit; font-size: 14px; font-weight: 700; cursor: pointer; display: inline-flex; align-items: center; gap: 8px; }
+    .rbtn:hover:not(:disabled) { filter: brightness(1.12); }
+    .rbtn:disabled { background: var(--surface); color: var(--muted); cursor: not-allowed; opacity: .7; }
+    .rbtn .badge { min-width: 22px; height: 22px; padding: 0 6px; border-radius: 999px; background: rgba(255, 255, 255, .22); font-size: 12px; display: inline-flex; align-items: center; justify-content: center; }
+    .helper { font-size: 13px; }
     h1 { margin: 0; font-size: 34px; font-weight: 700; letter-spacing: -0.04em; line-height: 1.1; }
     .head-actions { display: flex; gap: 8px; }
     .head-actions .muted { align-self: center; font-size: 13px; color: var(--muted); }
@@ -190,11 +211,58 @@ export class MissionDetailComponent implements OnDestroy {
     return !!m && m.isOwner && ![ 'done', 'cancelled', 'failed' ].includes( m.status as string );
   } );
   readonly editing = signal( false );
+
+  private readonly router = inject( Router, { optional: true } );
+  private readonly route = inject( ActivatedRoute, { optional: true } );
+  /** Which results tab is open; kept in the URL (?panel=insights|report) so a link opens it. */
+  readonly panel = signal<ResultsTab | null>( null );
+  private panelTrigger: HTMLElement | null = null;
+  private wantedPanel = ( this.route?.snapshot.queryParamMap.get( 'panel' ) || '' ) as ResultsTab | '';
+  readonly resultsReady = computed( () => {
+    const m = this.mission();
+    return !!m && !!m.report && ( m.status === 'done' || m.status === 'failed' );
+  } );
+  readonly stateLabel = computed( () => {
+    const m = this.mission()!;
+    const finished = m.steps.filter( ( s ) => s.status === 'done' || s.status === 'skipped' || s.status === 'failed' ).length;
+    const of = `${finished} of ${m.steps.length} steps`;
+    if ( m.status === 'done' ) return `Done · ${of}`;
+    if ( m.status === 'failed' ) return `Stopped · ${of}`;
+    if ( m.status === 'cancelled' ) return `Cancelled · ${of}`;
+    return `Running · ${of}`;
+  } );
+
+  openPanel ( tab: ResultsTab, event?: Event ): void {
+    this.panelTrigger = ( event?.currentTarget as HTMLElement ) || null;
+    this.setPanel( tab );
+  }
+
+  setPanel ( tab: ResultsTab ): void {
+    this.panel.set( tab );
+    void this.router?.navigate( [], { relativeTo: this.route, queryParams: { panel: tab }, queryParamsHandling: 'merge', replaceUrl: true } );
+  }
+
+  closePanel (): void {
+    const tab = this.panel();
+    this.panel.set( null );
+    void this.router?.navigate( [], { relativeTo: this.route, queryParams: { panel: null }, queryParamsHandling: 'merge', replaceUrl: true } );
+    // Focus goes back where it came from; opened from a link, to that tab's button.
+    const back = this.panelTrigger || ( document.querySelector( `[data-cy="open-${tab}"]` ) as HTMLElement | null );
+    back?.focus();
+    this.panelTrigger = null;
+  }
   readonly drawer = signal<ColumnView | null>( null );
   readonly skeleton = [0, 1, 2, 3, 4, 5, 6, 7];
   private timer: ReturnType<typeof setTimeout> | null = null;
 
   constructor () {
+    // A link with ?panel= opens that tab once the finished Mission has loaded.
+    effect( () => {
+      if ( !this.wantedPanel || !this.resultsReady() ) return;
+      const tab = this.wantedPanel === 'insights' && !this.mission()?.report?.insights ? 'report' : this.wantedPanel;
+      this.wantedPanel = '';
+      this.panel.set( tab === 'insights' || tab === 'report' ? tab : null );
+    }, { allowSignalWrites: true } );
     effect( () => {
       const id = this.missionId();
       const initial = this.initial();

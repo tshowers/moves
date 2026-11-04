@@ -288,7 +288,7 @@
       "tool": "outreach.sendBatch",
       "product": "outreach",
       "effect": "send",
-      "automated": false,
+      "automated": true,
       "status": "pending",
       "skipReason": "",
       "when": "",
@@ -355,7 +355,7 @@
     {
       "number": 9,
       "id": "watch",
-      "title": "Check results after a week",
+      "title": "See who opened and replied after a week",
       "detail": "",
       "owner": "todd",
       "assigneeId": "",
@@ -363,10 +363,10 @@
         "owner": "todd",
         "assigneeId": ""
       },
-      "kind": "tool",
-      "tool": "outreach.engagement",
+      "kind": "wait",
+      "tool": "outreach.waitForEngagement",
       "product": "outreach",
-      "effect": "read",
+      "effect": "wait",
       "automated": true,
       "status": "pending",
       "skipReason": "",
@@ -493,7 +493,7 @@
       "maya": 6,
       "person": 1
     },
-    "waitBusinessDays": 0,
+    "waitBusinessDays": 5,
     "products": [
       "maya",
       "image-creator",
@@ -512,10 +512,15 @@
   "planFallback": false,
   "planErrors": [],
   "examplesUsed": [],
+  "missingProducts": [],
   "statusDetail": "1 step waiting on a person.",
+  "waitingSince": "2026-10-14T16:00:00.000Z",
+  "nextCheckAt": "2026-10-15T16:00:00.000Z",
   "startedAt": "2026-10-14T16:00:00.000Z",
   "resumeAt": null,
-  "nextCheckAt": null,
+  "runnerErrors": 0,
+  "leaseExpiries": 0,
+  "staleRequeues": 0,
   "phase": "waiting_on_people",
   "plan": {
     "missionId": "campaign-new-service",
@@ -532,7 +537,7 @@
       "assigneeId": "uid-owner",
       "handedOff": false
     },
-    "nextCheckAt": null,
+    "nextCheckAt": "2026-10-15T16:00:00.000Z",
     "playbookId": "campaign-new-service"
   },
   "products": [

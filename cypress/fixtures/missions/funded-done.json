@@ -241,14 +241,22 @@
   "planFallback": false,
   "planErrors": [],
   "examplesUsed": [],
+  "missingProducts": [],
   "statusDetail": "Every step finished.",
+  "waitingSince": "2026-10-14T16:00:00.000Z",
+  "nextCheckAt": null,
   "startedAt": "2026-10-14T16:00:00.000Z",
   "resumeAt": null,
   "finishedAt": "2026-10-14T16:00:00.000Z",
+  "runnerErrors": 0,
+  "leaseExpiries": 0,
+  "staleRequeues": 0,
   "report": {
     "missionId": "funded-companies",
     "title": "Recently funded companies",
     "outcomeType": "insight",
+    "status": "done",
+    "reason": "",
     "headline": "8 fit, 3 strong",
     "startedAt": "2026-10-14T16:00:00.000Z",
     "finishedAt": "2026-10-14T16:00:00.000Z",
@@ -349,9 +357,20 @@
       }
     ],
     "artifacts": [],
-    "line": "4 steps by TODD."
+    "insights": null,
+    "outcome": "8 fit, 3 strong",
+    "stats": [
+      {
+        "value": 1,
+        "label": "Strong fits"
+      }
+    ],
+    "next": [],
+    "kept": [],
+    "dropped": [],
+    "candidateCount": 1,
+    "line": "4 steps by 16Ahead."
   },
-  "nextCheckAt": null,
   "phase": "done",
   "plan": {
     "missionId": "funded-companies",

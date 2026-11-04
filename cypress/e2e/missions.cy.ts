@@ -308,16 +308,58 @@ describe( 'Report (8a), insight (7a), shortlist (11a), asset set (13a)', () => {
   it( 'a finished Mission ends in its report', () => {
     mission( 'roland-done' );
     cy.visitWithCypressAuth( '/missions/reach-named-person', ME );
-    cy.get( '[data-cy="mission-report"]' ).should( 'be.visible' );
+    // The report opens in a slide-out from the header (design_handoff_mission_insights_report).
+    cy.get( '[data-cy="mission-state"]' ).should( 'contain.text', 'Done ·' );
+    cy.get( '[data-cy="open-report"]' ).should( 'not.be.disabled' ).click();
+    cy.get( '[data-cy="results-report"]' ).should( 'be.visible' );
+    cy.location( 'search' ).should( 'contain', 'panel=report' );
+    cy.get( '[data-cy="report-steps-toggle"]' ).click();
     cy.get( '[data-cy="report-row"][data-step="approve"]' ).should( 'contain.text', 'You' );
     cy.get( '[data-cy="report-row"][data-step="follow"]' ).should( 'not.exist' );
     cy.get( '[data-cy="report-split"]' ).should( 'contain.text', 'by 16Ahead' ).and( 'contain.text', '2 by you' ).and( 'contain.text', 'About 6 minutes of your time.' );
+    cy.get( 'body' ).type( '{esc}' );
+    cy.get( '[data-cy="results-panel"]' ).should( 'not.exist' );
     cy.get( '[data-cy="mission-banner"]' ).should( 'not.exist' );
+  } );
+
+  it( 'insights: a short headline, numbered findings with people and a next step, evidence on request; a link opens the tab', () => {
+    cy.fixture( 'missions/roland-done.json' ).then( ( m ) => {
+      const insights = { headline: 'Three contacts opened your emails. Nobody has replied yet.', summary: 'Lindsey at Nation LTD is the most engaged.', findings: [
+        { id: 'f1', title: '3 contacts opened your emails', body: 'Lindsey and Joe at Nation LTD, and Justin at Visible Hands VC, opened at least one email.', contacts: [ { name: 'Lindsey', firm: 'Nation LTD', email: 'lindsey@nationltd.com' } ], nextAction: 'Send Lindsey a short follow-up', evidence: 'lindsey@nationltd.com opened=true 2026-09-24' },
+      ] };
+      cy.intercept( 'GET', `${API}/orchestration/missions/reach-named-person`, { success: true, mission: { ...m, report: { ...m.report, insights, outcome: '2 emails sent, 1 opened, 0 replied.', stats: [ { value: 2, label: 'Emails sent' }, { value: 0, label: 'Replied', tone: 'muted' } ], next: [ 'Send Lindsey a short follow-up' ] } } } ).as( 'mission' );
+    } );
+    cy.visitWithCypressAuth( '/missions/reach-named-person?panel=insights', ME );
+    cy.get( '[data-cy="results-insights"]' ).should( 'be.visible' );
+    cy.get( '[data-cy="insights-headline"]' ).should( 'contain.text', 'Nobody has replied yet' );
+    cy.get( '[data-cy="insights-finding"]' ).should( 'have.length', 1 ).first().should( 'contain.text', '01' ).and( 'contain.text', 'Lindsey' ).and( 'contain.text', 'Send Lindsey a short follow-up' );
+    cy.get( '[data-cy="insights-evidence"]' ).should( 'not.exist' );
+    cy.get( '[data-cy="insights-evidence-toggle"]' ).click();
+    cy.get( '[data-cy="insights-evidence"]' ).should( 'contain.text', 'opened=true' );
+    cy.get( '[data-cy="results-tab-report"]' ).click();
+    cy.get( '[data-cy="report-outcome"]' ).should( 'contain.text', '2 emails sent' );
+    cy.get( '[data-cy="report-stats"]' ).should( 'contain.text', 'Emails sent' );
+    cy.get( '[data-cy="report-next"]' ).should( 'contain.text', 'Send Lindsey a short follow-up' );
+    cy.get( '[data-cy="results-close"]' ).click();
+    cy.get( '[data-cy="open-report"]' ).should( 'have.focus' );
+    cy.get( '[data-cy="open-insights"]' ).should( 'contain.text', '1' );
+    cy.location( 'search' ).should( 'not.contain', 'panel=' );
+  } );
+
+  it( 'while it runs, Insights and Report wait for the finish', () => {
+    mission( 'roland-waiting-world' );
+    cy.visitWithCypressAuth( '/missions/reach-named-person', ME );
+    cy.get( '[data-cy="mission-state"]' ).should( 'contain.text', 'Running ·' );
+    cy.get( '[data-cy="open-insights"]' ).should( 'be.disabled' );
+    cy.get( '[data-cy="open-report"]' ).should( 'be.disabled' );
+    cy.get( '[data-cy="results-row"]' ).should( 'contain.text', 'Available when the mission finishes' );
   } );
 
   it( 'a teammate’s silence is counted as a result', () => {
     mission( 'weekly-done', 'weekly-status' );
     cy.visitWithCypressAuth( '/missions/weekly-status', ME );
+    cy.get( '[data-cy="open-report"]' ).click();
+    cy.get( '[data-cy="report-steps-toggle"]' ).click();
     cy.get( '[data-cy="report-row"][data-step="updates"]' ).should( 'contain.text', 'No update' );
     cy.get( '[data-cy="report-timeout"]' ).should( 'contain.text', 'Wait ended · counted as a result' );
   } );
@@ -328,7 +370,9 @@ describe( 'Report (8a), insight (7a), shortlist (11a), asset set (13a)', () => {
     cy.intercept( 'GET', `${API}/orchestration/missions/next-1`, { success: true, mission: { id: 'next-1', status: 'proposed', steps: [] } } );
     cy.intercept( 'POST', `${API}/orchestration/missions/next-1/start`, { statusCode: 202, body: { success: true, mission: { id: 'next-1', status: 'queued' } } } ).as( 'start' );
     cy.visitWithCypressAuth( '/missions/funded-companies', ME );
-    cy.get( '[data-cy="insight-headline"]' ).should( 'contain.text', '8 fit, 3 strong' );
+    cy.get( '[data-cy="open-report"]' ).click();
+    cy.get( '[data-cy="report-outcome"]' ).should( 'contain.text', '8 fit, 3 strong' );
+    cy.get( '[data-cy="results-close"]' ).click();
     cy.get( '[data-cy="proposal"]' ).first().within( () => cy.get( '[data-cy="proposal-start"]' ).click() );
     cy.wait( '@ask' ).its( 'request.body' ).should( 'include', { origin: 'suggestion', force: 'mission' } );
     cy.wait( '@start' );
@@ -428,8 +472,10 @@ describe( 'Ty’s requests, each start to finish (from the real engine)', () => 
 
             cy.intercept( 'GET', `${API}/orchestration/missions/${id}`, { success: true, mission: done[id] } );
             cy.visitWithCypressAuth( `/missions/${id}`, ME );
-            cy.get( '[data-cy="mission-report"]' ).should( 'be.visible' );
+            cy.get( '[data-cy="open-report"]' ).click();
+            cy.get( '[data-cy="report-steps-toggle"]' ).click();
             cy.get( '[data-cy="report-row"]' ).should( 'have.length.greaterThan', 1 );
+            cy.get( '[data-cy="results-close"]' ).click();
             cy.get( '[data-cy="plan-strip-list"] [data-look="fail"]' ).should( 'not.exist' );
             cy.get( '[data-cy="plan-strip-list"] [data-look="person"]' ).should( 'not.exist' );
           } );
