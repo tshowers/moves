@@ -23,6 +23,28 @@ function mission ( fixture: string, id = 'reach-named-person' ) {
 describe( 'Mission detail (2a)', () => {
   beforeEach( stubApi );
 
+  it( 'you delete your own Mission, even one waiting on you, after confirming (Ty, 2026-11-04)', () => {
+    cy.fixture( 'missions/roland-approval.json' ).then( ( m ) => {
+      cy.intercept( 'GET', `${API}/orchestration/missions/reach-named-person`, { success: true, mission: { ...m, id: 'reach-named-person', canDelete: true } } ).as( 'mission' );
+    } );
+    cy.intercept( 'DELETE', `${API}/orchestration/missions/reach-named-person`, { statusCode: 200, body: { success: true } } ).as( 'delete' );
+    cy.visitWithCypressAuth( '/missions/reach-named-person', ME );
+    cy.get( '[data-cy="delete"]' ).click();
+    cy.get( '[data-cy="delete-confirm"]' ).should( 'contain.text', 'Emails it already sent stay in Outreach.' );
+    cy.get( '[data-cy="delete-yes"]' ).click();
+    cy.wait( '@delete' );
+    cy.location( 'pathname' ).should( 'eq', '/missions' );
+  } );
+
+  it( "the Marketing Assistant's Missions have no Delete: she clears them", () => {
+    cy.fixture( 'missions/roland-approval.json' ).then( ( m ) => {
+      cy.intercept( 'GET', `${API}/orchestration/missions/reach-named-person`, { success: true, mission: { ...m, id: 'reach-named-person', origin: 'backlog', canDelete: false } } ).as( 'mission' );
+    } );
+    cy.visitWithCypressAuth( '/missions/reach-named-person', ME );
+    cy.get( '[data-cy="mission-title"]' ).should( 'be.visible' );
+    cy.get( '[data-cy="delete"]' ).should( 'not.exist' );
+  } );
+
   it( 'waiting on you: the banner says what, and Approve records it', () => {
     mission( 'roland-approval' );
     cy.intercept( 'POST', `${API}/orchestration/missions/reach-named-person/steps/approve`, { statusCode: 202, body: { success: true } } ).as( 'act' );
