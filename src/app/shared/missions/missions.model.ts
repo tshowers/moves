@@ -144,6 +144,20 @@ export interface MissionView {
   assessment?: { signals?: string[]; reason?: string } | null;
   /** Moves the Mission handed to people, read live; open ones first. */
   followUps?: FollowUp[];
+  /** The Mission's emails: queued, how many have gone out (null if unknown), when the queue sends them. */
+  sends?: MissionSends;
+}
+
+export interface MissionSends { queued: number; sent: number | null; firstAt: string | null; lastAt: string | null }
+
+/** Emails queued but not out yet, while the queue still has them ahead (a past lastAt means they've gone). */
+export function emailsGoingOut ( sends: MissionSends | undefined, now = Date.now() ): number {
+  if ( !sends || sends.sent === null || !sends.lastAt || !( Date.parse( sends.lastAt ) > now ) ) return 0;
+  return Math.max( 0, sends.queued - sends.sent );
+}
+
+function shortDate ( iso: string ): string {
+  return new Date( iso ).toLocaleDateString( 'en-US', { month: 'short', day: 'numeric' } );
 }
 
 export interface FollowUp { id: string; title: string; assigneeId: string; dueDate: string; done: boolean }
@@ -430,6 +444,8 @@ export function missionState ( m: MissionView, columns: ColumnView[], viewerId: 
     const open = ( m.followUps || [] ).filter( ( f ) => !f.done );
     const mine = open.filter( ( f ) => f.assigneeId === viewerId );
     if ( mine.length ) return { tone: 'you', label: `Done · ${plural( mine.length, 'follow-up' )} for you` };
+    const going = emailsGoingOut( m.sends );
+    if ( going ) return { tone: 'waiting', label: `Done · ${plural( going, 'email' )} going out ${shortDate( m.sends!.lastAt! )}` };
     if ( open.length ) return { tone: 'waiting', label: `Done · ${plural( open.length, 'follow-up' )} with your team` };
     return { tone: 'done', label: 'Done' };
   }
@@ -439,7 +455,7 @@ export function missionState ( m: MissionView, columns: ColumnView[], viewerId: 
   if ( column.look === 'wait' ) {
     const step = m.steps.find( ( s ) => column.stepIds.includes( s.id ) && s.status === 'active' ) || column.step;
     const what = step && step.tool === 'outreach.waitForEngagement' ? 'Waiting on replies' : 'Waiting';
-    const until = step && step.waitUntil ? new Date( step.waitUntil ).toLocaleDateString( 'en-US', { month: 'short', day: 'numeric' } ) : '';
+    const until = step && step.waitUntil ? shortDate( step.waitUntil ) : '';
     return { tone: 'waiting', label: until ? `${what} · until ${until}` : what };
   }
   if ( column.who === 'you' ) return { tone: 'you', label: 'Needs you' };

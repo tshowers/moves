@@ -373,6 +373,25 @@ describe( 'Report (8a), insight (7a), shortlist (11a), asset set (13a)', () => {
     cy.get( '[data-cy="follow-up"]' ).last().should( 'have.class', 'done' ).and( 'contain.text', 'You · done' );
   } );
 
+  it( 'a finished Mission whose emails are still queued says when they go out (Ty, 2026-11-03)', () => {
+    const first = new Date( Date.now() + 86400000 ).toISOString();
+    const last = new Date( Date.now() + 86400000 + 420000 ).toISOString();
+    cy.fixture( 'missions/roland-done.json' ).then( ( m ) => {
+      cy.intercept( 'GET', `${API}/orchestration/missions/reach-named-person`, { success: true, mission: { ...m, sends: { queued: 31, sent: 0, firstAt: first, lastAt: last } } } ).as( 'mission' );
+    } );
+    cy.visitWithCypressAuth( '/missions/reach-named-person', ME );
+    cy.get( '[data-cy="mission-state"]' ).should( 'contain.text', 'Done · 31 emails going out' ).and( 'have.attr', 'data-tone', 'waiting' );
+    cy.get( '[data-cy="mission-emails"]' ).should( 'contain.text', '31 emails queued' ).and( 'contain.text', 'Going out' ).and( 'contain.text', 'Outreach Sent' );
+    cy.get( '[data-cy="emails-sent-link"]' ).should( 'not.exist' );
+    cy.fixture( 'missions/roland-done.json' ).then( ( m ) => {
+      cy.intercept( 'GET', `${API}/orchestration/missions/reach-named-person`, { success: true, mission: { ...m, sends: { queued: 31, sent: 31, firstAt: '2026-11-04T16:30:00.000Z', lastAt: '2026-11-04T16:37:30.000Z' } } } ).as( 'mission' );
+    } );
+    cy.visitWithCypressAuth( '/missions/reach-named-person', ME );
+    cy.get( '[data-cy="mission-state"]' ).should( 'have.attr', 'data-tone', 'done' );
+    cy.get( '[data-cy="mission-emails"]' ).should( 'contain.text', '31 emails sent' );
+    cy.get( '[data-cy="emails-sent-link"]' ).should( 'have.attr', 'href', 'https://outreach.16ahead.com/sent' );
+  } );
+
   it( 'a teammate’s silence is counted as a result', () => {
     mission( 'weekly-done', 'weekly-status' );
     cy.visitWithCypressAuth( '/missions/weekly-status', ME );

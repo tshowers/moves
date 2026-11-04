@@ -5,7 +5,7 @@ import { EditPlanComponent } from './edit-plan.component';
 import { MissionOutcomeComponent } from './mission-outcome.component';
 import { MissionResultsPanelComponent, ResultsTab } from './mission-results-panel.component';
 import { MissionsApiService } from './missions-api.service';
-import { ColumnView, MissionView, Person, PRODUCT_LABEL, StepView, Who, currentColumn, leftUntil, missionState, nameOf, stripColumns, whoOf } from './missions.model';
+import { ColumnView, MissionView, Person, PRODUCT_LABEL, StepView, Who, currentColumn, emailsGoingOut, leftUntil, missionState, nameOf, stripColumns, whoOf } from './missions.model';
 import { OwnerTokenComponent } from './owner-token.component';
 import { PlanStripComponent, paint } from './plan-strip.component';
 import { StepDrawerComponent } from './step-drawer.component';
@@ -98,7 +98,15 @@ const OUTCOME: Record<string, string> = { action: 'Action', insight: 'Insight', 
             </section>
           }
 
-          @if (followUps().length) {
+          @if (emails(); as e) {
+            <!-- Queued isn't sent: the queue paces them into business hours, so say when (Ty, 2026-11-03: "where are they?"). -->
+            <section class="emails" data-cy="mission-emails">
+              <div><b>{{ e.title }}</b><span class="muted">{{ e.detail }}</span></div>
+              @if (e.sentLink) { <a class="open" href="https://outreach.16ahead.com/sent" target="_blank" rel="noopener" data-cy="emails-sent-link">See them in Outreach Sent ↗</a> }
+            </section>
+          }
+
+                    @if (followUps().length) {
             <!-- The work the Mission handed out: "Done" isn't over while these are open (Ty, 2026-11-03). -->
             <section class="follow-ups" data-cy="follow-ups">
               <h2>Follow-ups</h2>
@@ -165,6 +173,9 @@ const OUTCOME: Record<string, string> = { action: 'Action', insight: 'Insight', 
     .state-pill[data-tone="done"] .dot { background: #3ccf8e; }
     .state-pill[data-tone="stopped"] .dot { background: #e5484d; }
     .state-pill .count { color: var(--muted); font-weight: 500; }
+    .emails { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; padding: 16px 20px; border-radius: 16px; background: var(--surface); }
+    .emails div { display: flex; flex-direction: column; gap: 2px; }
+    .emails .open { font-size: 13px; font-weight: 700; color: inherit; }
     .follow-ups { display: flex; flex-direction: column; gap: 8px; }
     .follow-ups h2 { font-size: 20px; font-weight: 800; margin: 0 0 4px; }
     .follow-up { display: flex; align-items: center; gap: 12px; padding: 14px 18px; border-radius: 14px; background: var(--surface); color: inherit; text-decoration: none; flex-wrap: wrap; }
@@ -256,7 +267,20 @@ export class MissionDetailComponent implements OnDestroy {
     return `${finished} of ${m.steps.length} steps`;
   } );
 
-  readonly followUps = computed( () => ( this.mission()?.followUps || [] ).map( ( f ) => {
+  readonly emails = computed( () => {
+    const sends = this.mission()?.sends;
+    if ( !sends || !sends.queued ) return null;
+    const many = ( n: number ) => `${n} email${n === 1 ? '' : 's'}`;
+    const time = ( iso: string ) => new Date( iso ).toLocaleString( 'en-US', { month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit' } );
+    const going = emailsGoingOut( sends );
+    const sent = sends.sent === null ? null : sends.sent;
+    if ( going ) {
+      const when = sends.firstAt && Date.parse( sends.firstAt ) > Date.now() ? `Going out ${time( sends.firstAt )} to ${new Date( sends.lastAt! ).toLocaleTimeString( 'en-US', { hour: 'numeric', minute: '2-digit' } )}` : `Going out until ${time( sends.lastAt! )}`;
+      return { title: `${many( sends.queued )} queued${sent ? `, ${sent} sent so far` : ''}`, detail: `${when}, paced into business hours. They show in Outreach Sent as each goes out.`, sentLink: !!sent };
+    }
+    return { title: `${many( sends.queued )} sent`, detail: 'They’re in Outreach Sent, with opens and replies.', sentLink: true };
+  } );
+    readonly followUps = computed( () => ( this.mission()?.followUps || [] ).map( ( f ) => {
     const who = f.assigneeId === this.viewerId() ? 'You' : nameOf( f.assigneeId || 'you', this.people() );
     const due = f.dueDate && !Number.isNaN( Date.parse( f.dueDate ) ) ? ` · due ${new Date( f.dueDate ).toLocaleDateString( 'en-US', { month: 'short', day: 'numeric' } )}` : '';
     return { id: f.id, title: f.title, done: f.done, meta: f.done ? `${who} · done` : `${who}${due}`, url: `https://moves.16ahead.com/app?move=${encodeURIComponent( f.id )}` };
