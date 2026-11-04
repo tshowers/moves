@@ -49,7 +49,8 @@ describe( 'Every playbook, start to finish', () => {
 
         // The plan, then Start.
         cy.visitWithCypressAuth( `/missions/${trip.id}`, ME );
-        cy.get( '[data-cy="mission-title"]' ).should( 'contain.text', trip.title );
+        // First paint after a fresh visit can take a moment late in a long run (Ty, 2026-11-03: one blank-page flake).
+        cy.get( '[data-cy="mission-title"]', { timeout: 10000 } ).should( 'contain.text', trip.title );
         cy.get( '[data-cy="mission-kicker"]' ).should( 'contain.text', 'Not started' );
         cy.get( '[data-cy="start"]' ).click();
         cy.wait( '@start' );
