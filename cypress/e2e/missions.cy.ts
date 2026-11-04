@@ -151,6 +151,24 @@ describe( 'Mission detail (2a)', () => {
     cy.get( '[data-cy="drawer-recipients"]' ).should( 'contain.text', 'Send the email: 2 people' ).and( 'contain.text', 'Mitch Kapor' ).and( 'contain.text', 'henri@harlem.capital' );
   } );
 
+  it( 'an email with blanks nothing fills can’t be approved, and says what to fix (Ty, 2026-11-03)', () => {
+    const check = { ok: false, documentId: 'email-1', subject: 'Quick intro: Taliferro Tech × {{companyName}}', recipients: 32, broken: false, blanks: [ { token: 'thesisKeywords', label: 'Thesis keywords' }, { token: 'scheduleUrl', label: 'Schedule url' } ], skipped: [ { token: 'companyName', label: 'Company name', count: 29, examples: [ 'charles@precursorvc.com' ] } ] };
+    const load = ( c: any ) => cy.fixture( 'missions/roland-approval.json' ).then( ( m ) => {
+      const steps = m.steps.map( ( step: any ) => ( step.id === 'approve' ? { ...step, emailCheck: c } : step ) );
+      cy.intercept( 'GET', `${API}/orchestration/missions/reach-named-person`, { success: true, mission: { ...m, id: 'reach-named-person', steps } } ).as( 'mission' );
+    } );
+    load( check );
+    cy.visitWithCypressAuth( '/missions/reach-named-person', ME );
+    cy.get( '[data-cy="banner-cta"]' ).click();
+    cy.get( '[data-cy="drawer-email-subject"]' ).should( 'contain.text', 'Quick intro: Taliferro Tech' );
+    cy.get( '[data-cy="drawer-email-check"]' ).should( 'contain.text', 'Not ready to send yet' );
+    cy.get( '[data-cy="drawer-email-blanks"]' ).should( 'contain.text', '{{thesisKeywords}}' ).and( 'contain.text', '{{scheduleUrl}}' );
+    cy.get( '[data-cy="drawer-email-skipped"]' ).should( 'contain.text', '29 of 32 have no company name' );
+    cy.get( '[data-cy="drawer-open-docs"]' ).should( 'have.attr', 'href', 'https://docs.16ahead.com/docs/editor/email-1' );
+    cy.get( '[data-cy="drawer-email-fillins"]' ).should( 'not.exist' );
+    cy.get( '[data-cy="drawer-approve"]' ).should( 'be.disabled' );
+  } );
+
   it( 'an approval shows the email it sends, not the list it was handed (Ty, 2026-11-03)', () => {
     cy.fixture( 'missions/roland-approval.json' ).then( ( m ) => {
       const email = m.steps.find( ( s: any ) => s.id === 'email' );
